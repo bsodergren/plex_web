@@ -3,16 +3,16 @@ DEFINE('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], ".php") );
 
 require_once("_config.inc.php");
 
-define('TITLE', "New");
 
-
-	$sql = "SELECT artist from ".Db_TABLE_FILEDB."  where library = '".$in_directory."' ";
+	$sql = "SELECT id,name from ".Db_TABLE_STUDIO." limit 10 ";
 
 
 //display_log($sql);
 $result = $db->query($sql);
 
-	
+define('TITLE', "Test Page");
+
+include __LAYOUT_HEADER__;
 ?>
     
 <main role="main" class="container">
@@ -23,39 +23,16 @@ $result = $db->query($sql);
 
 $full_names_array=array();
 
+	echo "<ul>";
+	
 	foreach($result as $id => $artist)
 	{
-		$artist_name=$artist["artist"];
-		if($artist_name != null)
-		{
-			if(str_contains($artist_name, ",") == true ) 
-			{
-				$names_arr = explode(",",$artist_name);
-				$names_list="";
-				
-				foreach( $names_arr as $str_name )
-				{
-					if (!in_array($str_name, $full_names_array))
-					{
-						$full_names_array[] = $str_name;
-					}
-				}
-			} else {
-				if (!in_array($artist_name, $full_names_array))
-					{
-						$full_names_array[] = $artist_name;
-					}
-			}
-		}
+		$job_id=$artist["id"];
+		$name=$artist["name"];
+		echo "<li>$job_id $name </li>";
 	}
-		asort($full_names_array);
-	echo "<ul>";
-	foreach($full_names_array as $id => $name)
-	{
-
-		echo "<li> $name </li>";
-	}
-				echo "</ul>";
+	
+	echo "</ul>";
 
 	
 

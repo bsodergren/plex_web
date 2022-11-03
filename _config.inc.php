@@ -1,14 +1,8 @@
 <?php
-/***
-*
-* Application defaults
-*
-*
-*
-*/
+
 if (!defined('APP_AUTHENTICATION'))				DEFINE("APP_AUTHENTICATION",TRUE);
 
-if (!defined('APP_HOME'))						DEFINE("APP_HOME","/plex");
+if (!defined('APP_HOME'))						DEFINE("APP_HOME","/plex_web");
 if (!defined('APP_PATH'))						DEFINE("APP_PATH", $_SERVER['DOCUMENT_ROOT'] . APP_HOME );
 
 if (!defined('APP_NAME'))                       define('APP_NAME', 'Plex Media Import');
@@ -34,8 +28,8 @@ if (!defined('DB_PORT'))                        define('DB_PORT' ,'');
 
 if (!defined('Db_TABLE_PREFIX'))                   	define('Db_TABLE_PREFIX', "metatags" . "_" );
 if (!defined('Db_TABLE_FILEDB'))                   	define('Db_TABLE_FILEDB', Db_TABLE_PREFIX."filedb");
-if (!defined('Db_TABLE_STUDIO'))                   	define('Db_TABLE_STUDIO', Db_TABLE_PREFIX."studio");
-if (!defined('Db_TABLE_ARTISTS'))                   define('Db_TABLE_ARTISTS', Db_TABLE_PREFIX."artist");
+if (!defined('Db_TABLE_STUDIO'))                   	define('Db_TABLE_STUDIO', Db_TABLE_PREFIX."studios");
+if (!defined('Db_TABLE_ARTISTS'))                   define('Db_TABLE_ARTISTS', Db_TABLE_PREFIX."artists");
 
 
 /******
@@ -55,7 +49,7 @@ if (!defined('__PHP_INC_CORE_DIR__')) 			DEFINE("__PHP_INC_CORE_DIR__", __PHP_AS
 if (!defined('__COMPOSER_LIB__')) 				DEFINE("__COMPOSER_LIB__", __PHP_ASSETS_DIR__."/lib/vendor");
 
 
-if (!defined('__LAYOUT_PATH__'))				DEFINE("__LAYOUT_PATH__", __PHP_ASSETS_DIR__.'/layouts/');
+if (!defined('__LAYOUT_PATH__'))				DEFINE("__LAYOUT_PATH__", __PHP_ASSETS_DIR__."/layouts/");
 
 if (!defined('__LAYOUT_HEADER__'))				DEFINE("__LAYOUT_HEADER__", __LAYOUT_PATH__.'/header.php');
 if (!defined('__LAYOUT_NAVBAR__'))				DEFINE("__LAYOUT_NAVBAR__", __LAYOUT_PATH__.'/navbar.php');
@@ -72,7 +66,7 @@ $navigation_link_array=array(
 
 	"dropdown" => array(
 		"View"=> array(
-			"Artist" => "artist.php"
+			"Artist" => "view/artist.php"
 		),
 		"Missing"=> array(
 			"Titles" => "missing/title.php",

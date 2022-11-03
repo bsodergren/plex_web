@@ -40,7 +40,7 @@ if (isset($_REQUEST['submit']) )
 	
 	$sql = "SELECT id,filename,title,artist,genre,studio,studio_a,studio_b,favorite,thumbnail from ".Db_TABLE_FILEDB."  where ". $sql_studio ." and " . $sql_genre . $order_sort;
 	
-	
+	logger("SQL Query", $sql);
 	$results = $db->query($sql);
 	 $total_results=count($results);
 ?>

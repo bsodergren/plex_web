@@ -16,6 +16,19 @@ $db = new MysqliDb ("localhost",__SQL_USER__,__SQL_PASSWD__,__SQL_DB__);
 dbObject::autoload("models");
 
 
+class MetaFiledb extends dbObject {
+    protected $dbTable = Db_TABLE_FILEDB;
+} 
+
+class MetaStudio extends dbObject {
+    protected $dbTable = Db_TABLE_STUDIO;
+} 
+
+class MetaArtist extends dbObject {
+    protected $dbTable = Db_TABLE_ARTISTS;
+} 
+
+
 #class studios extends dbObject {
 #    protected $dbTable = "home_vid";
 #} 
