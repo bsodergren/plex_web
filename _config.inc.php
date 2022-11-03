@@ -66,7 +66,9 @@ $navigation_link_array=array(
 
 	"dropdown" => array(
 		"View"=> array(
-			"Artist" => "view/artist.php"
+			"Artist" => "view/artist.php",
+			"Studio" => "view/studio.php"
+
 		),
 		"Missing"=> array(
 			"Titles" => "missing/title.php",
