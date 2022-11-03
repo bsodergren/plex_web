@@ -3,8 +3,7 @@
 
 function display_navbar_links()
 {
-    
-    
+  
     global $navigation_link_array;
     global $_SERVER;
     $html='';
@@ -33,11 +32,14 @@ function display_navbar_links()
 				
 				$dropdown_html .= process_template("menu_dropdown",$array);
 			}
-    
-		
-		
 		} else {
-			$url_text='	<li class="nav-item"><a class="nav-link" href="'.$link_array["url"].'" '.$link_array["js"].'>'.$link_array["text"].'</a></li>';
+			
+			$array = array(
+				"MENULINK_URL" => $link_array["url"],
+				"MENULINK_JS" => $link_array["js"],
+				"MENULINK_TEXT" => $link_array["text"]);
+			$url_text = process_template("menu_link",$array);
+			
 			if ($link_array["secure"] == true && $_SERVER['REMOTE_USER'] != "bjorn") {
 				$html=$html.$url_text."\n";
 			} else {
