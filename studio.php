@@ -6,22 +6,22 @@ require_once("_config.inc.php");
 define('TITLE', "View Studios");
 
 include __LAYOUT_HEADER__;
+		$null='';	
 
 	if  (isset($_REQUEST['substudio']))
 	{
 		$studio_key="substudio";
 		$studio_text=$_REQUEST['substudio'];
-		$null='';	
 	} else {
 		
 		$studio_key="studio";
 		$studio_text=$_REQUEST['studio'];
-		$null=' and substudio is null ';
+		//$null=' and substudio is null ';
 	}
 		$studio = str_replace("-"," ",$studio_text);
 		$studio = str_replace("_","/",$studio);
 		
-		$sql_studio= $studio_key." = '".$studio."'".$null;
+		$sql_studio= $lib_where.$studio_key." = '".$studio."'" ;
 		
 		$request_key=$studio_key.'='.$studio_text;
 	

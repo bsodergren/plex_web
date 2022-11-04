@@ -17,12 +17,15 @@ function display_filelist($results,$option='')
 		$row_key=$row['id'];
 		$row_filename=$row['filename'];
 		$hide_button='';
+		$cols=3;
 		if($option=='hide')
 		{
 			$hide_button='</td><td><input type=submit name="hide_'.$row_key.'" value="hide" id="submit">';
+			$cols=2;
 		}
 				$array = array("FILE_NAME" => $row_filename,
 				"DELETE_ID" => "delete_".$row_key,
+				"HIDE_COL" => $cols,
 				"HIDE_BUTTON" => $hide_button);
 
 		$output .= process_template("metadata_row_header",$array);
@@ -37,11 +40,13 @@ function display_filelist($results,$option='')
 				continue;
 			}
 			if ($key == "thumbnail" ) {
-				$output .=  "<th rowspan=6><img src='".$value."'></th>";
+				$output .=  "<tr><td></td><td><img src='".$value."' onclick=\"popup('/plex_web/video.php?id=".$row_key."', 'video')\"></td><td></td></tr>";
 				continue;
 			}
 			if ($key == "fullpath" ) {
-				$output .=  "<td>$key </td><td>".$value."</td>";
+				$video_text="<button onclick=\"popup('/plex_web/video.php?id=".$row_key."', 'video')\">Watch Video</button>";
+				$output .=  "<td>".$video_text." </td><td>".$value." </td>";
+				
 				continue;
 			}
 			

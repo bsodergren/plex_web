@@ -9,9 +9,12 @@ include __LAYOUT_HEADER__;
 if  (isset($_REQUEST['substudio']))
 {
 	$studio_key="substudio";
+	$studio_query=$studio_key;
 	$studio_text=$_REQUEST['substudio'];
+	
 } else {
 	$studio_key="studio";
+	$studio_query="".$studio_key;
 	$studio_text=$_REQUEST['studio'];
 
 }
@@ -29,7 +32,7 @@ if (isset($_REQUEST['submit']) )
 
 	$studio = str_replace("-"," ",$studio_text);
 	$studio = str_replace("_","/",$studio);
-	$sql_studio= $studio_key." = '".$studio."'";
+	$sql_studio= $studio_query." = '".$studio."'";
 		
 	
 	
@@ -48,7 +51,7 @@ if (isset($_REQUEST['submit']) )
 		$order_sort = $_REQUEST['sort']." ASC";	
 	}
 	
-	$where =  $sql_studio . $sql_genre;
+	$where =  $lib_where.$sql_studio . $sql_genre;
 	
 	$sql=query_builder("select",$where,false,$order_sort);
 	

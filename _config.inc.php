@@ -16,10 +16,12 @@ if (!defined('DB_PORT'))                        define('DB_PORT' ,'');
 if (!defined('Db_TABLE_PREFIX'))                   	define('Db_TABLE_PREFIX', "metatags" . "_" );
 
 DEFINE("__LOG_ERRORS__", 1);
-DEFINE("__HTML_POPUP__", 1);
+DEFINE("__HTML_POPUP__", 0);
 
 
 if (!defined('__PHP_ASSETS_DIR__'))			    DEFINE("__PHP_ASSETS_DIR__", APP_PATH."/assets");
+if (!defined('__RUNTIME_CONFIG__'))			    DEFINE("__RUNTIME_CONFIG__", __PHP_ASSETS_DIR__."/.config");
+
 
 require_once(__PHP_ASSETS_DIR__."/header.inc.php");
 

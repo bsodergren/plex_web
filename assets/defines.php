@@ -298,14 +298,11 @@ foreach($namesArray as $name)
 
 
 $in_directory="Studio";
-$lib_req="";
-$lib_hidden="";
-$lib_where="";
 
 if(isset($_REQUEST['library']))
 {
 	$in_directory=$_REQUEST['library'];
-	$lib_req="&library=$in_directory";
+}
+$lib_req="&library=$in_directory";
 	$lib_where=" library = '".$in_directory."' AND ";
 	$lib_hidden="<input type='hidden' value='".$in_directory."' name='library'>";
-}

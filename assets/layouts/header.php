@@ -23,45 +23,16 @@
 		<link rel="stylesheet" href="<?php echo __LAYOUT_URL__;?>css/app.css">
 		<link rel="stylesheet" href="<?php echo __LAYOUT_URL__;?>css/custom.css"> 
 		
-		<script src="<?php echo __LAYOUT_URL__;?>js/app.js"></script>
+		<script src="<?php echo __LAYOUT_URL__;?>js/app.js?fasdfsd"></script>
 		<script type="text/javascript">
-			function editPlaceholder(id) {
-			  var x = document.getElementById(id).placeholder;
-			  if (x !== "") {
-				document.getElementById(id).value = x;
-			  }
-			}
 			
-			function checkValue(id) {
-				var ph = document.getElementById(id).placeholder;
-				var n =  document.getElementById(id).value;
-				if (ph == n) {
-					document.getElementById(id).value = "";
-			  }
-			  }
-			  
-			  function setNull(id) {
-			
-					document.getElementById(id).value = "NULL";
-			  
-			  }
-				
-		
-			 function popup(mylink, windowname)
-			 {
-				if (! window.focus)return true;
-				var href; 
-				if (typeof(mylink) == 'string') href=mylink; else href=mylink.href;
-				window.open(href, windowname, 'width=1000,height=500,scrollbars=yes'); 
-				return false; 
-			} 
 		</SCRIPT>
 
 	</head>
 	<?php
 	$onLoad="";
 	if (__HTML_POPUP__ == true ) {
-		$onLoad="onLoad=\"popup('/plex_web/logs.php', 'ad')\"";
+		$onLoad="onLoad=\"popup('/plex_web/logs.php', 'logs',1000,1000)\"";
 	}
 ?>
 <body <?php echo $onLoad;?>>
