@@ -5,15 +5,26 @@ function display_fileinfo()
 	
 }
 
-function display_filelist($results)
+function display_filelist($results,$option='')
 {
-	
+	if($option=='hide')
+	{
+		
+	}
 	$output='';
 	foreach($results as $id => $row)
 	{
 		$row_key=$row['id'];
 		$row_filename=$row['filename'];
-		$array = array("FILE_NAME" => $row_filename);
+		$hide_button='';
+		if($option=='hide')
+		{
+			$hide_button='</td><td><input type=submit name="hide_'.$row_key.'" value="hide" id="submit">';
+		}
+				$array = array("FILE_NAME" => $row_filename,
+				"DELETE_ID" => "delete_".$row_key,
+				"HIDE_BUTTON" => $hide_button);
+
 		$output .= process_template("metadata_row_header",$array);
 		$value_array =array();
 		

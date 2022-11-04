@@ -4,7 +4,8 @@ use Monolog\Level;
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
-use Monolog\Handler\FirePHPHandler;
+//use Monolog\Handler\FirePHPHandler;
+//use Monolog\Handler\RotatingFileHandler;
 
 $dateFormat = "n/j,g:ia";
 
@@ -12,6 +13,8 @@ $output = "%datetime%>%level_name%>%message%\n";
 
 // finally, create a formatter
 $formatter = new LineFormatter($output, $dateFormat);
+//$stream = new RotatingFileHandler (ERROR_LOG_FILE,3, Logger::INFO);
+
 $stream = new StreamHandler(ERROR_LOG_FILE, Logger::INFO);
 $stream->setFormatter($formatter);
 
@@ -48,30 +51,38 @@ function logger($msg, $var='')
     global  $logger;
     global $colors;
     $function_list= get_caller_info();
+    $html_var='';
+    $log_var='';
+  
     if( is_array($var) || is_object($var) )
     {
-        $html_var=$colors->getColoredHTML(var_export($var,1), "green");
-        
-        $var=$colors->getColoredString(var_export($var,1), "yellow");
-    } else {
-        $html_var=$colors->getColoredHTML($var, "green");
-        $var=$colors->getColoredString($var, "yellow");
+        $var=var_export($var,1);       
+
     }
     
+    if($var != '') 
+    {
+        
+        $html_var_string = wordwrap($var, 80, "<br>");
+        $html_var=$colors->getColoredHTML("<br><span style=\"text-indent: 40px\">\n".$html_var_string."\n</span>\n", "green");
+        $log_var=$colors->getColoredString($var, "green");
+    }
+    
+    
     $html_func=$colors->getColoredHTML($function_list,"blue");
-    $func=$colors->getColoredString($function_list,"blue");
+    $log_func=$colors->getColoredString($function_list,"blue");
      
     $html_msg=$colors->getColoredHTML($msg, "red");
-    $msg=$colors->getColoredString($msg, "red");
+    $log_msg=$colors->getColoredString($msg, "red");
     
-    $html_string = $html_func . ":" .$html_msg . " " . $html_var ;
+    $html_string = $html_func . ":" .$html_msg . " " . $html_var."<br>" ;
 
-    $string = $func . ":" .$msg . " " . $var ;
+    $log_string = $log_func . ":" .$log_msg . " " . $log_var ;
 
     if(__HTML_POPUP__ == true) {
         $logger->INFO($html_string);
     } else {
-        $logger->INFO($string);
+        $logger->INFO($log_string);
     }
 }
 

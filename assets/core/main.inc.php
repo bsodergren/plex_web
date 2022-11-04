@@ -211,11 +211,43 @@ function deleteEntry($data_array, $redirect=false, $timeout=4)
 			
 			if($value != "") {
 				$pcs= explode("_",$key);
-				$id=$pcs[0];
-				$field=$pcs[1];
-				if ($field == "delete" ) {					
+				$id=$pcs[1];
+				$field=$pcs[0];
+				if ($field == "delete" ) {	
+					logger("Delete entry",$id);
 					$db->where ('id', $id);
 					$db->delete (Db_TABLE_FILEDB);
+				}
+			}
+		}
+	}
+	if ($redirect != false ) {
+		return JavaRefresh($redirect,$timeout);
+	}
+}
+
+function hideEntry($data_array, $redirect=false, $timeout=4)
+{
+	global $db;
+	
+	foreach ($data_array as $key => $value )
+	{	
+		if(str_contains($key, "_") == true ) 
+		{
+			$value=trim($value);
+			
+			if($value != "") {
+				$pcs= explode("_",$key);
+				$id=$pcs[1];
+				$field=$pcs[0];
+				if ($field == "hide" ) {	
+					$sql = "UPDATE ".Db_TABLE_FILEDB." SET added = (CURRENT_TIMESTAMP - INTERVAL 3 day) WHERE id = ".$id;
+					logger("hide sql",$sql);
+					
+					$result = $db->query($sql);
+
+					//$db->where ('id', $id);
+					//$db->delete (Db_TABLE_FILEDB);
 				}
 			}
 		}
@@ -339,4 +371,16 @@ function toint($string)
     
     $string_ret = str_replace(",","",$string);
     return $string_ret;
+}
+
+function array_find($needle, $haystack)
+{
+   foreach ($haystack as $item)
+   {
+      if (strpos($item, $needle) !== FALSE)
+      {
+         return $item;
+         break;
+      }
+   }
 }

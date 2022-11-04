@@ -25,11 +25,11 @@ include __LAYOUT_HEADER__;
 		
 		$request_key=$studio_key.'='.$studio_text;
 	
+	$order = "genre ASC";
+	$sql = query_builder("DISTINCT(genre) as genre, count(genre) as cnt ",
+						$sql_studio,
+						"genre",$order);
 
-$order = "genre ASC";
-$sql = query_builder("DISTINCT(genre) as genre, count(genre) as cnt ",
-					$sql_studio,
-					"genre",$order);
 			
 					$result = $db->query($sql);
 
@@ -40,7 +40,7 @@ $sql = query_builder("DISTINCT(genre) as genre, count(genre) as cnt ",
 <a href="home.php<?php echo str_replace("&","?",$lib_req); ?>">back</a>
 <br>
 <br>
-<!-- <a href='genre.php?studio=<?php echo $_REQUEST['studio'].$lib_req; ?>&genre=NULL'>Genre not Set</a><br> -->
+<a href='genre.php?<?php echo $request_key.$lib_req; ?>&genre=NULL'>All</a><br>
 
 <?php
 

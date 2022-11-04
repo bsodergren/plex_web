@@ -10,8 +10,15 @@ if (isset($_REQUEST['submit'])) {
 	exit;
 }
 
-if (isset($_REQUEST['delete'])) {
+$key = array_find("delete_", array_keys($_REQUEST));
+if (isset($key)) {
 	echo deleteEntry($_REQUEST, "new.php");
+	exit;
+}
+
+$key = array_find("hide", array_keys($_REQUEST));
+if (isset($key)) {
+	echo hideEntry($_REQUEST, "new.php");
 	exit;
 }
 
@@ -37,7 +44,7 @@ $result = $db->query($sql);
 
 		echo "<form action=new.php method=post id=\"myform\">
 	<table class=blueTable>";
-	echo display_filelist($result);
+	echo display_filelist($result,'hide');
 
 
 		echo "

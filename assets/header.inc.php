@@ -1,9 +1,12 @@
 <?php
 
+require_once __PHP_ASSETS_DIR__.'/defines.php';
+
+#if (__SCRIPT_NAME__ != "logs" ) if (is_file(ERROR_LOG_FILE)) unlink(ERROR_LOG_FILE);
+
 set_include_path(get_include_path() . PATH_SEPARATOR . __COMPOSER_LIB__);
 require_once __COMPOSER_LIB__.'/autoload.php';
 
-require_once __PHP_ASSETS_DIR__.'/defines.php';
 
 $all = opendir(__PHP_INC_CORE_DIR__);
 while ($file = readdir($all)) {
@@ -20,8 +23,7 @@ while ($file = readdir($all)) {
 }
 
 $colors = new Colors();
-if (__SCRIPT_NAME__ != "logs" ) {
-	logger("start for " . __SCRIPT_NAME__);
-}
+
+if (__SCRIPT_NAME__ != "logs" ) logger("start for " . __SCRIPT_NAME__);
 
 ?>

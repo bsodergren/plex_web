@@ -36,9 +36,10 @@ if (isset($_REQUEST['submit']) )
 
 
 	if ($genre == "NULL" ) {
-		$sql_genre = " genre IS NULL ";
+		//$sql_genre = " and " ." genre IS NULL ";
+		$sql_genre = "";
 	} else {
-		$sql_genre= " genre LIKE '".$genre."' ";
+		$sql_genre= " and " ." genre LIKE '".$genre."' ";
 	}
 	
 	$order_sort = "  title ASC";
@@ -47,7 +48,7 @@ if (isset($_REQUEST['submit']) )
 		$order_sort = $_REQUEST['sort']." ASC";	
 	}
 	
-	$where =  $sql_studio ." and " . $sql_genre;
+	$where =  $sql_studio . $sql_genre;
 	
 	$sql=query_builder("select",$where,false,$order_sort);
 	
