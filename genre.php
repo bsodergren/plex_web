@@ -11,7 +11,8 @@ if (isset($_REQUEST['submit']) )
 {
 	echo saveData($_REQUEST, "studio.php?viewstudio=".$_REQUEST['viewstudio'] ); 	
 	
-} elseif (isset($_REQUEST['genre']) ) 
+} 
+	elseif (isset($_REQUEST['genre']) ) 
 {
 	$genre = $_REQUEST['genre'];
 
