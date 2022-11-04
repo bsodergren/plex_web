@@ -21,7 +21,8 @@ if (isset($_REQUEST['submit']) )
 {
 	echo saveData($_REQUEST, "genre.php?".$request_key."&genre=".$_REQUEST['genre'].$lib_req ); 	
 	
-} elseif (isset($_REQUEST['genre']) ) 
+} 
+	elseif (isset($_REQUEST['genre']) ) 
 {
 	$genre = $_REQUEST['genre'];
 
