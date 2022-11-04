@@ -27,7 +27,7 @@ if(isset($_REQUEST['viewstudio']))
 	$studio = str_replace("-"," ",$_REQUEST['viewstudio']);
 	$studio = str_replace("_","/",$studio);
 	
-		$sql = "SELECT id,filename,title,artist,genre,studio,studio_a,studio_b from ".Db_TABLE_FILEDB."   WHERE `".__NULL_FIELD."` IS NULL and  studio = \"".$studio."\" ORDER BY `studio`,`filename` ASC";
+		$sql = "SELECT id,filename,title,artist,genre,studio,substudio,studio_b from ".Db_TABLE_FILEDB."   WHERE `".__NULL_FIELD."` IS NULL and  studio = \"".$studio."\" ORDER BY `studio`,`filename` ASC";
 
 	//display_log($sql);
 	$results = $db->query($sql);

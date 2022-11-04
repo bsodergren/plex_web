@@ -29,6 +29,38 @@ class MetaArtist extends dbObject {
 } 
 
 
+function query_builder($fields="select",$where=false,$group=false,$order=false,$limit=false)
+{
+    
+    if($fields == "select" )
+    {
+        $sql = "SELECT id,filename,title,artist,genre,studio,substudio,fullpath,favorite,thumbnail from ".Db_TABLE_FILEDB;  
+    } else {
+        
+        $sql = "SELECT ".$fields." from ".Db_TABLE_FILEDB;  
+    }
+    
+    if($where != false )
+    {
+        $sql = $sql . " WHERE " . $where;
+        
+    }
+    
+    if($group != false )
+    {
+        $sql = $sql . " GROUP BY " . $group;
+        
+    }
+    
+    if($order != false )
+    {
+        $sql = $sql . " ORDER BY " . $order;
+        
+    }
+    logger("SQL Builder", $sql);
+    return $sql;
+    
+}
 #class studios extends dbObject {
 #    protected $dbTable = "home_vid";
 #} 

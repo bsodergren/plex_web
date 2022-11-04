@@ -34,7 +34,20 @@ class Colors {
 		}
 
 		// Returns colored string
-		public function getColoredString($string, $foreground_color = null, $background_color = null) {
+		public function getColoredHTML($string, $foreground_color = null, $background_color = null) {
+			$colored_string = "<span";
+
+			// Check if given foreground color found
+			if (isset($this->foreground_colors[$foreground_color])) {
+				$colored_string .= " style=\"color:".$foreground_color."\"";
+			}
+				// Add string and end coloring
+			$colored_string .=  ">".$string . "</span>";
+
+			return $colored_string;
+		}
+
+	public function getColoredString($string, $foreground_color = null, $background_color = null) {
 			$colored_string = "";
 
 			// Check if given foreground color found
@@ -51,7 +64,6 @@ class Colors {
 
 			return $colored_string;
 		}
-
 		// Returns all foreground color names
 		public function getForegroundColors() {
 			return array_keys($this->foreground_colors);

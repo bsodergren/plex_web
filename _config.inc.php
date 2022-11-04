@@ -38,7 +38,7 @@ if (!defined('Db_TABLE_ARTISTS'))                   define('Db_TABLE_ARTISTS', D
 *
 */
 DEFINE("__LOG_ERRORS__", 1);
-DEFINE("__HTML_ERRORS__", 0);
+DEFINE("__HTML_POPUP__", 1);
 if (!defined('__SCRIPT_NAME__'))			    DEFINE("__SCRIPT_NAME__", "error");
 if (!defined('__ERROR_LOG_DIR__'))			    DEFINE("__ERROR_LOG_DIR__", APP_PATH."/logs");
 if (!defined('__ERROR_FILE_NAME__'))            DEFINE("__ERROR_FILE_NAME__", APP_NAME.".log");
@@ -110,8 +110,19 @@ $navigation_link_array=array(
 );
 
 
+$in_directory="Studio";
+$lib_req="";
+$lib_hidden="";
+$lib_where="";
+
+if(isset($_REQUEST['library']))
+{
+	$in_directory=$_REQUEST['library'];
+	$lib_req="&library=$in_directory";
+	$lib_where=" library = '".$in_directory."' AND ";
+	$lib_hidden="<input type='hidden' value='".$in_directory."' name='library'>";
+}
 require_once(__PHP_ASSETS_DIR__."/header.inc.php");
 
-$in_directory="Studio";
 
 ?>

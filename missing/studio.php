@@ -20,48 +20,15 @@ if (isset($_REQUEST['submit']) )
 <br>
 <br>
 <?php	
-	
-		$sql = "SELECT id,filename,title,artist,genre,studio,studio_a,studio_b from ".Db_TABLE_FILEDB."   WHERE `".__NULL_FIELD."` IS NULL or studio = \"Misc\"  ORDER BY `filename` ASC";
+
+	$sql=query_builder("select","'".__NULL_FIELD."' IS NULL or studio = \"Misc\" ",false,"`filename` ASC");
 
 	//display_log($sql);
 	$results = $db->query($sql);
 
 	echo "<table class=blueTable> 
  <form action=".__THIS_PAGE__." method=post id=\"myform\">";
-	foreach($results as $id => $row)
-	{
-		$row_key=$row['id'];
-		$row_filename=$row['filename'];
-		echo "<thead><tr id=RedHead><td colspan=2><input type=submit name=submit value=save id=\"submit\"> ".$row_filename."</td></tr></thead>";
-
-		foreach($row as $key => $value )
-		{
-			if ($key == "id" ) {
-				continue;
-			}
-			if ($key == "filename" ) {
-				continue;
-			}
-			
-			$default = "placeholder=\"".$value."\"";
-
-			if ($value == "" ){
-				$default = "";
-			}
-			
-			
-			 $array = array(
-				"FIELD_KEY" => $key,
-				"FIELD_NAME" =>$row_key."_".$key,
-				"VALUE" =>  $default);
-
-		$html =  process_template("metadata_row",$array);
-			
-		echo $html;
-		}
-		
-		
-	}
+	echo display_filelist($results);
 	echo "</table>
 	</form>";
  

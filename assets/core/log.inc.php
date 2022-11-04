@@ -50,25 +50,28 @@ function logger($msg, $var='')
     $function_list= get_caller_info();
     if( is_array($var) || is_object($var) )
     {
-        $html_var=var_export($var,1);
+        $html_var=$colors->getColoredHTML(var_export($var,1), "green");
+        
         $var=$colors->getColoredString(var_export($var,1), "yellow");
     } else {
-        $html_var=$var;
+        $html_var=$colors->getColoredHTML($var, "green");
         $var=$colors->getColoredString($var, "yellow");
     }
     
-    $html_func=$function_list;
+    $html_func=$colors->getColoredHTML($function_list,"blue");
     $func=$colors->getColoredString($function_list,"blue");
      
-    $html_msg=$msg;
+    $html_msg=$colors->getColoredHTML($msg, "red");
     $msg=$colors->getColoredString($msg, "red");
     
     $html_string = $html_func . ":" .$html_msg . " " . $html_var ;
 
     $string = $func . ":" .$msg . " " . $var ;
-    $logger->INFO($string);
-    if(__HTML_ERRORS__ == true) {
-        display_log($html_string);
+
+    if(__HTML_POPUP__ == true) {
+        $logger->INFO($html_string);
+    } else {
+        $logger->INFO($string);
     }
 }
 

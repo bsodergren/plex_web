@@ -1,56 +1,6 @@
 <?php
 
 
-function display_navbar_links()
-{
-  
-    global $navigation_link_array;
-    global $_SERVER;
-    $html='';
-    $dropdown_html='';
-	
-    foreach($navigation_link_array as $name => $link_array)
-    {
-		if($name == "dropdown" )
-		{
-			$dropdown_html='';
-			
-			foreach($link_array as $dropdown_name => $dropdown_array)
-			{
-				$dropdown_link_html='';
-				
-				foreach ($dropdown_array as $d_name => $d_values)
-				{
-					$array = array("DROPDOWN_URL_TEXT" => $d_name,
-						"DROPDOWN_URL" => $d_values);
-					$dropdown_link_html .= process_template("menu_dropdown_link",$array);
-				}
-					
-					
-				$array = array("DROPDOWN_TEXT" => $dropdown_name,
-				"DROPDOWN_LINKS" => $dropdown_link_html);
-				
-				$dropdown_html .= process_template("menu_dropdown",$array);
-			}
-		} else {
-			
-			$array = array(
-				"MENULINK_URL" => $link_array["url"],
-				"MENULINK_JS" => $link_array["js"],
-				"MENULINK_TEXT" => $link_array["text"]);
-			$url_text = process_template("menu_link",$array);
-			
-			if ($link_array["secure"] == true && $_SERVER['REMOTE_USER'] != "bjorn") {
-				$html=$html.$url_text."\n";
-			} else {
-				$html=$html.$url_text."\n";
-			}				
-		}
-    }
-    
-    return $html . $dropdown_html ;
-}
-
 function callback_replace($matches)
 {
     return "";
@@ -165,11 +115,6 @@ function draw_radio($name,$value)
     return $html;
 }
 
-
-function display_log($string)
-{
-    echo "<pre>".$string."</pre>\n";
-}
 
 
 

@@ -8,11 +8,11 @@ class ComposerStaticInit495d2434307abc18dfae566f3bcfd8f1
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+        '5640faacc2b60a961e5376b0effdd7ef' => __DIR__ . '/..' . '/formr/formr/class.formr.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
-        '5640faacc2b60a961e5376b0effdd7ef' => __DIR__ . '/..' . '/formr/formr/class.formr.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -30,6 +30,7 @@ class ComposerStaticInit495d2434307abc18dfae566f3bcfd8f1
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
             'Symfony\\Component\\Process\\' => 26,
+            'SensioLabs\\AnsiConverter\\' => 25,
         ),
         'P' => 
         array (
@@ -80,6 +81,10 @@ class ComposerStaticInit495d2434307abc18dfae566f3bcfd8f1
         'Symfony\\Component\\Process\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/process',
+        ),
+        'SensioLabs\\AnsiConverter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sensiolabs/ansi-to-html/SensioLabs/AnsiConverter',
         ),
         'Psr\\SimpleCache\\' => 
         array (

@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '2.0.x-dev',
-        'version' => '2.0.9999999.9999999-dev',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '6e39896fa12d2c1096802fcb86fa7626757ff965',
+        'reference' => '17983a65d1f97e72f9377156aa2fa69ce7838ccd',
         'name' => '__root__',
         'dev' => true,
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '2.0.x-dev',
-            'version' => '2.0.9999999.9999999-dev',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '6e39896fa12d2c1096802fcb86fa7626757ff965',
+            'reference' => '17983a65d1f97e72f9377156aa2fa69ce7838ccd',
             'dev_requirement' => false,
         ),
         'ezyang/htmlpurifier' => array(
@@ -167,6 +167,15 @@
             'install_path' => __DIR__ . '/../psr/simple-cache',
             'aliases' => array(),
             'reference' => '8707bf3cea6f710bf6ef05491234e3ab06f6432a',
+            'dev_requirement' => false,
+        ),
+        'sensiolabs/ansi-to-html' => array(
+            'pretty_version' => 'v1.2.1',
+            'version' => '1.2.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../sensiolabs/ansi-to-html',
+            'aliases' => array(),
+            'reference' => '94a3145aae4733ff933c8910263ef56d1ae317a9',
             'dev_requirement' => false,
         ),
         'smalot/pdfparser' => array(

@@ -26,7 +26,7 @@ include __LAYOUT_HEADER__;
 		if($v["studio"] != "" ){
 		$cnt = $v["cnt"];
 			
-			$query='select count(studio_a) as cnt, studio_a from '.Db_TABLE_FILEDB.' WHERE studio like "'.$v['studio'].'" GROUP by studio_a ORDER BY `studio_a` ASC';
+			$query='select count(substudio) as cnt, substudio from '.Db_TABLE_FILEDB.' WHERE studio like "'.$v['studio'].'" GROUP by substudio ORDER BY `substudio` ASC';
 			$alt_result = $db->query($query);
 			
 			$studio = str_replace(" ","-",$v['studio']);
@@ -39,11 +39,11 @@ include __LAYOUT_HEADER__;
 			
 				foreach($alt_result as $k_a => $v_a )
 				{
-					if($v_a["studio_a"] != "" ){
+					if($v_a["substudio"] != "" ){
 						$cntv_a = $v_a["cnt"];
-						$studio_a = str_replace(" ","-",$v_a['studio_a']);
-						$studio_a = str_replace("/","_",$studio_a);
-						echo "<li><a href='studio.php?viewstudio=".$studio_a."'>".$v_a["studio_a"]."</a>(".$cntv_a.") <br>";
+						$substudio = str_replace(" ","-",$v_a['substudio']);
+						$substudio = str_replace("/","_",$substudio);
+						echo "<li><a href='studio.php?viewstudio=".$substudio."'>".$v_a["substudio"]."</a>(".$cntv_a.") <br>";
 					}
 					
 				}

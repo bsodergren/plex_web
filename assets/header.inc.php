@@ -20,7 +20,8 @@ while ($file = readdir($all)) {
 }
 
 $colors = new Colors();
-logger("start for " . __SCRIPT_NAME__);
-
+if (__SCRIPT_NAME__ != "logs" ) {
+	logger("start for " . __SCRIPT_NAME__);
+}
 
 ?>

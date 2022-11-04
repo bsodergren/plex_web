@@ -78,9 +78,9 @@ function missingArtist($key, $row) {
 	
 	$alt_studio='';
 	$value_array = array();
-	if ($row['studio_a'] != "" )
+	if ($row['substudio'] != "" )
 	{				
-		$match_studio=$row['studio_a'];
+		$match_studio=$row['substudio'];
 		$alt_studio=strtolower(str_replace(" ","_",$row['studio']));
 	} else {
 		$match_studio=$row['studio'];
@@ -94,7 +94,6 @@ function missingArtist($key, $row) {
 	{
 
 		$__match = $studio_match;
-		print_r2($__match);
 
 	} else if(key_exists($alt_studio,$studio_pattern) ){
 		$__match = $alt_studio;
@@ -102,9 +101,9 @@ function missingArtist($key, $row) {
 	}
 
 //print_r2($studio_ignore);
-//print_r2(str_replace(" ","_",strtolower($row['studio_a'])));
-//echo in_array(str_replace(" ","_",strtolower($row['studio_a'])), $studio_ignore );
-	if( in_array(str_replace(" ","_",strtolower($row['studio_a'])), $studio_ignore ) == true) {
+//print_r2(str_replace(" ","_",strtolower($row['substudio'])));
+//echo in_array(str_replace(" ","_",strtolower($row['substudio'])), $studio_ignore );
+	if( in_array(str_replace(" ","_",strtolower($row['substudio'])), $studio_ignore ) == true) {
 			unset($__match);
 		}
 		
@@ -162,9 +161,9 @@ function missingTitle($key, $row)
 
 	
 	$value_array = array();
-	if ($row['studio_a'] != "" )
+	if ($row['substudio'] != "" )
 	{
-		$match_studio=$row['studio_a'];
+		$match_studio=$row['substudio'];
 	} else {
 		$match_studio=$row['studio'];
 	}
@@ -256,6 +255,10 @@ function saveData($data_array, $redirect=false, $timeout=4)
 				} else {
 					
 					if($field == "artist") {
+						if(str_contains($value, "-") == true ) 
+						{
+							$value=str_replace("-"," ",$value);
+						}
 						if(str_contains($value, ",") == true ) 
 						{
 							$value=str_replace(" ,",",",$value);
