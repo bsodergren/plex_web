@@ -75,6 +75,7 @@ function translate($string="")
 function printCode($array, $path=false, $top=true) {
     $data = "";
     $delimiter = "~~|~~";
+    
     $p = null;
     if(is_array($array)){
       foreach($array as $key => $a){
@@ -102,3 +103,5 @@ function printCode($array, $path=false, $top=true) {
 
     return $data;
   }
+  
+  

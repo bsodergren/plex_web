@@ -3,7 +3,7 @@ DEFINE('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], ".php") );
 require_once("_config.inc.php");
 $id=$_REQUEST['id'];
 
-$sql = query_builder("select", "id = ".$id);
+$sql = query_builder("fullpath, filename", "id = ".$id);
 $result = $db->rawQueryOne($sql);
 $fullpath=str_replace("/home/bjorn/plex/XXX","/videos",$result['fullpath']);
 $video_file=$fullpath."/".$result['filename'];

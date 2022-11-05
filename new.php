@@ -5,22 +5,6 @@ require_once("_config.inc.php");
 
 define('TITLE', "New");
 
-if (isset($_REQUEST['submit'])) {
-	echo saveData($_REQUEST, "new.php");
-	exit;
-}
-
-$key = array_find("delete_", array_keys($_REQUEST));
-if (isset($key)) {
-	echo deleteEntry($_REQUEST, "new.php");
-	exit;
-}
-
-$key = array_find("hide", array_keys($_REQUEST));
-if (isset($key)) {
-	echo hideEntry($_REQUEST, "new.php");
-	exit;
-}
 
 include __LAYOUT_HEADER__;
 $days = 1;

@@ -1,115 +1,157 @@
 <?php
 
-function display_fileinfo()
+function display_directory_navlinks($url,$text,$request=array())
 {
 	
+	global $request_key;
+	global $_SESSION;
+	global $_REQUEST;
+	
+	$request_string = '';
+	
+	if(count($request) > 0 )
+	{
+		foreach($request as $req_key => $req_value )
+		{
+			$req_array[] = $req_key . "=".$req_value;
+		}
+		
+		$request_string="?";
+
+		foreach($req_array as $req_string)
+		{
+			$request_string .= $req_string."&";
+		}
+		
+		//$request_string=rtrim($request_string, '?');
+		$request_string=rtrim($request_string, '&');
+		
+	}
+		
+	
+	//$link_url = $url . "?" . $request_key ."&genre=".$_REQUEST["genre"]."&". ;
+	 $html = "<a href='".$url.$request_string."'>".$text."</a>";
+	 
+	 return $html;
 }
 
 function display_filelist($results,$option='')
 {
-	if($option=='hide')
-	{
-		
-	}
+	
 	$output='';
+	
+$output .= '<div class="container">'."\n";
+
+
 	foreach($results as $id => $row)
 	{
-		$row_key=$row['id'];
+		$output .= '<table class="blueTable" > '."\n";		
+		$row_id=$row['id'];
 		$row_filename=$row['filename'];
-		$hide_button='';
-		$cols=3;
-		if($option=='hide')
-		{
-			$hide_button='</td><td><input type=submit name="hide_'.$row_key.'" value="hide" id="submit">';
-			$cols=2;
+		$button=false;
+		
+		
+		if($option=='hide') $button="hide";		
+		if($option=='filedelete') $button="filedelete";
+		
+		if($button == true) {
+			$extra_button='<input type="submit" name="submit" value="'.$button.'" id="'.$button.'_'.$row_id.'" onclick="doSubmitValue(this.id);">';
 		}
+	
 				$array = array("FILE_NAME" => $row_filename,
-				"DELETE_ID" => "delete_".$row_key,
-				"HIDE_COL" => $cols,
-				"HIDE_BUTTON" => $hide_button);
-
+				"DELETE_ID" => "delete_".$row_id,
+				"HIDE_BUTTON" => $extra_button);
 		$output .= process_template("metadata_row_header",$array);
 		$value_array =array();
-		
+	$output .= '<tbody> '."\n";
+
 		foreach($row as $key => $value )
 		{
-			if ($key == "id" ) {
-				continue;
-			}
-			if ($key == "filename" ) {
-				continue;
-			}
-			if ($key == "thumbnail" ) {
-				$output .=  "<tr><td></td><td><img src='".$value."' onclick=\"popup('/plex_web/video.php?id=".$row_key."', 'video')\"></td><td></td></tr>";
-				continue;
-			}
-			if ($key == "fullpath" ) {
-				$video_text="<button onclick=\"popup('/plex_web/video.php?id=".$row_key."', 'video')\">Watch Video</button>";
-				$output .=  "<td>".$video_text." </td><td>".$value." </td>";
-				
-				continue;
-			}
-			
-			if ($key == "favorite" )
+			switch ($key)
 			{
-				$yeschecked = "";
-				$nochecked = " checked";
+				case 'id':break;
+				case 'filename':break;
+
+				case 'thumbnail':
+					$output .= process_template("metadata_thumbnail",["THUMBNAIL"=>$value,"FILE_ID"=>$row_id]);
+
+					//$output .= process_template("metadata_thumbnail",["THUMBNAIL"=>$value,"FILE_ID"=>$row_id]);
+					//$output .=  "<tr><td></td><td><img src='".$value."' onclick=\"popup('/plex_web/video.php?id=".$row_id."', 'video')\"></td><td></td></tr>";
+					break;
+
+				case 'duration':
+					$seconds = round($value/1000);
+					$duration_output = sprintf('%02d:%02d:%02d', ($seconds/ 3600),($seconds/ 60 % 60), $seconds% 60);
+					//$output .=  "<tr><td></td><td>".$duration_output."</td><td></td></tr>";
+					$output .= process_template("metadata_button",["DURATION"=>$duration_output]);
+
+					break;
 
 
-				if ($value == 1) {
-					$yeschecked = " checked";
-					$nochecked = "";
-				}
-				
-				$array = array(
-					"FIELD_KEY" => $key,
-					"FIELD_NAME" =>$row_key."_".$key,
-					"PLACEHOLDER" =>  $placeholder,
-					"YESVALUE" => $yeschecked,
-					"NOVALUE" => $nochecked
-				);
+				case 'favorite':
+					$yeschecked = ($value == '1') ? "checked" : "";
+					$nochecked = ($value == '0') ? "checked" : "";
 
-				$output .=  process_template("metadata_favorite_row",$array);
-				
-				continue;
+					$array = array(
+					"FILE_ID" =>$row_id,
+						"FIELD_KEY" => $key,
+						"FIELD_NAME" =>$row_id."_".$key,
+						//"PLACEHOLDER" =>  $placeholder,
+						"YESCHECKED" => $yeschecked,
+						"NOCHECKED" => $nochecked
+					);
+
+					$output .=  process_template("metadata_favorite_row",$array);
+				break;		
+
+				default:
+					$placeholder = "placeholder=\"".$value."\"";
+
+					if ($value == "" )
+					{
+						$placeholder = "";
+						switch ($key)
+						{
+							case 'artist':
+								$value_array = missingArtist($key, $row);
+								break;
+							case 'title':
+								$value_array = missingTitle($key, $row);
+								break;
+						}
+					}
+
+					if( isset($value_array[$key][0]) && $value_array[$key][0] != "" )
+					{
+
+						$value = " value=\"".$value_array[$key][0]."\"";
+						if( isset($value_array["style"][0]) && $value_array["style"][0] != "" )
+						{
+							$value = $value .' style="'.$value_array['style'][0].'"';
+						}
+
+					} else {
+						$value = "" ;
+					}
+
+					$array = array(
+						
+						"FIELD_KEY" => $key,
+						"FIELD_NAME" =>$row_id."_".$key,
+						"PLACEHOLDER" =>  $placeholder,
+						"VALUE" => $value
+					);
+
+					$output .=   process_template("metadata_row",$array);
+					unset($value_array);
+					unset($value);
 			}
-			
-			$placeholder = "placeholder=\"".$value."\"";
-
-			if ($value == "" )
-			{
-				$placeholder = "";
-				switch ($key)
-				{
-					case 'artist':
-						$value_array = missingArtist($key, $row);
-						break;
-					case 'title':
-						$value_array = missingTitle($key, $row);
-						break;
-				}
-			}
-
-			if( isset($value_array[$key][0]) && $value_array[$key][0] != "" )
-			{
-				$value = " value=\"".$value_array[$key][0]."\"";
-			} else {
-				$value = "" ;
-			}
-
-			$array = array(
-				"FIELD_KEY" => $key,
-				"FIELD_NAME" =>$row_key."_".$key,
-				"PLACEHOLDER" =>  $placeholder,
-				"VALUE" => $value
-			);
-
-			$output .=   process_template("metadata_row",$array);
-			unset($value_array);
-			unset($value);
-			
 		}
+		$output .= '</tbody></table><p> '."\n";
+
 	}
+			$output .= '</div> '."\n";
+
 	echo $output;
 }
 

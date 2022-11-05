@@ -34,7 +34,7 @@ function query_builder($fields="select",$where=false,$group=false,$order=false,$
     
     if($fields == "select" )
     {
-        $sql = "SELECT id,filename,title,artist,genre,studio,substudio,fullpath,favorite,thumbnail from ".Db_TABLE_FILEDB;  
+        $sql = "SELECT id,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite from ".Db_TABLE_FILEDB;  
     } else {
         
         $sql = "SELECT ".$fields." from ".Db_TABLE_FILEDB;  
@@ -57,7 +57,7 @@ function query_builder($fields="select",$where=false,$group=false,$order=false,$
         $sql = $sql . " ORDER BY " . $order;
         
     }
-    logger("SQL Builder", $sql);
+  //logger("SQL Builder", $sql);
     return $sql;
     
 }

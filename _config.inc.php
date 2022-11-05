@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 if (!defined('APP_AUTHENTICATION'))				DEFINE("APP_AUTHENTICATION",TRUE);
 if (!defined('APP_HOME'))						DEFINE("APP_HOME","/plex_web");

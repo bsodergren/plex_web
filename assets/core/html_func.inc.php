@@ -68,6 +68,8 @@ function add_hidden($name,$value,$attributes='')
 
 function draw_link($url,$text,$attributes='',$return=true)
 {
+	global $_SESSION;
+	
 	
 	$html='';
 	$html.='<a '.$attributes.'  href="'.$url.'">'.$text.'</a>' ;

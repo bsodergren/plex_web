@@ -1,5 +1,6 @@
 hr { 
-		height:2px;
+		height:2px; 
+
 		border-width:0;
 		color:gray;
 		background-color:gray;
@@ -10,7 +11,7 @@ hr {
 		background-color: #1ABB17;
 		width: 100%;
 		text-align: left;
-	  /*  border-collapse: collapse;*/
+	  /*  border-collapse: collapse; */
 		font-size: 22px;
 
 		background: #1ABB17;
@@ -21,12 +22,16 @@ hr {
 	}
 
 	table.blueTable {
-		border: 1px solid #1C6EA4;
+		border: 0px solid #1C6EA4;
 		background-color: #EEEEEE;
-		width: 100%;
+		 width: 800px;
 		margin: 10px;
+		overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
 		text-align: left;
 		padding: 50px 50px 50px 50px;
+				border-bottom: 2px solid #1C6EA4;
 	/*	border-collapse: collapse; */
 
 	}
@@ -34,7 +39,7 @@ hr {
 
 	
 	table.blueTable td, table.blueTable th {
-		border: 1px solid #AAAAAA;
+		border: 0px solid #AAAAAA;
 		padding: 3px 2px;
 	}
 	table.blueTable tbody td {
@@ -64,7 +69,7 @@ hr {
 	div.container {
 		width:100%; 
 		 clear:both; 		 
-		color:#cc0000;
+		/*color:#cc0000;*/
 
 	}
 
@@ -109,5 +114,27 @@ hr {
 	}
 
 	input.formbox {
-		width:100px;
+		/* width:100px; */
 	}
+	
+#menu > ul {
+  display: none;
+  list-style-type:none;
+} 
+  
+#menu > ul > li {
+    list-style:none; 
+} 
+  
+#menu > li {
+   list-style:none;   
+  font-weight: bold;
+}
+
+ul > .multi::after {
+  content:' +'
+}
+  
+ul > .multi-opened::after {
+  content:' -'
+}

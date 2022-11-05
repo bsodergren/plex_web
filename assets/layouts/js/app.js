@@ -29,7 +29,22 @@ function editPlaceholder(id) {
   var x = document.getElementById(id).placeholder;
   if (x !== "") {
     document.getElementById(id).value = x;
+    document.getElementById(id).style = "background:white";
+
   }
+}
+
+
+function doSubmitValue(id)
+{
+  document.getElementById(id).value = id;
+}
+
+function editRadioValue(id)
+{
+
+      document.getElementById(id).value = "1";
+    
 }
 
 function checkValue(id) {
@@ -37,13 +52,16 @@ function checkValue(id) {
     var n =  document.getElementById(id).value;
     if (ph == n) {
         document.getElementById(id).value = "";
-  }
+    } else {
+      document.getElementById(id).style = "background:white";
+    }
   }
   
-  function setNull(id) {
-
-        document.getElementById(id).value = "NULL";
-  
+  function setNull(id)
+  {
+    var f_id = id + "_id"
+    document.getElementById(f_id).value = "";
+    document.getElementById(f_id).style = "background:black";
   }
     
 

@@ -4,13 +4,6 @@ DEFINE('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], ".php") );
 require_once("_config.inc.php");
 
 
-$sql = "  SELECT 
-SUBSTRING_INDEX(genre,',',1) AS firstname from metatags_filedb WHERE
-substudio = 'not fap' ";
-
-
-logger($sql);
-$result = $db->query($sql);
 
 define('TITLE', "Test Page");
 
@@ -22,8 +15,25 @@ include __LAYOUT_HEADER__;
 <br>
 <br>
 <?php
-print_r2($result);
+$json='{ "menu":[
 
+{"name" : "Title 1","link" : "#","sub" : [
+    {"name" : "Title A","link" : "#","sub" : null},
+    {"name" : "Title b","link" : "#","sub" : null},
+    {"name" : "Title c","link" : "#","sub" : null},
+    {"name" : "Title d","link" : "#","sub" : null}]},
+
+{"name" : "Title 2","link" : "#","sub" : null}]}'; // [ {name : 'Enclosure1',link : '#',sub : null}]},{name : 'Title',link : '#',sub : [ {name : 'Enclosure1',link : '#',sub : null}]},{name : 'Title',link : '#',sub : [ {name : 'Enclosure1',link : '#',sub : null}]},{name : 'Title',link : '#',sub : [ {name : 'Enclosure1',link : '#',sub : null}]} ] }";
+echo printCode(json_decode($json,true),true);
+
+$json=array("menu" => array(
+        array("text"=>"text",
+                            "link"=>"www.html",
+                            "sub"=>NULL),
+));
+$array= json_encode($json);
+
+print_r2($array);
  ?>
  </main>
  <?php include __LAYOUT_FOOTER__;  ?>

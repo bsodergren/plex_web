@@ -10,7 +10,7 @@ require_once("_config.inc.php");
 <script>
 
 jQuery(document).ready(function(){
-jQuery('body,html').animate({scrollTop: 100000}, 800);
+jQuery('body,html').animate({scrollTop: 1000000}, 800);
 })
 
 </script>

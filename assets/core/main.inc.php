@@ -44,6 +44,37 @@ function showFileRow($query_result)
 }
 
 
+function process_form($redirect_url)
+{
+	global $_POST;
+
+	if(isset($_POST['submit']))
+	{
+		if ($_POST['submit'] == "save") {
+			echo saveData($_POST, $redirect_url);
+			exit;
+		}
+		
+		if (str_starts_with($_POST['submit'],"delete")) {
+			echo deleteEntry($_POST, $redirect_url);
+			exit;
+		}
+		
+		if (str_starts_with($_POST['submit'],"filedelete"))
+		{
+			echo deleteFile($_POST, $redirect_url);
+			exit;
+		}
+		
+		if (str_starts_with($_POST['submit'],"hide"))
+		{
+			echo hideEntry($_POST, $redirect_url);
+			exit;
+		}
+	}
+}
+
+
 function doRequest($request, $callback, $return=0, $redirect=false){
 	global $_REQUEST;
 	
@@ -65,26 +96,21 @@ function doRequest($request, $callback, $return=0, $redirect=false){
 	} else {
 		return 0;
 	}
+	
 }
 
 
 
-function missingArtist($key, $row) {
+function missingArtist($key, $row)
+{
 	global $studio_pattern;
 	global $__namesArray;
 	global $artistNameFixArray;
 
 	global $studio_ignore;
 	
-	$alt_studio='';
 	$value_array = array();
-	if ($row['substudio'] != "" )
-	{				
-		$match_studio=$row['substudio'];
-		$alt_studio=strtolower(str_replace(" ","_",$row['studio']));
-	} else {
-		$match_studio=$row['studio'];
-	}
+	$match_studio=$row['studio'];
 
 	$studio_match=strtolower(str_replace(" ","_",$match_studio));
 
@@ -92,31 +118,24 @@ function missingArtist($key, $row) {
 	unset($__match);
 	if(key_exists($studio_match,$studio_pattern) )
 	{
-
 		$__match = $studio_match;
-
-	} else if(key_exists($alt_studio,$studio_pattern) ){
-		$__match = $alt_studio;
-	
 	}
 
 //print_r2($studio_ignore);
 //print_r2(str_replace(" ","_",strtolower($row['substudio'])));
 //echo in_array(str_replace(" ","_",strtolower($row['substudio'])), $studio_ignore );
-	if( in_array(str_replace(" ","_",strtolower($row['substudio'])), $studio_ignore ) == true) {
-			unset($__match);
-		}
-		
-	if(isset($__match)){
-	
+	if(isset($__match))
+	{
+
 		$pattern=$studio_pattern[$__match]['artist']['pattern'];
 		$delimeter=$studio_pattern[$__match]['artist']['delimeter'];
 		$group=$studio_pattern[$__match]['artist']['group'];
 
 		preg_match($pattern,$row['filename'],$matches);
-	
+		
 
-		if(count($matches) > 0) {
+		if(count($matches) > 0)
+		{
 			$names_array = explode($delimeter,$matches[$group]);
 			$name_list="";
 			$full_name_array=array();
@@ -135,6 +154,7 @@ function missingArtist($key, $row) {
 					$full_name .=" ".$part;
 
 				}
+				
 				$full_name=trim($full_name);
 				if( array_search(str_replace(" ","",strtolower($full_name)), $__namesArray) == false) {
 					
@@ -144,13 +164,12 @@ function missingArtist($key, $row) {
 					}
 					$full_name_array[] = ucfirst($full_name);
 				}
-				
-			
 			}
 			$name_list = implode(", ",$full_name_array);					
-			$value_array=array($key => array($name_list));
+			$value_array=array($key => array($name_list), "style" => array("color:red") );
 		}
 	}
+	
 	return $value_array;
 }
 
@@ -158,25 +177,16 @@ function missingTitle($key, $row)
 {
 	global $studio_pattern;
 	global $__namesArray;
-
 	
 	$value_array = array();
-	if ($row['substudio'] != "" )
-	{
-		$match_studio=$row['substudio'];
-	} else {
-		$match_studio=$row['studio'];
-	}
+	$match_studio=$row['studio'];
 
 	$studio_match=strtolower(str_replace(" ","_",$match_studio));
-	$alt_studio=strtolower(str_replace(" ","_",$row['studio']));
+
 	unset($__match);
 	if(key_exists($studio_match,$studio_pattern) )
 	{
 		$__match = $studio_match;
-	} else if(key_exists($alt_studio,$studio_pattern) ){
-		$__match = $alt_studio;
-	
 	}
 		
 	if(isset($__match))
@@ -192,7 +202,8 @@ function missingTitle($key, $row)
 				$title = $matches[$group];
 				$title=strtolower(str_replace("_"," ",$title));
 				$title=ucwords($title) ;
-				$value_array=array($key => array($title));
+				$value_array=array($key => array($title),
+									"style" => array("color:red"));
 			}
 		}
 	}
@@ -202,59 +213,95 @@ function missingTitle($key, $row)
 function deleteEntry($data_array, $redirect=false, $timeout=4)
 {
 	global $db;
-	
-	foreach ($data_array as $key => $value )
-	{	
+	global $_SERVER;
+	if(key_exists("submit",$data_array))
+	{
+		$key=$data_array['submit'];
 		if(str_contains($key, "_") == true ) 
 		{
-			$value=trim($value);
-			
-			if($value != "") {
-				$pcs= explode("_",$key);
-				$id=$pcs[1];
-				$field=$pcs[0];
-				if ($field == "delete" ) {	
-					logger("Delete entry",$id);
-					$db->where ('id', $id);
-					$db->delete (Db_TABLE_FILEDB);
-				}
+			$pcs= explode("_",$key);
+			$id=$pcs[1];
+			$field=$pcs[0];
+			if ($field == "delete" ) {	
+				logger("Delete entry",$id);
+				$db->where ("id", $id);
+				$user = $db->getOne(Db_TABLE_FILEDB);
+				
+				$thumbnail_file=$_SERVER['DOCUMENT_ROOT'].$user['thumbnail'];
+				chk_file($thumbnail_file,'delete');
+
+				$db->where ('id', $id);
+				$db->delete (Db_TABLE_FILEDB);
 			}
-		}
+		}		
 	}
 	if ($redirect != false ) {
 		return JavaRefresh($redirect,$timeout);
 	}
 }
 
+function deleteFile($data_array, $redirect=false, $timeout=4)
+{
+	global $db;
+	global $_SERVER;
+	
+	if(key_exists("submit",$data_array))
+	{
+		$key=$data_array['submit'];
+		if(str_contains($key, "_") == true ) 
+		{
+			$pcs= explode("_",$key);
+			$id=$pcs[1];
+			$field=$pcs[0];
+			if ($field == "filedelete" ) {	
+				$db->where ("id", $id);
+				$user = $db->getOne(Db_TABLE_FILEDB);
+				
+				$thumbnail_file=$_SERVER['DOCUMENT_ROOT'].$user['thumbnail'];
+				$video_file=$user['fullpath'].$user['filename'];
+				
+				chk_file($thumbnail_file,'delete');
+				chk_file($video_file,'delete');
+								
+				$db->where ('id', $id);
+				$db->delete (Db_TABLE_FILEDB);
+			}
+		}
+	}
+	
+	if ($redirect != false ) {
+		return JavaRefresh($redirect,$timeout);
+	}
+}
+
+
 function hideEntry($data_array, $redirect=false, $timeout=4)
 {
 	global $db;
-	
-	foreach ($data_array as $key => $value )
-	{	
+	 
+	if(key_exists("submit",$data_array))
+	{
+		$key=$data_array['submit'];
 		if(str_contains($key, "_") == true ) 
 		{
-			$value=trim($value);
-			
-			if($value != "") {
-				$pcs= explode("_",$key);
-				$id=$pcs[1];
-				$field=$pcs[0];
-				if ($field == "hide" ) {	
-					$sql = "UPDATE ".Db_TABLE_FILEDB." SET added = (CURRENT_TIMESTAMP - INTERVAL 3 day) WHERE id = ".$id;
-					logger("hide sql",$sql);
-					
-					$result = $db->query($sql);
+			$pcs= explode("_",$key);
+			$id=$pcs[1];
+			$field=$pcs[0];
+			if ($field == "hide" ) {	
+				$sql = "UPDATE ".Db_TABLE_FILEDB." SET added = (CURRENT_TIMESTAMP - INTERVAL 3 day) WHERE id = ".$id;
+				logger("hide sql",$sql);
+				
+				$result = $db->query($sql);
 
-					//$db->where ('id', $id);
-					//$db->delete (Db_TABLE_FILEDB);
-				}
+				$db->where ('id', $id);
+				$db->delete (Db_TABLE_FILEDB);
 			}
 		}
 	}
 	if ($redirect != false ) {
 		return JavaRefresh($redirect,$timeout);
 	}
+
 }
 
 function saveData($data_array, $redirect=false, $timeout=4)
@@ -283,6 +330,7 @@ function saveData($data_array, $redirect=false, $timeout=4)
 		
 				if ($value == "NULL") {
 					$sql = "UPDATE ".Db_TABLE_FILEDB."  SET `".$field."` = NULL WHERE id = ".$id;
+					
 					$db->query($sql);
 				} else {
 					
@@ -359,11 +407,31 @@ function getBaseUrl($pathOnly=false)
 
 function print_r2($val){
         echo '<pre>';
-        print_r($val);
+        echo print_r($val);
         echo  '</pre>';
 }
 
+function print_request($array)
+{
+	if(is_array($array))
+	{
+		//$newarray=array();
 
+		foreach($array as $key => $value)
+		{
+		
+			if($value != "")
+			{
+				$newarray[$key] = $value;
+			}
+		}
+		
+		if(isset($newarray))
+		{
+			print_r2($newarray);
+		}
+	}
+}
 
 
 function toint($string)

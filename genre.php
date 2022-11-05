@@ -3,90 +3,64 @@ DEFINE('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], ".php") );
 
 require_once("_config.inc.php");
 
-define('TITLE', "Home");
+define('TITLE', "View Genres");
 
 include __LAYOUT_HEADER__;
-if  (isset($_REQUEST['substudio']))
-{
-	$studio_key="substudio";
-	$studio_query=$studio_key;
-	$studio_text=$_REQUEST['substudio'];
-	
-} else {
-	$studio_key="studio";
-	$studio_query="".$studio_key;
-	$studio_text=$_REQUEST['studio'];
 
-}
-$request_key=$studio_key.'='.$studio_text;
+		$null='';	
+		$null_req='';	
 
-if (isset($_REQUEST['submit']) ) 
-{
-	echo saveData($_REQUEST, "genre.php?".$request_key."&genre=".$_REQUEST['genre'].$lib_req ); 	
-	
-} 
-	elseif (isset($_REQUEST['genre']) ) 
-{
-	$genre = $_REQUEST['genre'];
-
-
-	$studio = str_replace("-"," ",$studio_text);
-	$studio = str_replace("_","/",$studio);
-	$sql_studio= $studio_query." = '".$studio."'";
-		
-	
-	
-
-
-	if ($genre == "NULL" ) {
-		//$sql_genre = " and " ." genre IS NULL ";
-		$sql_genre = "";
-	} else {
-		$sql_genre= " and " ." genre LIKE '".$genre."' ";
-	}
-	
-	$order_sort = "  title ASC";
-	if (isset($_REQUEST['sort']) )
+	if  (isset($_REQUEST['substudio']) && $_REQUEST['substudio'] != "null")
 	{
-		$order_sort = $_REQUEST['sort']." ASC";	
+		$studio_key="substudio";
+		$studio_text=$_REQUEST['substudio'];
+	} else {
+		if  (isset($_REQUEST['substudio']) && $_REQUEST['substudio'] == "null")
+		{
+			$null=' and substudio is null ';
+			$null_req="&substudio=null";
+		}
+		
+		$studio_key="studio";
+		$studio_text=$_REQUEST['studio'];
+
 	}
+		$studio = str_replace("-"," ",$studio_text);
+		$studio = str_replace("_","/",$studio);
+		
+		$sql_studio= $lib_where.$studio_key." = '".$studio."'".$null ;
+		
+		$request_key=$studio_key.'='.$studio_text.$null_req;
 	
-	$where =  $lib_where.$sql_studio . $sql_genre;
+	$order = "genre ASC";
+	$sql = query_builder("DISTINCT(genre) as genre, count(genre) as cnt ",
+						$sql_studio,
+						"genre",$order);
+
+			
+					$result = $db->query($sql);
+
 	
-	$sql=query_builder("select",$where,false,$order_sort);
-	
-	$results = $db->query($sql);
-	 $total_results=count($results);
 ?>
-      
-<main role="main" class="container">
-<?php echo $total_results; ?> number of files<br>
-<a href="studio.php?<?php echo $request_key.$lib_req; ?>">back</a>
-<br>
-<br>
-<?php echo " <a href='genre.php?".$request_key."&genre=".$_REQUEST["genre"].$lib_req."&sort=studio'>Studio</a> - ";
-echo " <a href='genre.php?".$request_key."&genre=".$_REQUEST["genre"].$lib_req."&sort=title'>Title</a> - ";
-echo " <a href='genre.php?".$request_key."&genre=".$_REQUEST["genre"].$lib_req."&sort=artist'>artist</a>";
     
+<main role="main" class="container">
+<a href="home.php">back</a>
+<br>
+<br>
+<a href='files.php?<?php echo $request_key; ?>&genre=NULL'>All</a><br>
 
-	if (isset($_REQUEST['genre']) ) 
-{
-	echo "<table class=blueTable> 
- <form action=genre.php method=post id=\"myform\">
- <input type='hidden' value='".$_REQUEST[$studio_key]."' name='".$studio_key."'>
- <input type='hidden' value='".$_REQUEST['genre']."' name='genre'>";
-	echo $lib_hidden;
-
-	echo display_filelist($results);
-	
-	echo "</table>
-	</form>";
-}
- 
- ?>
- </main>
 <?php
 
+
+foreach($result as $k => $v )
+{
+	//$v["cnt"]=1; ".$v["cnt"]."
+	
+if($v["genre"] != "" ){
+	echo $studio." <a href='files.php?".$request_key."&genre=".$v["genre"]."'>".$v["genre"]."</a> ".$v["cnt"]."<br>";
+}
 }
 
-include __LAYOUT_FOOTER__;  ?>
+ ?>
+ </main>
+ <?php include __LAYOUT_FOOTER__;  ?>

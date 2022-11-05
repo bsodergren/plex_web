@@ -34,4 +34,37 @@ $colors = new Colors();
 
 if (__SCRIPT_NAME__ != "logs" ) logger("start for " . __SCRIPT_NAME__);
 
+if(!isset($_SESSION['library']))
+{
+	$_SESSION['library']="Studio";
+} 
+
+if(isset($_GET['library']))
+{
+	$_SESSION['library']=$_GET['library'];
+}
+
+$in_directory=$_SESSION['library'];
+
+logger("in_directory " , $in_directory);
+logger("_SESSION _SESSION " , $_SESSION);
+
+
+//$lib_req="&library=$in_directory";
+$lib_where=" library = '".$in_directory."' AND ";
+$lib_hidden="<input type='hidden' value='".$in_directory."' name='library'>";
+
+
+$_SESSION['direction'] = 'ASC'; // default
+
+if(isset($_GET['direction']))
+{
+	if($_GET['direction'] == 'ASC')
+	{
+      $_SESSION['direction'] = 'DESC';
+	}
+}
+
+
+
 ?>
