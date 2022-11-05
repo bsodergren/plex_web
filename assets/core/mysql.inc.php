@@ -29,7 +29,7 @@ class MetaArtist extends dbObject {
 } 
 
 
-function query_builder($fields="select",$where=false,$group=false,$order=false,$limit=false)
+function query_builder($fields="select",$where=false,$group=false,$order=false,$limit=false, $offset=false)
 {
     
     if($fields == "select" )
@@ -57,6 +57,18 @@ function query_builder($fields="select",$where=false,$group=false,$order=false,$
         $sql = $sql . " ORDER BY " . $order;
         
     }
+    
+    if($limit != false && $offset == false )
+    {
+        $sql = $sql . " LIMIT " . $limit;
+        
+    }
+       if($limit != false && $offset != false )
+    {
+        $sql = $sql . "  LIMIT ".$offset.", ". $limit;
+        
+    }
+    
   //logger("SQL Builder", $sql);
     return $sql;
     

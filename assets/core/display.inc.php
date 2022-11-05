@@ -49,7 +49,7 @@ $output .= '<div class="container">'."\n";
 		$row_id=$row['id'];
 		$row_filename=$row['filename'];
 		$button=false;
-		
+		$extra_button='';
 		
 		if($option=='hide') $button="hide";		
 		if($option=='filedelete') $button="filedelete";

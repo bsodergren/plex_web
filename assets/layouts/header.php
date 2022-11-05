@@ -17,8 +17,9 @@
 	
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.js"></script>
+		<!--	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		
-		<!-- Custom styles --> 		
+	 Custom styles --> 		
 
 		
 			<link rel="stylesheet" href="<?php echo __URL_HOME__;?>/assets/lib/vendor/bootstrap-4.3.1/css/bootstrap.min.css">
@@ -28,7 +29,7 @@
 		<script src="<?php echo __LAYOUT_URL__;?>js/app.js?<?php echo substr(md5(rand()), 0, 7);?>"></script>
 
 
-
+ 
 	</head>
 	<?php
 	$onLoad="";

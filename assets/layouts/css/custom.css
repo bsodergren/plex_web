@@ -1,11 +1,13 @@
 hr { 
 		height:2px; 
 
-		border-width:0;
 		color:gray;
 		background-color:gray;
 	} 
-	 
+	 html {
+		 		font-size: 18px;
+
+	 }
 	#RedHead {
 		border: 1px solid #1C6EA4;
 		background-color: #1ABB17;
@@ -13,7 +15,6 @@ hr {
 		text-align: left;
 	  /*  border-collapse: collapse; */
 		font-size: 22px;
-
 		background: #1ABB17;
 		background: -moz-linear-gradient(top, #53cc51 0%, #31c12e 66%, #1ABB17 100%);
 		background: -webkit-linear-gradient(top, #53cc51 0%, #31c12e 66%, #1ABB17 100%);
@@ -26,9 +27,7 @@ hr {
 		background-color: #EEEEEE;
 		 width: 800px;
 		margin: 10px;
-		overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
+
 		text-align: left;
 		padding: 50px 50px 50px 50px;
 				border-bottom: 2px solid #1C6EA4;
@@ -41,6 +40,7 @@ hr {
 	table.blueTable td, table.blueTable th {
 		border: 0px solid #AAAAAA;
 		padding: 3px 2px;
+		
 	}
 	table.blueTable tbody td {
 		font-size: 18px;
@@ -68,7 +68,9 @@ hr {
 
 	div.container {
 		width:100%; 
-		 clear:both; 		 
+		 clear:both;
+		font-size: 22px;
+ 		 
 		/*color:#cc0000;*/
 
 	}
@@ -136,5 +138,24 @@ ul > .multi::after {
 }
   
 ul > .multi-opened::after {
-  content:' -'
+  content:' -'agination {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .25rem;
+}
+
+// Sizing
+// --------------------------------------------------
+
+// Large
+.pagination-lg {
+  .pagination-size(@padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-large);
+}
+
+// Small
+.pagination-sm {
+  .pagination-size(@padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-small);
 }
