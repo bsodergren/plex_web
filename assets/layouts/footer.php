@@ -1,6 +1,6 @@
-<script src="<?php echo __URL_HOME__;?>/assets/lib/vendor/js/jquery-3.4.1.min.js"></script>
-<script src="<?php echo __URL_HOME__;?>/assets/lib/vendor/js/popper.min.js"></script>
-<script src="<?php echo __URL_HOME__;?>/assets/lib/vendor/bootstrap-4.3.1/js/bootstrap.min.js"></script>
+<script src="<?php echo __LAYOUT_URL__;?>js/jquery-3.4.1.min.js"></script>
+<script src="<?php echo __LAYOUT_URL__;?>js/popper.min.js"></script>
+<script src="<?php echo __LAYOUT_URL__;?>js/bootstrap.min.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <?php

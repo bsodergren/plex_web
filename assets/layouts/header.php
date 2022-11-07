@@ -14,8 +14,8 @@
 
 
 		
-		<link rel="stylesheet" href="<?php echo __URL_HOME__;?>/assets/lib/vendor/bootstrap-4.3.1/css/bootstrap.min.css">
-		<link rel="stylesheet" href="<?php echo __URL_HOME__;?>/assets/lib/vendor/fontawesome-5.12.0/css/all.min.css">
+		<link rel="stylesheet" href="<?php echo __LAYOUT_URL__;?>css/bootstrap.min.css">
+		<link rel="stylesheet" href="<?php echo __LAYOUT_URL__;?>css/all.min.css">
 		<link rel="stylesheet" href="<?php echo __LAYOUT_URL__;?>css/app.css?<?php echo substr(md5(rand()), 0, 7);?>">
 		<link rel="stylesheet" href="<?php echo __LAYOUT_URL__;?>css/custom.css?<?php echo substr(md5(rand()), 0, 7);?>"> 
 
