@@ -16,6 +16,10 @@ $db = new MysqliDb ("localhost",__SQL_USER__,__SQL_PASSWD__,__SQL_DB__);
 dbObject::autoload("models");
 
 
+class MetaSettings extends dbObject {
+    protected $dbTable = Db_TABLE_SETTINGS;
+} 
+
 class MetaFiledb extends dbObject {
     protected $dbTable = Db_TABLE_FILEDB;
 } 

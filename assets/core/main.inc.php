@@ -1,48 +1,5 @@
 <?php
 
-function showFileRow($query_result)
-{
-	global $db;
-	$html='';
-	foreach($query_result as $id => $row)
-	{
-		$row_key=$row['id'];
-		$row_filename=$row['filename'];
-		$array = array("FILE_NAME" => $row_filename,
-		"DELETE_ID" => $row_key."_delete");
-		$html .=  process_template("metadata_row_header",$array);
-
-		foreach($row as $key => $value )
-		{
-			if ($key == "id" ) {
-				$html .= "<input type='hidden' value='".$row_key."' name='".$row_key."_".$key."'>";
-				continue;
-			}
-			if ($key == "filename" ) {
-				continue;
-			}
-			
-			$default = "placeholder=\"".$value."\"";
-
-			if ($value == "" ){
-				$default = "placeholder";
-			}
-			
-			
-			 $array = array(
-				"FIELD_KEY" => $key,
-				"FIELD_NAME" =>$row_key."_".$key,
-				"VALUE" =>  $default);
-
-		$html .=  process_template("metadata_row",$array);
-			
-		
-		}
-		
-	}
-	echo $html;
-}
-
 
 function process_form($redirect_url)
 {
@@ -75,14 +32,10 @@ function process_form($redirect_url)
 }
 
 
-function doRequest($request, $callback, $return=0, $redirect=false){
+function doRequest($request, $callback, $return=0, $redirect=false)
+{
 	global $_REQUEST;
 	
-	#if (array_key_exists($request, $_REQUEST)) {
-	#	echo "The 'first' element is in the array";
-	#	return $return;
-	#}
-
 	$arr=array_keys($_REQUEST, $request, true);
 	
 	if(count($arr) > 0 ) {
@@ -96,11 +49,11 @@ function doRequest($request, $callback, $return=0, $redirect=false){
 	} else {
 		return 0;
 	}
-	
 }
 
 
 
+  
 function missingArtist($key, $row)
 {
 	global $studio_pattern;
@@ -407,7 +360,7 @@ function getBaseUrl($pathOnly=false)
 
 function print_r2($val){
         echo '<pre>';
-        echo print_r($val);
+         print_r($val);
         echo  '</pre>';
 }
 

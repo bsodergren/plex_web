@@ -23,7 +23,6 @@ if (isset($_REQUEST['genre']) )
 {
 	$genre = $_REQUEST['genre'];
 
-	$request_key="&genre=".$genre;
 
 	$genre = str_replace("-"," ",$genre);
 	$genre = str_replace("_","/",$genre);
@@ -37,9 +36,11 @@ if (isset($_REQUEST['genre']) )
 	}
 	
 	$order_sort = "  title ".$_SESSION['direction'];
-	if (isset($_REQUEST['sort']) )
+	if (isset($_SESSION['sort']) )
 	{
-		$order_sort = $_REQUEST['sort']." ".$_SESSION['direction'];	
+		$order_sort = $_SESSION['sort']." ".$_SESSION['direction'];
+		$request_key="&genre=".$_REQUEST['genre'];
+	
 	}
 	
 	$where =  $lib_where . $sql_genre;
@@ -72,20 +73,20 @@ if (isset($_REQUEST['genre']) )
 <?php
 
     echo display_directory_navlinks('view/files.php','Studio',
-	[ "genre" => $_REQUEST["genre"],"sort" => "Studio",	"direction"=>$_SESSION['direction'] ]);
+	[ "pageno"=>$pageno, "genre" => $_REQUEST["genre"],"sort" => "Studio",	"direction"=>$_SESSION['direction'] ]);
 		echo " | ";
 
 	echo display_directory_navlinks('view/files.php','Artist',
-	[ "genre" => $_REQUEST["genre"],"sort" => "artist",	"direction"=>$_SESSION['direction'] ]);
+	[ "pageno"=>$pageno,"genre" => $_REQUEST["genre"],"sort" => "artist",	"direction"=>$_SESSION['direction'] ]);
 	echo " | ";
 	echo display_directory_navlinks('view/files.php','filename',
-	[ "genre" => $_REQUEST["genre"],"sort" => "filename",	"direction"=>$_SESSION['direction'] ]);
+	[ "pageno"=>$pageno,"genre" => $_REQUEST["genre"],"sort" => "filename",	"direction"=>$_SESSION['direction'] ]);
 	echo " | ";
 	echo display_directory_navlinks('view/files.php','Title',
-	[ "genre" => $_REQUEST["genre"],"sort" => "title",	"direction"=>$_SESSION['direction'] ]);
+	[ "pageno"=>$pageno,"genre" => $_REQUEST["genre"],"sort" => "title",	"direction"=>$_SESSION['direction'] ]);
 	echo " | ";
 	echo display_directory_navlinks('view/files.php','Duration',
-	[ "genre" => $_REQUEST["genre"],"sort" => "duration",	"direction"=>$_SESSION['direction'] ]);
+	[ "pageno"=>$pageno,"genre" => $_REQUEST["genre"],"sort" => "duration",	"direction"=>$_SESSION['direction'] ]);
 	
 	if (isset($_REQUEST['genre']) ) 
 	{

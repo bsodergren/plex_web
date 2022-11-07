@@ -155,6 +155,25 @@ $output .= '<div class="container">'."\n";
 	echo $output;
 }
 
+function display_navbar_left_links($url,$text,$js='')
+{
+
+	global $_SESSION;
+	$style='';
+	
+	if($text == $_SESSION['library'])
+	{
+		$style=" style=\"background:#778899\"";
+	}
+		$array = array(
+				"MENULINK_URL" => $url,
+				"MENULINK_JS" => $style,
+				"MENULINK_TEXT" => $text);
+			return process_template("menu_link",$array);
+			
+	
+}
+
 function display_navbar_links()
 {
   

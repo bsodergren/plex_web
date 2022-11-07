@@ -20,11 +20,7 @@ $result2 = $db->query($sql);
 <main role="main" class="container">
 
 	<?php
-	foreach ($result2 as $k => $v)
-	{
-		$link_array[]="<a href='home.php?library=" . $v["library"] . "'>" . $v["library"] . "</a>";
-	}
-	echo implode(" | ",$link_array);
+
 	echo "<p>";
 	echo '<ul id="menu" class="list"> '."\n";
 	
@@ -42,7 +38,7 @@ $result2 = $db->query($sql);
 			$cnt='';
 			if(isset($rar['cnt'])) $cnt = " (".$rar['cnt'].") ";
 			
-			$sql = query_builder("count(substudio) as cnt, substudio",$lib_where . ' studio like "' . $v['studio'].'"','substudio','substudio ASC ', 1);
+			$sql = query_builder("count(substudio) as cnt, substudio",$lib_where . ' studio like "' . $v['studio'].'"','substudio','substudio ASC ');
 
 			logger("Sub studios", $sql);
 			$alt_result = $db->query($sql);
@@ -93,9 +89,5 @@ $result2 = $db->query($sql);
 
 	?>
 	</ul>
-	<pre>
-<?php	//echo json_encode($json_array,JSON_PRETTY_PRINT); ?>
-</pre>
-	
 </main>
 <?php include __LAYOUT_FOOTER__;  ?>

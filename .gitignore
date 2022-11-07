@@ -1,2 +1,4 @@
 assets/lib/vendor/**
 logs/**
+assets/lib/composer.lock
+assets/lib/vendor/*

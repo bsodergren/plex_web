@@ -5,7 +5,7 @@ hr {
 		background-color:gray;
 	} 
 	 html {
-		 		font-size: 18px;
+		 		font-size: 16px;
 
 	 }
 	#RedHead {
@@ -70,11 +70,22 @@ hr {
 		width:100%; 
 		 clear:both;
 		font-size: 22px;
- 		 
-		/*color:#cc0000;*/
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;		/*color:#cc0000;*/
 
 	}
+	
+	div.navcontainer {
+		width:100%; 
+		 clear:both;
+		font-size: 22px;
+    width: 100%;
+   
 
+	}
 
 	input.button, a.button, div.container {
 		float: none;
@@ -138,24 +149,5 @@ ul > .multi::after {
 }
   
 ul > .multi-opened::after {
-  content:' -'agination {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    padding-left: 0;
-    list-style: none;
-    border-radius: .25rem;
-}
-
-// Sizing
-// --------------------------------------------------
-
-// Large
-.pagination-lg {
-  .pagination-size(@padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-large);
-}
-
-// Small
-.pagination-sm {
-  .pagination-size(@padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-small);
+  content:' -'
 }

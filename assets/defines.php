@@ -4,18 +4,16 @@ if (!defined('APP_NAME'))                       define('APP_NAME', 'Plex Media I
 if (!defined('APP_ORGANIZATION'))               define('APP_ORGANIZATION', 'KLiK');
 if (!defined('APP_OWNER'))                      define('APP_OWNER', 'bjorn');
 if (!defined('APP_DESCRIPTION'))                define('APP_DESCRIPTION', 'Embeddable PHP Login System');
-if (!defined('Db_TABLE_FILEDB'))                   	define('Db_TABLE_FILEDB', Db_TABLE_PREFIX."filedb");
-if (!defined('Db_TABLE_STUDIO'))                   	define('Db_TABLE_STUDIO', Db_TABLE_PREFIX."studios");
-if (!defined('Db_TABLE_ARTISTS'))                   define('Db_TABLE_ARTISTS', Db_TABLE_PREFIX."artists");
+
+
 if (!defined('__SCRIPT_NAME__'))			    DEFINE("__SCRIPT_NAME__", "error");
-if (!defined('__ERROR_LOG_DIR__'))			    DEFINE("__ERROR_LOG_DIR__", APP_PATH."/logs");
 
 
-$logfile_name="plexweb.log";
-if (__HTML_POPUP__ == true) $logfile_name="plexweb.html.log";
+if (!defined('Db_TABLE_FILEDB'))				define('Db_TABLE_FILEDB', Db_TABLE_PREFIX."filedb");
+if (!defined('Db_TABLE_STUDIO'))				define('Db_TABLE_STUDIO', Db_TABLE_PREFIX."studios");
+if (!defined('Db_TABLE_ARTISTS'))				define('Db_TABLE_ARTISTS', Db_TABLE_PREFIX."artists");
+if (!defined('Db_TABLE_SETTINGS'))				define('Db_TABLE_SETTINGS', Db_TABLE_PREFIX."settings");
 
-if (!defined('__ERROR_FILE_NAME__'))            DEFINE("__ERROR_FILE_NAME__", $logfile_name);
-if (!defined('ERROR_LOG_FILE'))                 DEFINE("ERROR_LOG_FILE", __ERROR_LOG_DIR__."/".__ERROR_FILE_NAME__);
 
 if (!defined('__PHP_INC_CORE_DIR__')) 			DEFINE("__PHP_INC_CORE_DIR__", __PHP_ASSETS_DIR__."/core");
 if (!defined('__COMPOSER_LIB__')) 				DEFINE("__COMPOSER_LIB__", __PHP_ASSETS_DIR__."/lib/vendor");
@@ -54,7 +52,12 @@ $navigation_link_array=array(
 		),
 	),
 
-
+"settings" => array (
+	"url" => "settings.php",
+	"text" => "settings",
+	"secure" => true,
+	"js" => false
+	),
 "home" => array (
 	"url" => "home.php",
 	"text" => "home",
