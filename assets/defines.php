@@ -8,6 +8,7 @@ if (!defined('APP_DESCRIPTION'))                define('APP_DESCRIPTION', 'Embed
 
 if (!defined('__SCRIPT_NAME__'))			    DEFINE("__SCRIPT_NAME__", "error");
 
+DEFINE("__ATOM__","/usr/local/bin/AtomicParsley");
 
 if (!defined('Db_TABLE_FILEDB'))				define('Db_TABLE_FILEDB', Db_TABLE_PREFIX."filedb");
 if (!defined('Db_TABLE_STUDIO'))				define('Db_TABLE_STUDIO', Db_TABLE_PREFIX."studios");
@@ -24,11 +25,11 @@ if (!defined('__LAYOUT_PATH__'))				DEFINE("__LAYOUT_PATH__", __PHP_ASSETS_DIR__
 if (!defined('__LAYOUT_HEADER__'))				DEFINE("__LAYOUT_HEADER__", __LAYOUT_PATH__.'/header.php');
 if (!defined('__LAYOUT_NAVBAR__'))				DEFINE("__LAYOUT_NAVBAR__", __LAYOUT_PATH__.'/navbar.php');
 if (!defined('__LAYOUT_FOOTER__'))				DEFINE("__LAYOUT_FOOTER__", __LAYOUT_PATH__.'/footer.php');
-
+if ( php_sapi_name() != 'cli' ) {
 if (!defined('__URL_PATH__'))				    DEFINE("__URL_PATH__",APP_HOME);
 if (!defined('__URL_HOME__'))				    DEFINE("__URL_HOME__",$_SERVER['REQUEST_SCHEME']."://".$_SERVER['HTTP_HOST'].__URL_PATH__);
 if (!defined('__LAYOUT_URL__'))					DEFINE("__LAYOUT_URL__", __URL_HOME__.'/assets/layouts/');
-
+}
 DEFINE('__THIS_PAGE__', str_replace(APP_HOME."/","",$_SERVER['SCRIPT_NAME']));
 
 

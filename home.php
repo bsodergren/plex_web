@@ -3,7 +3,7 @@ DEFINE('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], ".php"));
 
 require_once("_config.inc.php");
 
-define('TITLE', "Home");
+const TITLE = "Home";
 
 include __LAYOUT_HEADER__;
 
@@ -16,29 +16,34 @@ $sql = query_builder("DISTINCT(library) as library ");
 $result2 = $db->query($sql);
 
 ?>
-
 <main role="main" class="container">
-
-	<?php
-
-	echo "<p>";
-	echo '<ul id="menu" class="list"> '."\n";
-	
+    <ul id="menu" class="list">
+<?php
+    
 	$json_array["menu"]=array();
 	$index=0;
 	$sidx=0;
 	foreach ($result as $k => $v)
 	{
 
-		if ($v["studio"] != "") 
-		{
-			$sql = query_builder("count(studio) as cnt",$lib_where . ' studio like "' . $v['studio'].'" and substudio is null','studio','studio ASC');
-			
+	#	if ($v["studio"] != "") 
+		//{
+			if ($v["studio"] == "") 
+			{
+				$v["studio"] = "NULL";
+				$sql_studio = " IS NULL";
+			} else {
+				$sql_studio = ' LIKE "'.$v['studio'].'"';
+			}
+
+			$sql = query_builder("count(video_key) as cnt",$lib_where . ' studio ' . $sql_studio.' and substudio is null','studio','studio ASC');
+						logger("Studios", $sql);
+
 			$rar = $db->rawQueryOne($sql);
 			$cnt='';
 			if(isset($rar['cnt'])) $cnt = " (".$rar['cnt'].") ";
 			
-			$sql = query_builder("count(substudio) as cnt, substudio",$lib_where . ' studio like "' . $v['studio'].'"','substudio','substudio ASC ');
+			$sql = query_builder("count(substudio) as cnt, substudio",$lib_where . ' studio  ' . $sql_studio,'substudio','substudio ASC ');
 
 			logger("Sub studios", $sql);
 			$alt_result = $db->query($sql);
@@ -49,8 +54,11 @@ $result2 = $db->query($sql);
 			$studio = str_replace("/", "_", $studio);
 			
 			$json_array["menu"][$index]["name"] = $v["studio"] . $cnt;
-			$json_array["menu"][$index]["link"] = "genre.php?studio=" . $studio . $link;
+			$json_array["menu"][$index]["link"] = "genre.php?studio=" . $studio. $link;
 			
+
+
+
 
 			if (count($alt_result) > 1) 
 			{
@@ -67,10 +75,11 @@ $result2 = $db->query($sql);
 						$substudio = str_replace(" ", "-", $v_a['substudio']);
 						$substudio = str_replace("/", "_", $substudio);
 						
-						$json_array["menu"][$index]["sub"][$sidx]["name"] = $v_a["substudio"]. $cntv_a ;
-						$json_array["menu"][$index]["sub"][$sidx]["link"] = "genre.php?substudio=" . $substudio;
-						$json_array["menu"][$index]["sub"][$sidx]["sub"] = null;
 					
+					$json_array["menu"][$index]["sub"][$sidx]["name"] = $v_a["substudio"] . $cntv_a;
+					$json_array["menu"][$index]["sub"][$sidx]["link"] = "genre.php?substudio=" . $substudio;
+					$json_array["menu"][$index]["sub"][$sidx]["sub"] = null;
+				
 						$sidx++;
 
 						//echo "<li><a href='genre.php?substudio=" . $substudio . "'>" . $v_a["substudio"] . "</a>" . $cntv_a . "<br>";
@@ -83,7 +92,7 @@ $result2 = $db->query($sql);
 		#echo "</ul>";
 		
 			$index++;			
-		}
+		//}
 	}
 	
 

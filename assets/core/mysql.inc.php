@@ -1,7 +1,7 @@
-<?php 
-    
-require_once(__PHP_INC_CORE_DIR__.'/MysqliDb.inc.php');
-require_once(__PHP_INC_CORE_DIR__.'/dbObject.inc.php');
+<?php
+
+require_once(__PHP_INC_CORE_DIR__ . '/MysqliDb.inc.php');
+require_once(__PHP_INC_CORE_DIR__ . '/dbObject.inc.php');
 
 /*
 $conn = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
@@ -12,70 +12,68 @@ if (!$conn)
 }
 */
 
-$db = new MysqliDb ("localhost",__SQL_USER__,__SQL_PASSWD__,__SQL_DB__);
+$db = new MysqliDb ("localhost", __SQL_USER__, __SQL_PASSWD__, __SQL_DB__);
 dbObject::autoload("models");
 
 
-class MetaSettings extends dbObject {
-    protected $dbTable = Db_TABLE_SETTINGS;
-} 
-
-class MetaFiledb extends dbObject {
-    protected $dbTable = Db_TABLE_FILEDB;
-} 
-
-class MetaStudio extends dbObject {
-    protected $dbTable = Db_TABLE_STUDIO;
-} 
-
-class MetaArtist extends dbObject {
-    protected $dbTable = Db_TABLE_ARTISTS;
-} 
-
-
-function query_builder($fields="select",$where=false,$group=false,$order=false,$limit=false, $offset=false)
+class MetaSettings extends dbObject
 {
-    
-    if($fields == "select" )
-    {
-        $sql = "SELECT id,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite from ".Db_TABLE_FILEDB;  
+    protected $dbTable = Db_TABLE_SETTINGS;
+}
+
+class MetaFiledb extends dbObject
+{
+    protected $dbTable = Db_TABLE_FILEDB;
+}
+
+class MetaStudio extends dbObject
+{
+    protected $dbTable = Db_TABLE_STUDIO;
+}
+
+class MetaArtist extends dbObject
+{
+    protected $dbTable = Db_TABLE_ARTISTS;
+}
+
+
+function query_builder($fields = "select", $where = FALSE, $group = FALSE, $order = FALSE, $limit = FALSE, $offset = FALSE)
+{
+
+    if($fields == "select") {
+        $sql = "SELECT id,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath from " . Db_TABLE_FILEDB;
     } else {
-        
-        $sql = "SELECT ".$fields." from ".Db_TABLE_FILEDB;  
+
+        $sql = "SELECT " . $fields . " from " . Db_TABLE_FILEDB;
     }
-    
-    if($where != false )
-    {
+
+    if($where != FALSE) {
         $sql = $sql . " WHERE " . $where;
-        
+
     }
-    
-    if($group != false )
-    {
+
+    if($group != FALSE) {
         $sql = $sql . " GROUP BY " . $group;
-        
+
     }
-    
-    if($order != false )
-    {
+
+    if($order != FALSE) {
         $sql = $sql . " ORDER BY " . $order;
-        
+
     }
-    
-    if($limit != false && $offset == false )
-    {
+
+    if($limit != FALSE && $offset == FALSE) {
         $sql = $sql . " LIMIT " . $limit;
-        
+
     }
-       if($limit != false && $offset != false )
-    {
-        $sql = $sql . "  LIMIT ".$offset.", ". $limit;
-        
+    if($limit != FALSE && $offset != FALSE) {
+        $sql = $sql . "  LIMIT " . $offset . ", " . $limit;
+
     }
-    
-  //logger("SQL Builder", $sql);
+
+    //logger("SQL Builder", $sql);
     return $sql;
-    
+
 }
 #class studios extends dbObject {
 #    protected $dbTable = "home_vid";

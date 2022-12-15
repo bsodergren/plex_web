@@ -5,6 +5,10 @@
 		<input type="submit" name="submit" value="delete" id="%%DELETE_ID%%" onclick="doSubmitValue(this.id);" >&nbsp;
 		%%HIDE_BUTTON%%
 	</th>
-	<th  colspan="4">%%FILE_NAME%%</th>
+	<th  colspan="4">%%FILE_NAME%%
+	%%FULL_PATH%%
+	<input type="hidden" value="%%FULL_PATH%%%%FILE_NAME%%" name="%%FILE_NAME_ID%%">
+
+	</th>
 </tr>
 </thead>

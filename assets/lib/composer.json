@@ -16,6 +16,7 @@
         "mobiledetect/mobiledetectlib": "^2.8",
         "formr/formr": "^1.4",
         "sensiolabs/ansi-to-html": "^1.2",
-        "phlak/config": "^7.0"
+        "phlak/config": "^7.0",
+        "guzzlehttp/guzzle": "^7.5"
     }
 }

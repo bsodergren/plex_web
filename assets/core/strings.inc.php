@@ -1,6 +1,6 @@
 <?php
-    
-if (!function_exists('str_starts_with')) {
+
+if(!function_exists('str_starts_with')) {
     function str_starts_with($haystack, $needle)
     {
         return strpos($haystack, $needle) === 0;
@@ -8,24 +8,24 @@ if (!function_exists('str_starts_with')) {
 }
 
 
-if (!function_exists('str_contains')) {
+if(!function_exists('str_contains')) {
     function str_contains($haystack, $needle)
     {
-        return $needle !== '' && mb_strpos($haystack, $needle) !== false;
+        return $needle !== '' && mb_strpos($haystack, $needle) !== FALSE;
     }
 }
 
 function strpos_array($haystack, $needles, &$str_return)
 {
-    if (is_array($needles)) {
-        foreach ($needles as $str => $v) {
-            if (is_array($str)) {
+    if(is_array($needles)) {
+        foreach($needles as $str => $v) {
+            if(is_array($str)) {
                 $pos = strpos_array($haystack, $str);
             } else {
                 $pos = strpos($haystack, $str);
             }
 
-            if ($pos !== false) {
+            if($pos !== FALSE) {
                 $str_return[] = $str;
             }
         }
@@ -34,23 +34,23 @@ function strpos_array($haystack, $needles, &$str_return)
     }
 }
 
-function truncateString($string, $maxlength, $ellipsis = false){
+function truncateString($string, $maxlength, $ellipsis = FALSE)
+{
 
-    if(mb_strlen($string) <= $maxlength){
+    if(mb_strlen($string) <= $maxlength) {
         return $string;
     }
 
-    if(str_contains($string, "\033[0m"))
-    {
-        $string=str_replace("\033[0m","",$string);
+    if(str_contains($string, "\033[0m")) {
+        $string = str_replace("\033[0m", "", $string);
         $color_length = mb_strlen("\033[0m");
         $color_close = "\033[0m";
     }
-    if(empty($ellipsis)){
+    if(empty($ellipsis)) {
         $ellipsis = '';
     }
 
-    if($ellipsis === true){
+    if($ellipsis === TRUE) {
         $ellipsis = '…';
     }
 
@@ -65,43 +65,44 @@ function truncateString($string, $maxlength, $ellipsis = false){
 }
 
 
-function translate($string="")
+function translate($string = "")
 {
 
 // "trans -b -no-warn -no-autocorrect "
     return $string;
 }
 
-function printCode($array, $path=false, $top=true) {
+function printCode($array, $path = FALSE, $top = TRUE)
+{
     $data = "";
     $delimiter = "~~|~~";
-    
-    $p = null;
-    if(is_array($array)){
-      foreach($array as $key => $a){
-        if(!is_array($a) || empty($a)){
-          if(is_array($a)){
-            $data .= $path."['{$key}'] = array();".$delimiter;
-          } else {
-            $data .= $path."['{$key}'] = \"".htmlentities(addslashes($a))."\";".$delimiter;
-          }
-        } else {
-          $data .= printCode($a, $path."['{$key}']", false);
-        }    
-      }
+
+    $p = NULL;
+    if(is_array($array)) {
+        foreach($array as $key => $a) {
+            if(!is_array($a) || empty($a)) {
+                if(is_array($a)) {
+                    $data .= $path . "['{$key}'] = array();" . $delimiter;
+                } else {
+                    $data .= $path . "['{$key}'] = \"" . htmlentities(addslashes($a)) . "\";" . $delimiter;
+                }
+            } else {
+                $data .= printCode($a, $path . "['{$key}']", FALSE);
+            }
+        }
     }
 
-    if($top){
-      $return = "";
-      foreach(explode($delimiter, $data) as $value){
-        if(!empty($value)){
-          $return .= '$array'.$value."<br>";
-        }
-      };
-      return $return;
+    if($top) {
+        $return = "";
+        foreach(explode($delimiter, $data) as $value) {
+            if(!empty($value)) {
+                $return .= '$array' . $value . "<br>";
+            }
+        };
+        return $return;
     }
 
     return $data;
-  }
+}
   
   

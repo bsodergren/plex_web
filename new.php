@@ -12,7 +12,7 @@ $days = 1;
 if (isset($_REQUEST['days'])) {
 	$days = $_REQUEST['days'];
 }
-$sql = query_builder("select", "library = '".$in_directory."' and `added` >= (CURRENT_TIMESTAMP - INTERVAL $days day);");
+$sql = query_builder("select", "library = '".$in_directory."' and `new` = 1;");
 $result = $db->query($sql);
 
 

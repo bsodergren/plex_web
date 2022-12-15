@@ -14,6 +14,11 @@ include __LAYOUT_HEADER__;
 	{
 		$studio_key="substudio";
 		$studio_text=$_REQUEST['substudio'];
+		$studio = str_replace("-"," ",$studio_text);
+		$studio = str_replace("_","/",$studio);
+
+		$studio_sql_query=$studio_key." = '".$studio."' ";
+
 	} else {
 		if  (isset($_REQUEST['substudio']) && $_REQUEST['substudio'] == "null")
 		{
@@ -24,11 +29,20 @@ include __LAYOUT_HEADER__;
 		$studio_key="studio";
 		$studio_text=$_REQUEST['studio'];
 
+		$studio = str_replace("-"," ",$studio_text);
+		$studio = str_replace("_","/",$studio);
+
+		$studio_sql_query=$studio_key." = '".$studio."' ";
+
+		if  ($_REQUEST['studio'] == "NULL")
+		{
+			$studio_sql_query = $studio_key . " IS NULL ";
+		}
 	}
 		$studio = str_replace("-"," ",$studio_text);
 		$studio = str_replace("_","/",$studio);
 		
-		$sql_studio= $lib_where.$studio_key." = '".$studio."'".$null ;
+		$sql_studio= $lib_where.$studio_sql_query.$null ;
 		
 		$request_key=$studio_key.'='.$studio_text.$null_req;
 	
@@ -37,7 +51,8 @@ include __LAYOUT_HEADER__;
 						$sql_studio,
 						"genre",$order);
 
-			
+						logger("qyefasd",$sql);
+
 					$result = $db->query($sql);
 
 	
@@ -47,7 +62,7 @@ include __LAYOUT_HEADER__;
 <a href="home.php">back</a>
 <br>
 <br>
-<a href='files.php?<?php echo $request_key; ?>&genre=NULL'>All</a><br>
+<a href='files.php?<?php echo $request_key; ?>&allfiles=all'>All</a><br>
 
 <?php
 

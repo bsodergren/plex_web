@@ -4,98 +4,109 @@ DEFINE('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], ".php") );
 require_once("_config.inc.php");
 
 define('TITLE', "Home");
+define('PAGENATION', true);
 
-include __LAYOUT_HEADER__;
-
-	$null='';	
-		$null_req='';	
-	if  (isset($_REQUEST['substudio']) && $_REQUEST['substudio'] != "null")
+if  (isset($_REQUEST['substudio']))
 {
-	$studio_key="substudio";
-	$studio_query=$studio_key;
-	$studio_text=$_REQUEST['substudio'];
-	
-} else {
-	
-	if  (isset($_REQUEST['substudio']) && $_REQUEST['substudio'] == "null")
-		{
-			$null=' and substudio is null ';
-			$null_req="&substudio=NULL";
-		}
-	$studio_key="studio";
-	$studio_query="".$studio_key;
-	$studio_text=$_REQUEST['studio'];
-
+#	if  (!isset($_REQUEST['allfiles']))
+#	{
+		$substudio = str_replace("-"," ",$_REQUEST['substudio']);
+		//$substudio = str_replace("_","/",$substudio);
+		$uri["substudio"] = array($_REQUEST['substudio'],$substudio);
+		$studio_key="substudio";
+#	}
+#	$studio_key="substudio";
 }
-
-$request_key=$studio_key.'='.$studio_text.$null_req;
-
-$redirect_string="files.php?".$request_key."&genre=".$_REQUEST['genre'] ;
-
-process_form($redirect_string);
+if  (isset($_REQUEST['studio']))
+{
+	$studio = str_replace("-"," ",$_REQUEST['studio']);
+	//$studio = str_replace("_","/",$studio);
+	$uri["studio"] = array($_REQUEST['studio'],$studio);
+	if(!isset($studio_key))
+	{
+		$studio_key="studio";
+	}
+}
 
 if (isset($_REQUEST['genre']) ) 
 {
-	$genre = $_REQUEST['genre'];
+	$genre = str_replace("-"," ",$_REQUEST['genre']);
+	$genre = str_replace("_","/",$genre);
+	$uri["genre"] = array($_REQUEST['genre'],$genre);
+	
+}
+if (isset($_SESSION['sort']) )
+{
+	$uri["sort"] = $_SESSION['sort'];
+}
 
+if (isset($_SESSION['direction']) )
+{
+	$uri["direction"] = $_SESSION['direction'];
+}
 
-	$studio = str_replace("-"," ",$studio_text);
-	$studio = str_replace("_","/",$studio);
-	$sql_studio= $studio_query." = '".$studio."' ".$null;
-		
-	
-	
+if (isset($_SESSION['library']) )
+{
+	$uri["library"] = $_SESSION['library'];
+}
 
+if (isset($_GET['pageno']) )
+{
+	$uri["pageno"] = $_GET['pageno'];
+}
 
-	if ($genre == "NULL" ) {
-		//$sql_genre = " and " ." genre IS NULL ";
-		$sql_genre = "";
-	} else {
-		$sql_genre= " and " ." genre LIKE '".$genre."' ";
-	}
+$request_key = uri_String($uri);
+
+$redirect_string="files.php".$request_key;
+
+process_form($redirect_string);
 	
-	$order_sort = "  title ".$_SESSION['direction'];
-	if (isset($_REQUEST['sort']) )
-	{
-		$order_sort = $_REQUEST['sort']." ".$_SESSION['direction'];	
-	}
+	list($sql_studio,$order_sort) = uri_SQLQuery($uri);
 	
-	$where =  $lib_where.$sql_studio . $sql_genre;
-	
-	$sql=query_builder("select",$where,false,$order_sort);
+	$where = str_replace("studio = 'null'", "studio IS NULL", $sql_studio);
+
+	$db->where ($where);
+	$db->withTotalCount()->get(Db_TABLE_FILEDB);
+	$total_results=$db->totalCount;
+	$total_pages = ceil($db->totalCount / $no_of_records_per_page);
+
+	$sql=query_builder("select",$where,false,$order_sort,$no_of_records_per_page,$offset);
+
 	logger("qyefasd",$sql);
 	$results = $db->query($sql);
-	 $total_results=count($results);
+	
+	//$total_results=count($results);
+	$url_array = array(
+		"url" => $_SERVER['PHP_SELF'],
+		"rq_string" => $request_key,
+		"sort_types" => array(
+			"Studio" => "studio",
+			"Artist" => "artist",
+			"Filename" => "filename",
+			"Title" => "title",	
+			"Duration" => "duration",
+			"Newest" => "added"	)
+);
+
+
+include __LAYOUT_HEADER__;
 ?>
       
 <main role="main" class="container">
 <?php echo $total_results; ?> number of files<br>
-<a href="genre.php?<?php echo $request_key; ?>">back</a>
+<a href="genre.php<?php echo $request_key; ?>">back</a>
 <br>
 <br>
 <?php
+	echo display_sort_options($url_array);
 
-    
-	echo display_directory_navlinks('files.php','Artist',
-	[ $studio_key => $studio_text,"genre" => $_REQUEST["genre"],"sort" => "artist",	"direction"=>$_SESSION['direction'] ]);
-	echo " | ";
-	echo display_directory_navlinks('files.php','filename',
-	[ $studio_key => $studio_text,"genre" => $_REQUEST["genre"],"sort" => "filename",	"direction"=>$_SESSION['direction'] ]);
-	echo " | ";
-	echo display_directory_navlinks('files.php','Title',
-	[ $studio_key => $studio_text,"genre" => $_REQUEST["genre"],"sort" => "title",	"direction"=>$_SESSION['direction'] ]);
-	echo " | ";
-	echo display_directory_navlinks('files.php','Duration',
-	[ $studio_key => $studio_text,"genre" => $_REQUEST["genre"],"sort" => "duration",	"direction"=>$_SESSION['direction'] ]);
-	
-	if (isset($_REQUEST['genre']) ) 
-	{
+
 		echo '<form action="files.php" method="post" id="myform">'."\n";
 		
 		$array=array(
 			"VALUE_STUDIO" => $_REQUEST[$studio_key],
 			"NAME_STUDIO" => $studio_key,
-			"VALUE_GENRE" => $_REQUEST['genre'],
+			"VALUE_GENRE" => (isset($_REQUEST['genre'])) ? $_REQUEST['genre'] : "null",
 			"NAME_GENRE" => "genre");
 		echo process_template("main_form",$array);
 		
@@ -104,12 +115,10 @@ if (isset($_REQUEST['genre']) )
 		echo display_filelist($results,'filedelete');
 		
 		echo "</form>";
-	}
+	
  
  ?>
  </main>
 <?php
-
-}
 
 include __LAYOUT_FOOTER__;  ?>

@@ -1,29 +1,29 @@
 // Select elements here
-const video = document.getElementById('video');
-const videoControls = document.getElementById('video-controls');
-const playButton = document.getElementById('play');
-const playbackIcons = document.querySelectorAll('.playback-icons use');
-const timeElapsed = document.getElementById('time-elapsed');
-const duration = document.getElementById('duration');
-const progressBar = document.getElementById('progress-bar');
-const seek = document.getElementById('seek');
-const seekTooltip = document.getElementById('seek-tooltip');
-const volumeButton = document.getElementById('volume-button');
-const volumeIcons = document.querySelectorAll('.volume-button use');
+const video = document.getElementById("video");
+const videoControls = document.getElementById("video-controls");
+const playButton = document.getElementById("play");
+const playbackIcons = document.querySelectorAll(".playback-icons use");
+const timeElapsed = document.getElementById("time-elapsed");
+const duration = document.getElementById("duration");
+const progressBar = document.getElementById("progress-bar");
+const seek = document.getElementById("seek");
+const seekTooltip = document.getElementById("seek-tooltip");
+const volumeButton = document.getElementById("volume-button");
+const volumeIcons = document.querySelectorAll(".volume-button use");
 const volumeMute = document.querySelector('use[href="#volume-mute"]');
 const volumeLow = document.querySelector('use[href="#volume-low"]');
 const volumeHigh = document.querySelector('use[href="#volume-high"]');
-const volume = document.getElementById('volume');
-const playbackAnimation = document.getElementById('playback-animation');
-const fullscreenButton = document.getElementById('fullscreen-button');
-const videoContainer = document.getElementById('video-container');
-const fullscreenIcons = fullscreenButton.querySelectorAll('use');
-const pipButton = document.getElementById('pip-button');
+const volume = document.getElementById("volume");
+const playbackAnimation = document.getElementById("playback-animation");
+const fullscreenButton = document.getElementById("fullscreen-button");
+const videoContainer = document.getElementById("video-container");
+const fullscreenIcons = fullscreenButton.querySelectorAll("use");
+const pipButton = document.getElementById("pip-button");
 
-const videoWorks = !!document.createElement('video').canPlayType;
+const videoWorks = !!document.createElement("video").canPlayType;
 if (videoWorks) {
   video.controls = false;
-  videoControls.classList.remove('hidden');
+  videoControls.classList.remove("hidden");
 }
 
 // Add functions here
@@ -34,8 +34,8 @@ if (videoWorks) {
 function togglePlay() {
   if (video.paused || video.ended) {
     video.play();
-    
-//window.onresize = resize;
+
+    //window.onresize = resize;
   } else {
     video.pause();
   }
@@ -44,12 +44,12 @@ function togglePlay() {
 // updatePlayButton updates the playback icon and tooltip
 // depending on the playback state
 function updatePlayButton() {
-  playbackIcons.forEach((icon) => icon.classList.toggle('hidden'));
+  playbackIcons.forEach((icon) => icon.classList.toggle("hidden"));
 
   if (video.paused) {
-    playButton.setAttribute('data-title', 'Play (k)');
+    playButton.setAttribute("data-title", "Play (k)");
   } else {
-    playButton.setAttribute('data-title', 'Pause (k)');
+    playButton.setAttribute("data-title", "Pause (k)");
   }
 }
 
@@ -68,11 +68,11 @@ function formatTime(timeInSeconds) {
 // progressBar
 function initializeVideo() {
   const videoDuration = Math.round(video.duration);
-  seek.setAttribute('max', videoDuration);
-  progressBar.setAttribute('max', videoDuration);
+  seek.setAttribute("max", videoDuration);
+  progressBar.setAttribute("max", videoDuration);
   const time = formatTime(videoDuration);
   duration.innerText = `${time.minutes}:${time.seconds}`;
-  duration.setAttribute('datetime', `${time.minutes}m ${time.seconds}s`);
+  duration.setAttribute("datetime", `${time.minutes}m ${time.seconds}s`);
   resize();
 }
 
@@ -81,7 +81,7 @@ function initializeVideo() {
 function updateTimeElapsed() {
   const time = formatTime(Math.round(video.currentTime));
   timeElapsed.innerText = `${time.minutes}:${time.seconds}`;
-  timeElapsed.setAttribute('datetime', `${time.minutes}m ${time.seconds}s`);
+  timeElapsed.setAttribute("datetime", `${time.minutes}m ${time.seconds}s`);
 }
 
 // updateProgress indicates how far through the video
@@ -97,9 +97,9 @@ function updateProgress() {
 function updateSeekTooltip(event) {
   const skipTo = Math.round(
     (event.offsetX / event.target.clientWidth) *
-      parseInt(event.target.getAttribute('max'), 10)
+      parseInt(event.target.getAttribute("max"), 10)
   );
-  seek.setAttribute('data-seek', skipTo);
+  seek.setAttribute("data-seek", skipTo);
   const t = formatTime(skipTo);
   seekTooltip.textContent = `${t.minutes}:${t.seconds}`;
   const rect = video.getBoundingClientRect();
@@ -131,18 +131,18 @@ function updateVolume() {
 // the volume of the video
 function updateVolumeIcon() {
   volumeIcons.forEach((icon) => {
-    icon.classList.add('hidden');
+    icon.classList.add("hidden");
   });
 
-  volumeButton.setAttribute('data-title', 'Mute (m)');
+  volumeButton.setAttribute("data-title", "Mute (m)");
 
   if (video.muted || video.volume === 0) {
-    volumeMute.classList.remove('hidden');
-    volumeButton.setAttribute('data-title', 'Unmute (m)');
+    volumeMute.classList.remove("hidden");
+    volumeButton.setAttribute("data-title", "Unmute (m)");
   } else if (video.volume > 0 && video.volume <= 0.5) {
-    volumeLow.classList.remove('hidden');
+    volumeLow.classList.remove("hidden");
   } else {
-    volumeHigh.classList.remove('hidden');
+    volumeHigh.classList.remove("hidden");
   }
 }
 
@@ -153,7 +153,7 @@ function toggleMute() {
   video.muted = !video.muted;
 
   if (video.muted) {
-    volume.setAttribute('data-volume', volume.value);
+    volume.setAttribute("data-volume", volume.value);
     volume.value = 0;
   } else {
     volume.value = volume.dataset.volume;
@@ -167,11 +167,11 @@ function animatePlayback() {
     [
       {
         opacity: 1,
-        transform: 'scale(1)',
+        transform: "scale(1)",
       },
       {
         opacity: 0,
-        transform: 'scale(1.3)',
+        transform: "scale(1.3)",
       },
     ],
     {
@@ -200,12 +200,12 @@ function toggleFullScreen() {
 // updateFullscreenButton changes the icon of the full screen button
 // and tooltip to reflect the current full screen state of the video
 function updateFullscreenButton() {
-  fullscreenIcons.forEach((icon) => icon.classList.toggle('hidden'));
+  fullscreenIcons.forEach((icon) => icon.classList.toggle("hidden"));
 
   if (document.fullscreenElement) {
-    fullscreenButton.setAttribute('data-title', 'Exit full screen (f)');
+    fullscreenButton.setAttribute("data-title", "Exit full screen (f)");
   } else {
-    fullscreenButton.setAttribute('data-title', 'Full screen (f)');
+    fullscreenButton.setAttribute("data-title", "Full screen (f)");
   }
 }
 
@@ -232,12 +232,12 @@ function hideControls() {
     return;
   }
 
-  videoControls.classList.add('hide');
+  videoControls.classList.add("hide");
 }
 
 // showControls displays the video controls
 function showControls() {
-  videoControls.classList.remove('hide');
+  videoControls.classList.remove("hide");
 }
 
 // keyboardShortcuts executes the relevant functions for
@@ -245,7 +245,7 @@ function showControls() {
 function keyboardShortcuts(event) {
   const { key } = event;
   switch (key) {
-    case 'k':
+    case "k":
       togglePlay();
       animatePlayback();
       if (video.paused) {
@@ -256,51 +256,56 @@ function keyboardShortcuts(event) {
         }, 2000);
       }
       break;
-    case 'm':
+    case "m":
       toggleMute();
       break;
-    case 'f':
+    case "f":
       toggleFullScreen();
       break;
-    case 'p':
+    case "p":
       togglePip();
       break;
   }
 }
 
 // Add eventlisteners here
-playButton.addEventListener('onclick', togglePlay);
-video.addEventListener('play', updatePlayButton);
-video.addEventListener('pause', updatePlayButton);
-video.addEventListener('loadedmetadata', initializeVideo);
-video.addEventListener('timeupdate', updateTimeElapsed);
-video.addEventListener('timeupdate', updateProgress);
-video.addEventListener('volumechange', updateVolumeIcon);
-video.addEventListener('onclick', togglePlay);
-video.addEventListener('click', animatePlayback);
-video.addEventListener('mouseenter', showControls);
-video.addEventListener('mouseleave', hideControls);
-videoControls.addEventListener('mouseenter', showControls);
-videoControls.addEventListener('mouseleave', hideControls);
-seek.addEventListener('mousemove', updateSeekTooltip);
-seek.addEventListener('input', skipAhead);
-volume.addEventListener('input', updateVolume);
-volumeButton.addEventListener('click', toggleMute);
-fullscreenButton.addEventListener('click', toggleFullScreen);
-videoContainer.addEventListener('fullscreenchange', updateFullscreenButton);
-pipButton.addEventListener('click', togglePip);
+playButton.addEventListener("onclick", togglePlay);
+video.addEventListener("play", updatePlayButton);
+video.addEventListener("pause", updatePlayButton);
+video.addEventListener("loadedmetadata", initializeVideo);
+video.addEventListener("timeupdate", updateTimeElapsed);
+video.addEventListener("timeupdate", updateProgress);
+video.addEventListener("volumechange", updateVolumeIcon);
+video.addEventListener("onclick", togglePlay);
+video.addEventListener("click", animatePlayback);
+video.addEventListener("mouseenter", showControls);
+video.addEventListener("mouseleave", hideControls);
+videoControls.addEventListener("mouseenter", showControls);
+videoControls.addEventListener("mouseleave", hideControls);
+seek.addEventListener("mousemove", updateSeekTooltip);
+seek.addEventListener("input", skipAhead);
+volume.addEventListener("input", updateVolume);
+volumeButton.addEventListener("click", toggleMute);
+fullscreenButton.addEventListener("click", toggleFullScreen);
+videoContainer.addEventListener("fullscreenchange", updateFullscreenButton);
+pipButton.addEventListener("click", togglePip);
 
-document.addEventListener('DOMContentLoaded', () => {
-  if (!('pictureInPictureEnabled' in document)) {
-    pipButton.classList.add('hidden');
+document.addEventListener("DOMContentLoaded", () => {
+  if (!("pictureInPictureEnabled" in document)) {
+    pipButton.classList.add("hidden");
   }
 });
-document.addEventListener('keyup', keyboardShortcuts);
+document.addEventListener("keyup", keyboardShortcuts);
 
 function resize() {
-    var img = document.getElementsByTagName('video'); 
-    var vh =img[0].clientHeight + 50;
-    var vw =img[0].clientWidth;
-    window.resizeTo(vw,vh);    
+  var img = document.getElementsByTagName("video");
+  var vh = img[0].clientHeight + 75;
+  var vw = img[0].clientWidth + 20;
+  window.resizeTo(vw, vh);
 }
 
+function reportWindowSize() {
+  console.log(window.innerHeight + " " + window.innerWidth);
+}
+
+window.onresize = reportWindowSize;

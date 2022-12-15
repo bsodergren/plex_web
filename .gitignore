@@ -1,4 +1,6 @@
+apache2handler_logs/*
 assets/lib/vendor/**
 logs/**
 assets/lib/composer.lock
 assets/layouts/misc/**
+node_modules/*
