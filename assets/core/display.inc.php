@@ -99,6 +99,7 @@ function display_directory_navlinks($url, $text, $request_uri = '')
 
 function display_filelist($results, $option = '')
 {
+    global $db;
     $output = '';
 
     $output .= '<div class="container">' . "\n";
@@ -108,8 +109,8 @@ function display_filelist($results, $option = '')
         $row_id = $row['id'];
         //$row_filename = $row_id.":".$row['filename'];
         $row_filename = $row['filename'];
-            $row_fullpath = $row['fullpath'];
-        
+        $row_fullpath = $row['fullpath'];
+        $row_video_key = $row['video_key'];
 
 
 
@@ -127,24 +128,28 @@ function display_filelist($results, $option = '')
         $array = array("FILE_NAME" => $row_filename, 
         "DELETE_ID" => "delete_" . $row_id,
         "FILE_NAME_ID" =>  $row_id."_filename" ,
-
+        "FULL_PATH" => $row_fullpath,  
         
-        
-        "HIDE_BUTTON" => $extra_button,"FULL_PATH" => $row_fullpath);
+        "HIDE_BUTTON" => $extra_button);
         $output .= process_template("metadata_row_header", $array);
         $value_array = array();
         $output .= '<tbody> ' . "\n";
 
         foreach($row as $key => $value) {
+            $template_name = 'metadata_row';
 
             switch($key) {
                 case 'id':
                     break;
                 case 'filename':
                     break;
-                case 'fullpath':
+                    case 'fullpath':
 
                         break;
+                        case 'video_key':
+                           
+                            break;
+                            
                 case 'thumbnail':
                     if (__SHOW_THUMBNAILS__ == TRUE) {
                         $output .= process_template("metadata_thumbnail", ["THUMBNAIL" => $value, "FILE_ID" => $row_id]);
@@ -168,26 +173,64 @@ function display_filelist($results, $option = '')
                 case 'favorite':
                     $yeschecked = ($value == '1') ? "checked" : "";
                     $nochecked = ($value == '0') ? "checked" : "";
-
+            
                     $array = array("FILE_ID" => $row_id, "FIELD_KEY" => $key, "FIELD_NAME" => $row_id . "_" . $key, //"PLACEHOLDER" =>  $placeholder,
                         "YESCHECKED" => $yeschecked, "NOCHECKED" => $nochecked);
 
                     $output .= process_template("metadata_favorite_row", $array);
-                    break;
 
+                    $sql = "select  * from ".Db_TABLE_FILEINFO." WHERE video_key = '".$row_video_key."'";
+                    $result = $db->query($sql);
+                    $file_info_array = ["FULL_PATH" => $row_fullpath];
+                    $additional_fileinfo=[];
+                    if (isset($result[0])) {
+                        $file_info=$result[0];
+
+                        $additional_fileinfo = array(
+                            "HEIGHT" => $file_info['height'],
+                            "WIDTH" => $file_info['width'],
+                            "BITRATE" => display_size($file_info['bit_rate']),
+                            "FILESIZE" => byte_convert($file_info['filesize'])
+                            
+                        );
+                    }
+                    $fileinfo_array = array_merge($file_info_array, $additional_fileinfo);
+
+                    $output .= process_template("metadata_row_fileinfo", $fileinfo_array);
+
+
+
+                    break;
+                    case 'substudio':
+                        $template_name = 'metadata_row_studio';
+                        case 'studio':
+                            $template_name = 'metadata_row_studio';
+                        
                 default:
                     $placeholder = "placeholder=\"" . $value . "\"";
-
                     if($value == "") {
                         $placeholder = "";
                         switch($key) {
                             case 'artist':
                                 $value_array = missingArtist($key, $row);
+                                
                                 break;
                             case 'title':
                                 $value_array = missingTitle($key, $row);
+
                                 break;
-                        }
+                            case 'genre':
+                                $value_array = missingGenre($key, $row);
+                                break;
+
+                                case 'studio':
+                                    $value_array = missingStudio($key, $row);
+                                    break;
+                                    case 'substudio':
+                                        $value_array = missingStudio($key, $row);
+                                        break;
+                                
+                            }
                     }
 
                     if(isset($value_array[$key][0]) && $value_array[$key][0] != "") {
@@ -198,14 +241,20 @@ function display_filelist($results, $option = '')
                         }
 
                     } else {
-                        $value = "";
+                        if ($key == "studio" || $key == "substudio") {
+                            $value = $value;
+                            
+                        } else {
+                            
+                            $value = "";
+                       }
                     }
 
                     $array = array(
 
                         "FIELD_KEY" => $key, "FIELD_NAME" => $row_id . "_" . $key, "PLACEHOLDER" => $placeholder, "VALUE" => $value);
 
-                    $output .= process_template("metadata_row", $array);
+                    $output .= process_template($template_name, $array);
                     unset($value_array);
                     unset($value);
             }

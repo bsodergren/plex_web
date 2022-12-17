@@ -58,6 +58,7 @@ hr {
 		font-size: 22px;
 		font-weight: bold;
 		color: #FFFFFF;
+		white-space: nowrap;
 		/* order-left: 2px solid #D0E4F5; */
 	}
 	

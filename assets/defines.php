@@ -9,11 +9,13 @@ if (!defined('APP_DESCRIPTION'))                define('APP_DESCRIPTION', 'Embed
 if (!defined('__SCRIPT_NAME__'))			    DEFINE("__SCRIPT_NAME__", "error");
 
 DEFINE("__ATOM__","/usr/local/bin/AtomicParsley");
+if (!defined('__PLEX_LIBRARY__'))                       define('__PLEX_LIBRARY__', '/home/bjorn/plex/XXX');
 
 if (!defined('Db_TABLE_FILEDB'))				define('Db_TABLE_FILEDB', Db_TABLE_PREFIX."filedb");
 if (!defined('Db_TABLE_STUDIO'))				define('Db_TABLE_STUDIO', Db_TABLE_PREFIX."studios");
 if (!defined('Db_TABLE_ARTISTS'))				define('Db_TABLE_ARTISTS', Db_TABLE_PREFIX."artists");
 if (!defined('Db_TABLE_SETTINGS'))				define('Db_TABLE_SETTINGS', Db_TABLE_PREFIX."settings");
+if (!defined('Db_TABLE_FILEINFO'))				define('Db_TABLE_FILEINFO', Db_TABLE_PREFIX."fileinfo");
 
 
 if (!defined('__PHP_INC_CORE_DIR__')) 			DEFINE("__PHP_INC_CORE_DIR__", __PHP_ASSETS_DIR__."/core");

@@ -8,6 +8,15 @@ define('PAGENATION', true);
 
 $redirect_string="view/files.php?genre=".$_REQUEST['genre'] ;
 
+$sql = query_builder("studio","library = '" . $in_directory ."' ",'','studio ASC');
+$studio_result = $db->query($sql);
+
+$sql = query_builder("substudio","library = '" . $in_directory ."' ",'','substudio ASC');
+$substudio_result = $db->query($sql);
+
+ print_r2($studio_result);
+ print_r2($substudio_result);
+exit;
 
 if (isset($_REQUEST['genre']) ) 
 {

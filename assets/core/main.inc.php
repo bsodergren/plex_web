@@ -1,5 +1,25 @@
 <?php
-
+function display_size($bytes, $precision = 2) 
+{
+    $units = array('B', 'KB', 'MB', 'GB', 'TB');
+    $bytes = max($bytes, 0); 
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
+    $pow = min($pow, count($units) - 1); 
+    $bytes /= (1 << (10 * $pow)); 
+    return round($bytes, $precision) . '<span class="fs-0-8 bold">' . $units[$pow] . "</span>";
+}
+function byte_convert($size) {
+    # size smaller then 1kb
+    if ($size < 1024) return $size . ' Byte';
+    # size smaller then 1mb
+    if ($size < 1048576) return sprintf("%4.2f KB", $size/1024);
+    # size smaller then 1gb
+    if ($size < 1073741824) return sprintf("%4.2f MB", $size/1048576);
+    # size smaller then 1tb
+    if ($size < 1099511627776) return sprintf("%4.2f GB", $size/1073741824);
+    # size larger then 1tb
+    else return sprintf("%4.2f TB", $size/1073741824);
+  }
 
 function uri_SQLQuery($request_array)
 {
@@ -100,6 +120,54 @@ function doRequest($request, $callback, $return = 0, $redirect = FALSE)
     }
 }
 
+
+function missingStudio($key, $row)
+{
+    global $in_directory;
+    $path_name = $row['fullpath'];
+    $genre = $row['genre'];
+
+    $dir = $in_directory;
+    if ($in_directory == "Studio") {
+        $dir = "Studios";}
+        if ($in_directory == "Home Videos") {
+            $dir = "HomeVideos";}
+    
+
+            $video_path = str_replace(__PLEX_LIBRARY__."/".$dir."/", "", $path_name);
+            $video_path = str_replace($genre, "", $video_path);
+            $video_path = str_replace("//", "", $video_path);
+
+            $studio = $video_path;
+            $substudio = '';
+
+            if (str_contains($video_path,"/") ){
+                $pcs = explode("/", $video_path);
+                $substudio = $pcs[0];
+                $studio = $pcs[1];
+            }
+            
+        $value_array = array($key => array($$key), "style" => array("color:red"));
+
+    return $value_array;
+}
+
+function missingGenre($key, $row)
+{
+
+    $path_name=$row['fullpath'];
+    $value = "";
+
+    preg_match('/(group|mmf|mff|single|only girls|bimale|trans|only blowjobs|compilation|Bisexual male|step fantasy|threesome)/i', $path_name, $output_array);
+    if (isset($output_array[0]))
+    {
+        $value = $output_array[0];
+    }
+    $value_array = array($key => array($value), "style" => array("color:red"));
+
+    return $value_array;
+
+}
 
 function missingArtist($key, $row)
 {
@@ -295,7 +363,7 @@ function hideEntry($data_array, $redirect = FALSE, $timeout = 4)
 function saveData($data_array, $redirect = FALSE, $timeout = 4)
 {
     global $db;
-    logger("data_array Name", $data_array);
+    
 
     foreach($data_array as $key => $value) {
         if(str_contains($key, "_") == TRUE) {
@@ -306,11 +374,14 @@ function saveData($data_array, $redirect = FALSE, $timeout = 4)
 
                 $id = $pcs[0];
                 $field = $pcs[1];
+                $atom_field=$field;
+                $atom_value=$value;
 
                 if($field == "id") {
                     continue;
                 }
                 if($field == "filename") {
+                    $filename = $value;
                     continue;
                 }
                 if(isset($pcs[2])) {
@@ -341,19 +412,29 @@ function saveData($data_array, $redirect = FALSE, $timeout = 4)
                         }
 
                         $value = rtrim($names_list, ',');
+
                     }
 
+                    if ($field == "studio" || $field == "substudio")
+                    {                                                  
+                    
+                        if($field == "substudio") {
+                            $studio_value=metadata_get_value($filename, "studio");
+                            $atom_field="studio";
+                            $atom_value="$studio_value/$value";
+                        }
+                    }
+
+                    $atom_value = trim($atom_value);
                     $value = trim($value);
 
-                    logger("Field Name", $field);
-                    logger("Field Value", $value);
-
-                    
+                   metadata_write_filedata($filename,[$atom_field => $atom_value]);
 
 
                     $data = array($field => $value);
                     $db->where('id', $id);
                     $db->update(Db_TABLE_FILEDB, $data);
+                    
                 }
             }
         }

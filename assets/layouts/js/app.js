@@ -27,7 +27,8 @@ function logout() {
 
 function editPlaceholder(id) {
   var x = document.getElementById(id).placeholder;
-  if (x !== "") {
+
+   if (x !== "") {
     document.getElementById(id).value = x;
     document.getElementById(id).style = "background:white";
 
@@ -50,6 +51,22 @@ function editRadioValue(id)
 function checkValue(id) {
     var ph = document.getElementById(id).placeholder;
     var n =  document.getElementById(id).value;
+
+
+    const t_arr = id.split('_');
+
+    console.log(t_arr[1]);
+
+    if(t_arr[1] == "studio")
+    {
+      var ph = "___"
+    }
+
+    if(t_arr[1] == "substudio")
+    {
+      var ph = "___"
+    }
+
     if (ph == n) {
         document.getElementById(id).value = "";
     } else {

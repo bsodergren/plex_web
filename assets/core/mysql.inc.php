@@ -36,12 +36,17 @@ class MetaArtist extends dbObject
     protected $dbTable = Db_TABLE_ARTISTS;
 }
 
+class MetaFileinfo extends dbObject
+{
+    protected $dbTable = Db_TABLE_FILEINFO;
+}
+
 
 function query_builder($fields = "select", $where = FALSE, $group = FALSE, $order = FALSE, $limit = FALSE, $offset = FALSE)
 {
 
     if($fields == "select") {
-        $sql = "SELECT id,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath from " . Db_TABLE_FILEDB;
+        $sql = "SELECT id,video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath from " . Db_TABLE_FILEDB;
     } else {
 
         $sql = "SELECT " . $fields . " from " . Db_TABLE_FILEDB;
