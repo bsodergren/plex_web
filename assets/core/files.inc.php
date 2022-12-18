@@ -1,49 +1,55 @@
 <?php
 
 
-function chk_file($value, $command = 'delete', $options = '')
+function chk_file($value, $command='delete', $options='')
 {
-    switch($command) {
-        case "rename":
-            if(is_file($value)) {
-                if(is_file($options)) {
-                    chk_file($options, "delete");
+    switch ($command) {
+        case 'rename':
+            if (is_file($value)) {
+                if (is_file($options)) {
+                    chk_file($options, 'delete');
                 }
+
                 logger("Renaming $value to $options");
                 rename($value, $options);
             };
-            break;
-        case "delete":
-            if(is_file($value)) {
+        break;
+
+        case 'delete':
+            if (is_file($value)) {
                 logger("deleting $value");
                 unlink($value);
             };
-            break;
+        break;
     }
-}
+
+}//end chk_file()
 
 
-function file_write_array($file = '', $array = array())
+function file_write_array($file='', $array=[])
 {
     $string = var_export($array, 1);
     file_write_file($file, $string, 'w');
-}
 
-function file_write_file($file = '', $string = '', $mode = 'w', $backup = TRUE)
+}//end file_write_array()
+
+
+function file_write_file($file='', $string='', $mode='w', $backup=true)
 {
     $file = basename($file);
-    $file = __ERROR_LOG_DIR__ . "/" . $file;
+    $file = __ERROR_LOG_DIR__.'/'.$file;
 
-    if($mode == "w") {
-        if(file_exists($file) == TRUE) {
-            if($backup == TRUE) {
-                $backup = $file . ".bak";
-                if(file_exists($backup) == TRUE) {
+    if ($mode == 'w') {
+        if (file_exists($file) == true) {
+            if ($backup == true) {
+                $backup = $file.'.bak';
+                if (file_exists($backup) == true) {
                     chk_file($backup);
                 }
-                chk_file($file, "rename", $backup);
+
+                chk_file($file, 'rename', $backup);
             } else {
-                chk_file($file, "delete");
+                chk_file($file, 'delete');
             }
         }
     }
@@ -52,7 +58,4 @@ function file_write_file($file = '', $string = '', $mode = 'w', $backup = TRUE)
     fwrite($fp, $string);
     fclose($fp);
 
-}
-
-
-?>
+}//end file_write_file()

@@ -1,6 +1,12 @@
-apache2handler_logs/*
+apache2handler_logs/**
 assets/lib/vendor/**
 logs/**
 assets/lib/composer.lock
 assets/layouts/misc/**
 node_modules/*
+composer.json
+composer.lock
+vendor/**
+tags
+apache2handler_logs/plexweb.html.log
+apache2handler_logs/plexweb.log
