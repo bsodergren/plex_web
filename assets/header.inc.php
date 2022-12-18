@@ -50,8 +50,6 @@ if(!isset($_SESSION['library']))$_SESSION['library']="Studio";
 if(isset($_REQUEST['library']))$_SESSION['library']=$_REQUEST['library'];
 $in_directory=$_SESSION['library'];
 
-logger("in_directory " , $in_directory);
-logger("_SESSION _SESSION " , $_SESSION);
 
 
 //$lib_req="&library=$in_directory";
@@ -71,6 +69,9 @@ if(isset($_REQUEST['direction']))
       $_SESSION['direction'] = 'ASC';
 	}
 }
+
+
+logger("session", $_SESSION);
 
 if(!isset($_SESSION['sort']))$_SESSION['sort']="title"; 
 if(isset($_REQUEST['sort'])) $_SESSION['sort'] = $_REQUEST['sort'];

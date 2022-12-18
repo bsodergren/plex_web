@@ -61,7 +61,7 @@ $request_key = uri_String($uri);
 
 $redirect_string="files.php".$request_key;
 
-process_form($redirect_string);
+
 	
 	list($sql_studio,$order_sort) = uri_SQLQuery($uri);
 	
@@ -74,7 +74,6 @@ process_form($redirect_string);
 
 	$sql=query_builder("select",$where,false,$order_sort,$no_of_records_per_page,$offset);
 
-	logger("qyefasd",$sql);
 	$results = $db->query($sql);
 	
 	//$total_results=count($results);
@@ -99,12 +98,20 @@ include __LAYOUT_HEADER__;
 <a href="genre.php<?php echo $request_key; ?>">back</a>
 <br>
 <br>
+
+
 <?php
 	echo display_sort_options($url_array);
+?>
 
+<form action="process.php" method="post" id="formId">
+<button type='submit' name="submit" onclick="hideSubmit('save')">Save</button>
+<button type='submit' name="submit" onclick="hideSubmit('delete')">Delete</button>
+<input type='hidden' id="redirect" value="<? echo $redirect_string;?>">
+<input type=hidden id="hiddenSubmit" name=submit value="">
 
-		echo '<form action="files.php" method="post" id="myform">'."\n";
-		
+	<?php 
+	// <button type="submit" name="submit" value="submit">Send</button>		
 		$array=array(
 			"VALUE_STUDIO" => $_REQUEST[$studio_key],
 			"NAME_STUDIO" => $studio_key,
@@ -121,6 +128,8 @@ include __LAYOUT_HEADER__;
  
  ?>
  </main>
+
+
 <?php
 
 include __LAYOUT_FOOTER__;  ?>

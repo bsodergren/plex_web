@@ -126,7 +126,7 @@ function display_filelist($results, $option='')
         }
 
         if ($button == true) {
-            $extra_button = '<input type="submit" name="submit" value="'.$button.'" id="'.$button.'_'.$row_id.'" onclick="doSubmitValue(this.id);">';
+        //    $extra_button = '<input type="submit" name="submit" value="'.$button.'" id="'.$button.'_'.$row_id.'" onclick="doSubmitValue(this.id);">';
         }
 
         $array       = [

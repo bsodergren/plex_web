@@ -35,6 +35,10 @@ function editPlaceholder(id) {
   }
 }
 
+function hideSubmit(text)
+{
+  document.getElementById('hiddenSubmit').value = text;
+}
 
 function doSubmitValue(id)
 {
@@ -77,7 +81,7 @@ function checkValue(id) {
   function setNull(id)
   {
     var f_id = id + "_id"
-    document.getElementById(f_id).value = "";
+    document.getElementById(f_id).value = "NULL";
     document.getElementById(f_id).style = "background:black";
   }
     

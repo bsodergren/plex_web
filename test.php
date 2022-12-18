@@ -2,10 +2,7 @@
 DEFINE('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], ".php") );
 
 require_once("_config.inc.php");
-
-
- $_REQUEST["genre"]="mmf";
- 
+/* 
 $url_array = array(
 	"url" => $_SERVER['PHP_SELF'],
 	"rq_key" => "genre",
@@ -18,9 +15,9 @@ $url_array = array(
 		"title" => "title",	
 		"Duration" => "Duration")
 );
-
+*/
 define('TITLE', "Test Page");
-
+$redirect_string = "files.php";
 include __LAYOUT_HEADER__;
 ?>
     
@@ -28,8 +25,17 @@ include __LAYOUT_HEADER__;
 <a href="home.php">back</a>
 <br>
 <br>
+
+<form action="process.php" method="post" id="formId">
+<button type='submit' name="submit" onclick="hideSubmit('save')">Save</button>
+<button type='submit' name="submit" onclick="hideSubmit('delete')">Delete</button>
+<input type='hidden' id="redirect" value="<? echo $redirect_string;?>">
+<input type=hidden id="hiddenSubmit" name=submit value="">
+
+<input type=text name=text>
 <?php
 
  ?>
+ </form>
  </main>
  <?php include __LAYOUT_FOOTER__;  ?>

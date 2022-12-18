@@ -65,6 +65,8 @@ function metadata_write_filedata($file='', $value_array=[])
     $run_cmd = $AtomicParsley." '".realpath($file)."' ".$options.' -W';
     logger('writing run_cmd', $run_cmd);
     $results = shell_exec($run_cmd);
+        logger('writing results', $results);
+
     return $results;
 
 }//end metadata_write_filedata()

@@ -106,28 +106,29 @@ function uri_String($request_array)
 }//end uri_String()
 
 
-function process_form($redirect_url)
+function process_form($redirect_url='')
 {
     global $_POST;
 
+    
     if (isset($_POST['submit'])) {
         if ($_POST['submit'] == 'save') {
-            echo saveData($_POST, $redirect_url);
+            return saveData($_POST, $redirect_url);
             exit;
         }
 
         if (str_starts_with($_POST['submit'], 'delete')) {
-            echo deleteEntry($_POST, $redirect_url);
+            return deleteEntry($_POST, $redirect_url);
             exit;
         }
 
         if (str_starts_with($_POST['submit'], 'filedelete')) {
-            echo deleteFile($_POST, $redirect_url);
+            return deleteFile($_POST, $redirect_url);
             exit;
         }
 
         if (str_starts_with($_POST['submit'], 'hide')) {
-            echo hideEntry($_POST, $redirect_url);
+            return hideEntry($_POST, $redirect_url);
             exit;
         }
     }//end if
@@ -252,18 +253,25 @@ function hideEntry($data_array, $redirect=false, $timeout=4)
 function saveData($data_array, $redirect=false, $timeout=4)
 {
     global $db;
+    
+    $__output = '';
 
     foreach ($data_array as $key => $value) {
-        if (str_contains($key, '_') == true) {
+        if (str_contains($key, '_') == true)
+        {
+
             $value = trim($value);
 
             if ($value != '') {
+
                 $pcs = explode('_', $key);
 
                 $id         = $pcs[0];
                 $field      = $pcs[1];
                 $atom_field = $field;
                 $atom_value = $value;
+
+                logger("Key array pair", "$atom_field => $atom_value");
 
                 if ($field == 'id') {
                     continue;
@@ -282,7 +290,11 @@ function saveData($data_array, $redirect=false, $timeout=4)
                     $sql = 'UPDATE '.Db_TABLE_FILEDB.'  SET `'.$field.'` = NULL WHERE id = '.$id;
 
                     $db->query($sql);
-                } else {
+                    $value = '';
+                    $atom_value = $value;
+                }
+
+                if ($value != '') {
                     if ($field == 'artist') {
                         if (str_contains($value, '-') == true) {
                             $value = str_replace('-', ' ', $value);
@@ -293,42 +305,49 @@ function saveData($data_array, $redirect=false, $timeout=4)
                             $value = str_replace(', ', ',', $value);
                         }
 
-                        $names_arr  = explode(',', $value);
+                        $names_arr = explode(',', $value);
                         $names_list = '';
 
                         foreach ($names_arr as $str_name) {
-                            $str_name   = ucwords(strtolower($str_name));
-                            $names_list = $str_name.','.$names_list;
+                            $str_name = ucwords(strtolower($str_name));
+                            $names_list = $str_name . ',' . $names_list;
                         }
 
                         $value = rtrim($names_list, ',');
                     }
 
+
+
                     if ($field == 'studio' || $field == 'substudio') {
                         if ($field == 'substudio') {
                             $studio_value = metadata_get_value($filename, 'studio');
-                            $atom_field   = 'studio';
-                            $atom_value   = "$studio_value/$value";
+                            $atom_field = 'studio';
+                            $atom_value = "$studio_value/$value";
                         }
                     }
-
+                }
                     $atom_value = trim($atom_value);
                     $value      = trim($value);
+                    $__filename = basename($filename);
+                    $__output .= "$__filename -> $atom_field = \"$atom_value\"<br/>";
 
-                    metadata_write_filedata($filename, [$atom_field => $atom_value]);
+                    logger("Metadata", $atom_field);
+                    logger("Metadata", $atom_value);
+
+                   metadata_write_filedata($filename, [$atom_field => $atom_value]);
 
                     $data = [$field => $value];
                     $db->where('id', $id);
                     $db->update(Db_TABLE_FILEDB, $data);
-                }//end if
+
             }//end if
         }//end if
     }//end foreach
 
     if ($redirect != false) {
-        return JavaRefresh($redirect, $timeout);
+         return JavaRefresh($redirect, $timeout);
     }
-
+    return $__output;
 }//end saveData()
 
 

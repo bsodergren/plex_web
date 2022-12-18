@@ -56,15 +56,18 @@ function logger($msg, $var = '')
     $html_var = '';
     $log_var = '';
 
+    $html_var_string=$var;
     if(is_array($var) || is_object($var)) {
-        $var = var_export($var, 1);
+         $html_var = printCode($var);
+        $html_var_string = str_replace("<br>", "</span><br><span style=\"margin-left: 40px\">", $html_var);
+        $var=var_export($var,1);
 
     }
 
     if($var != '') {
 
-        $html_var_string = wordwrap($var, 80, "<br>");
-        $html_var = $colors->getColoredHTML("<br><span style=\"text-indent: 40px\">\n" . $html_var_string . "\n</span>\n", "green");
+       // $html_var_string = wordwrap($html_var, 80, "<br>");
+        $html_var = $colors->getColoredHTML("<span style=\"margin-left: 40px\">\n" . $html_var_string . "\n</span>\n", "green");
         $log_var = $colors->getColoredString($var, "green");
     }
 
@@ -72,10 +75,10 @@ function logger($msg, $var = '')
     $html_func = $colors->getColoredHTML($function_list, "blue");
     $log_func = $colors->getColoredString($function_list, "blue");
 
-    $html_msg = $colors->getColoredHTML($msg, "red");
+    $html_msg = $colors->getColoredHTML("<span style=\"margin-left: 40px\">".$msg."</span>", "red");
     $log_msg = $colors->getColoredString($msg, "red");
 
-    $html_string = $html_func . ":" . $html_msg . " " . $html_var . "<br>";
+    $html_string = $html_func . "<br>" . $html_msg . "<br>" . $html_var . "<br>";
 
     $log_string = $log_func . ":" . $log_msg . " " . $log_var;
 
