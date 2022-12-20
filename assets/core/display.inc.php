@@ -1,6 +1,74 @@
 <?php
 
+function display_pagenationPages($url, $request_string='', $pageno='', $total_pages='')
+{
 
+    logger("Request url", $url);
+    if ($request_string != '') {
+
+        logger("Request String", $request_string);
+        $request_string = ltrim($request_string, '?');
+        logger("Request String", $request_string);
+        $request_string = preg_replace('/(&pageno=[\d]+)/iu', '', $request_string);
+        logger("Request String", $request_string);
+        $request_string = preg_replace('/(direction=\w+)&.*/iU', '', $request_string);
+        logger("Request String", $request_string);
+    }
+
+    $html = '<a href="'.$url.'?pageno=1&'.$request_string.'">First</a> | ';
+
+
+    if ($pageno <= $total_pages - 6) {
+        $two = $pageno + 2;
+        $three = $pageno + 3;
+        $four = $pageno + 4;
+        $five = $pageno + 5;
+        $six = $pageno + 6;
+    } else {
+        $o = $total_pages - $pageno;
+        $two = $total_pages - (6 + $o);
+        $three = $total_pages -(5 + $o);
+        $four = $total_pages -(4 + $o);
+        $five = $total_pages -(3 + $o);
+        $six = $total_pages - (2 + $o);
+    }
+
+    $previous_pages = [ $two, $three, $four, $five, $six];
+
+    $html = '<a href="'.$url.'?pageno=1&'.$request_string.'">First</a> | ';
+
+    
+    if ($pageno >= $total_pages) {
+        $next_page = $pageno;
+        $url_next = $url.'?'.$request_string;
+    } else {
+        $url_next = $url.'?pageno='.($pageno + 1).'&'.$request_string;
+    }
+    $html .= '<a href="'.$url_next.'">Next</a> | ';
+
+    foreach ($previous_pages as $page_number )
+    {
+
+        if ($page_number <= $total_pages)
+        {
+            $next_page = $page_number;
+            $url_next = $url . '?pageno=' . ($next_page) . '&' . $request_string;
+
+            $html .= '<a href="' . $url_next . '">' . $next_page . '</a> | ';
+        }
+    }
+
+    if ($pageno <= 1) {
+        $url_prev = $url.'?'.$request_string;
+    } else {
+        $url_prev = $url.'?pageno='.($next_page - 1).'&'.$request_string;
+    }
+    $html .= '<a href="'.$url_prev.'">Prev</a> | ';
+
+    $html .= '<a href="'.$url.'?pageno='.$total_pages.'&'.$request_string.'">Last</a>';
+    echo $html;
+
+}
 /**
  * @param  $url
  * @param  $request_string

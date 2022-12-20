@@ -17,6 +17,7 @@ $result2 = $db->query($sql);
 
 ?>
 <main role="main" class="container">
+<a href='files.php?allfiles=all'>All</a><br>
 <ul id="menu" class="list">
 <?php
 $json_array['menu'] = [];
