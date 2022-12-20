@@ -1,27 +1,9 @@
 <?php
 
-if (!defined('APP_NAME')) {
-    define('APP_NAME', 'Plex Media Import');
-}
-
-if (!defined('APP_ORGANIZATION')) {
-    define('APP_ORGANIZATION', 'KLiK');
-}
-
-if (!defined('APP_OWNER')) {
-    define('APP_OWNER', 'bjorn');
-}
-
-if (!defined('APP_DESCRIPTION')) {
-    define('APP_DESCRIPTION', 'Embeddable PHP Login System');
-}
-
-
 if (!defined('__SCRIPT_NAME__')) {
     define('__SCRIPT_NAME__', 'error');
 }
 
-define('__ATOM__', '/usr/local/bin/AtomicParsley');
 if (!defined('__PLEX_LIBRARY__')) {
     define('__PLEX_LIBRARY__', '/home/bjorn/plex/XXX');
 }
@@ -89,6 +71,10 @@ if (php_sapi_name() != 'cli') {
 define('__THIS_PAGE__', str_replace(APP_HOME.'/', '', $_SERVER['SCRIPT_NAME']));
 
 
+require_once(__PHP_ASSETS_DIR__."/settings.inc.php");
+ 
+
+
 unset($logfile_name);
 
 $navigation_link_array = [
@@ -108,7 +94,12 @@ $navigation_link_array = [
             'Studio' => 'missing/studio.php',
         ],
     ],
-
+    'settings' => [
+        'url'    => 'settings.php',
+        'text'   => 'settings',
+        'secure' => false,
+        'js'     => false,
+    ],
     'File Browser' => [
         'url'    => 'filebrowser.php',
         'text'   => 'filebrowser',
