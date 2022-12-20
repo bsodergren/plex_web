@@ -109,10 +109,10 @@ $navigation_link_array = [
         ],
     ],
 
-    'settings' => [
-        'url'    => 'settings.php',
-        'text'   => 'settings',
-        'secure' => true,
+    'File Browser' => [
+        'url'    => 'filebrowser.php',
+        'text'   => 'filebrowser',
+        'secure' => false,
         'js'     => false,
     ],
     'home'     => [

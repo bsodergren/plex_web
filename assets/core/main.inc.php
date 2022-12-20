@@ -427,3 +427,14 @@ function array_find($needle, $haystack)
     }
 
 }//end array_find()
+
+
+function getReferer()
+{
+    global $_SERVER;
+    $url=$_SERVER['HTTP_REFERER'];	
+    $parts=parse_url($url);
+    return $parts['path'];
+
+
+}
