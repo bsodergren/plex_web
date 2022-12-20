@@ -62,7 +62,7 @@ if (isset($_REQUEST['substudio']) && $_REQUEST['substudio'] != 'null') {
 <a href="home.php">back</a>
 <br>
 <br>
-<a href='files.php?<?php echo $request_key; ?>&allfiles=all'>All</a><br>
+<a href='files.php?<?php echo $request_key; ?>&allfiles=1'>All</a><br>
 
 <?php
 foreach ($result as $k => $v) {

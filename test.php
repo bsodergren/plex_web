@@ -26,16 +26,17 @@ include __LAYOUT_HEADER__;
 <br>
 <br>
 
-<form action="process.php" method="post" id="formId">
-<button type='submit' name="submit" onclick="hideSubmit('save')">Save</button>
-<button type='submit' name="submit" onclick="hideSubmit('delete')">Delete</button>
-<input type='hidden' id="redirect" value="<? echo $redirect_string;?>">
-<input type=hidden id="hiddenSubmit" name=submit value="">
-
-<input type=text name=text>
 <?php
 
+
+
+logger("all files", $sql);
+
+
+$results = $db->query($sql);
+
+print_r2($results);
+
  ?>
- </form>
  </main>
  <?php include __LAYOUT_FOOTER__;  ?>

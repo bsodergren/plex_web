@@ -1,60 +1,69 @@
 <?php
 
+
 function display_pagenationPages($url, $request_string='', $pageno='', $total_pages='')
 {
-
-    logger("Request url", $url);
+    logger('Request url', $url);
     if ($request_string != '') {
-
-        logger("Request String", $request_string);
+        logger('Request String', $request_string);
         $request_string = ltrim($request_string, '?');
-        logger("Request String", $request_string);
+        logger('Request String', $request_string);
         $request_string = preg_replace('/(&pageno=[\d]+)/iu', '', $request_string);
-        logger("Request String", $request_string);
+        logger('Request String', $request_string);
         $request_string = preg_replace('/(direction=\w+)&.*/iU', '', $request_string);
-        logger("Request String", $request_string);
+        logger('Request String', $request_string);
     }
 
     $html = '<a href="'.$url.'?pageno=1&'.$request_string.'">First</a> | ';
 
-
-    if ($pageno <= $total_pages - 6) {
-        $two = $pageno + 2;
-        $three = $pageno + 3;
-        $four = $pageno + 4;
-        $five = $pageno + 5;
-        $six = $pageno + 6;
+    if (($total_pages - 6) >= 0) {
+        if ($pageno <= ($total_pages - 6)) {
+            $two   = ($pageno + 2);
+            $three = ($pageno + 3);
+            $four  = ($pageno + 4);
+            $five  = ($pageno + 5);
+            $six   = ($pageno + 6);
+        } else {
+            $o     = ($total_pages - $pageno);
+            $two   = ($total_pages - (6 + $o));
+            $three = ($total_pages - (5 + $o));
+            $four  = ($total_pages - (4 + $o));
+            $five  = ($total_pages - (3 + $o));
+            $six   = ($total_pages - (2 + $o));
+        }
     } else {
-        $o = $total_pages - $pageno;
-        $two = $total_pages - (6 + $o);
-        $three = $total_pages -(5 + $o);
-        $four = $total_pages -(4 + $o);
-        $five = $total_pages -(3 + $o);
-        $six = $total_pages - (2 + $o);
-    }
+        $two   = ($pageno + 2);
+        $three = ($pageno + 3);
+        $four  = ($pageno + 4);
+        $five  = ($pageno + 5);
+        $six   = ($pageno + 6);
+    }//end if
 
-    $previous_pages = [ $two, $three, $four, $five, $six];
+    $previous_pages = [
+        $two,
+        $three,
+        $four,
+        $five,
+        $six,
+    ];
 
     $html = '<a href="'.$url.'?pageno=1&'.$request_string.'">First</a> | ';
 
-    
     if ($pageno >= $total_pages) {
         $next_page = $pageno;
-        $url_next = $url.'?'.$request_string;
+        $url_next  = $url.'?'.$request_string;
     } else {
         $url_next = $url.'?pageno='.($pageno + 1).'&'.$request_string;
     }
+
     $html .= '<a href="'.$url_next.'">Next</a> | ';
 
-    foreach ($previous_pages as $page_number )
-    {
-
-        if ($page_number <= $total_pages)
-        {
+    foreach ($previous_pages as $page_number) {
+        if ($page_number <= $total_pages) {
             $next_page = $page_number;
-            $url_next = $url . '?pageno=' . ($next_page) . '&' . $request_string;
+            $url_next  = $url.'?pageno='.($next_page).'&'.$request_string;
 
-            $html .= '<a href="' . $url_next . '">' . $next_page . '</a> | ';
+            $html .= '<a href="'.$url_next.'">'.$next_page.'</a> | ';
         }
     }
 
@@ -63,12 +72,15 @@ function display_pagenationPages($url, $request_string='', $pageno='', $total_pa
     } else {
         $url_prev = $url.'?pageno='.($next_page - 1).'&'.$request_string;
     }
+
     $html .= '<a href="'.$url_prev.'">Prev</a> | ';
 
     $html .= '<a href="'.$url.'?pageno='.$total_pages.'&'.$request_string.'">Last</a>';
     echo $html;
 
-}
+}//end display_pagenationPages()
+
+
 /**
  * @param  $url
  * @param  $request_string
@@ -168,12 +180,14 @@ function display_directory_navlinks($url, $text, $request_uri='')
 }//end display_directory_navlinks()
 
 
-function display_filelist($results, $option='')
+function display_filelist($results, $option='', $page_array=[])
 {
     global $db;
     $output = '';
 
     $output .= '<div class="container">'."\n";
+
+        $total_files = $page_array['total_files'];
 
     foreach ($results as $id => $row) {
         $output .= '<table class="blueTable" > '."\n";
@@ -182,6 +196,7 @@ function display_filelist($results, $option='')
         $row_filename  = $row['filename'];
         $row_fullpath  = $row['fullpath'];
         $row_video_key = $row['video_key'];
+        $result_number = $row['result_number'];
 
         $button       = false;
         $extra_button = '';
@@ -194,7 +209,7 @@ function display_filelist($results, $option='')
         }
 
         if ($button == true) {
-        //    $extra_button = '<input type="submit" name="submit" value="'.$button.'" id="'.$button.'_'.$row_id.'" onclick="doSubmitValue(this.id);">';
+            // $extra_button = '<input type="submit" name="submit" value="'.$button.'" id="'.$button.'_'.$row_id.'" onclick="doSubmitValue(this.id);">';
         }
 
         $array       = [
@@ -202,7 +217,8 @@ function display_filelist($results, $option='')
             'DELETE_ID'    => 'delete_'.$row_id,
             'FILE_NAME_ID' => $row_id.'_filename',
             'FULL_PATH'    => $row_fullpath,
-
+            'FILE_NO'      => $result_number,
+            'TOTAL_FILES'  => $total_files,
             'HIDE_BUTTON'  => $extra_button,
         ];
         $output     .= process_template('metadata_row_header', $array);
@@ -224,6 +240,14 @@ function display_filelist($results, $option='')
                 break;
 
                 case 'video_key':
+
+                break;
+
+                case 'result_number':
+
+                break;
+
+                case 'library':
 
                 break;
 
