@@ -23,7 +23,7 @@ if (isset($_REQUEST['genre'])) {
         //$sql_genre = " and " ." genre IS NULL ";
         $sql_genre = "";
     } else {
-        $sql_genre = " genre LIKE '" . $genre . "' ";
+        $sql_genre = " genre LIKE '%" . $genre . "%' ";
     }
 
     $order_sort = "  title " . $_SESSION['direction'];
@@ -39,14 +39,28 @@ if (isset($_REQUEST['genre'])) {
     $request_key = uri_String($uri);
 
     $where = $lib_where . $sql_genre;
-    $db->where("genre", $genre);
+    $db->where ("genre", '%'.$genre.'%', 'like');
+    $db->where ("library", $in_directory, 'like');
+
     $db->withTotalCount()->get(Db_TABLE_FILEDB);
+    $total_results = $db->totalCount;
+    logger("all total_results", $total_results);
     $total_pages = ceil($db->totalCount / $no_of_records_per_page);
 
+    /*
+    $field_list = ' id, video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath,library ';
+
+    $sql = ' select (@row_num:=@row_num +1) AS result_number, '.$field_list;
+    $sql = $sql . ' from ( select ' . $field_list;
+    $sql = $sql . ' from metatags_filedb WHERE '.$where.' order by '.$order_sort.' LIMIT '.$offset.', '.$no_of_records_per_page.' ) t1,';
+    $sql = $sql . ' (select @row_num:='.$offset.') t2;';
+*/
 
     $sql = query_builder("select", $where, false, $order_sort, $no_of_records_per_page, $offset);
+    logger("all genres", $sql);
+
     $results = $db->query($sql);
-    $total_results = count($results);
+
 
     $url_array = array(
     "url" => $_SERVER['PHP_SELF'],
@@ -61,10 +75,13 @@ if (isset($_REQUEST['genre'])) {
     )
     );
 
-    include __LAYOUT_HEADER__;
+        include __LAYOUT_HEADER__;
+
     ?>
 
 <main role="main" class="container">
+<?php echo $total_results; ?> number of files<br>
+
 <a href="view/genre.php">back</a>
 <br>
 <br>
@@ -72,6 +89,25 @@ if (isset($_REQUEST['genre'])) {
 
 
     echo display_sort_options($url_array, $pageno);
+
+    ?>
+    <p>
+    <div class="nav-item">
+        <?php
+        if (defined('PAGENATION') and PAGENATION == true) {
+            display_pagenationPages($_SERVER['PHP_SELF'], $request_key, $pageno, $total_pages);
+        }
+    
+        ?>
+    </div>
+    
+<form action="process.php" method="post" id="formId">
+<!-- <button type='submit' name="submit" onclick="hideSubmit('save')">Save</button> 
+<button type='submit' name="submit" onclick="hideSubmit('delete')">Delete</button> -->
+
+<input type='hidden' id="redirect" value="<?php echo $redirect_string; ?>">
+    </p>
+    <?php 
     if (isset($_REQUEST['genre'])) {
         //echo '<form action="files.php" method="post" id="myform">'."\n";
 
@@ -83,13 +119,17 @@ if (isset($_REQUEST['genre'])) {
         //    echo process_template("main_form",$array);
 
 
-
-        echo display_filelist($results);
+        $page_array = [
+            'total_files'            => $total_results
+        ];
+        echo display_filelist($results,'',$page_array);
 
         //    echo "</form>";
     }
 
     ?>
+    		<input type=hidden id="hiddenSubmit" name=submit value="">
+    </form>
 </main>
     <?php
 

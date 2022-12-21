@@ -13,6 +13,7 @@ function display_pagenationPages($url, $request_string='', $pageno='', $total_pa
         $request_string = preg_replace('/(direction=\w+)&.*/iU', '', $request_string);
         logger('Request String', $request_string);
     }
+    $next_page = $pageno+1;
 
     $html = '<a href="'.$url.'?pageno=1&'.$request_string.'">First</a> | ';
 
@@ -90,31 +91,45 @@ function display_pagenationPages($url, $request_string='', $pageno='', $total_pa
  */
 
 
-function display_pagenation($url, $request_string='', $pageno='', $total_pages='')
+
+
+function display_pagenation($url, $request_string='', $pageno='', $total_pages='',$only_next=false)
 {
+    $html = ' <nav aria-label="Page navigation">    <ul class="pagination justify-content-left">';
     if ($request_string != '') {
         $request_string = ltrim($request_string, '?');
         $request_string = preg_replace('/(&pageno=[\d+])/iU', '', $request_string);
         $request_string = preg_replace('/(direction=\w+)&.*/iU', '', $request_string);
     }
 
-    $html = '<a href="'.$url.'?pageno=1&'.$request_string.'">First</a> | ';
+    if ($only_next == false) {
+        $html .= '      <li class="page-item"><a class="page-link" href="' . $url . '?pageno=1&' . $request_string . '">First</a></li> ';
+    
+        if ($pageno <= 1) {
+            $url_prev = $url.'?'.$request_string;
+        } else {
+            $url_prev = $url.'?pageno='.($pageno - 1).'&'.$request_string;
+        }
 
-    if ($pageno <= 1) {
-        $url_prev = $url.'?'.$request_string;
-    } else {
-        $url_prev = $url.'?pageno='.($pageno - 1).'&'.$request_string;
+        
+    $html .= '   <li class="page-item"><a class="page-link" href="'.$url_prev.'">Prev</a></li>';
+        //$html .= '<a href="'.$url_prev.'">Prev</a> | ';
     }
 
-    $html .= '<a href="'.$url_prev.'">Prev</a> | ';
     if ($pageno >= $total_pages) {
         $url_next = $url.'?'.$request_string;
     } else {
         $url_next = $url.'?pageno='.($pageno + 1).'&'.$request_string;
     }
 
-    $html .= '<a href="'.$url_next.'">Next</a> | ';
-    $html .= '<a href="'.$url.'?pageno='.$total_pages.'&'.$request_string.'">Last</a>';
+    $html .= '   <li class="page-item"><a class="page-link" href="'.$url_next.'">Next</a></li>';
+
+    if ($only_next == false) {
+
+        $html .= '      <li class="page-item"><a class="page-link" href="' . $url . '?pageno=' . $total_pages . '&' . $request_string . '">Last</a></li> ';
+
+        $html .= ' </ul>        </nav>';
+    }
 
     echo $html;
 
@@ -184,10 +199,13 @@ function display_filelist($results, $option='', $page_array=[])
 {
     global $db;
     $output = '';
-
+    $total_files = 0;
+    $result_number = 0;
     $output .= '<div class="container">'."\n";
 
+    if (isset($page_array['total_files'])) {
         $total_files = $page_array['total_files'];
+    }
 
     foreach ($results as $id => $row) {
         $output .= '<table class="blueTable" > '."\n";
@@ -196,7 +214,9 @@ function display_filelist($results, $option='', $page_array=[])
         $row_filename  = $row['filename'];
         $row_fullpath  = $row['fullpath'];
         $row_video_key = $row['video_key'];
-        $result_number = $row['result_number'];
+        if (isset($row['result_number'])) {
+            $result_number = $row['result_number'];
+        }
 
         $button       = false;
         $extra_button = '';
@@ -224,8 +244,10 @@ function display_filelist($results, $option='', $page_array=[])
         $output     .= process_template('metadata_row_header', $array);
         $value_array = [];
         $output     .= '<tbody> '."\n";
+            $studio_value='';
 
         foreach ($row as $key => $value) {
+            $value_array = [];
             $template_name = 'metadata_row';
 
             switch ($key) {
@@ -340,19 +362,34 @@ function display_filelist($results, $option='', $page_array=[])
                             break;
                         }//end switch
                     }//end if
+                    
+                    if ($key == "studio") 
+                    {
+                        $studio_value=$value;
+                    }
 
-                    if (isset($value_array[$key][0]) && $value_array[$key][0] != '') {
+                    if ($key == "substudio") {
+                        if (isset($value_array[$key][0]) && $value_array[$key][0] != '') {
+
+                            if (trim($studio_value) == trim($value_array[$key][0])) {
+                                unset($value_array[$key]);
+                                unset($value_array['style']);
+                            }
+                        }
+                    }
+
+                  /*  if ($value != '') {
+                        $value = ' value="' . $value . '"';
+                    }
+                */
+                    if (isset($value_array[$key][0]) && $value_array[$key][0] != '') {              
                         $value = ' value="'.$value_array[$key][0].'"';
                         if (isset($value_array['style'][0]) && $value_array['style'][0] != '') {
                             $value = $value.' style="'.$value_array['style'][0].'"';
                         }
-                    } else {
-                        if ($key == 'studio' || $key == 'substudio') {
-                            $value = $value;
-                        } else {
-                            $value = '';
-                        }
                     }
+
+
 
                     $array = [
 

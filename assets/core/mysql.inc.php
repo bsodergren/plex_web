@@ -27,9 +27,14 @@ class MetaFileinfo extends dbObject
 
 function query_builder($fields = "select", $where = FALSE, $group = FALSE, $order = FALSE, $limit = FALSE, $offset = FALSE)
 {
+    $field_list = ' id, video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath,library ';
 
-    if($fields == "select") {
-        $sql = "SELECT id,video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath from " . Db_TABLE_FILEDB;
+    if($fields == "select") {  
+
+    $sql = ' select (@row_num:=@row_num +1) AS result_number, '.$field_list;
+    $sql = $sql . ' from ( select ' . $field_list;
+    $sql = $sql . ' from '.Db_TABLE_FILEDB.' ';
+    
     } else {
 
         $sql = "SELECT " . $fields . " from " . Db_TABLE_FILEDB;
@@ -51,12 +56,13 @@ function query_builder($fields = "select", $where = FALSE, $group = FALSE, $orde
     }
 
     if($limit != FALSE && $offset == FALSE) {
-        $sql = $sql . " LIMIT " . $limit;
+        $sql = $sql . " LIMIT " . $limit.' ) t1,';
+        $sql = $sql . ' (select @row_num:='.$offset.') t2';
 
     }
     if($limit != FALSE && $offset != FALSE) {
-        $sql = $sql . "  LIMIT " . $offset . ", " . $limit;
-
+        $sql = $sql . "  LIMIT " . $offset . ", " . $limit .') t1,';
+        $sql = $sql . ' (select @row_num:='.$offset.') t2';
     }
 
     //logger("SQL Builder", $sql);

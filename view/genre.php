@@ -11,7 +11,7 @@ include __LAYOUT_HEADER__;
 		$sql = query_builder("count(genre) as cnt, genre",
 					"library = '".$in_directory."'",
 					"genre","genre asc");
-	
+logger("genre sql", $sql);
 	$result = $db->query($sql);
 
 	
@@ -22,20 +22,40 @@ include __LAYOUT_HEADER__;
     <?php
 	
 	echo "<ul> \n";
+	$allgenre_array=array();
 	foreach($result as $k => $v )
 	{
 		
 		if($v["genre"] != "" )
 		{
-			$cnt = $v["cnt"];			
-		
-			$genre = str_replace(" ","-",$v['genre']);
-			$genre = str_replace("/","_",$genre);
-			
-			echo "<li><a href='view/files.php?genre=".$genre."'>".$v["genre"]."</a> (".$cnt.")<br>";
+			$genre_array = explode(',', $v["genre"]);
+		    foreach ($genre_array as $x => $g) {
+			    if (!in_array($g, $allgenre_array)) {
+				    array_push($allgenre_array, $g);
 
+			    }
+		    }
 		}
 	}
+
+    
+    foreach ($allgenre_array as $x => $g) {
+
+	    $sql = "SELECT count(*) as cnt from metatags_filedb WHERE library = '".$in_directory."' AND genre LIKE '%".$g."%'";
+		logger("genre sql", $sql);
+
+		$rar = $db->rawQueryOne($sql);
+		$cnt = '';
+		if (isset($rar['cnt'])) {
+			$cnt = $rar['cnt'];
+		}
+			$genre = str_replace(" ","-",$g);
+			$genre = str_replace("/","_",$genre);
+			
+			echo "<li><a href='view/files.php?genre=".$genre."'>".$g."</a> (".$cnt.")<br>";
+	}
+
+
 
  ?>
  </ul>

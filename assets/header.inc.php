@@ -70,16 +70,13 @@ if(isset($_REQUEST['direction']))
 	}
 }
 
-
-logger("session", $_SESSION);
-
 if(!isset($_SESSION['sort']))$_SESSION['sort']="title"; 
 if(isset($_REQUEST['sort'])) $_SESSION['sort'] = $_REQUEST['sort'];
 
-$no_of_records_per_page = 20;
+$no_of_records_per_page = __RECORDS_PER_PAGE__;
 
-if (isset($_GET['pageno'])) {
-   $pageno = $_GET['pageno'];
+if (isset($_REQUEST['pageno'])) {
+   $pageno = $_REQUEST['pageno'];
 } else {
 	$pageno = 1;
 }

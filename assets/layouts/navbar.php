@@ -28,6 +28,7 @@
 			
 		</div>
 <div class="nav-item">
+
 <?php
 	if(defined('PAGENATION') and PAGENATION == true) {
 		display_pagenation($_SERVER['PHP_SELF'],$request_key,$pageno,$total_pages);

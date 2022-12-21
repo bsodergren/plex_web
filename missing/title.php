@@ -8,10 +8,15 @@ define('TITLE', "Home");
 
 include __LAYOUT_HEADER__;
 
+$order_sort = "  title " . $_SESSION['direction'];
+if (isset($_SESSION['sort'])) {
+	$order_sort = $_SESSION['sort'] . " " . $_SESSION['direction'];
 
-echo doRequest('save','saveData',0,__THIS_PAGE__);
+}
+if (isset($_GET['pageno'])) {
+	$uri["pageno"] = $_GET['pageno'];
+}
 
-echo doRequest('delete','deleteEntry',0,__THIS_PAGE__);
 
 
 ?>
@@ -27,16 +32,17 @@ if(isset($_REQUEST['viewstudio']))
 	$studio = str_replace("-"," ",$_REQUEST['viewstudio']);
 	$studio = str_replace("_","/",$studio);
 	
-		$sql = "SELECT id,filename,title,artist,genre,studio,substudio,studio_b from ".Db_TABLE_FILEDB."   WHERE `".__NULL_FIELD."` IS NULL and  studio = \"".$studio."\" ORDER BY `studio`,`filename` ASC";
+
+    $where = $lib_where  . __NULL_FIELD." IS NULL ";
+
+	$sql = query_builder("select", $where, false, $order_sort, $no_of_records_per_page, $offset);
+    logger("all genres", $sql);
+
 
 	//display_log($sql);
 	$results = $db->query($sql);
+	echo display_filelist($results, '');
 
-	echo "<table class=blueTable> 
- <form action=".__THIS_PAGE__." method=post id=\"myform\">";
-	echo showFileRow($results);
-	echo "</table>
-	</form>";
 } else {
 	
 		$sql = "select count(studio) as cnt, studio from ".Db_TABLE_FILEDB." WHERE `".__NULL_FIELD."` IS NULL  GROUP by studio ORDER BY `studio` ASC;";

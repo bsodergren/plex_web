@@ -1,4 +1,16 @@
-<script src="<?php echo __LAYOUT_URL__;?>js/jquery-3.4.1.min.js"></script>
+</body>
+
+<footer id="myFooter">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                    <h5><?php echo display_pagenation($_SERVER['PHP_SELF'],$request_key,$pageno,$total_pages,true); ?></h5>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="<?php echo __LAYOUT_URL__;?>js/jquery-3.4.1.min.js"></script>
 <script src="<?php echo __LAYOUT_URL__;?>js/popper.min.js"></script>
 <script src="<?php echo __LAYOUT_URL__;?>js/bootstrap.min.js"></script>
 
@@ -105,5 +117,4 @@ $(document).on('click', '.list > li ', function () {
 <?php
 }
 	?>
-</body>
 </html>

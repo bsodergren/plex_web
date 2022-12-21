@@ -80,9 +80,9 @@ if (!isset($_REQUEST['allfiles'])) {
     $total_pages   = ceil($db->totalCount / $no_of_records_per_page);
 
 
-    $sql = 'select (@row_num:=@row_num +1) AS result_number, id, video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath,library  from ( select id,video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath,library from metatags_filedb WHERE '.$where.' order by '.$order_sort.' LIMIT '.$offset.', '.$no_of_records_per_page.' ) t1, (select @row_num:='.$offset.') t2;';
+//    $sql = 'select (@row_num:=@row_num +1) AS result_number, id, video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath,library  from ( select id,video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath,library from metatags_filedb WHERE '.$where.' order by '.$order_sort.' LIMIT '.$offset.', '.$no_of_records_per_page.' ) t1, (select @row_num:='.$offset.') t2;';
 
-    // $sql=query_builder("select",$where,false,$order_sort,$no_of_records_per_page,$offset);
+    $sql=query_builder("select",$where,false,$order_sort,$no_of_records_per_page,$offset);
     logger('all files', $sql);
 
 
@@ -123,7 +123,7 @@ if (isset($_REQUEST['allfiles'])) {
 <div class="nav-item">
     <?php
     if (defined('PAGENATION') and PAGENATION == true) {
-        display_pagenationPages($_SERVER['PHP_SELF'], $request_key, $pageno, $total_pages);
+		display_pagenation($_SERVER['PHP_SELF'],$request_key,$pageno,$total_pages);
     }
 
     ?>
@@ -151,7 +151,7 @@ if (isset($_REQUEST['allfiles'])) {
             'VALUE_GENRE'  => (isset($_REQUEST['genre'])) ? $_REQUEST['genre'] : 'null',
             'NAME_GENRE'   => 'genre',
         ];
-        echo process_template('main_form', $array);
+            echo process_template('main_form', $array);
 
             $page_array = [
                 'total_files'            => $total_results
@@ -160,6 +160,8 @@ if (isset($_REQUEST['allfiles'])) {
             echo display_filelist($results, 'filedelete', $page_array);
 
             echo '</form>';
+
+
             ?>
  </main>
 

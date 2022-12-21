@@ -139,62 +139,80 @@ function missingArtist($key, $row)
     global $studio_ignore;
 
     $value_array  = [];
-    $match_studio = $row['studio'];
+
+    if($row['substudio'] != ''){
+        $match_studio = $row['substudio'];
+    }else {
+        $match_studio = $row['studio'];
+    }
 
     $studio_match = strtolower(str_replace(' ', '_', $match_studio));
 
     unset($__match);
     if (key_exists($studio_match, $studio_pattern)) {
         $__match = $studio_match;
+        logger("studio_pattern", $__match);
+
     }
 
     // print_r2($studio_ignore);
     // print_r2(str_replace(" ","_",strtolower($row['substudio'])));
-    // echo in_array(str_replace(" ","_",strtolower($row['substudio'])), $studio_ignore );
+    if(in_array(str_replace(" ","_",strtolower($row['substudio'])), $studio_ignore )){
+        return false;
+    }
+
     if (isset($__match)) {
+        if (key_exists('artist', $studio_pattern[$__match])) {
+
         $pattern   = $studio_pattern[$__match]['artist']['pattern'];
         $delimeter = $studio_pattern[$__match]['artist']['delimeter'];
         $group     = $studio_pattern[$__match]['artist']['group'];
 
+        logger("studio_pattern", $pattern);
+        logger("studio_pattern", $delimeter);
+        logger("studio_pattern", $group);
+        logger("studio_pattern", $row['filename']);
         preg_match($pattern, $row['filename'], $matches);
 
-        if (count($matches) > 0) {
-            $names_array     = explode($delimeter, $matches[$group]);
-            $name_list       = '';
-            $full_name_array = [];
+            if (count($matches) > 0) {
+                $names_array = explode($delimeter, $matches[$group]);
+                $name_list = '';
+                $full_name_array = [];
 
-            foreach ($names_array as $name) {
-                $pieces    = preg_split('/(?=[A-Z_])/', $name);
-                $full_name = '';
-                foreach ($pieces as $part) {
-                    $part = str_replace(' ', '', $part);
+                foreach ($names_array as $name) {
+                    $pieces = preg_split('/(?=[A-Z_])/', $name);
 
-                    if ($part == '') {
-                        continue;
+                    $full_name = '';
+                    foreach ($pieces as $part) {
+                        $part = str_replace('_', '', $part);
+
+                        if ($part == '') {
+                            continue;
+                        }
+
+                        if ($part == '_') {
+                            continue;
+                        }
+
+                        $full_name .= ' ' . $part;
                     }
 
-                    if ($part == '_') {
-                        continue;
+                    $full_name = trim($full_name);
+                    if (array_search(str_replace(' ', '', strtolower($full_name)), $__namesArray) == false) {
+                        if (array_key_exists($full_name, $artistNameFixArray)) {
+                            $full_name = $artistNameFixArray[$full_name];
+                        }
+
+                        $full_name_array[] = ucfirst($full_name);
                     }
+                } //end foreach
 
-                    $full_name .= ' '.$part;
-                }
-
-                $full_name = trim($full_name);
-                if (array_search(str_replace(' ', '', strtolower($full_name)), $__namesArray) == false) {
-                    if (array_key_exists($full_name, $artistNameFixArray)) {
-                        $full_name = $artistNameFixArray[$full_name];
-                    }
-
-                    $full_name_array[] = ucfirst($full_name);
-                }
-            }//end foreach
-
-            $name_list   = implode(', ', $full_name_array);
-            $value_array = [
-                $key    => [$name_list],
-                'style' => ['color:red'],
-            ];
+                $name_list = implode(', ', $full_name_array);
+                $value_array = [
+                    $key => [$name_list],
+                    'style' => ['color:red'],
+                ];
+            }
         }//end if
     }//end if
 
@@ -209,7 +227,13 @@ function missingTitle($key, $row)
     global $__namesArray;
 
     $value_array  = [];
-    $match_studio = $row['studio'];
+    if($row['substudio'] != ''){
+        $match_studio = $row['substudio'];
+    }else {
+        $match_studio = $row['studio'];
+    }
+
+    
 
     $studio_match = strtolower(str_replace(' ', '_', $match_studio));
 
@@ -217,17 +241,34 @@ function missingTitle($key, $row)
     if (key_exists($studio_match, $studio_pattern)) {
         $__match = $studio_match;
     }
-
+   
     if (isset($__match)) {
         if (key_exists('title', $studio_pattern[$__match])) {
             $pattern = $studio_pattern[$__match]['title']['pattern'];
             $group   = $studio_pattern[$__match]['title']['group'];
-
+            logger("studio_pattern", $pattern);
+            logger("studio_group", $group);
+            $delimeter = '_';
+            if (key_exists('delimeter', $studio_pattern[$__match]['title'])) {
+                $delimeter = $studio_pattern[$__match]['title']['delimeter'];
+            }
+            logger("studio_filename", $row['filename']);
             preg_match($pattern, $row['filename'], $matches);
 
             if (count($matches) > 0) {
                 $title       = $matches[$group];
-                $title       = strtolower(str_replace('_', ' ', $title));
+                $title       = strtolower(str_replace($delimeter, ' ', $title));
+                if (key_exists('episode_pattern', $studio_pattern[$__match]['title'])) {
+                    $epi_pattern = $studio_pattern[$__match]['title']['episode_pattern'];
+
+                    preg_match($epi_pattern, $title, $epi_matches);  
+                    $title       = $epi_matches[3];
+                    $__episode = strtoupper($epi_matches[2]);
+                    $__season = strtoupper($epi_matches[1]);
+                    $title = "$__season:$__episode $title";
+
+                }
+
                 $title       = ucwords($title);
                 $value_array = [
                     $key    => [$title],

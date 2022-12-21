@@ -13,7 +13,7 @@ class MetaSettings extends dbObject
 }
 
 $settings = new MetaSettings ();
-$val = $settings->orderBy("name")->get();
+$val = $settings->orderBy("type")->get();
 if ($val) {
 
     foreach ($val as $u) {
