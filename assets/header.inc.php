@@ -53,7 +53,7 @@ $in_directory=$_SESSION['library'];
 
 //$lib_req="&library=$in_directory";
 $lib_where=" library = '".$in_directory."' ";
-$lib_hidden="<input type='hidden' value='".$in_directory."' name='library'>";
+$hidden_fields ="<input type='hidden' value='".$in_directory."' name='library'>";
 $request_key='';
 
 

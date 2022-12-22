@@ -25,8 +25,10 @@
 
 
 <?php
-  echo $hidden_fields . "\n";
   echo display_filelist($results, '', $page_array); 
 ?>
 
 </form>
+<div class="container text-center">
+    <?php if (__DISPLAY__['page'] == true) include __PHP_TEMPLATE__.'paginate.php'; ?>
+    </div>

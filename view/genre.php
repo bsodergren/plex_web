@@ -11,7 +11,6 @@ include __LAYOUT_HEADER__;
 		$sql = query_builder("count(genre) as cnt, genre",
 					"library = '".$in_directory."'",
 					"genre","genre asc");
-logger("genre sql", $sql);
 	$result = $db->query($sql);
 
 	
@@ -42,7 +41,6 @@ logger("genre sql", $sql);
     foreach ($allgenre_array as $x => $g) {
 
 	    $sql = "SELECT count(*) as cnt from metatags_filedb WHERE library = '".$in_directory."' AND genre LIKE '%".$g."%'";
-		logger("genre sql", $sql);
 
 		$rar = $db->rawQueryOne($sql);
 		$cnt = '';

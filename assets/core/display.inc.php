@@ -289,6 +289,7 @@ function display_fileHeader($fileInfoArray,$total_files)
 function display_filelist($results, $option='', $page_array=[])
 {
     global $db;
+    global $hidden_fields;
     $table_html = '';
     $redirect_string='';
     $total_files = '';
@@ -316,6 +317,7 @@ function display_filelist($results, $option='', $page_array=[])
                         'TABLE_BODY_HTML'   => $table_body,
                         'REDIRECT_STRING' => $redirect_string,
                         'SUBMIT_ID' => 'hiddenSubmit_'.$row_id ,
+                        'HIDDEN_INPUT' => $hidden_fields,
                         ]);
     }//end foreach
 

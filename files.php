@@ -1,5 +1,4 @@
 <?php
-$hidden_fields = '';
 define('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], '.php'));
 
 require_once '_config.inc.php';
@@ -91,7 +90,7 @@ $redirect_string = 'files.php'.$request_key;
     
     ?>
       
-<main role="main" class="container">
+<main role="main" class="container mt-5">
 
             <?php
 

@@ -8,6 +8,7 @@ $form = new Formr\Formr('bootstrap4');
 if ($form->submitted())
 {
 
+	$form->printr($_POST);
 	logger("settings post data", $_POST);
     // get our form values and assign them to a variable
 	foreach ($_POST as $key => $value) {
@@ -35,7 +36,8 @@ if ($form->submitted())
 		$id = $db->insert(Db_TABLE_SETTINGS, $new_settiings);
 	}
 
-
+	$form->printr(  $db->getLastError());
+	exit;
     // show a success message if no errors
     if($form->ok()) {
 		$form->redirect('/plex_web/settings.php');
@@ -82,23 +84,15 @@ foreach(__SETTINGS__ as $name => $value_type)
 		}
 ?>
 
-<div class="row">
 
-	 <div class="form-group col">
-	<label for="radiobtn" class="col-sm-3 control-label"><?php echo $name ?></label>		 
-	<div class="col-sm-5 form-check-inline">		 
-		<div class="radio radio-danger">		 
-			<input type="radio"  name="<?php echo $name ?>" id="<?php echo $name ?>1" value="1" <?php echo $checked ?>>	 
-			<label>	Yes	</label>
-		</div>
-		<div class="col-sm-5">		 
+<div class="form-check form-switch">
+<input type="hidden" name="<?php echo $name ?>" value="0">
+ <label class="form-check-label" for="flexSwitchCheckDefault"><?php echo $name ?></label>
+  <input class="form-check-input" name="<?php echo $name ?>" value="1"  type="checkbox" role="switch" id="flexSwitchCheckDefault" <?php echo $checked ?> />
+ 
+  
 
-		<div class="radio radio-danger  ">		 
-			<input type="radio"  name="<?php echo $name ?>" id="<?php echo $name ?>1" value="0"  <?php echo $notchecked ?>>		 
-			<label>	No</label>
-		</div></div>
-	</div>
-</div>
+
 	</div>
 <?php
 
@@ -109,7 +103,7 @@ foreach(__SETTINGS__ as $name => $value_type)
 ?>
 <div class="form-group">
 	<div class="row mb-3"> 
-		<label for="<?php echo $name ?>" class="col-sm-3 col-form-label border  border-secondary"><?php echo $name ?></label>
+		<label for="<?php echo $name ?>" class="col-sm-3 col-form-label "><?php echo $name ?></label>
 		<div class="col-sm-7">
 			<input type="text" class="form-control border border-info" 
 			name="<?php echo $name ?>"
