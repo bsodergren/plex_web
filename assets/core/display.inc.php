@@ -1,141 +1,5 @@
 <?php
 
-
-function display_pagenationPages($url, $request_string='', $pageno='', $total_pages='')
-{
-    logger('Request url', $url);
-    if ($request_string != '') {
-        logger('Request String', $request_string);
-        $request_string = ltrim($request_string, '?');
-        logger('Request String', $request_string);
-        $request_string = preg_replace('/(&pageno=[\d]+)/iu', '', $request_string);
-        logger('Request String', $request_string);
-        $request_string = preg_replace('/(direction=\w+)&.*/iU', '', $request_string);
-        logger('Request String', $request_string);
-    }
-    $next_page = $pageno+1;
-
-    $html = '<a href="'.$url.'?pageno=1&'.$request_string.'">First</a> | ';
-
-    if (($total_pages - 6) >= 0) {
-        if ($pageno <= ($total_pages - 6)) {
-            $two   = ($pageno + 2);
-            $three = ($pageno + 3);
-            $four  = ($pageno + 4);
-            $five  = ($pageno + 5);
-            $six   = ($pageno + 6);
-        } else {
-            $o     = ($total_pages - $pageno);
-            $two   = ($total_pages - (6 + $o));
-            $three = ($total_pages - (5 + $o));
-            $four  = ($total_pages - (4 + $o));
-            $five  = ($total_pages - (3 + $o));
-            $six   = ($total_pages - (2 + $o));
-        }
-    } else {
-        $two   = ($pageno + 2);
-        $three = ($pageno + 3);
-        $four  = ($pageno + 4);
-        $five  = ($pageno + 5);
-        $six   = ($pageno + 6);
-    }//end if
-
-    $previous_pages = [
-        $two,
-        $three,
-        $four,
-        $five,
-        $six,
-    ];
-
-    $html = '<a href="'.$url.'?pageno=1&'.$request_string.'">First</a> | ';
-
-    if ($pageno >= $total_pages) {
-        $next_page = $pageno;
-        $url_next  = $url.'?'.$request_string;
-    } else {
-        $url_next = $url.'?pageno='.($pageno + 1).'&'.$request_string;
-    }
-
-    $html .= '<a href="'.$url_next.'">Next</a> | ';
-
-    foreach ($previous_pages as $page_number) {
-        if ($page_number <= $total_pages) {
-            $next_page = $page_number;
-            $url_next  = $url.'?pageno='.($next_page).'&'.$request_string;
-
-            $html .= '<a href="'.$url_next.'">'.$next_page.'</a> | ';
-        }
-    }
-
-    if ($pageno <= 1) {
-        $url_prev = $url.'?'.$request_string;
-    } else {
-        $url_prev = $url.'?pageno='.($next_page - 1).'&'.$request_string;
-    }
-
-    $html .= '<a href="'.$url_prev.'">Prev</a> | ';
-
-    $html .= '<a href="'.$url.'?pageno='.$total_pages.'&'.$request_string.'">Last</a>';
-    echo $html;
-
-}//end display_pagenationPages()
-
-
-/**
- * @param  $url
- * @param  $request_string
- * @param  $pageno
- * @param  $total_pages
- * @return string
- */
-
-
-
-
-function display_pagenation($url, $request_string='', $pageno='', $total_pages='',$only_next=false)
-{
-    $html = ' <nav aria-label="Page navigation">    <ul class="pagination justify-content-left">';
-    if ($request_string != '') {
-        $request_string = ltrim($request_string, '?');
-        $request_string = preg_replace('/(&pageno=[\d+])/iU', '', $request_string);
-        $request_string = preg_replace('/(direction=\w+)&.*/iU', '', $request_string);
-    }
-
-    if ($only_next == false) {
-        $html .= '      <li class="page-item"><a class="page-link" href="' . $url . '?pageno=1&' . $request_string . '">First</a></li> ';
-    
-        if ($pageno <= 1) {
-            $url_prev = $url.'?'.$request_string;
-        } else {
-            $url_prev = $url.'?pageno='.($pageno - 1).'&'.$request_string;
-        }
-
-        
-    $html .= '   <li class="page-item"><a class="page-link" href="'.$url_prev.'">Prev</a></li>';
-        //$html .= '<a href="'.$url_prev.'">Prev</a> | ';
-    }
-
-    if ($pageno >= $total_pages) {
-        $url_next = $url.'?'.$request_string;
-    } else {
-        $url_next = $url.'?pageno='.($pageno + 1).'&'.$request_string;
-    }
-
-    $html .= '   <li class="page-item"><a class="page-link" href="'.$url_next.'">Next</a></li>';
-
-    if ($only_next == false) {
-
-        $html .= '      <li class="page-item"><a class="page-link" href="' . $url . '?pageno=' . $total_pages . '&' . $request_string . '">Last</a></li> ';
-
-        $html .= ' </ul>        </nav>';
-    }
-
-    echo $html;
-
-}//end display_pagenation()
-
-
 /**
  * @param  $url_array
  * @return string
@@ -145,38 +9,52 @@ function display_sort_options($url_array)
     $html        = '';
     $request_uri = '';
     $sep         = '?';
-    global $_SERVER;
     $current = '';
-    if (isset($url_array['rq_string'])) {
-        parse_str($url_array['rq_string'], $output);
+
+    
+    
+
+
+    if ($url_array['query_string'] != '' ) 
+    {
+        parse_str($url_array['query_string'], $query_parts);
+
         $current = 'studio';
-        if (isset($output['sort'])) {
-            $current = $output['sort'];
+
+        if (isset($url_array['direction'])) {
+            $query_parts['direction'] = $url_array['direction'];
+        }
+        
+        if (isset($query_parts['sort'])) {
+            $current = $query_parts['sort'];
+            unset($query_parts['sort']);
         }
 
-        $request_uri = preg_replace('/(sort=\w+)&.*/iU', '', $url_array['rq_string']);
+
+        $request_uri = '?'.http_build_query($query_parts);
         $sep         = '&';
     }
 
+
     foreach ($url_array['sort_types'] as $key => $value) {
         $bg = '';
-        if ($current == $value) {
-            $bg = ' background: #ff9900;';
-        }
+        
 
+        if ($current == $value) {
+            $bg = ' active';
+        }
+        $class = "btn btn-primary btn-sm".$bg;
         $request_string = $request_uri.$sep.'sort='.$value;
-        $html          .= ' <span style="font-size: 22px; '.$bg.'">';
-        $html          .= display_directory_navlinks($url_array['url'], $key, $request_string);
-        $html          .= '</span> |';
+        
+        $html          .= display_directory_navlinks($url_array['url'], $key, $request_string,$class,'role="button" aria-pressed="true"');
     }
 
-    $html = rtrim($html, '|');
     return $html;
 
 }//end display_sort_options()
 
 
-function display_directory_navlinks($url, $text, $request_uri='')
+function display_directory_navlinks($url, $text, $request_uri='',$class='',$additional='')
 {
     global $_SESSION;
     global $_REQUEST;
@@ -186,231 +64,263 @@ function display_directory_navlinks($url, $text, $request_uri='')
     if ($request_uri != '') {
         $request_string = $request_uri;
     }
+    if ($class != '') {
+        $class = " class=\"".$class."\"";
+    }
 
     // $link_url = $url . "?" . $request_key ."&genre=".$_REQUEST["genre"]."&". ;
-    $html = "<a href='".$url.$request_string."'>".$text.'</a>';
+    $html = "<a href='".$url.$request_string."' ".$class." ".$additional.">".$text.'</a>';
 
     return $html;
 
 }//end display_directory_navlinks()
 
 
+
+
+function display_fileInfo($fileInfoArray)
+{
+
+    global $db;
+    $table_body_html = '';
+    $row_id  = $fileInfoArray['id'];
+    // $row_filename = $row_id.":".$row['filename'];
+    $row_filename  = $fileInfoArray['filename'];
+    $row_fullpath  = $fileInfoArray['fullpath'];
+    $row_video_key = $fileInfoArray['video_key'];
+    if (isset($fileInfoArray['result_number'])) {
+        $result_number = $fileInfoArray['result_number'];
+    }
+
+    foreach ($fileInfoArray as $key => $value) {
+        $value_array = [];
+        $template_name = 'metadata_row';
+
+        switch ($key) {
+            case 'id':
+            break;
+
+            case 'filename':
+            break;
+
+            case 'fullpath':
+
+            break;
+
+            case 'video_key':
+
+            break;
+
+            case 'result_number':
+
+            break;
+
+            case 'library':
+            break;
+
+            case 'thumbnail':
+                if (__SHOW_THUMBNAILS__ == true) {
+                    $table_body_html .= process_template('metadata_thumbnail', ['THUMBNAIL' => $value, 'FILE_ID' => $row_id]);
+                } else {
+                    $table_body_html .= process_template('metadata_thumbnail', []);
+                }
+            break;
+
+            case 'duration':
+                $seconds         = round($value / 1000);
+                $duration_output = sprintf('%02d:%02d:%02d', ($seconds / 3600), ($seconds / 60 % 60), ($seconds % 60));
+                $table_body_html .= process_template('metadata_row_duration', ['DURATION' => $duration_output]);
+            break;
+
+            case 'favorite':
+                $yeschecked = ($value == '1') ? 'checked' : '';
+                $nochecked  = ($value == '0') ? 'checked' : '';
+
+                $array = [
+                    'FILE_ID'    => $row_id,
+                    'FIELD_KEY'  => $key,
+                    'FIELD_NAME' => $row_id.'_'.$key,
+                // "PLACEHOLDER" =>  $placeholder,
+                    'YESCHECKED' => $yeschecked,
+                    'NOCHECKED'  => $nochecked,
+                ];
+
+                $table_body_html .= process_template('metadata_row_favorite', $array);
+
+                $sql                 = 'select  * from '.Db_TABLE_FILEINFO." WHERE video_key = '".$row_video_key."'";
+                $result              = $db->query($sql);
+                $file_info_array     = ['FULL_PATH' => $row_fullpath];
+                $additional_fileinfo = [];
+                if (isset($result[0])) {
+                    $file_info = $result[0];
+
+                    $additional_fileinfo = [
+                        'HEIGHT'   => $file_info['height'],
+                        'WIDTH'    => $file_info['width'],
+                        'BITRATE'  => display_size($file_info['bit_rate']),
+                        'FILESIZE' => byte_convert($file_info['filesize']),
+
+                    ];
+                }
+
+                $fileinfo_array = array_merge($file_info_array, $additional_fileinfo);
+
+                $table_body_html .= process_template('metadata_row_fileinfo', $fileinfo_array);
+
+            break;
+
+            case 'substudio':
+                $template_name = 'metadata_row_studio';
+            case 'studio':
+                $template_name = 'metadata_row_studio';
+
+            default:
+                $placeholder = 'placeholder="'.$value.'"';
+                if ($value == '') {
+                    $placeholder = '';
+                    switch ($key) {
+                        case 'artist':
+                            $value_array = missingArtist($key, $fileInfoArray);
+
+                        break;
+
+                        case 'title':
+                            $value_array = missingTitle($key, $fileInfoArray);
+
+                        break;
+
+                        case 'genre':
+                            $value_array = missingGenre($key, $fileInfoArray);
+                        break;
+
+                        case 'studio':
+                            $value_array = missingStudio($key, $fileInfoArray);
+                        break;
+
+                        case 'substudio':
+                            $value_array = missingStudio($key, $fileInfoArray);
+                        break;
+                    }//end switch
+                }//end if
+                
+                if ($key == "studio") 
+                {
+                    $studio_value=$value;
+                }
+
+                if ($key == "substudio") {
+                    if (isset($value_array[$key][0]) && $value_array[$key][0] != '') {
+
+                        if (trim($studio_value) == trim($value_array[$key][0])) {
+                            unset($value_array[$key]);
+                            unset($value_array['style']);
+                        }
+                    }
+                }
+
+              /*  if ($value != '') {
+                    $value = ' value="' . $value . '"';
+                }
+            */
+                if (isset($value_array[$key][0]) && $value_array[$key][0] != '') {              
+                    $value = ' value="'.$value_array[$key][0].'"';
+                    if (isset($value_array['style'][0]) && $value_array['style'][0] != '') {
+                        $value = $value.' style="'.$value_array['style'][0].'"';
+                    }
+                }
+
+
+
+                $array = [
+
+                    'FIELD_KEY'   => $key,
+                    'FIELD_NAME'  => $row_id.'_'.$key,
+                    'PLACEHOLDER' => $placeholder,
+                    'VALUE'       => $value,
+                ];
+
+                $table_body_html .= process_template($template_name, $array);
+                unset($value_array);
+                unset($value);
+
+              #  echo  $table_body_html;
+
+        }//end switch 
+
+    }//end foreach
+    return $table_body_html;
+}
+
+
+function display_fileHeader($fileInfoArray,$total_files)
+{
+
+
+    global $db;
+
+    $table_header = '';
+    
+    $row_id  = $fileInfoArray['id'];
+    // $row_filename = $row_id.":".$row['filename'];
+    $row_filename  = $fileInfoArray['filename'];
+    $row_fullpath  = $fileInfoArray['fullpath'];
+    $row_video_key = $fileInfoArray['video_key'];
+
+    if (isset($fileInfoArray['result_number'])) {
+        $result_number = $fileInfoArray['result_number'];
+    }
+
+    $array       = [
+        'FILE_ID' => $row_id,
+        'FILE_NAME'    => $row_filename,
+        'DELETE_ID'    => 'delete_'.$row_id,
+        'FILE_NAME_ID' => $row_id.'_filename',
+        'FULL_PATH'    => $row_fullpath,
+        'FILE_NO'      => $result_number,
+        'TOTAL_FILES'  => $total_files,
+    ];
+
+    $table_header = process_template('metadata_table_header', $array);
+
+    return $table_header;
+}
+
+
 function display_filelist($results, $option='', $page_array=[])
 {
     global $db;
-    $output = '';
-    $total_files = 0;
-    $result_number = 0;
-    $output .= '<div class="container">'."\n";
+    $table_html = '';
+    $redirect_string='';
+    $total_files = '';
 
     if (isset($page_array['total_files'])) {
         $total_files = $page_array['total_files'];
     }
 
-    foreach ($results as $id => $row) {
-        $output .= '<table class="blueTable" > '."\n";
+    if (isset($page_array['redirect_string'])) {
+        $redirect_string = $page_array['redirect_string'];
+    }
+
+
+    foreach ($results as $id => $row)
+    {
+
         $row_id  = $row['id'];
-        // $row_filename = $row_id.":".$row['filename'];
-        $row_filename  = $row['filename'];
-        $row_fullpath  = $row['fullpath'];
-        $row_video_key = $row['video_key'];
-        if (isset($row['result_number'])) {
-            $result_number = $row['result_number'];
-        }
 
-        $button       = false;
-        $extra_button = '';
-        if ($option == 'hide') {
-            $button = 'hide';
-        }
+        $table_header = display_fileHeader($row,$total_files);
+        $table_body_html = display_fileInfo($row);
 
-        if ($option == 'filedelete') {
-            $button = 'filedelete';
-        }
-
-        if ($button == true) {
-            // $extra_button = '<input type="submit" name="submit" value="'.$button.'" id="'.$button.'_'.$row_id.'" onclick="doSubmitValue(this.id);">';
-        }
-
-        $array       = [
-            'FILE_NAME'    => $row_filename,
-            'DELETE_ID'    => 'delete_'.$row_id,
-            'FILE_NAME_ID' => $row_id.'_filename',
-            'FULL_PATH'    => $row_fullpath,
-            'FILE_NO'      => $result_number,
-            'TOTAL_FILES'  => $total_files,
-            'HIDE_BUTTON'  => $extra_button,
-        ];
-        $output     .= process_template('metadata_row_header', $array);
-        $value_array = [];
-        $output     .= '<tbody> '."\n";
-            $studio_value='';
-
-        foreach ($row as $key => $value) {
-            $value_array = [];
-            $template_name = 'metadata_row';
-
-            switch ($key) {
-                case 'id':
-                break;
-
-                case 'filename':
-                break;
-
-                case 'fullpath':
-
-                break;
-
-                case 'video_key':
-
-                break;
-
-                case 'result_number':
-
-                break;
-
-                case 'library':
-
-                break;
-
-                case 'thumbnail':
-                    if (__SHOW_THUMBNAILS__ == true) {
-                        $output .= process_template('metadata_thumbnail', ['THUMBNAIL' => $value, 'FILE_ID' => $row_id]);
-                    } else {
-                        $output .= process_template('metadata_thumbnail', []);
-                    }
-
-                    // $output .= process_template("metadata_thumbnail",["THUMBNAIL"=>$value,"FILE_ID"=>$row_id]);
-                    // $output .=  "<tr><td></td><td><img src='".$value."' onclick=\"popup('/plex_web/video.php?id=".$row_id."', 'video')\"></td><td></td></tr>";
-                break;
-
-                case 'duration':
-                    $seconds         = round($value / 1000);
-                    $duration_output = sprintf('%02d:%02d:%02d', ($seconds / 3600), ($seconds / 60 % 60), ($seconds % 60));
-                    // $output .=  "<tr><td></td><td>".$duration_output."</td><td></td></tr>";
-                    $output .= process_template('metadata_button', ['DURATION' => $duration_output]);
-
-                break;
-
-                case 'favorite':
-                    $yeschecked = ($value == '1') ? 'checked' : '';
-                    $nochecked  = ($value == '0') ? 'checked' : '';
-
-                    $array = [
-                        'FILE_ID'    => $row_id,
-                        'FIELD_KEY'  => $key,
-                        'FIELD_NAME' => $row_id.'_'.$key,
-                    // "PLACEHOLDER" =>  $placeholder,
-                        'YESCHECKED' => $yeschecked,
-                        'NOCHECKED'  => $nochecked,
-                    ];
-
-                    $output .= process_template('metadata_favorite_row', $array);
-
-                    $sql                 = 'select  * from '.Db_TABLE_FILEINFO." WHERE video_key = '".$row_video_key."'";
-                    $result              = $db->query($sql);
-                    $file_info_array     = ['FULL_PATH' => $row_fullpath];
-                    $additional_fileinfo = [];
-                    if (isset($result[0])) {
-                        $file_info = $result[0];
-
-                        $additional_fileinfo = [
-                            'HEIGHT'   => $file_info['height'],
-                            'WIDTH'    => $file_info['width'],
-                            'BITRATE'  => display_size($file_info['bit_rate']),
-                            'FILESIZE' => byte_convert($file_info['filesize']),
-
-                        ];
-                    }
-
-                    $fileinfo_array = array_merge($file_info_array, $additional_fileinfo);
-
-                    $output .= process_template('metadata_row_fileinfo', $fileinfo_array);
-
-                break;
-
-                case 'substudio':
-                    $template_name = 'metadata_row_studio';
-                case 'studio':
-                    $template_name = 'metadata_row_studio';
-
-                default:
-                    $placeholder = 'placeholder="'.$value.'"';
-                    if ($value == '') {
-                        $placeholder = '';
-                        switch ($key) {
-                            case 'artist':
-                                $value_array = missingArtist($key, $row);
-
-                            break;
-
-                            case 'title':
-                                $value_array = missingTitle($key, $row);
-
-                            break;
-
-                            case 'genre':
-                                $value_array = missingGenre($key, $row);
-                            break;
-
-                            case 'studio':
-                                $value_array = missingStudio($key, $row);
-                            break;
-
-                            case 'substudio':
-                                $value_array = missingStudio($key, $row);
-                            break;
-                        }//end switch
-                    }//end if
-                    
-                    if ($key == "studio") 
-                    {
-                        $studio_value=$value;
-                    }
-
-                    if ($key == "substudio") {
-                        if (isset($value_array[$key][0]) && $value_array[$key][0] != '') {
-
-                            if (trim($studio_value) == trim($value_array[$key][0])) {
-                                unset($value_array[$key]);
-                                unset($value_array['style']);
-                            }
-                        }
-                    }
-
-                  /*  if ($value != '') {
-                        $value = ' value="' . $value . '"';
-                    }
-                */
-                    if (isset($value_array[$key][0]) && $value_array[$key][0] != '') {              
-                        $value = ' value="'.$value_array[$key][0].'"';
-                        if (isset($value_array['style'][0]) && $value_array['style'][0] != '') {
-                            $value = $value.' style="'.$value_array['style'][0].'"';
-                        }
-                    }
-
-
-
-                    $array = [
-
-                        'FIELD_KEY'   => $key,
-                        'FIELD_NAME'  => $row_id.'_'.$key,
-                        'PLACEHOLDER' => $placeholder,
-                        'VALUE'       => $value,
-                    ];
-
-                    $output .= process_template($template_name, $array);
-                    unset($value_array);
-                    unset($value);
-            }//end switch
-        }//end foreach
-
-        $output .= '</tbody></table><p> '."\n";
+        $table_body = process_template("metadata_table_body", ['TABLE_BODY'   => $table_body_html]);
+        $table_html .= process_template("metadata_table",  [
+                        'TABLE_HEADER_HTML' => $table_header,
+                        'TABLE_BODY_HTML'   => $table_body,
+                        'REDIRECT_STRING' => $redirect_string,
+                        'SUBMIT_ID' => 'hiddenSubmit_'.$row_id ,
+                        ]);
     }//end foreach
 
-    $output .= '</div> '."\n";
 
-    echo $output;
+    echo $table_html;
 
 }//end display_filelist()
 

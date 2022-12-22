@@ -42,6 +42,16 @@ if (!defined('__LAYOUT_PATH__')) {
     define('__LAYOUT_PATH__', __PHP_ASSETS_DIR__.'/layouts/');
 }
 
+if (!defined('__HTML_TEMPLATE__')) {
+    define('__HTML_TEMPLATE__', __LAYOUT_PATH__.'/template/');
+}
+
+if (!defined('__PHP_TEMPLATE__')) {
+    define('__PHP_TEMPLATE__', __LAYOUT_PATH__.'/php_template/');
+}
+
+
+
 if (!defined('__LAYOUT_HEADER__')) {
     define('__LAYOUT_HEADER__', __LAYOUT_PATH__.'/header.php');
 }

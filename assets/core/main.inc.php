@@ -50,6 +50,7 @@ function byte_convert($size)
 
 function uri_SQLQuery($request_array)
 {
+    $uri_array = [];
     foreach ($request_array as $key => $value) {
         if ($key == 'sort') {
             continue;
@@ -59,7 +60,7 @@ function uri_SQLQuery($request_array)
             continue;
         }
 
-        if ($key == 'pageno') {
+        if ($key == 'current') {
             continue;
         }
 
@@ -72,20 +73,46 @@ function uri_SQLQuery($request_array)
         if ($string_value == 'NULL') {
             $query_string = 'IS NULL';
         }
-
+       // exit;
         $uri_array[] = "$key $query_string";
     }//end foreach
 
-    $uri_query[] = implode(' AND ', $uri_array);
+
+    if (count($uri_array) >= 1 ) {
+        $uri_query['sql'] = implode(' AND ', $uri_array);
+    }
 
     if (key_exists('sort', $request_array) && key_exists('direction', $request_array)) {
         $sort_query  = $request_array['sort'].' '.$request_array['direction'];
-        $uri_query[] = $sort_query;
+        $uri_query['sort'] = $sort_query;
     }
 
     return $uri_query;
 
 }//end uri_SQLQuery()
+
+
+
+
+function urlQuerystring($input_string,$exclude='')
+{
+    global $_SERVER;
+    $query_string='';
+
+    if (isset($input_string)) {
+
+        parse_str($input_string, $query_parts);
+
+        if (key_exists($exclude, $query_parts)) {
+            unset($query_parts[$exclude]);
+        }
+
+        $query_string = http_build_query($query_parts);
+    }
+
+    return $query_string;
+
+}
 
 
 function uri_String($request_array)
@@ -339,6 +366,9 @@ function saveData($data_array, $redirect=false, $timeout=4)
                     $data = [$field => $value];
                     $db->where('id', $id);
                     $db->update(Db_TABLE_FILEDB, $data);
+                    
+
+                    logger( 'update failed: ' , $db->getLastError());
 
             }//end if
         }//end if

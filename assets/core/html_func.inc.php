@@ -10,7 +10,7 @@ function callback_replace($matches)
 
 function process_template($template, $replacement_array='')
 {
-    $template_file = __LAYOUT_PATH__.'/template/'.$template.'.html';
+    $template_file = __HTML_TEMPLATE__.$template.'.html';
 
     $html_text = file_get_contents($template_file);
 

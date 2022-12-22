@@ -25,6 +25,7 @@ if (isset($_REQUEST['genre'])) {
     } else {
         $sql_genre = " genre LIKE '%" . $genre . "%' ";
     }
+}
 
     $order_sort = "  title " . $_SESSION['direction'];
     if (isset($_SESSION['sort'])) {
@@ -32,13 +33,13 @@ if (isset($_REQUEST['genre'])) {
         $request_key = "&genre=" . $_REQUEST['genre'];
 
     }
-    if (isset($_GET['pageno'])) {
-        $uri["pageno"] = $_GET['pageno'];
+    if (isset($_GET['current'])) {
+        $uri["current"] = $_GET['current'];
     }
 
     $request_key = uri_String($uri);
 
-    $where = $lib_where . $sql_genre;
+    $where = $lib_where . " AND " . $sql_genre;
     $db->where ("genre", '%'.$genre.'%', 'like');
     $db->where ("library", $in_directory, 'like');
 
@@ -82,25 +83,6 @@ if (isset($_REQUEST['genre'])) {
 <main role="main" class="container">
 <?php echo $total_results; ?> number of files<br>
 
-<a href="view/genre.php">back</a>
-<br>
-<br>
-    <?php
-
-
-    echo display_sort_options($url_array, $pageno);
-
-    ?>
-    <p>
-    <div class="nav-item">
-        <?php
-        if (defined('PAGENATION') and PAGENATION == true) {
-            display_pagenationPages($_SERVER['PHP_SELF'], $request_key, $pageno, $total_pages);
-        }
-    
-        ?>
-    </div>
-    
 <form action="process.php" method="post" id="formId">
 <!-- <button type='submit' name="submit" onclick="hideSubmit('save')">Save</button> 
 <button type='submit' name="submit" onclick="hideSubmit('delete')">Delete</button> -->
@@ -133,6 +115,6 @@ if (isset($_REQUEST['genre'])) {
 </main>
     <?php
 
-}
+
 
 require __LAYOUT_FOOTER__; 

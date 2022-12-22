@@ -1,5 +1,15 @@
-	<tr>
-		<td>%%FIELD_KEY%%</td>
-		<td><input  onclick="editPlaceholder(this.id)" onfocusout="checkValue(this.id)" name="%%FIELD_NAME%%" id="%%FIELD_NAME%%_id" size="90" type="text" %%PLACEHOLDER%%   %%VALUE%%></td>
-		<td><input type="button"  id="%%FIELD_NAME%%" onclick="setNull(this.id)" value="Clear"></td>
-	</tr>
+<form action="process.php" method="post" id="formId">
+	<input type='hidden' id="redirect" value="%%REDIRECT_STRING%%">
+	<input type=hidden id="%%SUBMIT_ID%%" name="submit" value="">
+	
+	
+
+<table class="blueTable" >
+	
+	%%TABLE_HEADER_HTML%%
+
+	%%TABLE_BODY_HTML%%
+	
+</table>
+
+</form>

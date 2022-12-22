@@ -5,7 +5,13 @@ require_once '_config.inc.php';
 
 define('TITLE', 'View Studios');
 
+
+DEFINE('__DISPLAY__', ["sort" => false , "page" => false ]);
+
 require __LAYOUT_HEADER__;
+
+$lib_where = $lib_where . ' AND ';
+
 $null = '';
 
 if (isset($_REQUEST['substudio'])) {

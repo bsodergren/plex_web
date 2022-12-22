@@ -1,5 +1,6 @@
 <?php
 
+
 require_once __PHP_ASSETS_DIR__.'/defines.php';
 
 set_include_path(get_include_path() . PATH_SEPARATOR . __COMPOSER_LIB__);
@@ -50,12 +51,18 @@ if(!isset($_SESSION['library']))$_SESSION['library']="Studio";
 if(isset($_REQUEST['library']))$_SESSION['library']=$_REQUEST['library'];
 $in_directory=$_SESSION['library'];
 
-
-
 //$lib_req="&library=$in_directory";
-$lib_where=" library = '".$in_directory."' AND ";
+$lib_where=" library = '".$in_directory."' ";
 $lib_hidden="<input type='hidden' value='".$in_directory."' name='library'>";
 $request_key='';
+
+
+if(!isset($_SESSION['sort']))$_SESSION['sort']="title"; 
+if(isset($_REQUEST['sort'])) $_SESSION['sort'] = $_REQUEST['sort'];
+
+
+$query_string = '&'.urlQuerystring($_SERVER['QUERY_STRING']);
+
 
 if(!isset($_SESSION['direction'])) $_SESSION['direction']="ASC"; 
 if(isset($_REQUEST['direction']))
@@ -70,18 +77,17 @@ if(isset($_REQUEST['direction']))
 	}
 }
 
-if(!isset($_SESSION['sort']))$_SESSION['sort']="title"; 
-if(isset($_REQUEST['sort'])) $_SESSION['sort'] = $_REQUEST['sort'];
+$url_array = array(
+	"url" => $_SERVER['SCRIPT_NAME'],
+	"query_string" => $query_string,
+	'current' =>  $_SESSION['sort'],
+	"direction" => $_SESSION['direction'],
+	"sort_types" => array(
+		"Studio" => "studio",
+		"artist" => "artist",
+		"filename" => "filename",
+		"title" => "title",	
+		"Duration" => "Duration")
+);
 
-$no_of_records_per_page = __RECORDS_PER_PAGE__;
-
-if (isset($_REQUEST['pageno'])) {
-   $pageno = $_REQUEST['pageno'];
-} else {
-	$pageno = 1;
-}
-
-$total_pages='';
-
-$offset = ($pageno-1) * $no_of_records_per_page;
 ?>

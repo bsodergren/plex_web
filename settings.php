@@ -44,8 +44,12 @@ if ($form->submitted())
 }
 
 define('TITLE', "Test Page");
-include __LAYOUT_HEADER__;
-?>
+
+DEFINE('__DISPLAY__', ["sort" => false , "page" => false ]);
+
+require __LAYOUT_HEADER__;
+
+$lib_where = $lib_where . ' AND ';?>
     
 <main role="main" class="container">
 <a href="home.php">back</a>
@@ -107,7 +111,9 @@ foreach(__SETTINGS__ as $name => $value_type)
 	<div class="row mb-3"> 
 		<label for="<?php echo $name ?>" class="col-sm-3 col-form-label border  border-secondary"><?php echo $name ?></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control border border-info " id="<?php echo $name ?>" placeholder="<?php echo $value ?>" value="<?php echo $value ?>">
+			<input type="text" class="form-control border border-info" 
+			name="<?php echo $name ?>"
+			id="<?php echo $name ?>" placeholder="<?php echo $value ?>" value="<?php echo $value ?>">
 		</div>
 	</div>
 </div>

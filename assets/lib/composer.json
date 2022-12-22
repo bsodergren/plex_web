@@ -17,6 +17,8 @@
         "formr/formr": "^1.4",
         "sensiolabs/ansi-to-html": "^1.2",
         "phlak/config": "^7.0",
-        "guzzlehttp/guzzle": "^7.5"
+        "guzzlehttp/guzzle": "^7.5",
+        "jasongrimes/paginator": "~1.0",
+        "twbs/bootstrap": "5.2.3"
     }
 }

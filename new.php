@@ -6,8 +6,12 @@ require_once("_config.inc.php");
 define('TITLE', "New");
 
 
-include __LAYOUT_HEADER__;
-$days = 1;
+
+DEFINE('__DISPLAY__', ["sort" => false , "page" => false ]);
+
+require __LAYOUT_HEADER__;
+
+$lib_where = $lib_where . ' AND ';$days = 1;
 
 if (isset($_REQUEST['days'])) {
 	$days = $_REQUEST['days'];

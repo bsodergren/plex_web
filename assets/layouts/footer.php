@@ -1,20 +1,20 @@
 </body>
 
-<footer id="myFooter">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-2">
-                    <h5><?php echo display_pagenation($_SERVER['PHP_SELF'],$request_key,$pageno,$total_pages,true); ?></h5>
-                </div>
-            </div>
-        </div>
-    </footer>
-    
-    <script src="<?php echo __LAYOUT_URL__;?>js/jquery-3.4.1.min.js"></script>
+    <!-- 
 <script src="<?php echo __LAYOUT_URL__;?>js/popper.min.js"></script>
 <script src="<?php echo __LAYOUT_URL__;?>js/bootstrap.min.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="<?php echo __LAYOUT_URL__;?>js/jquery-3.4.1.min.js"></script>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <script type="text/javascript">
 
@@ -23,6 +23,8 @@ const writeLog = function(msg) {
         let date = new Date();
         window.console.log(date.toISOString() + ' ' + msg);
     };
+
+
     jQuery(function($) {
         let f = $('#formId');
 
@@ -46,6 +48,7 @@ const writeLog = function(msg) {
                 return xhr;
             },
         };
+        
         f.on('submit', function(e) {
             e.preventDefault();
 
@@ -76,6 +79,8 @@ const writeLog = function(msg) {
     });
     
    </script>
+
+
 <?php
 if(isset($json_array))
 {

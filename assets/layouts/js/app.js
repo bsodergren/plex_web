@@ -35,9 +35,13 @@ function editPlaceholder(id) {
   }
 }
 
-function hideSubmit(text)
+function hideSubmit(id,text)
 {
-  document.getElementById('hiddenSubmit').value = text;
+
+  
+  console.log(id);
+
+  document.getElementById('hiddenSubmit_'+id).value = text; 
 }
 
 function doSubmitValue(id)

@@ -2,13 +2,15 @@
 define('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], '.php'));
 
 require_once '_config.inc.php';
-
 const TITLE = 'Home';
+
+DEFINE('__DISPLAY__', ["sort" => false , "page" => false ]);
 
 require __LAYOUT_HEADER__;
 
+$lib_where = $lib_where . ' AND ';
+
 $sql = query_builder('studio', "library = '".$in_directory."' ", 'studio', 'studio ASC');
-logger('studios', $sql);
 
 $result = $db->query($sql);
 
@@ -34,7 +36,6 @@ foreach ($result as $k => $v) {
     }
 
     $sql = query_builder('count(video_key) as cnt', $lib_where.' studio '.$sql_studio.' and substudio is null', 'studio', 'studio ASC');
-    logger('Studios', $sql);
 
     $rar = $db->rawQueryOne($sql);
     $cnt = '';
@@ -44,10 +45,9 @@ foreach ($result as $k => $v) {
 
     $sql = query_builder('count(substudio) as cnt, substudio', $lib_where.' studio  '.$sql_studio, 'substudio', 'substudio ASC ');
 
-    logger('Sub studios', $sql);
     $alt_result = $db->query($sql);
 
-    $link = (count($alt_result) > 1) ? '&substudio=null' : '';
+    $link = '';//(count($alt_result) > 1) ? '&substudio=null' : '';
 
     $studio = str_replace(' ', '-', $v['studio']);
     $studio = str_replace('/', '_', $studio);
