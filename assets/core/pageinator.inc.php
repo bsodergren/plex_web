@@ -22,13 +22,16 @@ class pageinate extends Paginator
 	public $limit_array = [];
 	public $offset;
 
+
 	public function __construct($query,$currentPage,$urlPattern)
 	{
 		global $db;
+
 		$this->urlPattern = $urlPattern;
 
 		$this->currentPage = $currentPage;
-		$db->where( $query);
+
+        $db->where( $query);
 		$db->withTotalCount()->get(Db_TABLE_FILEDB);
 		$this->totalRecords = $db->totalCount;
 
@@ -65,12 +68,13 @@ class pageinate extends Paginator
         if ($this->paginator->getNextUrl()) {
             $html .= '<li class="page-item"><a class="page-link" href="' . htmlspecialchars($this->paginator->getNextUrl()) . '">'. $this->paginator->nextText .' &raquo;</a></li>';
         }
+
+
+        
         $html .= '</ul>';
 
         return $html;
     }
-
-
 }
 
 $urlPattern= $_SERVER['SCRIPT_NAME'].'?current=(:num)&'.$query_string_no_current;

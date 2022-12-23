@@ -8,11 +8,13 @@
 
 html {
   box-sizing: border-box;
-  font-family: "YouTube Noto",Roboto,Arial,Helvetica,sans-serif;
+  font-family: "YouTube Noto", Roboto, Arial, Helvetica, sans-serif;
   height: 100%;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
   margin: 0;
   padding: 0;
@@ -143,7 +145,8 @@ progress::-moz-progress-bar {
   transition: all 0.4s ease;
 }
 
-.volume-controls:hover input, .volume-controls input:focus {
+.volume-controls:hover input,
+.volume-controls input:focus {
   width: 100px;
   opacity: 1;
 }

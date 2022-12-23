@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg sticky-top  navbar-primary bg-dark ">
+<nav class="navbar navbar-expand-lg fixed-top  navbar-primary bg-dark ">
     <div class="container-fluid">
 
         <a class="navbar-brand text-light" href="home.php">

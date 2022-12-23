@@ -11,11 +11,10 @@ include __LAYOUT_HEADER__;
 <a href="home.php">back</a>
 <br>
 <br>
-<?php
 
 
 
 
-?>
+
  </main>
  <?php include __LAYOUT_FOOTER__;  ?>

@@ -61,15 +61,13 @@ if (isset($uri)) {
     }
 
     if (!isset($_REQUEST['allfiles']) && $sql_studio != '') {
-        $where = str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
+        $where = $where . " AND " . str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
     } else {
         $studio_key      = '';
         $uri['allfiles'] = $_GET['allfiles'];
-        $where           = $sql_studio;
+        //$where           = $sql_studio;
     }
 }
-
-
     $pageObj = new pageinate($where, $currentPage, $urlPattern);
 
 
