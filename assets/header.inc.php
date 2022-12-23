@@ -1,7 +1,16 @@
 <?php
 
 
+DEFINE('__THIS_FILE__', basename($_SERVER['PHP_SELF'] ));
+define('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], '.php'));
+
+
+
 require_once __PHP_ASSETS_DIR__.'/defines.php';
+
+
+//define('__THIS_PAGE__', str_replace(APP_HOME.'/', '', $_SERVER['SCRIPT_NAME']));
+
 
 set_include_path(get_include_path() . PATH_SEPARATOR . __COMPOSER_LIB__);
 require_once __COMPOSER_LIB__.'/autoload.php';
@@ -32,7 +41,7 @@ while ($file = readdir($all)) {
 
 
 $colors = new Colors();
-
+$model_display = new display();
 
 if (__SCRIPT_NAME__ != "logs" ) 
 {
@@ -43,10 +52,9 @@ if (__SCRIPT_NAME__ != "logs" )
 		}
 	}
 }
-if ( php_sapi_name() != 'cli' ) {
 
 if (__SCRIPT_NAME__ != "logs" ) logger("start for " . __SCRIPT_NAME__);
-}
+
 if(!isset($_SESSION['library']))$_SESSION['library']="Studio"; 
 if(isset($_REQUEST['library']))$_SESSION['library']=$_REQUEST['library'];
 $in_directory=$_SESSION['library'];
@@ -84,10 +92,13 @@ $url_array = array(
 	"direction" => $_SESSION['direction'],
 	"sort_types" => array(
 		"Studio" => "studio",
-		"artist" => "artist",
-		"filename" => "filename",
-		"title" => "title",	
+		"Artist" => "artist",
+		"Title" => "title",	
+
+		"Filename" => "filename",
 		"Duration" => "Duration")
 );
+
+logger("url_array", $url_array);
 
 ?>

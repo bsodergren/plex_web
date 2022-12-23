@@ -63,9 +63,9 @@ function metadata_write_filedata($file='', $value_array=[])
 
     logger('writing options', $options);
     $run_cmd = $AtomicParsley." '".realpath($file)."' ".$options.' -W';
-    logger('writing run_cmd', $run_cmd);
+    display::echo('writing run_cmd', $run_cmd);
     $results = shell_exec($run_cmd);
-        logger('writing results', $results);
+    display::echo('writing results', $results);
 
     return $results;
 

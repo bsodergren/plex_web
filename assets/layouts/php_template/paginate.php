@@ -1,1 +1,1 @@
- <?php echo $pageObj->toHtml(); ?>
+<?php echo $pageObj->toHtml(); ?>

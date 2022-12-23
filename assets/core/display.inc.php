@@ -43,7 +43,7 @@ function display_sort_options($url_array)
         if ($current == $value) {
             $bg = ' active';
         }
-        $class = "btn btn-primary btn-sm".$bg;
+        $class = "btn btn-primary btn-m".$bg;
         $request_string = $request_uri.$sep.'sort='.$value;
         
         $html          .= display_directory_navlinks($url_array['url'], $key, $request_string,$class,'role="button" aria-pressed="true"');

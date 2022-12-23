@@ -39,7 +39,7 @@ if (!defined('__COMPOSER_LIB__')) {
 
 
 if (!defined('__LAYOUT_PATH__')) {
-    define('__LAYOUT_PATH__', __PHP_ASSETS_DIR__.'/layouts/');
+    define('__LAYOUT_PATH__', __PHP_ASSETS_DIR__.'/layouts');
 }
 
 if (!defined('__HTML_TEMPLATE__')) {
@@ -64,7 +64,6 @@ if (!defined('__LAYOUT_FOOTER__')) {
     define('__LAYOUT_FOOTER__', __LAYOUT_PATH__.'/footer.php');
 }
 
-if (php_sapi_name() != 'cli') {
     if (!defined('__URL_PATH__')) {
         define('__URL_PATH__', APP_HOME);
     }
@@ -76,9 +75,6 @@ if (php_sapi_name() != 'cli') {
     if (!defined('__LAYOUT_URL__')) {
         define('__LAYOUT_URL__', __URL_HOME__.'/assets/layouts/');
     }
-}
-
-define('__THIS_PAGE__', str_replace(APP_HOME.'/', '', $_SERVER['SCRIPT_NAME']));
 
 
 require_once(__PHP_ASSETS_DIR__."/settings.inc.php");
@@ -97,28 +93,20 @@ $navigation_link_array = [
 
 
         ],
+       /*
         'Missing' => [
             'Titles' => 'missing/title.php',
             'Artist' => 'missing/artist.php',
             'Genre'  => 'missing/genre.php',
             'Studio' => 'missing/studio.php',
         ],
+        */
     ],
-    'settings' => [
-        'url'    => 'settings.php',
-        'text'   => 'settings',
-        'secure' => false,
-        'js'     => false,
-    ],
-    'File Browser' => [
-        'url'    => 'filebrowser.php',
-        'text'   => 'filebrowser',
-        'secure' => false,
-        'js'     => false,
-    ],
+
+    
     'home'     => [
         'url'    => 'home.php',
-        'text'   => 'home',
+        'text'   => 'Home',
         'secure' => false,
         'js'     => false,
     ],
@@ -129,13 +117,25 @@ $navigation_link_array = [
         'secure' => false,
         'js'     => false,
     ],
+
+    'File Browser' => [
+        'url'    => 'filebrowser.php',
+        'text'   => 'File Browser',
+        'secure' => false,
+        'js'     => false,
+    ],
     'test'     => [
         'url'    => 'test.php',
         'text'   => 'Test Page',
         'secure' => false,
         'js'     => false,
     ],
-
+'settings' => [
+        'url'    => 'settings.php',
+        'text'   => 'Settings',
+        'secure' => false,
+        'js'     => false,
+    ],
     'logout'   => [
         'url'    => '#',
         'text'   => 'Log Out',

@@ -56,6 +56,33 @@ function logger($msg, $var = '')
     $html_var = '';
     $log_var = '';
 
+    $html_func = $colors->getColoredHTML($function_list, "blue");
+
+    if(defined('__ECHO_LOG__') && __ECHO_LOG__ == 1)
+    {
+
+
+        if(is_string($msg))
+        {
+
+            $text = $html_func . " " . $msg;
+        }
+
+        if(is_array($msg))
+        {
+            $var = $msg;
+            $text = $html_func;
+        }
+
+         display::echo($text, $var);
+
+        return 0;
+    }
+
+   
+
+
+
     $html_var_string=$var;
     if(is_array($var) || is_object($var)) {
          $html_var = printCode($var);

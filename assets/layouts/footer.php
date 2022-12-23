@@ -1,21 +1,27 @@
+<?php 
+
+print_r(__BOTTOM_NAV__);
+
+if (__BOTTOM_NAV__ == 1) { ?> 
+    <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
+        <?PHP if (__SHOW_SORT__ == true) { ?>
+            <div class="container-fluid justify-content-left">
+                <?php include __PHP_TEMPLATE__.'sort_buttons.php'; ?> 
+            </div>
+        <?php } ?>
+        <?php if (__SHOW_PAGES__ == true) { ?>
+            <div class="container-fluid justify-content-end">
+                <?php include __PHP_TEMPLATE__.'paginate.php'; ?>
+            </div>
+        <?php } ?>
+    </nav>
+    <?php
+}
+?>
+ 
+
 </body>
-
-    <!-- 
-<script src="<?php echo __LAYOUT_URL__;?>js/popper.min.js"></script>
-<script src="<?php echo __LAYOUT_URL__;?>js/bootstrap.min.js"></script>
-
-    <script src="<?php echo __LAYOUT_URL__;?>js/jquery-3.4.1.min.js"></script>
-
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-
-
--->
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
 <script type="text/javascript">
 
 
@@ -70,29 +76,25 @@ const writeLog = function(msg) {
             });
 
             
-            
-            
-           // 
 
             return false;
         });
     });
     
-   </script>
+ </script>
 
 
 <?php
-if(isset($json_array))
-{
-	?>
+if (isset($json_array)) {
+    ?>
 
 <script type="text/javascript">
     $(window)
             .load(
                     function() {
                         var JSON = <?php echo json_encode($json_array); ?>
-						                        
-						$(function() {
+                                                
+                        $(function() {
 
                             function parseMenu(ul, menu) {
                                 for (var i = 0; i < menu.length; i++) {
@@ -119,7 +121,9 @@ $(document).on('click', '.list > li ', function () {
       $(this).toggleClass('multi-opened');
     } 
 })</script>
-<?php
-}
-	?>
+
+    <?php
+}//end if
+?>
+
 </html>

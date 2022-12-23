@@ -18,11 +18,33 @@ if ($val) {
 
     foreach ($val as $u) {
         $setting[$u->name]=  $u->type.";".$u->value;
-      
-        define($u->name ,$u->value);
 
+        if ($u->type = "array") {
+            define($u->name, json_decode($u->value,1) );
+
+
+            if(defined('__DISPLAY_PAGES__') && key_exists(__THIS_FILE__,__DISPLAY_PAGES__) ) 
+            {
+                define('__SHOW_PAGES__', __DISPLAY_PAGES__[__THIS_FILE__]['pages']);
+                define('__SHOW_SORT__', __DISPLAY_PAGES__[__THIS_FILE__]['sort']);
+
+                if ( __SHOW_PAGES__ == 0 && __SHOW_SORT__ == 0 ){
+                    define('__BOTTOM_NAV__', 0);
+                } else {
+                    define('__BOTTOM_NAV__', 1);
+                }
+            }
+
+        } else {
+            define($u->name, $u->value);
+        }
     }
     define("__SETTINGS__", $setting);
 }
+
+if (!defined('__BOTTOM_NAV__')) {
+    define('__BOTTOM_NAV__', 0);
+}
+
 
 ?>

@@ -1,11 +1,8 @@
 <?php
-DEFINE('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], ".php"));
 
 require_once "../_config.inc.php";
 
 define('TITLE', "Home");
-define('PAGENATION', true);
-DEFINE('__DISPLAY__', ["sort" => true , "page" => true ]);
 
 $redirect_string = "view/files.php?genre=" . $_REQUEST['genre'];
 $studio_key='';

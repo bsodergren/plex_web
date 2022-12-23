@@ -1,14 +1,12 @@
 <?php
-define('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], '.php'));
 
 require_once '_config.inc.php';
 const TITLE = 'Home';
 
-DEFINE('__DISPLAY__', ["sort" => false , "page" => false ]);
 
 require __LAYOUT_HEADER__;
 
-$lib_where = $lib_where . ' AND ';
+$lib_where = $lib_where.' AND ';
 
 $sql = query_builder('studio', "library = '".$in_directory."' ", 'studio', 'studio ASC');
 
@@ -47,8 +45,8 @@ foreach ($result as $k => $v) {
 
     $alt_result = $db->query($sql);
 
-    $link = '';//(count($alt_result) > 1) ? '&substudio=null' : '';
-
+    $link = '';
+    // (count($alt_result) > 1) ? '&substudio=null' : '';
     $studio = str_replace(' ', '-', $v['studio']);
     $studio = str_replace('/', '_', $studio);
 

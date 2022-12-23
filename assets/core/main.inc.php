@@ -140,6 +140,9 @@ function process_form($redirect_url='')
     
     if (isset($_POST['submit'])) {
         if ($_POST['submit'] == 'save') {
+
+       
+
             return saveData($_POST, $redirect_url);
             exit;
         }
@@ -159,6 +162,10 @@ function process_form($redirect_url='')
             exit;
         }
     }//end if
+
+    if ($rediredirect_urlrect != '') {
+        return myHeader($redirect_url, 5);
+    }
 
 }//end process_form()
 
@@ -282,12 +289,16 @@ function saveData($data_array, $redirect=false, $timeout=4)
     global $db;
     
     $__output = '';
+    display::echo("data array",$data_array);
 
-    foreach ($data_array as $key => $value) {
+    foreach ($data_array as $key => $val) {
+
+        
+
         if (str_contains($key, '_') == true)
         {
 
-            $value = trim($value);
+            $value = trim($val);
 
             if ($value != '') {
 
@@ -297,8 +308,6 @@ function saveData($data_array, $redirect=false, $timeout=4)
                 $field      = $pcs[1];
                 $atom_field = $field;
                 $atom_value = $value;
-
-                logger("Key array pair", "$atom_field => $atom_value");
 
                 if ($field == 'id') {
                     continue;
@@ -361,12 +370,16 @@ function saveData($data_array, $redirect=false, $timeout=4)
                     logger("Metadata", $atom_field);
                     logger("Metadata", $atom_value);
 
-                   metadata_write_filedata($filename, [$atom_field => $atom_value]);
+
+                   metadata_write_filedata("${filename}", [$atom_field => $atom_value]);
+
+
 
                     $data = [$field => $value];
+
                     $db->where('id', $id);
                     $db->update(Db_TABLE_FILEDB, $data);
-                    
+
 
                     logger( 'update failed: ' , $db->getLastError());
 
@@ -374,6 +387,7 @@ function saveData($data_array, $redirect=false, $timeout=4)
         }//end if
     }//end foreach
 
+    display::echo ($redirect);
     if ($redirect != false) {
          return JavaRefresh($redirect, $timeout);
     }

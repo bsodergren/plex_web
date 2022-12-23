@@ -1,11 +1,6 @@
 <?php
-define('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], '.php'));
-
 require_once '_config.inc.php';
-
 define('TITLE', 'View Genres');
-
-DEFINE('__DISPLAY__', ["sort" => false , "page" => false ]);
 
 require __LAYOUT_HEADER__;
 
