@@ -3,7 +3,9 @@ require_once '_config.inc.php';
 
 define('TITLE', 'Home');
 
-$where = $lib_where;
+
+
+$where = '';
 // . ' AND ';
 if (isset($_REQUEST['substudio'])) {
     // if  (!isset($_REQUEST['allfiles']))
@@ -61,44 +63,48 @@ if (isset($uri)) {
     }
 
     if (!isset($_REQUEST['allfiles']) && $sql_studio != '') {
-        $where = $where . " AND " . str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
+        $where = str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
     } else {
         $studio_key      = '';
         $uri['allfiles'] = $_GET['allfiles'];
-        //$where           = $sql_studio;
+        $where           = $sql_studio;
+        $genre = '';
     }
 }
-    $pageObj = new pageinate($where, $currentPage, $urlPattern);
+$pageObj = new pageinate($where, $currentPage, $urlPattern);
 
 
 // $sql = 'select (@row_num:=@row_num +1) AS result_number, id, video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath,library  from ( select id,video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath,library from metatags_filedb WHERE '.$where.' order by '.$order_sort.' LIMIT '.$offset.', '.$no_of_records_per_page.' ) t1, (select @row_num:='.$offset.') t2;';
-    $sql = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
-    logger('all files', $sql);
+$sql = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
+logger('all files', $sql);
 
-    $results       = $db->query($sql);
-    $request_key   = uri_String($uri);
-    $total_results = $pageObj->totalRecords;
+$results       = $db->query($sql);
+$request_key   = uri_String($uri);
+$total_results = $pageObj->totalRecords;
 
 $redirect_string = 'files.php'.$request_key;
 
-    require __LAYOUT_HEADER__;
+$referer_url = '';
+if(basename($_SERVER["HTTP_REFERER"]) != 'home.php' ){
 
-?>
-      
+    $referer_url = $_SERVER["HTTP_REFERER"];
+}
+
+define('BREADCRUMB', ['home' => "home.php",'genre'=> $referer_url, $genre => '' ]);
+
+require __LAYOUT_HEADER__;
+
+?>      
 <main role="main" class="container mt-5">
-
-    <?php
-    $page_array = [
-        'total_files'     => $total_results,
-        'redirect_string' => $redirect_string,
-    ];
-
-
-            require __PHP_TEMPLATE__.'main_form.php';
-    ?>
+<?php
+$page_array = [
+    'total_files'     => $total_results,
+    'redirect_string' => $redirect_string,
+];
 
 
-
+require __PHP_TEMPLATE__.'main_form.php';
+?>
 </main>
 <?php
 require __LAYOUT_FOOTER__;

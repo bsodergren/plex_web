@@ -63,9 +63,7 @@ function metadata_write_filedata($file='', $value_array=[])
 
     logger('writing options', $options);
     $run_cmd = $AtomicParsley." '".realpath($file)."' ".$options.' -W';
-    display::echo('writing run_cmd', $run_cmd);
     $results = shell_exec($run_cmd);
-    display::echo('writing results', $results);
 
     return $results;
 
@@ -79,13 +77,7 @@ function missingStudio($key, $row)
     $genre     = $row['genre'];
 
     $dir = $in_directory;
-    if ($in_directory == 'Studio') {
-        $dir = 'Studios';
-    }
-
-    if ($in_directory == 'Home Videos') {
-        $dir = 'HomeVideos';
-    }
+   
 
     $video_path = str_replace(__PLEX_LIBRARY__.'/'.$dir.'/', '', $path_name);
     $video_path = str_replace($genre, '', $video_path);

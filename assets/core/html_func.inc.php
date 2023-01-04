@@ -37,7 +37,7 @@ function output($var)
         return 0;
     }
 
-    echo $var."\n";
+    echo $var."<br>\n";
     // return 0;
 
 }//end output()

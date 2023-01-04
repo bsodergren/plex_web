@@ -6,46 +6,14 @@ $form = new Formr\Formr('bootstrap4');
 
 if ($form->submitted())
 {
-
-    // get our form values and assign them to a variable
-	foreach ($_POST as $key => $value) {
-
-		if ($key == 'submit') {
-			continue;
-		}
-
-		if(str_contains($key,"setting_"))
-		{
-			$pcs = explode('_', $key);
-			$field = $pcs[1];
-			$new_settiings[$field] = $value;
-			continue;
-		}
-
-		$data = Array (	'value' => $value	);
-		$db->where ('name', $key);
-		$db->update(Db_TABLE_SETTINGS, $data);
-	}
-
-	
-	if ($new_settiings['name'] != '' ) {
-	
-		$id = $db->insert(Db_TABLE_SETTINGS, $new_settiings);
-	}
-
-    // show a success message if no errors
-    if($form->ok()) {
-		$form->redirect('/plex_web/settings.php');
-
-		}
+	echo proccess_settings('home.php');
 }
 
 define('TITLE', "Test Page");
 
 
 require __LAYOUT_HEADER__;
-
-$lib_where = $lib_where . ' AND ';?>
+?>
 
 <main role="main" class="container">
 <a href="home.php">back</a>

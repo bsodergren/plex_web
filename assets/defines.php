@@ -8,6 +8,11 @@ if (!defined('__PLEX_LIBRARY__')) {
     define('__PLEX_LIBRARY__', '/home/bjorn/plex/XXX');
 }
 
+
+define('__CACHE_DIR', __PLEX_LIBRARY__."/.cache");
+
+
+
 if (!defined('Db_TABLE_FILEDB')) {
     define('Db_TABLE_FILEDB', Db_TABLE_PREFIX.'filedb');
 }
@@ -76,8 +81,10 @@ if (!defined('__LAYOUT_FOOTER__')) {
         define('__LAYOUT_URL__', __URL_HOME__.'/assets/layouts/');
     }
 
+    if (!defined('__NODE_PATH__')) {
+        define('__NODE_PATH__', $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST']."/plex_web/node_modules/");
+    }
 
-require_once(__PHP_ASSETS_DIR__."/settings.inc.php");
  
 
 

@@ -2,8 +2,14 @@
 require_once("_config.inc.php");
 $id=$_REQUEST['id'];
 
-$sql = query_builder("fullpath, filename", "id = ".$id);
-$result = $db->rawQueryOne($sql);
+
+
+$cols = Array ("filename","fullpath" );
+	$db->where ("id", $id);
+	$result = $db->getone(Db_TABLE_FILEDB, null, $cols);
+
+
+
 $fullpath=str_replace("/home/bjorn/plex/XXX","/videos",$result['fullpath']);
 $video_file=$fullpath."/".$result['filename'];
 ?>
@@ -15,7 +21,11 @@ $video_file=$fullpath."/".$result['filename'];
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Custom HTML5 Video Player</title>
 
-  <link rel="stylesheet" href="<?php echo __LAYOUT_URL__;?>css/video.css">
+
+  <link rel="stylesheet" href="<?php echo __LAYOUT_URL__;?>css/video.css"> 
+  <script src="<?php echo __LAYOUT_URL__;?>js/video.js?fd"></script>
+
+
 </head>
 <body>
   <div class="container">
@@ -122,7 +132,6 @@ $video_file=$fullpath."/".$result['filename'];
     </defs>
   </svg>
 
-  <script src="<?php echo __LAYOUT_URL__;?>js/video.js?fd"></script>
  
 </body>
 </html>

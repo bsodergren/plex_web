@@ -341,7 +341,7 @@ function display_navbar_left_links($url, $text, $js='')
         'MENULINK_JS'   => $style,
         'MENULINK_TEXT' => $text,
     ];
-    return process_template('menu_link', $array);
+    return process_template('navbar/library_links', $array);
 
 }//end display_navbar_left_links()
 
@@ -401,3 +401,32 @@ function display_log($string)
     echo '<pre>'.$string."</pre>\n";
 
 }//end display_log()
+
+
+
+function display_breadcrumbs()
+{
+    global $_SESSION;
+    global $_REQUEST;
+    global $_SERVER;
+
+    echo '<nav style="--bs-breadcrumb-divider: \'>\';" aria-label="breadcrumb">';
+    echo '<ol class="breadcrumb">';
+
+    foreach (BREADCRUMB as $text => $url)
+    {
+        if ($text == '') {
+            continue;}
+        $class = '';
+        $link = '<a href="'.$url.'">' . $text . '</a>';
+        if ($url == '' ) {
+                $class = ' active" aria-current="page';
+                $link = $text;
+        }
+        echo '<li class="breadcrumb-item'.$class.'">'.$link.'</li>';
+    }
+    echo '</ol>';
+    echo '</nav>';
+
+}
+

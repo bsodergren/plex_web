@@ -1,7 +1,4 @@
 <?php 
-
-print_r(__BOTTOM_NAV__);
-
 if (__BOTTOM_NAV__ == 1) { ?> 
     <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
         <?PHP if (__SHOW_SORT__ == true) { ?>

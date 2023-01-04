@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 if (!defined('APP_AUTHENTICATION'))				DEFINE("APP_AUTHENTICATION",TRUE);
 if (!defined('APP_HOME'))						DEFINE("APP_HOME","/plex_web");
@@ -17,7 +16,5 @@ if (!defined('DB_PORT'))                        define('DB_PORT' ,'');
 if (!defined('Db_TABLE_PREFIX'))				define('Db_TABLE_PREFIX', "metatags" . "_" );
 if (!defined('__PHP_ASSETS_DIR__'))			    DEFINE("__PHP_ASSETS_DIR__", APP_PATH."/assets");
 
-require_once(__PHP_ASSETS_DIR__."/header.inc.php");
-
-
+require_once __PHP_ASSETS_DIR__."/header.inc.php";
 ?>

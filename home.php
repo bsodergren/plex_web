@@ -3,21 +3,20 @@
 require_once '_config.inc.php';
 const TITLE = 'Home';
 
-
-require __LAYOUT_HEADER__;
-
-$lib_where = $lib_where.' AND ';
-
-$sql = query_builder('studio', "library = '".$in_directory."' ", 'studio', 'studio ASC');
+$sql = query_builder('studio','', 'studio', 'studio ASC');
 
 $result = $db->query($sql);
 
 $sql     = query_builder('DISTINCT(library) as library ');
 $result2 = $db->query($sql);
 
+$all_url = 'files.php?allfiles=1';
+
+DEFINE('BREADCRUMB', ['home' => "", 'all' => $all_url]);
+require __LAYOUT_HEADER__;
+
 ?>
 <main role="main" class="container">
-<a href='files.php?allfiles=1'>All</a><br>
 <ul id="menu" class="list">
 <?php
 $json_array['menu'] = [];
@@ -33,7 +32,7 @@ foreach ($result as $k => $v) {
         $sql_studio = ' LIKE "'.$v['studio'].'"';
     }
 
-    $sql = query_builder('count(video_key) as cnt', $lib_where.' studio '.$sql_studio.' and substudio is null', 'studio', 'studio ASC');
+    $sql = query_builder('count(video_key) as cnt', ' studio '.$sql_studio.' and substudio is null', 'studio', 'studio ASC');
 
     $rar = $db->rawQueryOne($sql);
     $cnt = '';
@@ -41,7 +40,7 @@ foreach ($result as $k => $v) {
         $cnt = ' ('.$rar['cnt'].') ';
     }
 
-    $sql = query_builder('count(substudio) as cnt, substudio', $lib_where.' studio  '.$sql_studio, 'substudio', 'substudio ASC ');
+    $sql = query_builder('count(substudio) as cnt, substudio', ' studio  '.$sql_studio, 'substudio', 'substudio ASC ');
 
     $alt_result = $db->query($sql);
 

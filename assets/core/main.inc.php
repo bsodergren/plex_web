@@ -289,7 +289,6 @@ function saveData($data_array, $redirect=false, $timeout=4)
     global $db;
     
     $__output = '';
-    display::echo("data array",$data_array);
 
     foreach ($data_array as $key => $val) {
 
@@ -378,18 +377,17 @@ function saveData($data_array, $redirect=false, $timeout=4)
                     $data = [$field => $value];
 
                     $db->where('id', $id);
-                    $db->update(Db_TABLE_FILEDB, $data);
-
-
-                    logger( 'update failed: ' , $db->getLastError());
-
+                    if ($db->update(Db_TABLE_FILEDB, $data)) {
+                        logger('records were updated', $db->count);
+                    } else {
+                        logger('update failed: ', $db->getLastError());
+                    }
             }//end if
         }//end if
     }//end foreach
 
-    display::echo ($redirect);
     if ($redirect != false) {
-         return JavaRefresh($redirect, $timeout);
+         return myHeader($redirect);
     }
     return $__output;
 }//end saveData()

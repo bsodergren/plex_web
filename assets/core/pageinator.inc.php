@@ -21,16 +21,24 @@ class pageinate extends Paginator
 	public $totalRecords;
 	public $limit_array = [];
 	public $offset;
-
+    private $library_query;
 
 	public function __construct($query,$currentPage,$urlPattern)
 	{
 		global $db;
+        global $_SESSION;
 
+        $this->library_query = " library = '". $_SESSION['library']."' ";
 		$this->urlPattern = $urlPattern;
 
 		$this->currentPage = $currentPage;
-
+        
+        if ($query == false ){
+            $query = $this->library_query;
+        } else {
+            $query = $query .  " and " . $this->library_query;
+        }
+        
         $db->where( $query);
 		$db->withTotalCount()->get(Db_TABLE_FILEDB);
 		$this->totalRecords = $db->totalCount;
