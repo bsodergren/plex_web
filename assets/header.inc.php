@@ -1,72 +1,60 @@
 <?php
 
-define('__THIS_FILE__', basename($_SERVER['PHP_SELF']));
-define('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], '.php'));
-
-require_once __PHP_ASSETS_DIR__.'/defines.php';
-
-require_once __PHP_ASSETS_DIR__.'/settings.inc.php';
-
-set_include_path(get_include_path().PATH_SEPARATOR.__COMPOSER_LIB__);
-require_once __COMPOSER_LIB__.'/autoload.php';
-
+use Nette\Utils\FileSystem;
+use Nette\Utils\Strings;
 use Tracy\Debugger;
+
+
+require_once __PHP_INC_CLASS_DIR__ . "/Roboloader.class.php";
+
 
 Debugger::enable(Debugger::DEVELOPMENT );
 Debugger::$dumpTheme    = 'dark';
 Debugger::$showLocation = (Tracy\Dumper::LOCATION_CLASS | Tracy\Dumper::LOCATION_LINK);
 Debugger::$showBar = 1;
 
+$const = get_defined_constants(true);
 
-if (!defined('__ERROR_LOG_DIR__')) {
-    define('__ERROR_LOG_DIR__', APP_PATH.'/'.php_sapi_name().'_logs');
+$include_array = [];
+
+foreach ($const['user'] as $name => $value) {
+    if (Strings::contains($name, '_INC_')) {
+       $include_array = array_merge($include_array,RoboLoader::get_filelist($value, 'php', 1));
+    } //end if
+} //end foreach
+
+foreach ($include_array as $required_file) {
+        require_once $required_file;
+}
+
+$template = new Template();
+
+
+if (!isset($_SESSION['itemsPerPage'])) {
+    $_SESSION['itemsPerPage'] = 25;
+}
+
+if (isset($_REQUEST['itemsPerPage'])) {
+    $_SESSION['itemsPerPage'] = $_REQUEST['itemsPerPage'];
+}
+unset($_REQUEST['itemsPerPage']);
+
+//$uri['itemsPerPage'] = $_SESSION['itemsPerPage'];
+
+if(!isset($_REQUEST['current']))
+{
+    $_REQUEST['current']="1"; 
+}else {
+    $uri['current'] = $_REQUEST['current'];
 }
 
 
-$logfile_name = 'plexweb.log';
-if (__HTML_POPUP__ == true) {
-    $logfile_name = 'plexweb.html.log';
-}
-
-if (!defined('__ERROR_FILE_NAME__')) {
-    define('__ERROR_FILE_NAME__', $logfile_name);
-}
-
-if (!defined('ERROR_LOG_FILE')) {
-    define('ERROR_LOG_FILE', __ERROR_LOG_DIR__.'/'.__ERROR_FILE_NAME__);
-}
 
 
-$all = opendir(__PHP_INC_CORE_DIR__);
-while ($file = readdir($all)) {
-    if (!is_dir(__PHP_INC_CORE_DIR__.'/'.$file)) {
-        if (preg_match('/\.(php)$/', $file)) {
-            $f    = fopen(__PHP_INC_CORE_DIR__.'/'.$file, 'r');
-            $line = fgets($f);
-            fclose($f);
-            if (strpos($line, '#skip') == false) {
-                include_once __PHP_INC_CORE_DIR__.'/'.$file;
-            }
-        }
-    }
-}
 
+$currentPage = $_REQUEST['current'];
+$uri['current'] = $currentPage;
 
-$colors        = new Colors();
-$model_display = new display();
-
-if (__SCRIPT_NAME__ != 'logs') {
-    if (is_file(ERROR_LOG_FILE)) {
-        $lines = count(file(ERROR_LOG_FILE));
-        if ($lines > 1000) {
-            unlink(ERROR_LOG_FILE);
-        }
-    }
-}
-
-if (__SCRIPT_NAME__ != 'logs') {
-    logger('start for '.__SCRIPT_NAME__);
-}
 
 if (!isset($_SESSION['library'])) {
     $_SESSION['library'] = 'Studio';
@@ -89,7 +77,6 @@ if ($in_directory == 'Studio') {
     $in_directory = 'HomeVideos';
 }
 */
-define('__METADB_HASH', __CACHE_DIR . "/" . $cache_directory . "/metadb.hash");
 
 
 $request_key   = '';
@@ -103,7 +90,16 @@ if (isset($_REQUEST['sort'])) {
     $_SESSION['sort'] = $_REQUEST['sort'];
 }
 
-$query_string = '&'.urlQuerystring($_SERVER['QUERY_STRING']);
+
+
+$query_string = '&'.urlQuerystring($_SERVER['QUERY_STRING'],'itemsPerPage');
+
+$query_string_no_current = urlQuerystring($_SERVER['QUERY_STRING'],"current");
+$query_string_no_current = urlQuerystring($query_string_no_current,"itemsPerPage");
+
+
+
+$urlPattern = $_SERVER['PHP_SELF'].'?current=(:num)&'.$query_string_no_current;
 
 
 if (!isset($_SESSION['direction'])) {

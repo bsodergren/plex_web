@@ -1,6 +1,71 @@
 <?php
 
 
+function proccess_settings($redirect_url='')
+{
+    global $form;
+    global $_POST;
+    global $db;
+
+    // get our form values and assign them to a variable
+    foreach ($_POST as $key => $value) {
+        switch (true) {
+            case $key == 'submit':
+            break;
+
+            case str_contains($key, 'setting_'):
+                $pcs                   = explode('_', $key);
+                $field                 = $pcs[1];
+                $new_settiings[$field] = $value;
+            break;
+
+            case str_contains($key, '-NAME'):
+            break;
+
+            case key_exists($key, __SETTINGS__):
+                $data = ['value' => $value];
+                $db->where('name', $key);
+                $db->update(Db_TABLE_SETTINGS, $data);
+            break;
+
+            case str_contains($key, '-ADD'):
+                if (!key_exists(str_replace('-ADD', '', $key), __SETTINGS__)) {
+                    if (!key_exists(str_replace('-NAME', '', $key), __SETTINGS__)) {
+                        $key_name = str_replace('-ADD', '-NAME', $key);
+                        if (key_exists($key_name, $_POST)) {
+                            $value = $_POST[$key_name];
+                            $field = str_replace('-NAME', '', $key_name);
+                            $transfer_settings[$field] = [
+                                'value' => $value,
+                                'type'  => 'text',
+                            ];
+                        }
+                    }
+                }
+            break;
+        }//end switch
+    }//end foreach
+
+    if (is_array($transfer_settings)) {
+        foreach ($transfer_settings as $name => $arr) {
+            $id = $db->insert(Db_TABLE_SETTINGS, ['name' => $name, 'value' => $arr['value'], 'type' => $arr['type']]);
+        }
+    }
+
+    if (is_array($new_settiings)) {
+        if ($new_settiings['name'] != '') {
+            $id = $db->insert(Db_TABLE_SETTINGS, $new_settiings);
+        }
+    }
+
+    $form->printr($db->getLastError());
+    // show a success message if no errors
+    if ($form->ok()) {
+        return $form->redirect($redirect_url);
+    }
+
+}//end proccess_settings()
+
 function display_size($bytes, $precision=2)
 {
     $units  = [
@@ -96,10 +161,9 @@ function uri_SQLQuery($request_array)
 
 function urlQuerystring($input_string,$exclude='')
 {
-    global $_SERVER;
     $query_string='';
 
-    if (isset($input_string)) {
+    if ($input_string != '') {
 
         parse_str($input_string, $query_parts);
 

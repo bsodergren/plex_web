@@ -1,1 +1,0 @@
-<?php  echo display_filelist($results, '', $page_array); ?>

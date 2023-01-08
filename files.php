@@ -64,6 +64,7 @@ if (isset($uri)) {
 
     if (!isset($_REQUEST['allfiles']) && $sql_studio != '') {
         $where = str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
+
     } else {
         $studio_key      = '';
         $uri['allfiles'] = $_GET['allfiles'];
@@ -71,14 +72,18 @@ if (isset($uri)) {
         $genre = '';
     }
 }
+
 $pageObj = new pageinate($where, $currentPage, $urlPattern);
 
 
 
-$results       = $pageObj->results;
+$sql = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
+logger('all files', $sql);
+
+$results       = $db->query($sql);
 $request_key   = uri_String($uri);
 
-$redirect_string = 'files.php' . $request_key;
+$redirect_string = __THIS_PAGE__.  $request_key;
 
 $referer_url = '';
 if (basename($_SERVER["HTTP_REFERER"]) != 'home.php') {
@@ -99,8 +104,7 @@ require __LAYOUT_HEADER__;
     ];
 
 
-    require __PHP_TEMPLATE__ . 'main_form.php';
-    ?>
+    echo display_filelist($results, '', $page_array); 
+  ?>
 </main>
-<?php
-require __LAYOUT_FOOTER__;
+<?php require __LAYOUT_FOOTER__;

@@ -1,11 +1,10 @@
 <?php
-DEFINE('__SCRIPT_NAME__', basename($_SERVER['PHP_SELF'], ".php") );
+
 require_once("../_config.inc.php");
 
 define('__NULL_FIELD', "genre");
 
 define('TITLE', "Home");
-
 include __LAYOUT_HEADER__;
 if (isset($_REQUEST['submit']) ) 
 {	

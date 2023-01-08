@@ -49,7 +49,7 @@ include __LAYOUT_HEADER__;
 			$genre = str_replace(" ","-",$g);
 			$genre = str_replace("/","_",$genre);
 			
-			echo "<li><a href='view/files.php?genre=".$genre."'>".$g."</a> (".$cnt.")<br>";
+			echo "<li><a href='".__THIS_PAGE_."?genre=".$genre."'>".$g."</a> (".$cnt.")<br>";
 	}
 
 

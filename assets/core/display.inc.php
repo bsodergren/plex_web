@@ -46,7 +46,7 @@ function display_sort_options($url_array)
         $class = "btn btn-primary btn-m".$bg;
         $request_string = $request_uri.$sep.'sort='.$value;
         
-        $html          .= display_directory_navlinks($url_array['url'], $key, $request_string,$class,'role="button" aria-pressed="true"');
+        $html          .= display_directory_navlinks($url_array['url'], $key, $request_string,$class,'role="button" aria-pressed="true"') ."\n";
     }
 
     return $html;
@@ -127,8 +127,13 @@ function display_fileInfo($fileInfoArray)
             break;
 
             case 'duration':
-                $seconds         = round($value / 1000);
-                $duration_output = sprintf('%02d:%02d:%02d', ($seconds / 3600), ($seconds / 60 % 60), ($seconds % 60));
+                $seconds         = round( $value / 1000);
+                $hours =   round($seconds / 3600);
+
+                $minutes =   round((float) $seconds / 60 % 60);
+
+                $sec =  round($seconds % 60);
+                $duration_output = sprintf('%02d:%02d:%02d',$hours ,$minutes ,$sec );
                 $table_body_html .= process_template('metadata_row_duration', ['DURATION' => $duration_output]);
             break;
 
@@ -437,3 +442,28 @@ function display_breadcrumbs()
 
 }
 
+
+
+function display_SelectOptions($array,$selected='')
+{
+
+    $html = '';
+    foreach($array as $val)
+    {
+     
+        $checked = '';
+        if($val == $selected) {
+            $checked = ' selected';
+        }
+        $html .= '<option value="'.$val.'" '.$checked.'>'.$val.'</option>'."\n";
+    }
+
+    return $html;
+
+
+}
+
+function hidden_Field($name, $value)
+{
+    return '<input type="hidden" name="'.$name.'" value="'.$value.'">'."\n";
+}

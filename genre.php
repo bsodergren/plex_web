@@ -60,7 +60,7 @@ require __LAYOUT_HEADER__;
 foreach ($result as $k => $v) {
     // $v["cnt"]=1; ".$v["cnt"]."
     if ($v['genre'] != '') {
-        echo $studio." <a href='files.php?".$request_key.'&genre='.$v['genre']."'>".$v['genre'].'</a> '.$v['cnt'].'<br>';
+        echo $studio."<a href='files.php?".$request_key.'&genre='.$v['genre']."'>".$v['genre'].'</a> '.$v['cnt'].'<br>';
     }
 }
 

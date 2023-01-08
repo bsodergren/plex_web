@@ -34,7 +34,7 @@ include __LAYOUT_HEADER__;
 			$studio = str_replace(" ","-",$v['studio']);
 			$studio = str_replace("/","_",$studio);
 			
-			echo "<li><a href='studio.php?studio=".$studio."'>".$v["studio"]."</a> (".$cnt.")<br>";
+			echo "<li><a href='".__THIS_PAGE__."?studio=".$studio."'>".$v["studio"]."</a> (".$cnt.")<br>";
 
 			if(count($alt_result) > 1) {
 				echo "<ul>";
@@ -45,7 +45,7 @@ include __LAYOUT_HEADER__;
 						$cntv_a = $v_a["cnt"];
 						$substudio = str_replace(" ","-",$v_a['substudio']);
 						$substudio = str_replace("/","_",$substudio);
-						echo "<li><a href='studio.php?studio=".$substudio."'>".$v_a["substudio"]."</a>(".$cntv_a.") <br>";
+						echo "<li><a href='".__THIS_PAGE__."?studio=".$substudio."'>".$v_a["substudio"]."</a>(".$cntv_a.") <br>";
 					}
 					
 				}
@@ -54,7 +54,7 @@ include __LAYOUT_HEADER__;
 			
 		}
 	}
-	echo "</ul><li><a href='studio.php?studio=NULL'>Studio not Set</a><br>";
+	echo "</ul><li><a href='".__THIS_PAGE__."?studio=NULL'>Studio not Set</a><br>";
 
  ?>
  </ul>

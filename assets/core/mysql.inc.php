@@ -4,25 +4,6 @@
 
 
 
-class MetaFiledb extends dbObject
-{
-    protected $dbTable = Db_TABLE_FILEDB;
-}
-
-class MetaStudio extends dbObject
-{
-    protected $dbTable = Db_TABLE_STUDIO;
-}
-
-class MetaArtist extends dbObject
-{
-    protected $dbTable = Db_TABLE_ARTISTS;
-}
-
-class MetaFileinfo extends dbObject
-{
-    protected $dbTable = Db_TABLE_FILEINFO;
-}
 
 
 function query_builder($fields = "select", $where = FALSE, $group = FALSE, $order = FALSE, $limit = FALSE, $offset = FALSE)
