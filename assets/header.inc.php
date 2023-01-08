@@ -103,7 +103,6 @@ if (isset($_REQUEST['sort'])) {
     $_SESSION['sort'] = $_REQUEST['sort'];
 }
 
-
 $query_string = '&'.urlQuerystring($_SERVER['QUERY_STRING']);
 
 

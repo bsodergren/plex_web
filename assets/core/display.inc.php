@@ -259,6 +259,7 @@ function display_fileHeader($fileInfoArray,$total_files)
     global $db;
 
     $table_header = '';
+    $file_string='';
     
     $row_id  = $fileInfoArray['id'];
     // $row_filename = $row_id.":".$row['filename'];
@@ -270,15 +271,21 @@ function display_fileHeader($fileInfoArray,$total_files)
         $result_number = $fileInfoArray['result_number'];
     }
 
+    if ( $total_files >= 1)
+    {
+        $file_string = $result_number."  of ". $total_files;
+    }
+
+
     $array       = [
         'FILE_ID' => $row_id,
         'FILE_NAME'    => $row_filename,
         'DELETE_ID'    => 'delete_'.$row_id,
         'FILE_NAME_ID' => $row_id.'_filename',
+        'FILE_NO' => $file_string,
         'FULL_PATH'    => $row_fullpath,
-        'FILE_NO'      => $result_number,
-        'TOTAL_FILES'  => $total_files,
     ];
+
 
     $table_header = process_template('metadata_table_header', $array);
 

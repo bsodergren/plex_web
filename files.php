@@ -74,37 +74,33 @@ if (isset($uri)) {
 $pageObj = new pageinate($where, $currentPage, $urlPattern);
 
 
-// $sql = 'select (@row_num:=@row_num +1) AS result_number, id, video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath,library  from ( select id,video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath,library from metatags_filedb WHERE '.$where.' order by '.$order_sort.' LIMIT '.$offset.', '.$no_of_records_per_page.' ) t1, (select @row_num:='.$offset.') t2;';
-$sql = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
-logger('all files', $sql);
 
-$results       = $db->query($sql);
+$results       = $pageObj->results;
 $request_key   = uri_String($uri);
-$total_results = $pageObj->totalRecords;
 
-$redirect_string = 'files.php'.$request_key;
+$redirect_string = 'files.php' . $request_key;
 
 $referer_url = '';
-if(basename($_SERVER["HTTP_REFERER"]) != 'home.php' ){
+if (basename($_SERVER["HTTP_REFERER"]) != 'home.php') {
 
     $referer_url = $_SERVER["HTTP_REFERER"];
 }
 
-define('BREADCRUMB', ['home' => "home.php",'genre'=> $referer_url, $genre => '' ]);
+define('BREADCRUMB', ['home' => "home.php", 'genre' => $referer_url, $genre => '']);
 
 require __LAYOUT_HEADER__;
 
-?>      
-<main role="main" class="container mt-5">
-<?php
-$page_array = [
-    'total_files'     => $total_results,
-    'redirect_string' => $redirect_string,
-];
-
-
-require __PHP_TEMPLATE__.'main_form.php';
 ?>
+<main role="main" class="container mt-5">
+    <?php
+    $page_array = [
+        'total_files'     => $pageObj->totalRecords ,
+        'redirect_string' => $redirect_string,
+    ];
+
+
+    require __PHP_TEMPLATE__ . 'main_form.php';
+    ?>
 </main>
 <?php
 require __LAYOUT_FOOTER__;

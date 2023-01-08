@@ -106,8 +106,7 @@ function urlQuerystring($input_string,$exclude='')
         if (key_exists($exclude, $query_parts)) {
             unset($query_parts[$exclude]);
         }
-
-        $query_string = http_build_query($query_parts);
+        $query_string = uri_String($query_parts,'');
     }
 
     return $query_string;
@@ -115,8 +114,10 @@ function urlQuerystring($input_string,$exclude='')
 }
 
 
-function uri_String($request_array)
+function uri_String($request_array,$start='?')
 {
+
+    
     foreach ($request_array as $key => $value) {
         if (is_array($value)) {
             $string_value = $value[0];
@@ -124,11 +125,17 @@ function uri_String($request_array)
             $string_value = $value;
         }
 
+        $string_value=urlencode($string_value);
         $uri_array[] = "$key=$string_value";
     }
 
-    $uri_string = implode('&', $uri_array);
-    return '?'.$uri_string;
+    if(is_array($uri_array)) {
+        $uri_string = implode('&', $uri_array);
+        return $start.$uri_string;
+    }
+
+    return $request_array;
+    
 
 }//end uri_String()
 

@@ -100,14 +100,14 @@ $navigation_link_array = [
 
 
         ],
-       /*
+       
         'Missing' => [
             'Titles' => 'missing/title.php',
             'Artist' => 'missing/artist.php',
             'Genre'  => 'missing/genre.php',
             'Studio' => 'missing/studio.php',
         ],
-        */
+        
     ],
 
     
@@ -117,7 +117,12 @@ $navigation_link_array = [
         'secure' => false,
         'js'     => false,
     ],
-
+    'search'     => [
+        'url'    => 'search.php',
+        'text'   => 'Search',
+        'secure' => false,
+        'js'     => false,
+    ],
     'new'      => [
         'url'    => 'new.php',
         'text'   => 'New Videos',

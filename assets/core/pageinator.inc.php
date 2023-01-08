@@ -22,6 +22,7 @@ class pageinate extends Paginator
 	public $limit_array = [];
 	public $offset;
     private $library_query;
+    public $results;
 
 	public function __construct($query,$currentPage,$urlPattern)
 	{
@@ -40,7 +41,8 @@ class pageinate extends Paginator
         }
         
         $db->where( $query);
-		$db->withTotalCount()->get(Db_TABLE_FILEDB);
+        
+		$this->results = $db->withTotalCount()->get(Db_TABLE_FILEDB);
 		$this->totalRecords = $db->totalCount;
 
 		$this->limit_array = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];

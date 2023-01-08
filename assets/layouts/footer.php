@@ -1,12 +1,12 @@
 <?php 
 if (__BOTTOM_NAV__ == 1) { ?> 
     <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
-        <?PHP if (__SHOW_SORT__ == true) { ?>
+        <?PHP if (__SHOW_SORT__ == true && isset($pageObj)) { ?>
             <div class="container-fluid justify-content-left">
                 <?php include __PHP_TEMPLATE__.'sort_buttons.php'; ?> 
             </div>
         <?php } ?>
-        <?php if (__SHOW_PAGES__ == true) { ?>
+        <?php if (__SHOW_PAGES__ == true && isset($pageObj)) { ?>
             <div class="container-fluid justify-content-end">
                 <?php include __PHP_TEMPLATE__.'paginate.php'; ?>
             </div>
