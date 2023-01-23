@@ -2,16 +2,8 @@
 
 use Nette\Utils\FileSystem;
 use Nette\Utils\Strings;
-use Tracy\Debugger;
-
 
 require_once __PHP_INC_CLASS_DIR__ . "/Roboloader.class.php";
-
-
-Debugger::enable(Debugger::DEVELOPMENT );
-Debugger::$dumpTheme    = 'dark';
-Debugger::$showLocation = (Tracy\Dumper::LOCATION_CLASS | Tracy\Dumper::LOCATION_LINK);
-Debugger::$showBar = 1;
 
 $const = get_defined_constants(true);
 
@@ -127,5 +119,6 @@ $url_array = [
         'Title'    => 'title',
         'Filename' => 'filename',
         'Duration' => 'Duration',
+        'Date Added' => 'added',
     ],
 ];

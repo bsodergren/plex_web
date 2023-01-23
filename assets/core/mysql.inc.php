@@ -11,7 +11,7 @@ function query_builder($fields = "select", $where = FALSE, $group = FALSE, $orde
 
     global $_SESSION;
     $conditional = false;
-    $field_list = ' id, video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,fullpath,library ';
+    $field_list = ' id, video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,added ,fullpath,library';
 
     if($fields == "select") {
         $conditional = true;

@@ -34,8 +34,6 @@ if (videoWorks) {
 function togglePlay() {
   if (video.paused || video.ended) {
     video.play();
-
-    //window.onresize = resize;
   } else {
     video.pause();
   }
@@ -299,10 +297,8 @@ document.addEventListener("keyup", keyboardShortcuts);
 
 function resize() {
   var img = document.getElementsByTagName("video");
-  var vh = img[0].clientHeight + 100;
-  var vw = img[0].clientWidth + 200;
-
-  console.log(vh + " " + vw);
+  var vh = img[0].clientHeight + 70;
+  var vw = img[0].clientWidth + 20;
 
   window.resizeTo(vw, vh);
 }

@@ -43,7 +43,7 @@ $cols = Array ("id","filename","thumbnail",
 	<?php 
 	// <button type="submit" name="submit" value="submit">Send</button>		
 		$array=array();
-		echo process_template("main_form",$array);
+		//echo process_template("main_form",$array);
 		
 
 
