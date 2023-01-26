@@ -2,12 +2,17 @@
 require_once("_config.inc.php");
 $id = $_REQUEST['id'];
 
+$cols = array("playlist_id");
+$db->where("playlist_videos", $id);
+$playlist_result = $db->getOne(Db_TABLE_PLAYLIST, null, $cols);
 
+if (key_exists('playlist_id', $playlist_result)) {
+  $playlist_id = $playlist_result['playlist_id'];
+}
 
 $cols = array("filename", "fullpath");
 $db->where("id", $id);
 $result = $db->getone(Db_TABLE_FILEDB, null, $cols);
-
 
 
 $fullpath = str_replace("/home/bjorn/plex/XXX", "/videos", $result['fullpath']);
@@ -23,12 +28,47 @@ $video_file = $fullpath . "/" . $result['filename'];
   <title>Custom HTML5 Video Player</title>
 
 
-  <link rel="stylesheet" href="<?php echo __LAYOUT_URL__; ?>css/video.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>    
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+<script src="<?php echo __LAYOUT_URL__; ?>js/video.js?<?php echo rand(1,100) ?>"></script>
+
+  <link rel="stylesheet" href="<?php echo __LAYOUT_URL__; ?>css/video.css?<?php echo rand(1,100) ?>">
 
 </head>
 
 <body>
+<?php
+if(isset($playlist_id)) {
+
+$sql = "select f.thumbnail,f.filename,p.playlist_videos from metatags_filedb as f, playlists as p where (p.playlist_id = ".$playlist_id ." and p.playlist_videos = f.id);";
+$results = $db->query($sql);
+
+
+for ($i = 0; $i < count($results); $i++) {
+  $class = " ";
+
+  if($id == $results[$i]['playlist_videos'] )
+  {
+        $class = " active";
+
+  }
+    $carousel_item .= process_template(
+        "video/carousel_item",
+        [
+            'THUMBNAIL' => $results[$i]['thumbnail'],
+            'CLASS_ACTIVE' => $class,
+            'VIDEO_ID' =>  $results[$i]['playlist_videos'],
+        ]
+    );
+}
+
+  echo process_template("video/carousel", ['CAROUSEL_INNER_HTML' => $carousel_item]);
+
+
+ } ?>
   <div class="container">
     <div class="video-container" id="video-container">
       <div class="playback-animation" id="playback-animation">
@@ -39,7 +79,7 @@ $video_file = $fullpath . "/" . $result['filename'];
       </div>
 
       <video controls autoplay class="video" id="video" preload="metadata">
-        <source src="<?php echo $video_file; ?>" type="video/mp4">
+        <source src="<?php echo $video_file; ?>" type="video/mp4" id="VideoFile">
         </source>
       </video>
 
@@ -133,8 +173,47 @@ $video_file = $fullpath . "/" . $result['filename'];
     </defs>
   </svg>
 
-  <script src="<?php echo __LAYOUT_URL__; ?>js/video.js?fdjyut"></script>
 
+<script type="text/javascript">
+  
+function updateVideoPlayer(video_id)
+{
+  setTimeout(function () {  window.location.href = 'http://plexmedia/plex_web/video.php?id=' + video_id;}, 0);
+}
+
+
+var multipleCardCarousel = document.querySelector(
+  "#carouselExampleControls"
+);
+if (window.matchMedia("(min-width: 768px)").matches) {
+  var carousel = new bootstrap.Carousel(multipleCardCarousel, {
+    interval: false,
+  });
+  var carouselWidth = $(".carousel-inner")[0].scrollWidth;
+  var cardWidth = $(".carousel-item").width();
+  var scrollPosition = 0;
+  $("#carouselExampleControls .carousel-control-next").on("click", function () {
+    if (scrollPosition < carouselWidth - cardWidth * 4) {
+      scrollPosition += cardWidth;
+      $("#carouselExampleControls .carousel-inner").animate(
+        { scrollLeft: scrollPosition },
+        600
+      );
+    }
+  });
+  $("#carouselExampleControls .carousel-control-prev").on("click", function () {
+    if (scrollPosition > 0) {
+      scrollPosition -= cardWidth;
+      $("#carouselExampleControls .carousel-inner").animate(
+        { scrollLeft: scrollPosition },
+        600
+      );
+    }
+  });
+} else {
+  $(multipleCardCarousel).addClass("slide");
+}
+</script>
 </body>
 
 </html>

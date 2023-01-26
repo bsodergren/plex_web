@@ -107,7 +107,7 @@ class pageinate extends Paginator
 
         }
         
-        $option_text = display_SelectOptions([10,25,30,50],$this->itemsPerPage);
+        $option_text = display_SelectOptions([10,25,30,40,50,100,250,500],$this->itemsPerPage);
         $params = [
             'HIDDEN' => $hidden_text,
             'PAGE_UPDATE' => $current_url ,

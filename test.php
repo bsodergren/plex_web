@@ -1,4 +1,9 @@
 <?php
+
+echo "<pre>";
+var_dump($_REQUEST);
+echo "</pre>";
+exit;
 require_once("_config.inc.php");
 define('TITLE', "Test Page");
 //define('BREADCRUMB', ['home' => "home.php"]);

@@ -138,14 +138,8 @@ function display_fileInfo($fileInfoArray, $total_files)
 
                 break;
             case 'duration':
-                $seconds         = round($value / 1000);
-                $hours =   round($seconds / 3600);
 
-                $minutes =   round((float) $seconds / 60 % 60);
-
-                $sec =  round($seconds % 60);
-                $duration_output = sprintf('%02d:%02d:%02d', $hours, $minutes, $sec);
-                $params['DURATION'] = $duration_output;
+                $params['DURATION'] = videoDuration($value);
                 break;
 
             case 'favorite':
@@ -245,6 +239,7 @@ function display_fileInfo($fileInfoArray, $total_files)
     $table_body_html = process_template("filelist/file", $params);
     return $table_body_html;
 }
+
 
 
 

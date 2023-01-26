@@ -1,6 +1,6 @@
 <?php
 $navigation_link_array = [
-
+/*
     'dropdown' => [
         'View'    => [
             'Artist' => 'view/artist.php',
@@ -18,7 +18,7 @@ $navigation_link_array = [
         ],
         
     ],
-
+*/
     
     'home'     => [
         'url'    => 'home.php',
@@ -32,13 +32,18 @@ $navigation_link_array = [
         'secure' => false,
         'js'     => false,
     ],
-    'new'      => [
-        'url'    => 'new.php',
-        'text'   => 'New Videos',
+    'grid'      => [
+        'url'    => 'grid.php',
+        'text'   => 'Grid Display',
         'secure' => false,
         'js'     => false,
     ],
-
+    'playlist'      => [
+        'url'    => 'playlist.php',
+        'text'   => 'Playlist Display',
+        'secure' => false,
+        'js'     => false,
+    ],
     'File Browser' => [
         'url'    => 'filebrowser.php',
         'text'   => 'File Browser',

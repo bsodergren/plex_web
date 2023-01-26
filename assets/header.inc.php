@@ -19,6 +19,7 @@ foreach ($include_array as $required_file) {
         require_once $required_file;
 }
 
+
 $template = new Template();
 
 
@@ -120,5 +121,6 @@ $url_array = [
         'Filename' => 'filename',
         'Duration' => 'Duration',
         'Date Added' => 'added',
+        'Genre' => 'genre',
     ],
 ];

@@ -50,6 +50,7 @@ define('Db_TABLE_SETTINGS', Db_TABLE_PREFIX . 'settings');
 
 
 define('Db_TABLE_FILEINFO', Db_TABLE_PREFIX . 'fileinfo');
+define('Db_TABLE_PLAYLIST',  'playlists');
 
 
 

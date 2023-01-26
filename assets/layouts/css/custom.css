@@ -78,78 +78,6 @@ table.blueTable thead th:first-child {
     border-left: none;
 }
 
-div.container {
-    width: 100%;
-    clear: both;
-    font-size: 22px;
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-    /*color:#cc0000;*/
-
-}
-
-div.navcontainer {
-    width: 100%;
-    clear: both;
-    font-size: 22px;
-    width: 100%;
-
-
-}
-
-input.button,
-a.button,
-div.container {
-    float: none;
-
-}
-
-input.button,
-a.button {
-    background-color: #FFFFFF;
-    border: 1px solid #660000;
-    border-radius: 5px;
-    color: #000000;
-    text-decoration: none;
-    /*		margin: 10px 0px 10px 0px; */
-
-    margin-right: 10px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-
-    padding: 15px 15px 15px 15px;
-}
-
-
-input.button:active,
-input.button:focus,
-input.button:hover {
-    background-color: #29FF00;
-    /* 	margin-top:-15px; */
-    color: #000000;
-
-}
-
-a.button:active,
-a.button:focus,
-a.button:hover {
-    background-color: #29FF00;
-    /* margin-top:-15px; */
-    color: #000000;
-
-}
-
-input.button,
-a.button:hover {
-    border: 1px solid #000000;
-}
-
-input.formbox {
-    /* width:100px; */
-}
 
 #menu>ul {
     display: none;
@@ -171,4 +99,24 @@ ul>.multi::after {
 
 ul>.multi-opened::after {
     content: ' -'
+}
+
+.categories-wrapper {
+    position: relative;
+}
+.category-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+}
+.category-input:checked + label{
+background:rgb(75, 222, 25); /* put your image here*/
+ height: 50px;
+  width: 50px;
+  position: absolute;
+ top:0;
+ left:0;
 }

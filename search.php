@@ -39,7 +39,6 @@ $query = $_REQUEST['query'];
     $pageObj = new pageinate($where, $currentPage, $urlPattern);
 
     $sql = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
-
     $results = $db->query($sql);
 
     $page_array = [

@@ -1,7 +1,17 @@
 <?php
 
+function videoDuration($duration)
+{
 
-function proccess_settings($redirect_url='')
+    $seconds         = round($duration / 1000);
+    $hours =   round($seconds / 3600);
+
+    $minutes =   round((float) $seconds / 60 % 60);
+
+    $sec =  round($seconds % 60);
+    return sprintf('%02d:%02d:%02d', $hours, $minutes, $sec);
+}
+function proccess_settings($redirect_url = '')
 {
     global $form;
     global $_POST;
@@ -11,22 +21,22 @@ function proccess_settings($redirect_url='')
     foreach ($_POST as $key => $value) {
         switch (true) {
             case $key == 'submit':
-            break;
+                break;
 
             case str_contains($key, 'setting_'):
                 $pcs                   = explode('_', $key);
                 $field                 = $pcs[1];
                 $new_settiings[$field] = $value;
-            break;
+                break;
 
             case str_contains($key, '-NAME'):
-            break;
+                break;
 
             case key_exists($key, __SETTINGS__):
                 $data = ['value' => $value];
                 $db->where('name', $key);
                 $db->update(Db_TABLE_SETTINGS, $data);
-            break;
+                break;
 
             case str_contains($key, '-ADD'):
                 if (!key_exists(str_replace('-ADD', '', $key), __SETTINGS__)) {
@@ -42,9 +52,9 @@ function proccess_settings($redirect_url='')
                         }
                     }
                 }
-            break;
-        }//end switch
-    }//end foreach
+                break;
+        } //end switch
+    } //end foreach
 
     if (is_array($transfer_settings)) {
         foreach ($transfer_settings as $name => $arr) {
@@ -63,10 +73,9 @@ function proccess_settings($redirect_url='')
     if ($form->ok()) {
         return $form->redirect($redirect_url);
     }
+} //end proccess_settings()
 
-}//end proccess_settings()
-
-function display_size($bytes, $precision=2)
+function display_size($bytes, $precision = 2)
 {
     $units  = [
         'B',
@@ -79,16 +88,15 @@ function display_size($bytes, $precision=2)
     $pow    = floor(($bytes ? log($bytes) : 0) / log(1024));
     $pow    = min($pow, (count($units) - 1));
     $bytes /= (1 << (10 * $pow));
-    return round($bytes, $precision).'<span class="fs-0-8 bold">'.$units[$pow].'</span>';
-
-}//end display_size()
+    return round($bytes, $precision) . '<span class="fs-0-8 bold">' . $units[$pow] . '</span>';
+} //end display_size()
 
 
 function byte_convert($size)
 {
     // size smaller then 1kb
     if ($size < 1024) {
-        return $size.' Byte';
+        return $size . ' Byte';
     }
 
     // size smaller then 1mb
@@ -109,8 +117,7 @@ function byte_convert($size)
     else {
         return sprintf('%4.2f TB', ($size / 1073741824));
     }
-
-}//end byte_convert()
+} //end byte_convert()
 
 
 function uri_SQLQuery($request_array)
@@ -138,30 +145,29 @@ function uri_SQLQuery($request_array)
         if ($string_value == 'NULL') {
             $query_string = 'IS NULL';
         }
-       // exit;
+        // exit;
         $uri_array[] = "$key $query_string";
-    }//end foreach
+    } //end foreach
 
 
-    if (count($uri_array) >= 1 ) {
+    if (count($uri_array) >= 1) {
         $uri_query['sql'] = implode(' AND ', $uri_array);
     }
 
     if (key_exists('sort', $request_array) && key_exists('direction', $request_array)) {
-        $sort_query  = $request_array['sort'].' '.$request_array['direction'];
+        $sort_query  = $request_array['sort'] . ' ' . $request_array['direction'];
         $uri_query['sort'] = $sort_query;
     }
 
     return $uri_query;
-
-}//end uri_SQLQuery()
-
+} //end uri_SQLQuery()
 
 
 
-function urlQuerystring($input_string,$exclude='')
+
+function urlQuerystring($input_string, $exclude = '')
 {
-    $query_string='';
+    $query_string = '';
 
     if ($input_string != '') {
 
@@ -170,18 +176,17 @@ function urlQuerystring($input_string,$exclude='')
         if (key_exists($exclude, $query_parts)) {
             unset($query_parts[$exclude]);
         }
-        $query_string = uri_String($query_parts,'');
+        $query_string = uri_String($query_parts, '');
     }
 
     return $query_string;
-
 }
 
 
-function uri_String($request_array,$start='?')
+function uri_String($request_array, $start = '?')
 {
 
-    
+
     foreach ($request_array as $key => $value) {
         if (is_array($value)) {
             $string_value = $value[0];
@@ -189,41 +194,40 @@ function uri_String($request_array,$start='?')
             $string_value = $value;
         }
 
-        $string_value=urlencode($string_value);
+        $string_value = urlencode($string_value);
         $uri_array[] = "$key=$string_value";
     }
 
-    if(is_array($uri_array)) {
+    if (is_array($uri_array)) {
         $uri_string = implode('&', $uri_array);
-        return $start.$uri_string;
+        return $start . $uri_string;
     }
 
     return $request_array;
-    
-
-}//end uri_String()
+} //end uri_String()
 
 
-function process_form($redirect_url='')
+function process_form($redirect_url = '')
 {
     global $_POST;
 
-    
+
     if (isset($_POST['submit'])) {
+
         if ($_POST['submit'] == 'save') {
 
-       
+
 
             return saveData($_POST, $redirect_url);
             exit;
         }
 
-        if (str_starts_with($_POST['submit'], 'delete')) {
+        if (str_starts_with($_POST['submit'], 'clear')) {
             return deleteEntry($_POST, $redirect_url);
             exit;
         }
 
-        if (str_starts_with($_POST['submit'], 'filedelete')) {
+        if (str_starts_with($_POST['submit'], 'delete')) {
             return deleteFile($_POST, $redirect_url);
             exit;
         }
@@ -232,16 +236,21 @@ function process_form($redirect_url='')
             return hideEntry($_POST, $redirect_url);
             exit;
         }
-    }//end if
+
+        if (str_starts_with($_POST['submit'], 'Playlist')) {
+            return createPlaylist($_POST, $redirect_url);
+            exit;
+        }
+
+    } //end if
 
     if ($rediredirect_urlrect != '') {
         return myHeader($redirect_url, 5);
     }
+} //end process_form()
 
-}//end process_form()
 
-
-function doRequest($request, $callback, $return=0, $redirect=false)
+function doRequest($request, $callback, $return = 0, $redirect = false)
 {
     global $_REQUEST;
 
@@ -256,77 +265,66 @@ function doRequest($request, $callback, $return=0, $redirect=false)
     } else {
         return 0;
     }
-
-}//end doRequest()
-
+} //end doRequest()
 
 
-function deleteEntry($data_array, $redirect=false, $timeout=4)
+
+function deleteEntry($data_array, $redirect = false, $timeout = 4)
 {
     global $db;
     global $_SERVER;
     if (key_exists('submit', $data_array)) {
-        $key = $data_array['submit'];
-        if (str_contains($key, '_') == true) {
-            $pcs   = explode('_', $key);
-            $id    = $pcs[1];
-            $field = $pcs[0];
-            if ($field == 'delete') {
-                logger('Delete entry', $id);
-                $db->where('id', $id);
-                $user = $db->getOne(Db_TABLE_FILEDB);
+        if ($data_array['submit'] == 'clear') {
+            $id = $data_array['fileid'];
+            logger('clear entry', $id);
+            $db->where('id', $id);
+            $user = $db->getOne(Db_TABLE_FILEDB);
 
-                $thumbnail_file = $_SERVER['DOCUMENT_ROOT'].$user['thumbnail'];
-                chk_file($thumbnail_file, 'delete');
+            $thumbnail_file = $_SERVER['DOCUMENT_ROOT'] . $user['thumbnail'];
+            chk_file($thumbnail_file, 'delete');
 
-                $db->where('id', $id);
-                $db->delete(Db_TABLE_FILEDB);
-            }
+            $db->where('id', $id);
+            $db->delete(Db_TABLE_FILEDB);
         }
     }
+
 
     if ($redirect != false) {
         return JavaRefresh($redirect, $timeout);
     }
+} //end deleteEntry()
 
-}//end deleteEntry()
 
-
-function deleteFile($data_array, $redirect=false, $timeout=4)
+function deleteFile($data_array, $redirect = false, $timeout = 2)
 {
     global $db;
     global $_SERVER;
-
     if (key_exists('submit', $data_array)) {
-        $key = $data_array['submit'];
-        if (str_contains($key, '_') == true) {
-            $pcs   = explode('_', $key);
-            $id    = $pcs[1];
-            $field = $pcs[0];
-            if ($field == 'filedelete') {
-                $db->where('id', $id);
-                $user = $db->getOne(Db_TABLE_FILEDB);
+        if ($data_array['submit'] == 'delete') {
+            $id = $data_array['fileid'];
+       
 
-                $thumbnail_file = $_SERVER['DOCUMENT_ROOT'].$user['thumbnail'];
-                $video_file     = $user['fullpath'].$user['filename'];
+            $db->where('id', $id);
+            $user = $db->getOne(Db_TABLE_FILEDB);
 
-                chk_file($thumbnail_file, 'delete');
-                chk_file($video_file, 'delete');
+            $thumbnail_file = $_SERVER['DOCUMENT_ROOT'] . $user['thumbnail'];
+            $video_file     = $user['fullpath'] . $user['filename'];
 
-                $db->where('id', $id);
-                $db->delete(Db_TABLE_FILEDB);
-            }
+            chk_file($thumbnail_file, 'delete');
+            chk_file($video_file, 'delete');
+
+            $db->where('id', $id);
+            $db->delete(Db_TABLE_FILEDB);
         }
-    }//end if
+    } //end if
 
     if ($redirect != false) {
         return JavaRefresh($redirect, $timeout);
     }
+} //end deleteFile()
 
-}//end deleteFile()
 
-
-function hideEntry($data_array, $redirect=false, $timeout=4)
+function hideEntry($data_array, $redirect = false, $timeout = 4)
 {
     global $db;
 
@@ -337,7 +335,7 @@ function hideEntry($data_array, $redirect=false, $timeout=4)
             $id    = $pcs[1];
             $field = $pcs[0];
             if ($field == 'hide') {
-                $sql = 'UPDATE '.Db_TABLE_FILEDB.' SET added = (CURRENT_TIMESTAMP - INTERVAL 3 day) WHERE id = '.$id;
+                $sql = 'UPDATE ' . Db_TABLE_FILEDB . ' SET added = (CURRENT_TIMESTAMP - INTERVAL 3 day) WHERE id = ' . $id;
                 logger('hide sql', $sql);
 
                 $result = $db->query($sql);
@@ -351,22 +349,20 @@ function hideEntry($data_array, $redirect=false, $timeout=4)
     if ($redirect != false) {
         return JavaRefresh($redirect, $timeout);
     }
+} //end hideEntry()
 
-}//end hideEntry()
 
-
-function saveData($data_array, $redirect=false, $timeout=4)
+function saveData($data_array, $redirect = false, $timeout = 4)
 {
     global $db;
-    
+
     $__output = '';
 
     foreach ($data_array as $key => $val) {
 
-        
 
-        if (str_contains($key, '_') == true)
-        {
+
+        if (str_contains($key, '_') == true) {
 
             $value = trim($val);
 
@@ -389,11 +385,11 @@ function saveData($data_array, $redirect=false, $timeout=4)
                 }
 
                 if (isset($pcs[2])) {
-                    $field .= '_'.$pcs[2];
+                    $field .= '_' . $pcs[2];
                 }
 
                 if ($value == 'NULL') {
-                    $sql = 'UPDATE '.Db_TABLE_FILEDB.'  SET `'.$field.'` = NULL WHERE id = '.$id;
+                    $sql = 'UPDATE ' . Db_TABLE_FILEDB . '  SET `' . $field . '` = NULL WHERE id = ' . $id;
 
                     $db->query($sql);
                     $value = '';
@@ -432,46 +428,76 @@ function saveData($data_array, $redirect=false, $timeout=4)
                         }
                     }
                 }
-                    $atom_value = trim($atom_value);
-                    $value      = trim($value);
-                    $__filename = basename($filename);
-                    $__output .= "$__filename -> $atom_field = \"$atom_value\"<br/>";
+                $atom_value = trim($atom_value);
+                $value      = trim($value);
+                $__filename = basename($filename);
+                $__output .= "$__filename -> $atom_field = \"$atom_value\"<br/>";
 
-                    logger("Metadata", $atom_field);
-                    logger("Metadata", $atom_value);
-
-
-                   metadata_write_filedata("${filename}", [$atom_field => $atom_value]);
+                logger("Metadata", $atom_field);
+                logger("Metadata", $atom_value);
 
 
+                metadata_write_filedata("${filename}", [$atom_field => $atom_value]);
 
-                    $data = [$field => $value];
 
-                    $db->where('id', $id);
-                    if ($db->update(Db_TABLE_FILEDB, $data)) {
-                        logger('records were updated', $db->count);
-                    } else {
-                        logger('update failed: ', $db->getLastError());
-                    }
-            }//end if
-        }//end if
-    }//end foreach
+
+                $data = [$field => $value];
+
+                $db->where('id', $id);
+                if ($db->update(Db_TABLE_FILEDB, $data)) {
+                    logger('records were updated', $db->count);
+                } else {
+                    logger('update failed: ', $db->getLastError());
+                }
+            } //end if
+        } //end if
+    } //end foreach
 
     if ($redirect != false) {
-         return myHeader($redirect);
+        return myHeader($redirect);
     }
     return $__output;
-}//end saveData()
+} //end saveData()
 
-
-function myHeader($redirect=__URL_PATH__.'/home.php')
+function createPlaylist($data_array, $redirect = false, $timeout = 4)
 {
-    header('refresh:0;url='.$redirect);
+    global $db;
+    global $_SESSION;
+    $sql = 'select max(playlist_id) as playlist_id from playlists';
+    $res = $db->rawQueryOne($sql);
+    $playlist_id = $res['playlist_id'];
+    if( $playlist_id === null ) {
+        $playlist_id = 0;
+    } else {
+        $playlist_id++;
+    }
+   
 
-}//end myHeader()
+    foreach($data_array["playlist"] as $_ => $id)
+    {
+        $data =[
+            'playlist_id' => $playlist_id,
+            'playlist_videos' => $id ,
+            'playlist_name' => 'Playlist',
+            'library' => $_SESSION['library'],
+        ];
+        $db->insert (Db_TABLE_PLAYLIST, $data);
+    }
 
 
-function getBaseUrl($pathOnly=false)
+
+        return myHeader();
+        exit;
+
+}
+
+function myHeader($redirect = __URL_PATH__ . '/home.php')
+{
+    header('refresh:0;url=' . $redirect);
+} //end myHeader()
+
+
+function getBaseUrl($pathOnly = false)
 {
     // output: /myproject/index.php
     $currentPath = $_SERVER['PHP_SELF'];
@@ -486,13 +512,12 @@ function getBaseUrl($pathOnly=false)
     $protocol = strtolower(substr($_SERVER['SERVER_PROTOCOL'], 0, 5)) == 'https://' ? 'https://' : 'http://';
 
     if ($pathOnly == true) {
-        return $protocol.$hostName.$pathInfo['dirname'].'/';
+        return $protocol . $hostName . $pathInfo['dirname'] . '/';
     }
 
     // return: http://localhost/myproject/
-    return $protocol.$hostName.$pathInfo['dirname'].'/';
-
-}//end getBaseUrl()
+    return $protocol . $hostName . $pathInfo['dirname'] . '/';
+} //end getBaseUrl()
 
 
 function print_r2($val)
@@ -500,8 +525,7 @@ function print_r2($val)
     echo '<pre>';
     print_r($val);
     echo '</pre>';
-
-}//end print_r2()
+} //end print_r2()
 
 
 function print_request($array)
@@ -518,16 +542,14 @@ function print_request($array)
             print_r2($newarray);
         }
     }
-
-}//end print_request()
+} //end print_request()
 
 
 function toint($string)
 {
     $string_ret = str_replace(',', '', $string);
     return $string_ret;
-
-}//end toint()
+} //end toint()
 
 
 function array_find($needle, $haystack)
@@ -538,16 +560,13 @@ function array_find($needle, $haystack)
             break;
         }
     }
-
-}//end array_find()
+} //end array_find()
 
 
 function getReferer()
 {
     global $_SERVER;
-    $url=$_SERVER['HTTP_REFERER'];	
-    $parts=parse_url($url);
+    $url = $_SERVER['HTTP_REFERER'];
+    $parts = parse_url($url);
     return $parts['path'];
-
-
 }

@@ -1,27 +1,9 @@
 {
     "require": {
-        "twig/twig": "^3.4",
-        "symfony/process": "^6.1",
-        "symfony/polyfill-php80": "^1.26",
-        "symfony/polyfill-mbstring": "^1.26",
-        "symfony/polyfill-ctype": "^1.26",
-        "symfony/deprecation-contracts": "^3.1",
-        "firebase/php-jwt": "^6.3",
-        "phpoffice/phpspreadsheet": "^1.24",
-        "myclabs/php-enum": "^1.8",
-        "monolog/monolog": "^3.2",
-        "maennchen/zipstream-php": "^2.2",
-        "smalot/pdfparser": "^2.2",
-        "phpmailer/phpmailer": "^6.6",
-        "mobiledetect/mobiledetectlib": "^2.8",
-        "formr/formr": "^1.4",
-        "sensiolabs/ansi-to-html": "^1.2",
-        "phlak/config": "^7.0",
-        "guzzlehttp/guzzle": "^7.5",
-        "jasongrimes/paginator": "~1.0",
-        "twbs/bootstrap": "5.2.3",
         "nette/utils": "^3.2",
-        "tracy/tracy": "^2.9",
+        "formr/formr": "^1.4",
+        "jasongrimes/paginator": "~1.0",
         "mhor/php-mediainfo": "^5.4"
+        
     }
 }
