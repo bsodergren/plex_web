@@ -22,7 +22,7 @@ if (isset($_GET['pageno'])) {
 ?>
     
 <main role="main" class="container">
-<a href="<?php echo __THIS_PAGE__; ?>">back</a>
+<a href="<?php echo __THIS_FILE__; ?>">back</a>
 <br>
 <br>
 <?php	
@@ -56,7 +56,7 @@ if(isset($_REQUEST['viewstudio']))
 			$studio = str_replace(" ","-",$v['studio']);
 			$studio = str_replace("/","_",$studio);
 			
-			echo "<li><a href='".__THIS_PAGE__."?viewstudio=".$studio."'>".$v["studio"]."</a> (".$cnt.")<br>";
+			echo "<li><a href='".__THIS_FILE__."?viewstudio=".$studio."'>".$v["studio"]."</a> (".$cnt.")<br>";
 		}
 	}
 	echo "</ul>";

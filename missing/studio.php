@@ -7,14 +7,14 @@ define('TITLE', "Home");
 include __LAYOUT_HEADER__;
 if (isset($_REQUEST['submit']) ) 
 {	
-	echo saveData($_REQUEST, __THIS_PAGE__ ); 
+	echo saveData($_REQUEST, __THIS_FILE__ ); 
 	
 } else {
 
 ?>
     
 <main role="main" class="container">
-<a href="<?php echo __THIS_PAGE__; ?>">back</a>
+<a href="<?php echo __THIS_FILE__; ?>">back</a>
 <br>
 <br>
 <?php	
@@ -25,7 +25,7 @@ if (isset($_REQUEST['submit']) )
 	$results = $db->query($sql);
 
 	echo "<table class=blueTable> 
- <form action=".__THIS_PAGE__." method=post id=\"myform\">";
+ <form action=".__THIS_FILE__." method=post id=\"myform\">";
 	echo display_filelist($results);
 	echo "</table>
 	</form>";

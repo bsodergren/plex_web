@@ -8,14 +8,14 @@ define('TITLE', "Home");
 include __LAYOUT_HEADER__;
 if (isset($_REQUEST['submit']) ) 
 {	
-	echo saveData($_REQUEST, __THIS_PAGE__ ); 
+	echo saveData($_REQUEST, __THIS_FILE__ ); 
 	
 } else {
 
 ?>
     
 <main role="main" class="container">
-<a href="<?php echo __THIS_PAGE__; ?>">back</a>
+<a href="<?php echo __THIS_FILE__; ?>">back</a>
 <br>
 <br>
 <?php	
@@ -31,7 +31,7 @@ if(isset($_REQUEST['viewstudio']))
 	$results = $db->query($sql);
 
 	echo "<table class=blueTable> 
- <form action=".__THIS_PAGE__." method=post id=\"myform\">";
+ <form action=".__THIS_FILE__." method=post id=\"myform\">";
 	foreach($results as $id => $row)
 	{
 		$row_key=$row['id'];
@@ -81,7 +81,7 @@ if(isset($_REQUEST['viewstudio']))
 			$studio = str_replace(" ","-",$v['studio']);
 			$studio = str_replace("/","_",$studio);
 			
-			echo "<li><a href='".__THIS_PAGE__."?viewstudio=".$studio."'>".$v["studio"]."</a> (".$cnt.")<br>";
+			echo "<li><a href='".__THIS_FILE__."?viewstudio=".$studio."'>".$v["studio"]."</a> (".$cnt.")<br>";
 		}
 	}
 	echo "</ul>";

@@ -83,7 +83,8 @@ logger('all files', $sql);
 $results       = $db->query($sql);
 $request_key   = uri_String($uri);
 
-$redirect_string = __THIS_PAGE__.  $request_key;
+
+$redirect_string = __THIS_FILE__.  $request_key;
 
 $referer_url = '';
 if (basename($_SERVER["HTTP_REFERER"]) != 'home.php') {
