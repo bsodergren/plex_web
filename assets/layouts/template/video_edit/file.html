@@ -1,0 +1,113 @@
+<table class="blueTable" >
+    <thead>
+        <tr>
+            <th>
+                <button type='submit' class="btn btn-primary"
+                 onclick="hideSubmit(%%FILE_ID%%,'save')">Save</button>
+                <button type='submit' class="btn btn-primary" onclick="hideSubmit(%%FILE_ID%%,'delete')">Clear</button>
+                <button type='submit' class="btn btn-primary" onclick="hideSubmit(%%FILE_ID%%,'delete')">delete</button>
+
+                %%FILE_NO%%
+            </th>
+            <th colspan="4">%%FILE_ID%% %%FILE_NAME%%
+                <input type="hidden" value="%%FILE_ID%%" name="fileid">
+                <input type="hidden" value="%%FULL_PATH%%%%FILE_NAME%%" name="%%FILE_NAME_ID%%">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td rowspan="8" colspan="2"><img src="%%THUMBNAIL%%"
+                    onclick="popup('/plex_web/video.php?id=%%FILE_ID%%', 'video')"></td>
+        </tr>
+
+
+        <tr>
+            <td>Title</td>
+            <td><input onclick="editPlaceholder(this.id)" onfocusout="checkValue(this.id)" name="%%FILE_ID%%_title"
+                    id="%%FILE_ID%%_title_id" size="45" type="text" %%TITLE_PLACEHOLDER%% %%TITLE_VALUE%%></td>
+            <td><input type="button" id="%%FILE_ID%%_title" onclick="setNull(this.id)" value="Clear"></td>
+        </tr>
+
+        <tr>
+            <td>Artist</td>
+            <td><input onclick="editPlaceholder(this.id)" onfocusout="checkValue(this.id)" name="%%FILE_ID%%_artist"
+                    id="%%FILE_ID%%_artist_id" size="45" type="text" %%ARTIST_PLACEHOLDER%% %%ARTIST_VALUE%%></td>
+            <td><input type="button" id="%%FILE_ID%%_artist" onclick="setNull(this.id)" value="Clear"></td>
+        </tr>
+
+        <tr>
+            <td>Genre</td>
+            <td><input onclick="editPlaceholder(this.id)" onfocusout="checkValue(this.id)" name="%%FILE_ID%%_genre"
+                    id="%%FILE_ID%%_genre_id" size="45" type="text" %%GENRE_PLACEHOLDER%% %%GENRE_VALUE%%></td>
+            <td><input type="button" id="%%FILE_ID%%_genre" onclick="setNull(this.id)" value="Clear"></td>
+        </tr>
+
+        <tr>
+            <td>Studio</td>
+            <td><input onclick="editPlaceholder(this.id)" onfocusout="checkValue(this.id)" name="%%FILE_ID%%_studio"
+                    id="%%FILE_ID%%_studio_id" size="45" type="text" %%STUDIO_PLACEHOLDER%% %%STUDIO_VALUE%%></td>
+            <td><input type="button" id="%%FILE_ID%%_studio" onclick="setNull(this.id)" value="Clear"></td>
+        </tr>
+        <tr>
+            <td>SubStudio</td>
+            <td><input onclick="editPlaceholder(this.id)" onfocusout="checkValue(this.id)" name="%%FILE_ID%%_substudio"
+                    id="%%FILE_ID%%_substudio_id" size="45" type="text" %%SUBSTUDIO_PLACEHOLDER%% %%SUBSTUDIO_VALUE%%>
+            </td>
+            <td><input type="button" id="%%FILE_ID%%_substudio" onclick="setNull(this.id)" value="Clear"></td>
+        </tr>
+
+        <tr>
+            <td>Added</td>
+            <td colspan=2 style="text-align: left">%%ADDED_VALUE%%</td>
+        </tr>
+        <tr>
+            <td>Duration</td>
+            <td colspan=2 style="text-align: left">%%DURATION%%</td>
+        </tr>
+        <tr>
+            <td colspan=2><button type="button" class="btn btn-primary"
+                    onclick="popup('/plex_web/video.php?id=%%FILE_ID%%', 'video')">Watch Video</button></td>
+            <td>favorite</td>
+
+            <td colspan=2>
+
+                <input type="radio" id="%%FILE_ID%%_favorite_Yes" name="%%FILE_ID%%_favorite" value="" %%YESCHECKED%%
+                    onclick="editRadioValue(this.id)">
+                <!--  onfocusout="checkValue(this.id)"-->
+                <label for="%%FILE_ID%%_favorite_Yes">yes</label>
+
+                <input type="radio" id="%%FILE_ID%%_favorite_No" name="%%FILE_ID%%_favorite" value="" %%NOCHECKED%%
+                    onclick="editRadioValue(this.id)">
+
+                <!-- onclick="editPlaceholder(this.id)" onfocusout="checkValue(this.id)"-->
+                <label for="%%FILE_ID%%_favorite_No">no</label>
+
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <td colspan="2"></td>
+
+            <td colspan="2"> Width %%WIDTH%% Height %%HEIGHT%% Bit Rate %%BITRATE%% Filesize %%FILESIZE%% </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td colspan="2"> 
+                <input type="text" id="tag-input_%%FILE_ID%%" name="%%FILE_ID%%_tags">
+
+      
+                
+            </td>
+            <td></td>
+        </tr>
+
+
+
+    </tbody>
+
+</table>

@@ -2,7 +2,6 @@
 require_once '_config.inc.php';
 define('TITLE', 'View Genres');
 
-
 $null     = '';
 $null_req = '';
 
@@ -46,9 +45,16 @@ $sql   = query_builder(
     'genre',
     $order
 );
-
+$genre_array = [];
 logger('qyefasd', $sql);
 $result = $db->query($sql);
+
+foreach ($result as $k => $v) {
+    $row_genre_array = explode(",", $v['genre']);
+    $genre_array = array_merge($genre_array, $row_genre_array);
+}
+
+$genre_array = array_unique($genre_array);
 
 $all_url = 'files.php?' . $request_key . '&allfiles=1';
 DEFINE('BREADCRUMB', ['home' => "home.php",'genre'=> '', 'all' => $all_url]);
@@ -57,10 +63,10 @@ require __LAYOUT_HEADER__;
 <main role="main" class="container">
 
 <?php
-foreach ($result as $k => $v) {
+foreach ($genre_array as $k => $v) {
     // $v["cnt"]=1; ".$v["cnt"]."
-    if ($v['genre'] != '') {
-        echo $studio."<a href='files.php?".$request_key.'&genre='.$v['genre']."'>".$v['genre'].'</a> '.$v['cnt'].'<br>';
+    if ($v != '') {
+        echo $studio."<a href='files.php?".$request_key.'&genre='.$v."'>".$v.'</a> <br>';
     }
 }
 

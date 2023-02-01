@@ -79,7 +79,7 @@ function display_fileInfo($fileInfoArray, $total_files)
 {
 
     global $db;
-    $table_body_html = '';
+    $table_body_html = [];
     $row_id  = $fileInfoArray['id'];
     // $row_filename = $row_id.":".$row['filename'];
     $row_filename  = $fileInfoArray['filename'];
@@ -94,13 +94,12 @@ function display_fileInfo($fileInfoArray, $total_files)
         $file_string = $result_number . "  of " . $total_files;
     }
 
-
     $params['FILE_NAME'] = $row_filename;
     $params['DELETE_ID']    = 'delete_' . $row_id;
     $params['FILE_NAME_ID'] = $row_id . '_filename';
-    $params['FILE_NO'] = $file_string;
     $params['FULL_PATH']    = $row_fullpath;
-
+        
+    $params['ROW_ID'] = $result_number;
 
     $params['FILE_ID'] = $row_id;
 
@@ -168,6 +167,7 @@ function display_fileInfo($fileInfoArray, $total_files)
 
             default:
                 $placeholder = 'placeholder="' . $value . '"';
+/*
                 if ($value == '') {
                     $placeholder = '';
                     switch ($key) {
@@ -194,7 +194,7 @@ function display_fileInfo($fileInfoArray, $total_files)
                             break;
                     } //end switch
                 } //end if
-
+*/
                 if ($key == "studio") {
                     $studio_value = $value;
                 }
@@ -236,7 +236,25 @@ function display_fileInfo($fileInfoArray, $total_files)
 
 
     } //end foreach
-    $table_body_html = process_template("filelist/file", $params);
+    $table_body_html['filecards'] = process_template("filelist/file", $params);
+    $tag_list = '';
+    $sql = "SELECT tag_name FROM tags WHERE file_id = " . $row_id;
+    $res = $db->query($sql);
+    if(count($res) > 0){
+        foreach($res as $_ => $row){
+            $tag_array[$_] = $row['tag_name'];
+        }
+
+        $tag_list = implode( ",",$tag_array);
+        $tag_list = str_replace(",", "','", $tag_list);
+        $tag_list = "['" . $tag_list . "']";
+
+        $tag_list = " tagInput".$row_id.".addData(".$tag_list.");";
+    }
+    
+    $params['TAG_DATA'] = $tag_list;
+    $table_body_html['js'] = process_template("filelist/tag_js", $params);
+
     return $table_body_html;
 }
 
@@ -266,16 +284,25 @@ function display_filelist($results, $option = '', $page_array = [])
         $row_id  = $row['id'];
 
         $table_body = display_fileInfo($row, $total_files);
+        $js_html .= $table_body['js'];
         $table_html .= process_template("filelist/file_form_wrapper",  [
-            'FILE_TABLE'   => $table_body,
+            'FILE_ID' => $row_id,
+            'FILE_TABLE'   => $table_body['filecards'],
             'REDIRECT_STRING' => $redirect_string,
             'SUBMIT_ID' => 'hiddenSubmit_' . $row_id,
             'HIDDEN_INPUT' => $hidden_fields,
         ]);
     } //end foreach
 
+    $javascript_html = process_template(
+        "filelist/list_js",
+        [
+            '__LAYOUT_URL__' => __LAYOUT_URL__,
+            'JS_TAG_HTML' => $js_html,
+        ]
+    );
 
-    echo $table_html;
+    echo $table_html . $javascript_html;
 } //end display_filelist()
 
 

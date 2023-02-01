@@ -5,11 +5,11 @@ $id = $_REQUEST['id'];
 $cols = array("playlist_id");
 $db->where("playlist_videos", $id);
 $playlist_result = $db->getOne(Db_TABLE_PLAYLIST, null, $cols);
-
-if (key_exists('playlist_id', $playlist_result)) {
-  $playlist_id = $playlist_result['playlist_id'];
+if (is_array($playlist_result)) {
+  if (key_exists('playlist_id', $playlist_result)) {
+    $playlist_id = $playlist_result['playlist_id'];
+  }
 }
-
 $cols = array("filename", "fullpath");
 $db->where("id", $id);
 $result = $db->getone(Db_TABLE_FILEDB, null, $cols);
@@ -28,12 +28,13 @@ $video_file = $fullpath . "/" . $result['filename'];
   <title>Custom HTML5 Video Player</title>
 
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>    
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
-<script src="<?php echo __LAYOUT_URL__; ?>js/video.js?<?php echo rand(1,100) ?>"></script>
 
   <link rel="stylesheet" href="<?php echo __LAYOUT_URL__; ?>css/video.css?<?php echo rand(1,100) ?>">
 
@@ -48,11 +49,11 @@ $results = $db->query($sql);
 
 
 for ($i = 0; $i < count($results); $i++) {
-  $class = " ";
+  $class = "carousel-item ";
 
   if($id == $results[$i]['playlist_videos'] )
   {
-        $class = " active";
+        $class = "carousel-item active";
 
   }
     $carousel_item .= process_template(
@@ -65,11 +66,12 @@ for ($i = 0; $i < count($results); $i++) {
     );
 }
 
-  echo process_template("video/carousel", ['CAROUSEL_INNER_HTML' => $carousel_item]);
+//  echo process_template("video/carousel", ['CAROUSEL_INNER_HTML' => $carousel_item]);
 
 
  } ?>
-  <div class="container">
+<div class="container">
+
     <div class="video-container" id="video-container">
       <div class="playback-animation" id="playback-animation">
         <svg class="playback-icons">
@@ -173,6 +175,7 @@ for ($i = 0; $i < count($results); $i++) {
     </defs>
   </svg>
 
+  <script src="<?php echo __LAYOUT_URL__; ?>js/video.js?<?php echo rand(1,100) ?>"></script>
 
 <script type="text/javascript">
   
@@ -181,38 +184,29 @@ function updateVideoPlayer(video_id)
   setTimeout(function () {  window.location.href = 'http://plexmedia/plex_web/video.php?id=' + video_id;}, 0);
 }
 
+var myCarousel = document.querySelector('#myCarousel')
+var carousel = new bootstrap.Carousel(myCarousel, {
+  interval: 100000
+})
 
-var multipleCardCarousel = document.querySelector(
-  "#carouselExampleControls"
-);
-if (window.matchMedia("(min-width: 768px)").matches) {
-  var carousel = new bootstrap.Carousel(multipleCardCarousel, {
-    interval: false,
-  });
-  var carouselWidth = $(".carousel-inner")[0].scrollWidth;
-  var cardWidth = $(".carousel-item").width();
-  var scrollPosition = 0;
-  $("#carouselExampleControls .carousel-control-next").on("click", function () {
-    if (scrollPosition < carouselWidth - cardWidth * 4) {
-      scrollPosition += cardWidth;
-      $("#carouselExampleControls .carousel-inner").animate(
-        { scrollLeft: scrollPosition },
-        600
-      );
+$('.carousel .carousel-item').each(function(){
+    var minPerSlide = 4;
+    var next = $(this).next();
+    if (!next.length) {
+    next = $(this).siblings(':first');
     }
-  });
-  $("#carouselExampleControls .carousel-control-prev").on("click", function () {
-    if (scrollPosition > 0) {
-      scrollPosition -= cardWidth;
-      $("#carouselExampleControls .carousel-inner").animate(
-        { scrollLeft: scrollPosition },
-        600
-      );
-    }
-  });
-} else {
-  $(multipleCardCarousel).addClass("slide");
-}
+    next.children(':first-child').clone().appendTo($(this));
+    
+    for (var i=0;i<minPerSlide;i++) {
+        next=next.next();
+        if (!next.length) {
+            next = $(this).siblings(':first');
+        }
+        
+        next.children(':first-child').clone().appendTo($(this));
+      }
+});
+
 </script>
 </body>
 

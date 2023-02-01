@@ -188,6 +188,8 @@ function uri_String($request_array, $start = '?')
 
 
     foreach ($request_array as $key => $value) {
+        if ($key == 'direction') {
+            continue; }
         if (is_array($value)) {
             $string_value = $value[0];
         } else {
@@ -237,9 +239,16 @@ function process_form($redirect_url = '')
         }
 
         if (str_starts_with($_POST['submit'], 'Playlist')) {
-            return createPlaylist($_POST, $redirect_url);
+            createPlaylist($_POST, $redirect_url);
+            myHeader();
             exit;
         }
+        if (str_starts_with($_POST['submit'], 'Move')) {
+            $playlist_id = createPlaylist($_POST, $redirect_url);
+            moveFiles($_POST, $playlist_id);
+            exit;
+        }
+        
 
     } //end if
 
@@ -359,8 +368,6 @@ function saveData($data_array, $redirect = false, $timeout = 4)
 
     foreach ($data_array as $key => $val) {
 
-
-
         if (str_contains($key, '_') == true) {
 
             $value = trim($val);
@@ -380,6 +387,10 @@ function saveData($data_array, $redirect = false, $timeout = 4)
 
                 if ($field == 'filename') {
                     $filename = $value;
+                    continue;
+                }
+                if ($field == 'tags') {
+                    updateTags($id,$value);
                     continue;
                 }
 
@@ -458,6 +469,37 @@ function saveData($data_array, $redirect = false, $timeout = 4)
     return $__output;
 } //end saveData()
 
+function updateTags($id,$tags)
+{
+
+    global $db;
+
+    $tag_array = explode(",", $tags);
+
+    $sql = "delete from tags where file_id = " . $id;
+    $db->query($sql);
+
+    foreach($tag_array as $tag){
+       $db->query( "INSERT INTO tags (file_id, tag_name) VALUES ( " . $id . ", '" . $tag . "'); ");
+    }
+}
+
+function moveFiles($data_array, $playlist_id){
+
+    global $db;
+    global $_SESSION;
+   // $video_file     = $user['fullpath'] . $user['filename'];
+   $sql = "select f.fullpath, f.filename from metatags_filedb as f, playlists as p where (p.playlist_id = ".$playlist_id ." and p.playlist_videos = f.id);";
+   $results = $db->query($sql);
+    
+    
+    foreach ($results as $_ => $row) {
+        print_r2($row);
+    }
+    exit;
+}
+
+
 function createPlaylist($data_array, $redirect = false, $timeout = 4)
 {
     global $db;
@@ -485,8 +527,7 @@ function createPlaylist($data_array, $redirect = false, $timeout = 4)
 
 
 
-        return myHeader();
-        exit;
+        return  $playlist_id;
 
 }
 

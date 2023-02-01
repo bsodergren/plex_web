@@ -4,14 +4,13 @@
 %%FOOT_NAVBAR%%
 
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
     const writeLog = function(msg) {
         let date = new Date();
         window.console.log(date.toISOString() + ' ' + msg);
     };
 
-
+/*
     jQuery(function($) {
         let f = $('#formId');
 
@@ -37,11 +36,12 @@
         f.on('submit', function(e) {
             e.preventDefault();
 
-            let redirect_url = document.getElementById('redirect').value;
+            let formData = f.serialize();
+
+            let redirect_url = document.getElementById(f[0][0].id).value;
             writeLog(redirect_url);
 
-            let formData = f.serialize();
-            writeLog(formData);
+      
             $.ajax($.extend(true, xhrOptions, {
                 data: formData
             })).done(function(responseText) {
@@ -59,7 +59,10 @@
             return false;
         });
     });
+    */
 </script>
+
+
 
 %%JAVASCRIPT_HTML%%
 

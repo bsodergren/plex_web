@@ -62,6 +62,10 @@ if (isset($uri)) {
         $sql_studio = $res_array['sql'];
     }
 
+    if (isset($_REQUEST['genre'])) {
+        $where = str_replace("genre  = '".$_REQUEST['genre']."'", 'genre like \'%'.$_REQUEST['genre'].'%\'', $sql_studio);
+
+    } 
     if (!isset($_REQUEST['allfiles']) && $sql_studio != '') {
         $where = str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
 
@@ -72,6 +76,12 @@ if (isset($uri)) {
         $genre = '';
     }
 }
+
+
+if (isset($_REQUEST['genre'])) {
+    $where = str_replace("genre = '".$_REQUEST['genre']."'", 'genre like \'%'.$_REQUEST['genre'].'%\'', $where);
+
+} 
 
 $pageObj = new pageinate($where, $currentPage, $urlPattern);
 
@@ -97,6 +107,7 @@ define('BREADCRUMB', ['home' => "home.php", 'genre' => $referer_url, $genre => '
 require __LAYOUT_HEADER__;
 
 ?>
+
 <main role="main" class="container mt-5">
     <?php
     $page_array = [

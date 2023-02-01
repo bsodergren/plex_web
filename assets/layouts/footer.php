@@ -27,7 +27,8 @@ if (isset($json_array)) {
 
 }
 
-echo Template::echo("footer/main",['JAVASCRIPT_HTML' => $js_html, 'FOOT_NAVBAR' => $navbar ]);
+echo Template::echo("footer/main",[
+    'JAVASCRIPT_HTML' => $js_html, 'FOOT_NAVBAR' => $navbar ]);
 
 
 

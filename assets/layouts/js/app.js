@@ -1,29 +1,3 @@
-function logout() {
-    var xmlhttp;
-    if (window.XMLHttpRequest) {
-          xmlhttp = new XMLHttpRequest();
-    }
-    // code for IE
-    else if (window.ActiveXObject) {
-      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    if (window.ActiveXObject) {
-      // IE clear HTTP Authentication
-      document.execCommand("ClearAuthenticationCache");
-      window.location.href='/cwp/';
-    } else {
-        xmlhttp.open("GET", '/cwp/home.php', true, "logout", "logout");
-        xmlhttp.send("");
-        xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4) {window.location.href='/cwp/home.php';}
-        }
-
-
-    }
-
-
-    return false;
-}
 
 function editPlaceholder(id) {
   var x = document.getElementById(id).placeholder;
@@ -37,10 +11,14 @@ function editPlaceholder(id) {
 
 function hideSubmit(id,text)
 {
-
-  
-  console.log(id);
-
+  /*
+  if( text == 'save'){
+    let redirect_value = document.getElementById('redirect_'+id).value;
+    redirect_value += "#video_" + id;
+    console.log(redirect_value);
+    document.getElementById('redirect_'+id).value = redirect_value ; 
+  }
+*/
   document.getElementById('hiddenSubmit_'+id).value = text; 
 }
 
@@ -89,7 +67,6 @@ function checkValue(id) {
     document.getElementById(f_id).style = "background:black";
   }
     
-
  function popup(mylink, windowname,width=800,height=400)
  {
     if (! window.focus)return true;

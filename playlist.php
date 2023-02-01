@@ -4,9 +4,9 @@ require_once '_config.inc.php';
 define('TITLE', 'Home');
 
 require __LAYOUT_HEADER__;
-$playlist_id = 0;
+$playlist_id = 7;
 
-$sql = "select f.thumbnail from metatags_filedb as f, playlists as p where (p.playlist_id = ".$playlist_id ." and p.playlist_videos = f.id);";
+$sql = "select f.thumbnail,f.id from metatags_filedb as f, playlists as p where (p.playlist_id = ".$playlist_id ." and p.playlist_videos = f.id);";
 $results = $db->query($sql);
 
 
