@@ -1,77 +1,22 @@
-<table class="blueTable table table-striped"  >
-    <thead>
-        <tr>
-            <th>
-                <button type='submit' class="btn btn-primary"
-                 onclick="hideSubmit(%%FILE_ID%%,'save')">Save</button>
-
-                %%FILE_NO%%
-            </th>
-            <th colspan="4">%%FILE_ID%% %%FILE_NAME%%
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan="8" colspan="2"><img src="%%THUMBNAIL%%"
-                    onclick="popup('/plex_web/video.php?id=%%FILE_ID%%', 'video')"></td>
-        </tr>
-
-
-        <tr>
-            <td class="m-auto">Title</td>
-            <td colspan="2"><span>%%TITLE_VALUE%%</span></td>
-        </tr>
-
-        <tr>
-            <td>Artist</td>
-            <td colspan="2">%%ARTIST_VALUE%%
-                    </td>
-            
-        </tr>
-
-        <tr>
-            <td>Genre</td>
-            <td colspan="2"> %%GENRE_VALUE%%
-            </td>
-
-        </tr>
-
-        <tr>
-            <td>Studio</td>
-            <td colspan="2"> %%STUDIO_VALUE%%
-
-            </td>
-        </tr>
-        <tr>
-            <td>SubStudio</td>
-            <td colspan="2"> %%SUBSTUDIO_VALUE%%
-            </td>
-        </tr>
-
-        <tr>
-            <td>Added</td>
-            <td colspan=2 style="text-align: left">%%ADDED_VALUE%%</td>
-        </tr>
-        <tr>
-            <td>Duration</td>
-            <td colspan=2 style="text-align: left">%%DURATION%%</td>
-        </tr>
-        <tr>
-            <td colspan="2"></td>
-            <td colspan="3"> Width %%WIDTH%% Height %%HEIGHT%% Bit Rate %%BITRATE%% Filesize %%FILESIZE%% </td>
-        </tr>
-        <tr>
-            <td colspan="2"></td>
-            <td> Tags </td>
-            <td colspan="2">
-                TAG_LIST
-            </td>
-
-        </tr>
-
-
-
-    </tbody>
-
-</table>
+<div class="container blueTable" style="border-bottom: 2px solid #1C6EA4;">
+    <div class="row text-center">
+        <div class="col blueTable-th blueTable-thead blueTable-thead-th"> %%FILE_NAME%%</div>
+    </div>
+    <div class="row">
+        <div class="col blueTable-th blueTable-thead blueTable-thead-th" style="max-width:35px;">%%ROW_ID%%</div>
+        %%THUMBNAIL_HTML%%
+        <div class="col">
+            %%FIELD_ROW_HTML%%
+            <div class="row">
+                <div class="col-11 blueTable-tbody-td">
+                    Width %%WIDTH%% Height %%HEIGHT%% Bit Rate %%BITRATE%% Filesize %%FILESIZE%%
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            %%TAG_CLOUD%%
+        </div>
+    </div>
+</div>

@@ -28,49 +28,54 @@ body {
     border-bottom: 2px solid #444444;
 }
 
-table.blueTable {
+.blueTable {
     border: 0px solid #1C6EA4;
     background-color: #EEEEEE;
     width: 1100px;
     margin: 0px;
 
     text-align: left;
-    padding: 20px 20px 20px 20px;
-    border-bottom: 2px solid #1C6EA4;
+    /*  padding: 20px 20px 20px 20px; */
+    padding: 0px 0px 10px 0px;
+    /*    border-bottom: 2px solid #1C6EA4;*/
     /*	border-collapse: collapse; */
 
 }
 
 
 
-table.blueTable td,
-table.blueTable th {
+.blueTable-td,
+.blueTable-th {
     border: 0px solid #AAAAAA;
     padding: 3px 2px;
 
 }
 
-table.blueTable tbody td {
-    font-size: 18px;
+.blueTable-tbody-td {
+    font-size: 14px;
+    text-align: left;
 }
 
-table.blueTable tr:nth-child(even) {
+.blueTable-tr-even {
     background: #D0E4F5;
 }
 
-table.blueTable thead {
+.blueTable-thead {
     background: #1C6EA4;
+    text-align: center;
+
     background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
     background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
     background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-    border-bottom: 2px solid #444444;
+    /* border-bottom: 2px solid #444444; */
 }
 
-table.blueTable thead th {
-    font-size: 22px;
+.blueTable-thead-th {
+    font-size: 18px;
     font-weight: bold;
     color: #FFFFFF;
     white-space: nowrap;
+
     /* order-left: 2px solid #D0E4F5; */
 }
 
@@ -104,6 +109,7 @@ ul>.multi-opened::after {
 .categories-wrapper {
     position: relative;
 }
+
 .category-input {
     position: absolute;
     top: 0;
@@ -113,15 +119,14 @@ ul>.multi-opened::after {
     width: 50px;
     height: 50px;
 }
-.category-input:checked + label{
-background:rgb(75, 222, 25); 
- 
 
-height: 50px;
-  width: 50px;
-  position: absolute;
- top:0;
- left:0;
+.category-input:checked+label {
+    background: rgb(75, 222, 25);
+
+
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
-
-

@@ -56,6 +56,12 @@ $navigation_link_array = [
         'secure' => false,
         'js'     => false,
     ],
+    'tag'     => [
+        'url'    => 'tags.php',
+        'text'   => 'Tags',
+        'secure' => false,
+        'js'     => false,
+    ],
 'settings' => [
         'url'    => 'settings.php',
         'text'   => 'Settings',

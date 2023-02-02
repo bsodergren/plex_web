@@ -10,7 +10,7 @@ $result = $db->query($sql);
 $sql     = query_builder('DISTINCT(library) as library ');
 $result2 = $db->query($sql);
 
-$all_url = 'files.php?allfiles=1';
+$all_url = 'genre.php?allfiles=1';
 
 DEFINE('BREADCRUMB', ['home' => "", 'all' => $all_url]);
 require __LAYOUT_HEADER__;
@@ -45,9 +45,8 @@ foreach ($result as $k => $v) {
     $alt_result = $db->query($sql);
 
     $link = '';
-    // (count($alt_result) > 1) ? '&substudio=null' : '';
-    $studio = str_replace(' ', '-', $v['studio']);
-    $studio = str_replace('/', '_', $studio);
+    
+    $studio = urlencode($v['studio']);
 
     $json_array['menu'][$index]['name'] = $v['studio'].$cnt;
     $json_array['menu'][$index]['link'] = 'genre.php?studio='.$studio.$link;
@@ -65,9 +64,8 @@ foreach ($result as $k => $v) {
                 $json_array['menu'][$index]['sub'][$sidx] = [];
 
                 $cntv_a    = ' ('.$v_a['cnt'].')';
-                $substudio = str_replace(' ', '-', $v_a['substudio']);
-                $substudio = str_replace('/', '_', $substudio);
-
+        
+                $substudio = urlencode($v_a['substudio']);
 
                 $json_array['menu'][$index]['sub'][$sidx]['name'] = $v_a['substudio'].$cntv_a;
                 $json_array['menu'][$index]['sub'][$sidx]['link'] = 'genre.php?substudio='.$substudio;

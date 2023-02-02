@@ -21,21 +21,24 @@ if (isset($uri)) {
 
 $redirect_string = 'search.php' . $request_key;
 
-include_once __LAYOUT_HEADER__;
-
-echo '<main role="main" class="container mt-5">';
-echo process_template("search", []);
-
-
 if ($_REQUEST['submit'] == "Search" || isset($_REQUEST['query'])) {
 
-$query = $_REQUEST['query'];
-    $where =  " ((filename LIKE '%" . $query . "%') OR ";
-    $where .=  " (title LIKE '%" . $query . "%') OR ";
-    $where .=  " (artist LIKE '%" . $query . "%') OR ";
-    $where .=  " (genre LIKE '%" . $query . "%') OR ";
-    $where .=  " (studio LIKE '%" . $query . "%') OR ";
-    $where .=  " (substudio LIKE '%" . $query . "%')) ";
+    $query = $_REQUEST['query'];
+
+    if(isset($_REQUEST['field'])) {
+        $where = $_REQUEST['field']." LIKE '%" . $query . "%' ";
+        $keyword = " ".$_REQUEST['field'] ." named ";
+    } else {
+        $where = " ((filename LIKE '%" . $query . "%') OR ";
+        $where .= " (title LIKE '%" . $query . "%') OR ";
+        $where .= " (artist LIKE '%" . $query . "%') OR ";
+        $where .= " (genre LIKE '%" . $query . "%') OR ";
+        $where .= " (studio LIKE '%" . $query . "%') OR ";
+        $where .= " (substudio LIKE '%" . $query . "%') OR ";
+        $where .= " (keyword LIKE '%" . $query . "%')) ";
+
+    }
+
     $pageObj = new pageinate($where, $currentPage, $urlPattern);
 
     $sql = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
@@ -45,10 +48,16 @@ $query = $_REQUEST['query'];
         'total_files'     => $pageObj->totalRecords,
         'redirect_string' => $redirect_string,
     ];
-    echo  display_filelist($results, '', $page_array);
 
+        $msg = "Showing ".$pageObj->totalRecords." results for for ".$keyword." $query";
+        $html_msg = process_template("search/search_msg", [   'MSG' => $msg] );
+      #  $html_msg .= process_template("search/search_msg", [   'MSG' => $sql] );
+    $search_results = display_filelist($results, '', $page_array);
 }
+include_once __LAYOUT_HEADER__;
 
-echo '</main>';
+echo process_template("search/search", ['SEARCH_RESULTS' => $search_results,
+'HTML_MSG' => $html_msg] );
+
 
 include_once __LAYOUT_FOOTER__;

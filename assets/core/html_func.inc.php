@@ -1,10 +1,70 @@
 <?php
 
-function process_template($template, $replacement_array='')
+use Nette\Utils\Random;
+
+function createLink($url, $text)
+{
+    return "<a href=\"" . $url . "\" > " . $text . "</a> ";
+}
+
+function genre_list($key, $list)
+{
+    $link_array = [];
+    $value = '';
+    $list_array = explode(",", $list);
+
+    foreach ($list_array as $k => $keyword) {
+        $link_array[] = process_template(
+            "filelist/search_link",
+            [
+                'KEY' => $key,
+                'QUERY' => urlencode($keyword),
+                'URL_TEXT' => $keyword,
+                'CLASS' => ' class="badge fs-6 blueTable-thead" '
+            ]
+        );
+    }
+
+    $value = implode("  ", $link_array);
+    return $value;
+}
+
+function keyword_cloud($list)
+{
+    $tag_links = '';
+
+    if (is_array($list)) {
+        foreach ($list as $key => $keyword) {
+            $list_array[] = $keyword['val'];
+        }
+    } else {
+        $list_array = explode(",", $list);
+    }
+
+    $search_url = "search.php?field=keyword&query=";
+
+    foreach ($list_array as $key => $keyword) {
+
+        $url = $search_url . urlencode($keyword);
+        $tag_links .= process_template("cloud/tag", [
+            'TAG_URL' => $url,
+            'TAG_TEXT' => $keyword,
+            'CLASS' => ''
+        ]);
+    }
+
+    $html_links = process_template("cloud/main", ['TAG_CLOUD_HTML' => $tag_links]);
+    return $html_links;
+}
+
+
+
+
+
+function process_template($template, $replacement_array = '')
 {
     return template::echo($template, $replacement_array);
-
-}//end process_template()
+} //end process_template()
 
 
 
@@ -17,15 +77,14 @@ function output($var)
         return 0;
     }
 
-    echo $var."<br>\n";
+    echo $var . "<br>\n";
     // return 0;
 
-}//end output()
+} //end output()
 
 
 
-function JavaRefresh($url, $timeout=0)
+function JavaRefresh($url, $timeout = 0)
 {
-  roboloader::javaRefresh($url,$timeout);
-
+    roboloader::javaRefresh($url, $timeout);
 }//end JavaRefresh()

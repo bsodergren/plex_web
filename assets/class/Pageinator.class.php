@@ -29,7 +29,7 @@ class pageinate extends Paginator
         } else {
             $query = $query .  " and " . $this->library_query;
         }
-
+      
         $db->where($query);
 
         $this->results = $db->withTotalCount()->get(Db_TABLE_FILEDB);

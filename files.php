@@ -10,8 +10,7 @@ $where = '';
 if (isset($_REQUEST['substudio'])) {
     // if  (!isset($_REQUEST['allfiles']))
     // {
-    $substudio = str_replace('-', ' ', $_REQUEST['substudio']);
-    // $substudio = str_replace("_","/",$substudio);
+    $substudio = urldecode($_REQUEST['substudio']);
     $uri['substudio'] = [
         $_REQUEST['substudio'],
         $substudio,
@@ -22,7 +21,7 @@ if (isset($_REQUEST['substudio'])) {
 }
 
 if (isset($_REQUEST['studio'])) {
-    $studio = str_replace('-', ' ', $_REQUEST['studio']);
+    $studio = urldecode( $_REQUEST['studio']);
     // $studio = str_replace("_","/",$studio);
     $uri['studio'] = [
         $_REQUEST['studio'],
@@ -34,8 +33,7 @@ if (isset($_REQUEST['studio'])) {
 }
 
 if (isset($_REQUEST['genre'])) {
-    $genre        = str_replace('-', ' ', $_REQUEST['genre']);
-    $genre        = str_replace('_', '/', $genre);
+    $genre        = urldecode($_REQUEST['genre']);
     $uri['genre'] = [
         $_REQUEST['genre'],
         $genre,
@@ -85,8 +83,6 @@ if (isset($_REQUEST['genre'])) {
 
 $pageObj = new pageinate($where, $currentPage, $urlPattern);
 
-
-
 $sql = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
 logger('all files', $sql);
 
@@ -102,7 +98,7 @@ if (basename($_SERVER["HTTP_REFERER"]) != 'home.php') {
     $referer_url = $_SERVER["HTTP_REFERER"];
 }
 
-define('BREADCRUMB', ['home' => "home.php", 'genre' => $referer_url, $genre => '']);
+define('BREADCRUMB', ['home' => "home.php", 'genre' => 'genre.php?allfiles=1', $genre => '']);
 
 require __LAYOUT_HEADER__;
 

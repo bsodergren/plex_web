@@ -297,8 +297,8 @@ document.addEventListener("keyup", keyboardShortcuts);
 
 function resize() {
   var img = document.getElementsByTagName("video");
-  var vh = img[0].clientHeight + 260;
-  var vw = img[0].clientWidth + 60;
+  var vh = img[0].clientHeight + 75;
+  var vw = img[0].clientWidth + 25;
 
   window.resizeTo(vw, vh);
 }

@@ -10,7 +10,7 @@ if (is_array($playlist_result)) {
     $playlist_id = $playlist_result['playlist_id'];
   }
 }
-$cols = array("filename", "fullpath");
+$cols = array("filename", "fullpath","title");
 $db->where("id", $id);
 $result = $db->getone(Db_TABLE_FILEDB, null, $cols);
 
@@ -25,7 +25,7 @@ $video_file = $fullpath . "/" . $result['filename'];
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Custom HTML5 Video Player</title>
+  <title><?php #echo $result['title'] ?></title>
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

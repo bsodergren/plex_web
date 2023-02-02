@@ -11,7 +11,7 @@ function query_builder($fields = "select", $where = FALSE, $group = FALSE, $orde
 
     global $_SESSION;
     $conditional = false;
-    $field_list = ' id, video_key,filename,thumbnail,title,artist,genre,studio,substudio,duration,favorite,added ,fullpath,library';
+    $field_list = ' id, video_key,filename,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added ,fullpath,library';
 
     if($fields == "select") {
         $conditional = true;
@@ -34,17 +34,21 @@ function query_builder($fields = "select", $where = FALSE, $group = FALSE, $orde
 
     $sql = $sql . ' from '.Db_TABLE_FILEDB.' ' ;
     
-    if ( $conditional == true || $where != FALSE )
-    {
+
+
+    if($where == 'library'){
         $sql = $sql . " WHERE library = '". $_SESSION['library']."' ";
+    } else {
+        if ( $conditional == true || $where != FALSE )
+        {
+            $sql = $sql . " WHERE library = '". $_SESSION['library']."' ";
+        }
+
+        if ($where != FALSE) {
+            $sql = $sql . " AND  " . $where . "  ";
+
+        }
     }
-
-
-    if($where != FALSE) {
-        $sql = $sql . " AND  " . $where . "  ";
-        
-    }
-
     if($group != FALSE) {
         $sql = $sql . " GROUP BY " . $group;
 

@@ -3,42 +3,48 @@ require_once '_config.inc.php';
 define('TITLE', 'View Genres');
 
 $null     = '';
-$null_req = '';
+$null_req = '&';
+$sql_studio = 'library';
 
-if (isset($_REQUEST['substudio']) && $_REQUEST['substudio'] != 'null') {
-    $studio_key  = 'substudio';
-    $studio_text = $_REQUEST['substudio'];
-    $studio      = str_replace('-', ' ', $studio_text);
-    $studio      = str_replace('_', '/', $studio);
+if (isset($_REQUEST['allfiles']) )
+{
 
-    $studio_sql_query = $studio_key." = '".$studio."' ";
-} else {
-    if (isset($_REQUEST['substudio']) && $_REQUEST['substudio'] == 'null') {
-        $null     = ' and substudio is null ';
-        $null_req = '&substudio=null';
-    }
+}else{
 
-    $studio_key  = 'studio';
-    $studio_text = $_REQUEST['studio'];
+    if (isset($_REQUEST['substudio']) && $_REQUEST['substudio'] != 'null') {
+        $studio_key = 'substudio';
 
-    $studio = str_replace('-', ' ', $studio_text);
-    $studio = str_replace('_', '/', $studio);
+        $studio_text = $_REQUEST['substudio'];
 
-    $studio_sql_query = $studio_key." = '".$studio."' ";
+        $studio = urldecode($studio_text);
+        $studio_sql_query = $studio_key . " = '" . $studio . "' ";
+    } else {
+        if (isset($_REQUEST['substudio']) && $_REQUEST['substudio'] == 'null') {
+            $null = ' and substudio is null ';
+            $null_req = '&substudio=null';
+        }
 
-    if ($_REQUEST['studio'] == 'NULL') {
-        $studio_sql_query = $studio_key.' IS NULL ';
-    }
-}//end if
+        $studio_key = 'studio';
+        $studio_text = $_REQUEST['studio'];
 
-$studio = str_replace('-', ' ', $studio_text);
-$studio = str_replace('_', '/', $studio);
 
-$sql_studio = $studio_sql_query.$null;
+        $studio = urldecode($studio_text);
+        $studio_sql_query = $studio_key . " = '" . $studio . "' ";
 
-$request_key = $studio_key.'='.$studio_text.$null_req;
+        if ($_REQUEST['studio'] == 'NULL') {
+            $studio_sql_query = $studio_key . ' IS NULL ';
+        }
+    } //end if
 
-$order = 'genre ASC';
+   # $studio = urldecode($studio_text);
+   # $studio_sql_query = $studio_key . " = '" . $studio . "' ";
+
+    $sql_studio = $studio_sql_query . $null;
+    
+    $request_key = $studio_key . '=' . $studio_text . $null_req;
+
+}
+  $order = 'genre ASC';
 $sql   = query_builder(
     'DISTINCT(genre) as genre, count(genre) as cnt ',
     $sql_studio,
@@ -56,17 +62,26 @@ foreach ($result as $k => $v) {
 
 $genre_array = array_unique($genre_array);
 
-$all_url = 'files.php?' . $request_key . '&allfiles=1';
+$all_url = 'files.php?' . $request_key . 'allfiles=1';
 DEFINE('BREADCRUMB', ['home' => "home.php",'genre'=> '', 'all' => $all_url]);
 require __LAYOUT_HEADER__;
 ?>
 <main role="main" class="container">
 
 <?php
+asort($genre_array);
 foreach ($genre_array as $k => $v) {
     // $v["cnt"]=1; ".$v["cnt"]."
     if ($v != '') {
-        echo $studio."<a href='files.php?".$request_key.'&genre='.$v."'>".$v.'</a> <br>';
+
+        if(isset($studio_key) and isset($studio)){
+            $db->where ($studio_key, $studio, 'like');
+        }
+        $db->where ("genre", '%'.$v.'%', 'like');
+        $db->where ("library", $_SESSION['library'], 'like');
+        $count = $db->getOne ("metatags_filedb ", "count(*) as cnt");
+      
+        echo $studio."<a href='files.php?".$request_key."genre=".urlencode($v)."'>".$v.'</a> '.$count['cnt'].' <br>';
     }
 }
 
