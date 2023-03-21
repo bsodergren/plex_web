@@ -14,5 +14,5 @@ if($_GET['q'] == true){
     exit;   
 }
 //print_r2($_REQUEST);
-
+//exit;
 process_form($_POST['redirect']);

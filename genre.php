@@ -62,7 +62,7 @@ foreach ($result as $k => $v) {
 
 $genre_array = array_unique($genre_array);
 
-$all_url = 'files.php?' . $request_key . 'allfiles=1';
+$all_url = 'gridview.php?' . $request_key . 'allfiles=1';
 DEFINE('BREADCRUMB', ['home' => "home.php",'genre'=> '', 'all' => $all_url]);
 require __LAYOUT_HEADER__;
 ?>
@@ -81,7 +81,7 @@ foreach ($genre_array as $k => $v) {
         $db->where ("library", $_SESSION['library'], 'like');
         $count = $db->getOne ("metatags_filedb ", "count(*) as cnt");
       
-        echo $studio."<a href='files.php?".$request_key."genre=".urlencode($v)."'>".$v.'</a> '.$count['cnt'].' <br>';
+        echo $studio."<a href='gridview.php?".$request_key."genre=".urlencode($v)."'>".$v.'</a> '.$count['cnt'].' <br>';
     }
 }
 

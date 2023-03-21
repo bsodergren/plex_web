@@ -113,20 +113,28 @@ ul>.multi-opened::after {
 .category-input {
     position: absolute;
     top: 0;
+    border: 10px solid #f10000; 
 
     left: 0;
-    opacity: 0;
+    opacity: 1;
     width: 50px;
     height: 50px;
 }
-
+/*
 .category-input:checked+label {
-    background: rgb(75, 222, 25);
-
-
-    height: 50px;
+    position: absolute;
     width: 50px;
+    height: 50px;
+    top: 0;
+    left: 0;
+}
+*/
+/*
+    border: 10px solid #f10000; 
+    height: 100%;
+    width: 100%;
     position: absolute;
     top: 0;
     left: 0;
 }
+*/

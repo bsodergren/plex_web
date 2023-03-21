@@ -42,6 +42,7 @@ define('Db_TABLE_FILEDB', Db_TABLE_PREFIX . 'filedb');
 
 
 define('Db_TABLE_STUDIO', Db_TABLE_PREFIX . 'studios');
+define('Db_TABLE_GENRE', Db_TABLE_PREFIX . 'genre');
 
 
 define('Db_TABLE_ARTISTS', Db_TABLE_PREFIX . 'artists');

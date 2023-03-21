@@ -26,6 +26,18 @@ $navigation_link_array = [
         'secure' => false,
         'js'     => false,
     ],
+    'studioEditor'     => [
+        'url'    => 'studioEditor.php',
+        'text'   => 'Config Studio',
+        'secure' => false,
+        'js'     => false,
+    ],
+    'genreEditor'     => [
+        'url'    => 'genreEditor.php',
+        'text'   => 'Config Genre',
+        'secure' => false,
+        'js'     => false,
+    ],
     'search'     => [
         'url'    => 'search.php',
         'text'   => 'Search',
@@ -34,6 +46,12 @@ $navigation_link_array = [
     ],
     'grid'      => [
         'url'    => 'grid.php',
+        'text'   => 'Grid Display',
+        'secure' => false,
+        'js'     => false,
+    ],
+    'gridview'      => [
+        'url'    => 'gridview.php',
         'text'   => 'Grid Display',
         'secure' => false,
         'js'     => false,

@@ -20,6 +20,7 @@ function query_builder($fields = "select", $where = FALSE, $group = FALSE, $orde
         
             $sql = ' select (@row_num:=@row_num +1) AS result_number, '.$field_list;
             $sql = $sql . ' from ( select ' . $field_list;
+        //  $sql = ' select ' . $field_list;
 
         } else {
             $sql =  "select " . $field_list ;
@@ -60,13 +61,21 @@ function query_builder($fields = "select", $where = FALSE, $group = FALSE, $orde
     }
 
     if($limit != FALSE && $offset == FALSE) {
+     //   $sql = $sql . " LIMIT " . $limit.' ';
+
+
         $sql = $sql . " LIMIT " . $limit.' ) t1 ';
         $sql = $sql . ', (select @row_num:='.$offset.') t2';
 
     }
+
     if($limit != FALSE && $offset != FALSE) {
+   //     $sql = $sql . "  LIMIT " . $offset . ", " . $limit .'';
+
+
         $sql = $sql . "  LIMIT " . $offset . ", " . $limit .') t1,';
         $sql = $sql . ' (select @row_num:='.$offset.') t2';
+
     }
 
    // logger("SQL Builder", $sql);

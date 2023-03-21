@@ -1,4 +1,6 @@
 <?php
+xdebug_info();
+exit;
 
 echo "<pre>";
 var_dump($_REQUEST);

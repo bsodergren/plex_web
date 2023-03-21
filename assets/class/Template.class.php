@@ -57,7 +57,7 @@ class Template
 
       
         if (!file_exists($template_file)) {
-            dump($template_file);
+        //    dump($template_file);
             
             //use default template directory
             $html_text = "<h1>NO TEMPLATE FOUND<br>";

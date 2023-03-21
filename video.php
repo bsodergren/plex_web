@@ -14,6 +14,7 @@ $cols = array("filename", "fullpath","title");
 $db->where("id", $id);
 $result = $db->getone(Db_TABLE_FILEDB, null, $cols);
 
+$title = $result['title'];
 
 $fullpath = str_replace("/home/bjorn/plex/XXX", "/videos", $result['fullpath']);
 $video_file = $fullpath . "/" . $result['filename'];
@@ -66,7 +67,7 @@ for ($i = 0; $i < count($results); $i++) {
     );
 }
 
-//  echo process_template("video/carousel", ['CAROUSEL_INNER_HTML' => $carousel_item]);
+  echo process_template("video/carousel", ['CAROUSEL_INNER_HTML' => $carousel_item]);
 
 
  } ?>
@@ -85,7 +86,11 @@ for ($i = 0; $i < count($results); $i++) {
         </source>
       </video>
 
+  
+
       <div class="video-controls hidden" id="video-controls">
+
+      
         <div class="video-progress">
           <progress id="progress-bar" value="0" min="0"></progress>
           <input class="seek" id="seek" value="0" min="0" type="range" step="1">
@@ -119,7 +124,9 @@ for ($i = 0; $i < count($results); $i++) {
               <time id="duration">00:00</time>
             </div>
           </div>
-
+          <div class="center-controls">
+          <span id="topText"><?=$title ?></span>
+          </div>
           <div class="right-controls">
             <button data-title="PIP (p)" class="pip-button" id="pip-button">
               <svg>
@@ -174,7 +181,6 @@ for ($i = 0; $i < count($results); $i++) {
       </symbol>
     </defs>
   </svg>
-
   <script src="<?php echo __LAYOUT_URL__; ?>js/video.js?<?php echo rand(1,100) ?>"></script>
 
 <script type="text/javascript">

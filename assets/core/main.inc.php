@@ -189,7 +189,8 @@ function uri_String($request_array, $start = '?')
 
     foreach ($request_array as $key => $value) {
         if ($key == 'direction') {
-            continue; }
+            continue;
+        }
         if (is_array($value)) {
             $string_value = $value[0];
         } else {
@@ -216,6 +217,20 @@ function process_form($redirect_url = '')
 
     if (isset($_POST['submit'])) {
 
+
+        if ($_POST['submit'] == 'GenreConfigSave') {
+            return GenreConfigSave($_POST, $redirect_url);
+            exit;
+        }
+        if ($_POST['submit'] == 'addNewEntry') {
+            return addNewEntry($_POST, $redirect_url);
+            exit;
+        }
+
+        if ($_POST['submit'] == 'StudioConfigSave') {
+            return saveStudioConfig($_POST, $redirect_url);
+            exit;
+        }
         if ($_POST['submit'] == 'save') {
 
 
@@ -248,12 +263,10 @@ function process_form($redirect_url = '')
             moveFiles($_POST, $playlist_id);
             exit;
         }
-        
-
     } //end if
 
     if ($rediredirect_urlrect != '') {
-        return myHeader($redirect_url, 5);
+        return myHeader($redirect_url, 0);
     }
 } //end process_form()
 
@@ -310,7 +323,7 @@ function deleteFile($data_array, $redirect = false, $timeout = 2)
     if (key_exists('submit', $data_array)) {
         if ($data_array['submit'] == 'delete') {
             $id = $data_array['fileid'];
-       
+
 
             $db->where('id', $id);
             $user = $db->getOne(Db_TABLE_FILEDB);
@@ -360,6 +373,106 @@ function hideEntry($data_array, $redirect = false, $timeout = 4)
 } //end hideEntry()
 
 
+function addNewEntry($data_array, $redirect, $timeout = 0)
+{
+
+    global $db;
+
+    if ($data_array['studio'] == '') {
+        $data_array['studio'] = $data_array['name'];
+    }
+
+    $sql = "INSERT IGNORE INTO " . Db_TABLE_STUDIO . " (name, library, studio, path) VALUES";
+    $sql .= " ( '" . $data_array['name'] . "',";
+    $sql .= " '" . $data_array['library'] . "',";
+    $sql .= " '" . $data_array['studio'] . "',";
+    $sql .= " '" . $data_array['path'] . "')";
+
+    $db->query($sql);
+
+
+    if ($redirect != false) {
+        return JavaRefresh($redirect, $timeout);
+    }
+}
+
+
+
+
+function GenreConfigSave($data_array, $redirect, $timeout = 0)
+{
+    global $db;
+
+    $__output = '';
+
+    foreach ($data_array as $key => $val) {
+        if (str_contains($key, '_') == true) {
+
+            $value = trim($val);
+
+            if ($value != '') {
+
+                $pcs = explode('_', $key);
+
+                $id         = $pcs[1];
+                $field      = $pcs[0];
+                if ($value == 'null') {
+                    $set = '`' . $field . '`= NULL ';
+                } else {
+                    if ($field != "keep") {
+                        $value = '"' . $value . '"';
+                    }
+
+                    $set = '`' . $field . '` = ' . $value;
+                }
+
+
+                $sql = 'UPDATE ' . Db_TABLE_GENRE . '  SET ' . $set . ' WHERE id = ' . $id;
+                $db->query($sql);
+            }
+        }
+    }
+    if ($redirect != false) {
+        return JavaRefresh($redirect, $timeout);
+    }
+}
+function saveStudioConfig($data_array, $redirect, $timeout = 0)
+{
+    global $db;
+
+    $__output = '';
+
+    foreach ($data_array as $key => $val) {
+        if (str_contains($key, '_') == true) {
+
+            $value = trim($val);
+
+            if ($value != '') {
+
+                $pcs = explode('_', $key);
+
+                $id         = $pcs[1];
+                $field      = $pcs[0];
+                $set = '`' . $field . '` = "' . $value . '"';
+
+                if ($value == 'null') {
+                    $set = '`' . $field . '`= NULL ';
+                }
+
+                $sql = 'UPDATE ' . Db_TABLE_STUDIO . '  SET ' . $set . ' WHERE id = ' . $id;
+                $db->query($sql);
+            }
+        }
+    }
+
+    if ($redirect != false) {
+        return JavaRefresh($redirect, $timeout);
+    }
+}
+
+
+
+
 function saveData($data_array, $redirect = false, $timeout = 4)
 {
     global $db;
@@ -390,7 +503,7 @@ function saveData($data_array, $redirect = false, $timeout = 4)
                     continue;
                 }
                 if ($field == 'tags') {
-                    updateTags($id,$value);
+                    updateTags($id, $value);
                     continue;
                 }
 
@@ -447,7 +560,7 @@ function saveData($data_array, $redirect = false, $timeout = 4)
                 logger("Metadata", $atom_value);
 
 
-                metadata_write_filedata("${filename}", [$atom_field => $atom_value]);
+                metadata_write_filedata($filename, [$atom_field => $atom_value]);
 
 
 
@@ -469,7 +582,7 @@ function saveData($data_array, $redirect = false, $timeout = 4)
     return $__output;
 } //end saveData()
 
-function updateTags($id,$tags)
+function updateTags($id, $tags)
 {
 
     global $db;
@@ -479,20 +592,21 @@ function updateTags($id,$tags)
     $sql = "delete from tags where file_id = " . $id;
     $db->query($sql);
 
-    foreach($tag_array as $tag){
-       $db->query( "INSERT INTO tags (file_id, tag_name) VALUES ( " . $id . ", '" . $tag . "'); ");
+    foreach ($tag_array as $tag) {
+        $db->query("INSERT INTO tags (file_id, tag_name) VALUES ( " . $id . ", '" . $tag . "'); ");
     }
 }
 
-function moveFiles($data_array, $playlist_id){
+function moveFiles($data_array, $playlist_id)
+{
 
     global $db;
     global $_SESSION;
-   // $video_file     = $user['fullpath'] . $user['filename'];
-   $sql = "select f.fullpath, f.filename from metatags_filedb as f, playlists as p where (p.playlist_id = ".$playlist_id ." and p.playlist_videos = f.id);";
-   $results = $db->query($sql);
-    
-    
+    // $video_file     = $user['fullpath'] . $user['filename'];
+    $sql = "select f.fullpath, f.filename from metatags_filedb as f, playlists as p where (p.playlist_id = " . $playlist_id . " and p.playlist_videos = f.id);";
+    $results = $db->query($sql);
+
+
     foreach ($results as $_ => $row) {
         print_r2($row);
     }
@@ -500,35 +614,33 @@ function moveFiles($data_array, $playlist_id){
 }
 
 
-function createPlaylist($data_array, $redirect = false, $timeout = 4)
+function createPlaylist($data_array, $redirect = false, $timeout = 0)
 {
     global $db;
     global $_SESSION;
     $sql = 'select max(playlist_id) as playlist_id from playlists';
     $res = $db->rawQueryOne($sql);
     $playlist_id = $res['playlist_id'];
-    if( $playlist_id === null ) {
+    if ($playlist_id === null) {
         $playlist_id = 0;
     } else {
         $playlist_id++;
     }
-   
 
-    foreach($data_array["playlist"] as $_ => $id)
-    {
-        $data =[
+
+    foreach ($data_array["playlist"] as $_ => $id) {
+        $data = [
             'playlist_id' => $playlist_id,
-            'playlist_videos' => $id ,
+            'playlist_videos' => $id,
             'playlist_name' => 'Playlist',
             'library' => $_SESSION['library'],
         ];
-        $db->insert (Db_TABLE_PLAYLIST, $data);
+        $db->insert(Db_TABLE_PLAYLIST, $data);
     }
 
 
 
-        return  $playlist_id;
-
+    return  $playlist_id;
 }
 
 function myHeader($redirect = __URL_PATH__ . '/home.php')

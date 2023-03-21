@@ -23,9 +23,9 @@ foreach ($include_array as $required_file) {
 $template = new Template();
 
 
-//if (!isset($_SESSION['itemsPerPage'])) {
+if (!isset($_SESSION['itemsPerPage'])) {
     $_SESSION['itemsPerPage'] = 25;
-//}
+}
 
 if (isset($_REQUEST['itemsPerPage'])) {
     $_SESSION['itemsPerPage'] = $_REQUEST['itemsPerPage'];
@@ -84,15 +84,19 @@ if (isset($_REQUEST['sort'])) {
 }
 
 
-
+if($_SERVER['QUERY_STRING'] != "")
+{
 $query_string = '&'.urlQuerystring($_SERVER['QUERY_STRING'],'itemsPerPage');
+$request_string_query = '?'.urlQuerystring($_SERVER['QUERY_STRING'],'itemsPerPage');
+$query_string_no_current = "&".urlQuerystring($_SERVER['QUERY_STRING'],"current");
 
-$query_string_no_current = urlQuerystring($_SERVER['QUERY_STRING'],"current");
-$query_string_no_current = urlQuerystring($query_string_no_current,"itemsPerPage");
+$query_string_no_current = "&".urlQuerystring($query_string_no_current,"itemsPerPage");
+}
 
 
 
-$urlPattern = $_SERVER['PHP_SELF'].'?current=(:num)&'.$query_string_no_current;
+
+$urlPattern = $_SERVER['PHP_SELF'].'?current=(:num)'.$query_string_no_current;
 
 
 if (!isset($_SESSION['direction'])) {
@@ -119,7 +123,7 @@ $url_array = [
         'Artist'   => 'artist',
         'Title'    => 'title',
         'Filename' => 'filename',
-        'Duration' => 'Duration',
+        'Duration' => 'duration',
         'Date Added' => 'added',
         'Genre' => 'genre',
     ],

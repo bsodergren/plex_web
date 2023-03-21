@@ -93,10 +93,12 @@ function display_fileInfo($fileInfoArray, $total_files)
     }
 
     if ($total_files >= 1) {
-        
     }
 
     $params['FILE_NAME'] = $row_filename;
+    if ($fileInfoArray['title']) {
+        $params['FILE_NAME'] = $fileInfoArray['title'];
+    }
     $params['DELETE_ID']    = 'delete_' . $row_id;
     $params['FILE_NAME_ID'] = $row_id . '_filename';
     $params['FULL_PATH']    = $row_fullpath;
@@ -115,6 +117,7 @@ function display_fileInfo($fileInfoArray, $total_files)
             case 'video_key':
             case 'result_number':
             case 'library':
+                
                 break;
 
             case 'thumbnail':
@@ -127,22 +130,23 @@ function display_fileInfo($fileInfoArray, $total_files)
                             'FILE_ID' => $row_id,
                         ]
                     );
-
                 }
                 break;
 
             case 'added';
-                $params['FIELD_ROW_HTML'] .= process_template("filelist/file_row",
-                 ['FIELD' => 'Added', 
-                 'VALUE' => $value,
-                 'ALT_CLASS' => $class
-                ]);
+                $params['FIELD_ROW_HTML'] .= process_template(
+                    "filelist/file_row",
+                    [
+                        'FIELD' => 'Added',
+                        'VALUE' => $value,
+                        'ALT_CLASS' => $class
+                    ]
+                );
 
                 $x++;
 
                 break;
             case 'duration':
-
                 $params['FIELD_ROW_HTML'] .= process_template(
                     "filelist/file_row",
                     [
@@ -155,7 +159,7 @@ function display_fileInfo($fileInfoArray, $total_files)
 
                 break;
 
-          
+
             case 'favorite':
                 /*
                 $yeschecked = ($value == '1') ? 'checked' : '';
@@ -165,34 +169,26 @@ function display_fileInfo($fileInfoArray, $total_files)
                 $params['YESCHECKED'] = $yeschecked;
                 $params['NOCHECKED']  = $nochecked;
 */
-
+/*
                 $sql                 = 'select  * from ' . Db_TABLE_FILEINFO . " WHERE video_key = '" . $row_video_key . "'";
                 $result              = $db->query($sql);
 
                 $params['FULL_PATH'] = $row_fullpath;
                 if (isset($result[0])) {
-                    $file_info = $result[0];
-
-
+                    $file_info = $result[0];                    
                     $params['HEIGHT']   = $file_info['height'];
                     $params['WIDTH']    = $file_info['width'];
                     $params['BITRATE']  = display_size($file_info['bit_rate']);
                     $params['FILESIZE'] = byte_convert($file_info['filesize']);
                 }
-
+*/
                 break;
-                
+
             case 'artist':
                 if ($value != '') {
-                    $value = process_template(
-                        "filelist/search_link",
-                        [
-                            'KEY' => $key,
-                            'QUERY' => urlencode($value),
-                            'URL_TEXT' => $value
-                        ]
-                    );
+                    $value = keyword_list($key, $value);
                 }
+
                 $params['FIELD_ROW_HTML'] .= process_template(
                     "filelist/file_row",
                     [
@@ -206,29 +202,30 @@ function display_fileInfo($fileInfoArray, $total_files)
                 break;
 
             case 'title':
-                $params['FIELD_ROW_HTML'] .= process_template(
+                /*    $params['FIELD_ROW_HTML'] .= process_template(
                     "filelist/file_row",
                     [
                         'FIELD' => 'title',
                         'VALUE' => $value,
-                        'ALT_CLASS' => $class
+                        'ALT_CLASS' => "text-fg-info"
                     ]
                 );
                 if ($value != '') {
                     $params['FILE_NAME'] = $value;
                 }
-                $x++;
+*/
+              //  $x++;
 
                 break;
 
             case 'genre':
                 if ($value != '') {
-                    $value=genre_list($key, $value);
+                    $value = keyword_list($key, $value);
                 }
                 $params['FIELD_ROW_HTML'] .= process_template(
                     "filelist/file_row",
                     [
-                        'FIELD' => 'genre',
+                        'FIELD' => 'Genre',
                         'VALUE' => $value,
                         'ALT_CLASS' => $class
                     ]
@@ -237,12 +234,14 @@ function display_fileInfo($fileInfoArray, $total_files)
                 break;
             case 'keyword':
 
+                /*
                 if( $value != ''){
                     $value = keyword_cloud($value);
                     $params['TAG_CLOUD'] = $value;
                 }
-                    $x++;
-                    break;
+                */
+                $x++;
+                break;
             case 'studio':
                 if ($value != '') {
                     $value = process_template(
@@ -257,7 +256,7 @@ function display_fileInfo($fileInfoArray, $total_files)
                 $params['FIELD_ROW_HTML'] .= process_template(
                     "filelist/file_row",
                     [
-                        'FIELD' => 'studio',
+                        'FIELD' => 'Studio',
                         'VALUE' => $value,
                         'ALT_CLASS' => $class
                     ]
@@ -279,7 +278,7 @@ function display_fileInfo($fileInfoArray, $total_files)
                 $params['FIELD_ROW_HTML'] .= process_template(
                     "filelist/file_row",
                     [
-                        'FIELD' => 'substudio', 'VALUE' => $value,
+                        'FIELD' => 'Studio', 'VALUE' => $value,
                         'ALT_CLASS' => $class
                     ]
                 );
@@ -395,7 +394,7 @@ function display_fileInfo($fileInfoArray, $total_files)
     }
 
     $params['TAG_DATA'] = $tag_list;
-#    $table_body_html['js'] = process_template("filelist/tag_js", $params);
+    #    $table_body_html['js'] = process_template("filelist/tag_js", $params);
 
     return $table_body_html;
 }

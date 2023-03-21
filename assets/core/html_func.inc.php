@@ -7,7 +7,7 @@ function createLink($url, $text)
     return "<a href=\"" . $url . "\" > " . $text . "</a> ";
 }
 
-function genre_list($key, $list)
+function keyword_list($key, $list)
 {
     $link_array = [];
     $value = '';
@@ -88,3 +88,25 @@ function JavaRefresh($url, $timeout = 0)
 {
     roboloader::javaRefresh($url, $timeout);
 }//end JavaRefresh()
+
+function add_hidden($name,$value,$attributes='')
+{
+	$html='';
+	$html.='<input '.$attributes.' type="hidden" name="'.$name.'"  value="'.$value.'">';
+	return $html. "\n";
+}
+
+function draw_checkbox($name,$value,$text='Face Trim')
+{
+    global $pub_keywords;
+    
+    $checked="";
+	$current_value = $value;
+    
+    if ($current_value == 1 ) { $checked = "checked"; }
+    
+    $html = '<input type="hidden" name="'.$name.'" value="0">';
+    $html .= '<input class="form-check-input" type="checkbox" name="'.$name.'" value=1 '.$checked.'>'.$text;
+
+    return $html;
+}

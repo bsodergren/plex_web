@@ -51,10 +51,6 @@ foreach ($result as $k => $v) {
     $json_array['menu'][$index]['name'] = $v['studio'].$cnt;
     $json_array['menu'][$index]['link'] = 'genre.php?studio='.$studio.$link;
 
-
-
-
-
     if (count($alt_result) > 1) {
         $json_array['menu'][$index]['sub'] = [];
         $sidx = 0;

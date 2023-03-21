@@ -297,14 +297,17 @@ document.addEventListener("keyup", keyboardShortcuts);
 
 function resize() {
   var img = document.getElementsByTagName("video");
-  var vh = img[0].clientHeight + 75;
-  var vw = img[0].clientWidth + 25;
-
+  var vh = img[0].clientHeight + 170;
+  var vw = img[0].clientWidth + 50;
+  console.log("Image HW " + vh + " " + vw);
   window.resizeTo(vw, vh);
+  console.log("Window HW " + window.innerHeight + " " + window.innerWidth);
+
 }
 
 function reportWindowSize() {
-  console.log(window.innerHeight + " " + window.innerWidth);
+
+  //console.log(window.innerHeight + " " + window.innerWidth);
 }
 
 window.onresize = reportWindowSize;
