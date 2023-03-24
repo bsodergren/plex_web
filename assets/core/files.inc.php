@@ -13,16 +13,15 @@ function chk_file($value, $command='delete', $options='')
                 logger("Renaming $value to $options");
                 rename($value, $options);
             };
-        break;
+            break;
 
         case 'delete':
             if (is_file($value)) {
                 logger("deleting $value");
                 unlink($value);
             };
-        break;
+            break;
     }
-
 }//end chk_file()
 
 
@@ -30,7 +29,6 @@ function file_write_array($file='', $array=[])
 {
     $string = var_export($array, 1);
     file_write_file($file, $string, 'w');
-
 }//end file_write_array()
 
 
@@ -57,5 +55,4 @@ function file_write_file($file='', $string='', $mode='w', $backup=true)
     $fp = fopen($file, $mode);
     fwrite($fp, $string);
     fclose($fp);
-
 }//end file_write_file()

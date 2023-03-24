@@ -61,21 +61,21 @@ $studio_pattern = [
             'delimeter' => '_and_',
             'group'     => 1,
         ],
-    ], 
+    ],
     'step_siblings' => [
         'artist' => [
             'pattern'   => '/[a-z]{1,}\_([a-zA-Z_]{1,})[0-9]?\_full.*[0-9]{1,4}.*\.mp4/',
             'delimeter' => '_and_',
             'group'     => 1,
         ],
-    ], 
+    ],
     'teamskeet' => [
         'artist' => [
             'pattern'   => '/[a-z]{1,}\_([a-zA-Z_]{1,})[0-9]?\_full.*[0-9]{1,4}.*\.mp4/',
             'delimeter' => '_and_',
             'group'     => 1,
         ],
-    ], 
+    ],
     'brazzers' => [
         'artist' => [
             'pattern'   => '/([a-zA-Z]{1,4})\_([a-zA-Z\_]*)\_[a-z]{2}[0-9]{1,10}/',

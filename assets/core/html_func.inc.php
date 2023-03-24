@@ -44,7 +44,6 @@ function keyword_cloud($list)
     $search_url = "search.php?field=keyword&query=";
 
     foreach ($list_array as $key => $keyword) {
-
         $url = $search_url . urlencode($keyword);
         $tag_links .= process_template("cloud/tag", [
             'TAG_URL' => $url,
@@ -79,7 +78,6 @@ function output($var)
 
     echo $var . "<br>\n";
     // return 0;
-
 } //end output()
 
 
@@ -89,22 +87,24 @@ function JavaRefresh($url, $timeout = 0)
     roboloader::javaRefresh($url, $timeout);
 }//end JavaRefresh()
 
-function add_hidden($name,$value,$attributes='')
+function add_hidden($name, $value, $attributes='')
 {
-	$html='';
-	$html.='<input '.$attributes.' type="hidden" name="'.$name.'"  value="'.$value.'">';
-	return $html. "\n";
+    $html='';
+    $html.='<input '.$attributes.' type="hidden" name="'.$name.'"  value="'.$value.'">';
+    return $html. "\n";
 }
 
-function draw_checkbox($name,$value,$text='Face Trim')
+function draw_checkbox($name, $value, $text='Face Trim')
 {
     global $pub_keywords;
-    
+
     $checked="";
-	$current_value = $value;
-    
-    if ($current_value == 1 ) { $checked = "checked"; }
-    
+    $current_value = $value;
+
+    if ($current_value == 1) {
+        $checked = "checked";
+    }
+
     $html = '<input type="hidden" name="'.$name.'" value="0">';
     $html .= '<input class="form-check-input" type="checkbox" name="'.$name.'" value=1 '.$checked.'>'.$text;
 

@@ -1,4 +1,5 @@
 <?php
+
 $navigation_link_array = [
 /*
     'dropdown' => [
@@ -9,17 +10,17 @@ $navigation_link_array = [
 
 
         ],
-       
+
         'Missing' => [
             'Titles' => 'missing/title.php',
             'Artist' => 'missing/artist.php',
             'Genre'  => 'missing/genre.php',
             'Studio' => 'missing/studio.php',
         ],
-        
+
     ],
 */
-    
+
     'home'     => [
         'url'    => 'home.php',
         'text'   => 'Home',

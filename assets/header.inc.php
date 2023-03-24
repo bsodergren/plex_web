@@ -11,12 +11,12 @@ $include_array = [];
 
 foreach ($const['user'] as $name => $value) {
     if (Strings::contains($name, '_INC_')) {
-       $include_array = array_merge($include_array,RoboLoader::get_filelist($value, 'php', 1));
+        $include_array = array_merge($include_array, RoboLoader::get_filelist($value, 'php', 1));
     } //end if
 } //end foreach
 
 foreach ($include_array as $required_file) {
-        require_once $required_file;
+    require_once $required_file;
 }
 
 
@@ -34,10 +34,9 @@ unset($_REQUEST['itemsPerPage']);
 
 //$uri['itemsPerPage'] = $_SESSION['itemsPerPage'];
 
-if(!isset($_REQUEST['current']))
-{
-    $_REQUEST['current']="1"; 
-}else {
+if (!isset($_REQUEST['current'])) {
+    $_REQUEST['current']="1";
+} else {
     $uri['current'] = $_REQUEST['current'];
 }
 
@@ -84,13 +83,12 @@ if (isset($_REQUEST['sort'])) {
 }
 
 
-if($_SERVER['QUERY_STRING'] != "")
-{
-$query_string = '&'.urlQuerystring($_SERVER['QUERY_STRING'],'itemsPerPage');
-$request_string_query = '?'.urlQuerystring($_SERVER['QUERY_STRING'],'itemsPerPage');
-$query_string_no_current = "&".urlQuerystring($_SERVER['QUERY_STRING'],"current");
+if ($_SERVER['QUERY_STRING'] != "") {
+    $query_string = '&'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
+    $request_string_query = '?'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
+    $query_string_no_current = "&".urlQuerystring($_SERVER['QUERY_STRING'], "current");
 
-$query_string_no_current = "&".urlQuerystring($query_string_no_current,"itemsPerPage");
+    $query_string_no_current = "&".urlQuerystring($query_string_no_current, "itemsPerPage");
 }
 
 
@@ -105,11 +103,11 @@ if (!isset($_SESSION['direction'])) {
 
 if (isset($_REQUEST['direction'])) {
     if ($_REQUEST['direction'] == 'ASC') {
-         $_SESSION['direction'] = 'DESC';
+        $_SESSION['direction'] = 'DESC';
     }
 
     if ($_REQUEST['direction'] == 'DESC') {
-         $_SESSION['direction'] = 'ASC';
+        $_SESSION['direction'] = 'ASC';
     }
 }
 

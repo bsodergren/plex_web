@@ -77,7 +77,6 @@ function display_directory_navlinks($url, $text, $request_uri = '', $class = '',
 
 function display_fileInfo($fileInfoArray, $total_files)
 {
-
     global $db;
     $table_body_html = [];
 
@@ -103,7 +102,8 @@ function display_fileInfo($fileInfoArray, $total_files)
     $params['FILE_NAME_ID'] = $row_id . '_filename';
     $params['FULL_PATH']    = $row_fullpath;
 
-    $params['ROW_ID'] = $result_number . " <br> of<br> " . $total_files;;
+    $params['ROW_ID'] = $result_number . " <br> of<br> " . $total_files;
+    ;
 
     $params['FILE_ID'] = $row_id;
 
@@ -117,12 +117,11 @@ function display_fileInfo($fileInfoArray, $total_files)
             case 'video_key':
             case 'result_number':
             case 'library':
-                
+
                 break;
 
             case 'thumbnail':
                 if (__SHOW_THUMBNAILS__ == true) {
-
                     $params['THUMBNAIL_HTML'] .= process_template(
                         "filelist/file_thumbnail",
                         [
@@ -133,19 +132,19 @@ function display_fileInfo($fileInfoArray, $total_files)
                 }
                 break;
 
-            case 'added';
-                $params['FIELD_ROW_HTML'] .= process_template(
-                    "filelist/file_row",
-                    [
-                        'FIELD' => 'Added',
-                        'VALUE' => $value,
-                        'ALT_CLASS' => $class
-                    ]
-                );
+            case 'added':
+            $params['FIELD_ROW_HTML'] .= process_template(
+                "filelist/file_row",
+                [
+                    'FIELD' => 'Added',
+                    'VALUE' => $value,
+                    'ALT_CLASS' => $class
+                ]
+            );
 
-                $x++;
+            $x++;
 
-                break;
+            break;
             case 'duration':
                 $params['FIELD_ROW_HTML'] .= process_template(
                     "filelist/file_row",
@@ -169,19 +168,19 @@ function display_fileInfo($fileInfoArray, $total_files)
                 $params['YESCHECKED'] = $yeschecked;
                 $params['NOCHECKED']  = $nochecked;
 */
-/*
-                $sql                 = 'select  * from ' . Db_TABLE_FILEINFO . " WHERE video_key = '" . $row_video_key . "'";
-                $result              = $db->query($sql);
+                /*
+                                $sql                 = 'select  * from ' . Db_TABLE_FILEINFO . " WHERE video_key = '" . $row_video_key . "'";
+                                $result              = $db->query($sql);
 
-                $params['FULL_PATH'] = $row_fullpath;
-                if (isset($result[0])) {
-                    $file_info = $result[0];                    
-                    $params['HEIGHT']   = $file_info['height'];
-                    $params['WIDTH']    = $file_info['width'];
-                    $params['BITRATE']  = display_size($file_info['bit_rate']);
-                    $params['FILESIZE'] = byte_convert($file_info['filesize']);
-                }
-*/
+                                $params['FULL_PATH'] = $row_fullpath;
+                                if (isset($result[0])) {
+                                    $file_info = $result[0];
+                                    $params['HEIGHT']   = $file_info['height'];
+                                    $params['WIDTH']    = $file_info['width'];
+                                    $params['BITRATE']  = display_size($file_info['bit_rate']);
+                                    $params['FILESIZE'] = byte_convert($file_info['filesize']);
+                                }
+                */
                 break;
 
             case 'artist':
@@ -214,7 +213,7 @@ function display_fileInfo($fileInfoArray, $total_files)
                     $params['FILE_NAME'] = $value;
                 }
 */
-              //  $x++;
+                //  $x++;
 
                 break;
 
@@ -294,7 +293,7 @@ function display_fileInfo($fileInfoArray, $total_files)
                     switch ($key) {
                         case 'artist':
                             $params['FIELD_ROW_HTML'] .= process_template(
-                                "filelist/file_row", 
+                                "filelist/file_row",
                                 ['FIELD' => 'Artist', 'VALUE' => $value,
                                 'ALT_CLASS' => $class]);
                                 $x++;
@@ -303,7 +302,7 @@ function display_fileInfo($fileInfoArray, $total_files)
 
                         case 'title':
                             $params['FIELD_ROW_HTML'] .= process_template(
-                                "filelist/file_row", 
+                                "filelist/file_row",
                                 ['FIELD' => 'title', 'VALUE' => $value,
                                 'ALT_CLASS' => $class]);
                                 $x++;
@@ -312,25 +311,25 @@ function display_fileInfo($fileInfoArray, $total_files)
 
                         case 'genre':
                             $params['FIELD_ROW_HTML'] .= process_template(
-                                "filelist/file_row", 
+                                "filelist/file_row",
                                 ['FIELD' => 'genre', 'VALUE' => $value,
-                                'ALT_CLASS' => $class]);                            
+                                'ALT_CLASS' => $class]);
                                 $x++;
                                 break;
 
                         case 'studio':
                             $params['FIELD_ROW_HTML'] .= process_template(
-                                "filelist/file_row", 
+                                "filelist/file_row",
                                 ['FIELD' => 'studio', 'VALUE' => $value,
-                                'ALT_CLASS' => $class]);                            
+                                'ALT_CLASS' => $class]);
                                 $x++;
                                 break;
 
                         case 'substudio':
                             $params['FIELD_ROW_HTML'] .= process_template(
-                                "filelist/file_row", 
+                                "filelist/file_row",
                                 ['FIELD' => 'substudio', 'VALUE' => $value,
-                                'ALT_CLASS' => $class]);  
+                                'ALT_CLASS' => $class]);
                                 $x++;
 
                                                           break;
@@ -351,8 +350,8 @@ function display_fileInfo($fileInfoArray, $total_files)
                     }
                 }
 
-              
-            
+
+
                 if (isset($value_array[$key][0]) && $value_array[$key][0] != '') {
                     $value = ' value="' . $value_array[$key][0] . '"';
                     if (isset($value_array['style'][0]) && $value_array['style'][0] != '') {
@@ -372,10 +371,7 @@ function display_fileInfo($fileInfoArray, $total_files)
                 #  echo  $table_body_html;
                 break;
                 */
-        } //end switch 
-
-
-
+        } //end switch
     } //end foreach
     $table_body_html['filecards'] = process_template("filelist/file", $params);
     $tag_list = '';
@@ -421,12 +417,11 @@ function display_filelist($results, $option = '', $page_array = [])
 
 
     foreach ($results as $id => $row) {
-
         $row_id  = $row['id'];
 
         $table_body = display_fileInfo($row, $total_files);
         $js_html .= $table_body['js'];
-        $table_html .= process_template("filelist/file_form_wrapper",  [
+        $table_html .= process_template("filelist/file_form_wrapper", [
             'FILE_ID' => $row_id,
             'FILE_TABLE'   => $table_body['filecards'],
             'REDIRECT_STRING' => $redirect_string,
@@ -550,10 +545,8 @@ function display_breadcrumbs()
 
 function display_SelectOptions($array, $selected = '')
 {
-
     $html = '';
     foreach ($array as $val) {
-
         $checked = '';
         if ($val == $selected) {
             $checked = ' selected';

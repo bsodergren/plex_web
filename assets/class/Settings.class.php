@@ -2,13 +2,9 @@
 
 class Settings
 {
-
     public static function isTrue($define_name)
     {
         if (defined($define_name)) {
-
-
-
             if (constant($define_name) == true) {
                 //  mediaUpdate::echo(constant($define_name));
                 return 1;
@@ -28,7 +24,6 @@ class Settings
 
 class MetaSettings extends dbObject
 {
-
     protected $dbTable = Db_TABLE_SETTINGS;
 } //end class
 
@@ -51,5 +46,3 @@ class MetaFileinfo extends dbObject
 {
     protected $dbTable = Db_TABLE_FILEINFO;
 }
-
-

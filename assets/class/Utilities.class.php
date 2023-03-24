@@ -6,7 +6,6 @@ use Nette\Utils\DateTime;
 
 class Colors
 {
-
     private $foreground_colors = [];
 
     private $background_colors = [];
@@ -53,7 +52,6 @@ class Colors
 
     public function getColoredDiv($html, $background_color)
     {
-
         $class_tag = '';
         if (isset($this->background_colors[$background_color])) {
             $class_tag = "class";
@@ -64,7 +62,8 @@ class Colors
     public function getColoredSpan($string, $foreground_color = null, $background_color = null)
     {
         $this->fg_color = $foreground_color;
-        $colored_string = '<span style="' . $this->getClassColor() . '">' . $string . '</span>';;
+        $colored_string = '<span style="' . $this->getClassColor() . '">' . $string . '</span>';
+        ;
         return $colored_string;
     } //end getColoredHTML()
 
@@ -102,27 +101,23 @@ class Colors
     {
         return array_keys($this->background_colors);
     } //end getBackgroundColors()
-
-
 } //end class
 
 
 class display
 {
-
     private $model_popup = '';
     private $model_buttons = array();
 
 
     public static function echo($text, $var = '')
     {
-
         /*
         if (defined('__DISPLAY_POPUP__')) {
             global $model_display;
             $model_display->model($text, $var);
             return 0;
-        } 
+        }
     */
 
         $pre_style = 'style="border: 1px solid #ddd;border-left: 3px solid #f36d33;color: #666;page-break-inside: avoid;font-family: monospace;font-size: 15px;line-height: 1.6;margin-bottom: 1.6em;max-width: 100%;overflow: auto;padding: 1em 1.5em;display: block;word-wrap: break-word;"';
@@ -185,8 +180,6 @@ class display
     public function writeModelHtml()
     {
         if (defined('__DISPLAY_POPUP__')) {
-
-
             echo $this->model_popup;
             echo '      <div class="btn-group-vertical">';
 
@@ -204,7 +197,6 @@ class display
 
 class ExecutionTime
 {
-
     private $startTime;
 
     private $endTime;
@@ -232,13 +224,10 @@ class ExecutionTime
     {
         return 'This process used ' . $this->runTime($this->endTime, $this->startTime, 'utime') . " ms for its computations\nIt spent " . $this->runTime($this->endTime, $this->startTime, 'stime') . " ms in system calls\n";
     } //end __toString()
-
-
 } //end class
 
 class escape
 {
-
     private $string;
 
 
@@ -299,14 +288,11 @@ class escape
 
         return $string;
     } //end clean()
-
-
 } //end class
 
 
 class Logger
 {
-
     public static function getErrorLogs()
     {
         $err_array = [];
@@ -318,7 +304,7 @@ class Logger
                         $err_array[]  = filesystem::normalizePath(__ERROR_LOG_DIRECTORY__ . '/' . $file);
                     } //end if
                 } //end if
-            } //end while    
+            } //end while
             closedir($all);
         } //end if
 
@@ -376,7 +362,6 @@ class Logger
 
     public static function log($text, $var = '', $logfile = 'default.log')
     {
-
         if (Settings::isTrue('__SHOW_DEBUG_PANEL__')) {
             $function_list = self::get_caller_info();
             $errorLogFile = __ERROR_LOG_DIRECTORY__ . "/" . $logfile;
@@ -405,17 +390,16 @@ class Logger
         }
 
         //        $logger->INFO($log_string);
-
     }
 
 
 
-    public static function printCode($array, $path = FALSE, $top = TRUE)
+    public static function printCode($array, $path = false, $top = true)
     {
         $data = "";
         $delimiter = "~~|~~";
 
-        $p = NULL;
+        $p = null;
         if (is_array($array)) {
             foreach ($array as $key => $a) {
                 if (!is_array($a) || empty($a)) {
@@ -425,7 +409,7 @@ class Logger
                         $data .= $path . "['{$key}'] = \"" . htmlentities(addslashes($a)) . "\";" . $delimiter;
                     }
                 } else {
-                    $data .= self::printCode($a, $path . "['{$key}']", FALSE);
+                    $data .= self::printCode($a, $path . "['{$key}']", false);
                 }
             }
         }

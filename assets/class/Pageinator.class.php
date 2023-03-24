@@ -75,7 +75,9 @@ class pageinate extends Paginator
                     'A_TExT' => htmlspecialchars($page['num']),
                 ];
 
-                if($page['isCurrent']){ $current_url = htmlspecialchars($page['url']); }
+                if ($page['isCurrent']) {
+                    $current_url = htmlspecialchars($page['url']);
+                }
 
                 $link_list .=    template::echo("footer/page_item", $params);
             } else {
@@ -84,7 +86,6 @@ class pageinate extends Paginator
         }
 
         if ($this->paginator->getNextUrl()) {
-
             $params = [
                 'LI_CLASS' => ' class="page-item"',
                 'A_CLASS' => ' class="page-link"',
@@ -94,18 +95,16 @@ class pageinate extends Paginator
             $next =    template::echo("footer/page_item", $params);
         }
 
-        parse_str( $_SERVER['QUERY_STRING'], $query_array);
+        parse_str($_SERVER['QUERY_STRING'], $query_array);
 
-        foreach($query_array as $name => $value)
-        {
+        foreach ($query_array as $name => $value) {
             if ($name == 'itemsPerPage') {
                 continue;
             }
             $hidden_text .= hidden_Field($name, $value);
-
         }
-        
-        $option_text = display_SelectOptions([10,25,30,40,50,100,250,500],$this->itemsPerPage);
+
+        $option_text = display_SelectOptions([10,25,30,40,50,100,250,500], $this->itemsPerPage);
         $params = [
             'HIDDEN' => $hidden_text,
             'PAGE_UPDATE' => $current_url ,
@@ -113,7 +112,7 @@ class pageinate extends Paginator
         'PREVIOUS_LINK' => $previous,
         'LINK_LIST' => $link_list ,
         'NEXT_LINK' => $next ];
-        $html = template::echo("footer/pages",$params);
+        $html = template::echo("footer/pages", $params);
         return $html;
     }
 }
@@ -159,7 +158,7 @@ class ConfigPagenate extends Paginator
         $this->paginator->setMaxPagesToShow($this->maxRecordsToShow);
     }
 
-    
+
     public function toHtml()
     {
         global $_SERVER;
@@ -187,7 +186,9 @@ class ConfigPagenate extends Paginator
                     'A_TExT' => htmlspecialchars($page['num']),
                 ];
 
-                if($page['isCurrent']){ $current_url = htmlspecialchars($page['url']); }
+                if ($page['isCurrent']) {
+                    $current_url = htmlspecialchars($page['url']);
+                }
 
                 $link_list .=    template::echo("footer/page_item", $params);
             } else {
@@ -196,7 +197,6 @@ class ConfigPagenate extends Paginator
         }
 
         if ($this->paginator->getNextUrl()) {
-
             $params = [
                 'LI_CLASS' => ' class="page-item"',
                 'A_CLASS' => ' class="page-link"',
@@ -206,18 +206,16 @@ class ConfigPagenate extends Paginator
             $next =    template::echo("footer/page_item", $params);
         }
 
-        parse_str( $_SERVER['QUERY_STRING'], $query_array);
+        parse_str($_SERVER['QUERY_STRING'], $query_array);
 
-        foreach($query_array as $name => $value)
-        {
+        foreach ($query_array as $name => $value) {
             if ($name == 'itemsPerPage') {
                 continue;
             }
             $hidden_text .= hidden_Field($name, $value);
-
         }
-        
-        $option_text = display_SelectOptions([10,25,30,40,50,100,250,500],$this->itemsPerPage);
+
+        $option_text = display_SelectOptions([10,25,30,40,50,100,250,500], $this->itemsPerPage);
         $params = [
             'HIDDEN' => $hidden_text,
             'PAGE_UPDATE' => $current_url ,
@@ -225,10 +223,9 @@ class ConfigPagenate extends Paginator
         'PREVIOUS_LINK' => $previous,
         'LINK_LIST' => $link_list ,
         'NEXT_LINK' => $next ];
-        $html = template::echo("footer/pages",$params);
+        $html = template::echo("footer/pages", $params);
         return $html;
     }
-
 }
 
 class GenrePagenate extends Paginator
@@ -297,7 +294,9 @@ class GenrePagenate extends Paginator
                     'A_TExT' => htmlspecialchars($page['num']),
                 ];
 
-                if($page['isCurrent']){ $current_url = htmlspecialchars($page['url']); }
+                if ($page['isCurrent']) {
+                    $current_url = htmlspecialchars($page['url']);
+                }
 
                 $link_list .=    template::echo("footer/page_item", $params);
             } else {
@@ -306,7 +305,6 @@ class GenrePagenate extends Paginator
         }
 
         if ($this->paginator->getNextUrl()) {
-
             $params = [
                 'LI_CLASS' => ' class="page-item"',
                 'A_CLASS' => ' class="page-link"',
@@ -316,18 +314,16 @@ class GenrePagenate extends Paginator
             $next =    template::echo("footer/page_item", $params);
         }
 
-        parse_str( $_SERVER['QUERY_STRING'], $query_array);
+        parse_str($_SERVER['QUERY_STRING'], $query_array);
 
-        foreach($query_array as $name => $value)
-        {
+        foreach ($query_array as $name => $value) {
             if ($name == 'itemsPerPage') {
                 continue;
             }
             $hidden_text .= hidden_Field($name, $value);
-
         }
-        
-        $option_text = display_SelectOptions([10,25,30,40,50,100,250,500],$this->itemsPerPage);
+
+        $option_text = display_SelectOptions([10,25,30,40,50,100,250,500], $this->itemsPerPage);
         $params = [
             'HIDDEN' => $hidden_text,
             'PAGE_UPDATE' => $current_url ,
@@ -335,7 +331,7 @@ class GenrePagenate extends Paginator
         'PREVIOUS_LINK' => $previous,
         'LINK_LIST' => $link_list ,
         'NEXT_LINK' => $next ];
-        $html = template::echo("footer/pages",$params);
+        $html = template::echo("footer/pages", $params);
         return $html;
     }
 }

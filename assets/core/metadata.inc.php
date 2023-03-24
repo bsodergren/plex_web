@@ -8,7 +8,6 @@ function metadata_get_fileData($file='')
     $run_cmd = $AtomicParsley." '".realpath($file)."' -t";
     $results = shell_exec($run_cmd);
     return $results;
-
 }//end metadata_get_fileData()
 
 
@@ -19,19 +18,19 @@ function metadata_get_value($file='', $tag='')
     switch ($tag) {
         case 'studio':
             $regex = '/(alb).*\:\ (.*)/';
-        break;
+            break;
 
         case 'genre':
             $regex = '/(gen).*\:\ (.*)/';
-        break;
+            break;
 
         case 'title':
             $regex = '/(nam).*\:\ (.*)/i';
-        break;
+            break;
 
         case 'artist':
             $regex = '/(\"©ART\").*\:\ (.*)/';
-        break;
+            break;
     }
 
     preg_match($regex, $metadata, $matches);
@@ -42,7 +41,6 @@ function metadata_get_value($file='', $tag='')
     } else {
         return false;
     }
-
 }//end metadata_get_value()
 
 
@@ -66,7 +64,6 @@ function metadata_write_filedata($file='', $value_array=[])
     $results = shell_exec($run_cmd);
 
     return $results;
-
 }//end metadata_write_filedata()
 
 
@@ -77,7 +74,7 @@ function missingStudio($key, $row)
     $genre     = $row['genre'];
 
     $dir = $in_directory;
-   
+
 
     $video_path = str_replace(__PLEX_LIBRARY__.'/'.$dir.'/', '', $path_name);
     $video_path = str_replace($genre, '', $video_path);
@@ -98,7 +95,6 @@ function missingStudio($key, $row)
     ];
 
     return $value_array;
-
 }//end missingStudio()
 
 
@@ -118,7 +114,6 @@ function missingGenre($key, $row)
     ];
 
     return $value_array;
-
 }//end missingGenre()
 
 
@@ -132,9 +127,9 @@ function missingArtist($key, $row)
 
     $value_array  = [];
 
-    if($row['substudio'] != ''){
+    if ($row['substudio'] != '') {
         $match_studio = $row['substudio'];
-    }else {
+    } else {
         $match_studio = $row['studio'];
     }
 
@@ -144,27 +139,25 @@ function missingArtist($key, $row)
     if (key_exists($studio_match, $studio_pattern)) {
         $__match = $studio_match;
         logger("studio_pattern", $__match);
-
     }
 
     // print_r2($studio_ignore);
     // print_r2(str_replace(" ","_",strtolower($row['substudio'])));
-    if(in_array(str_replace(" ","_",strtolower($row['substudio'])), $studio_ignore )){
+    if (in_array(str_replace(" ", "_", strtolower($row['substudio'])), $studio_ignore)) {
         return false;
     }
 
     if (isset($__match)) {
         if (key_exists('artist', $studio_pattern[$__match])) {
+            $pattern   = $studio_pattern[$__match]['artist']['pattern'];
+            $delimeter = $studio_pattern[$__match]['artist']['delimeter'];
+            $group     = $studio_pattern[$__match]['artist']['group'];
 
-        $pattern   = $studio_pattern[$__match]['artist']['pattern'];
-        $delimeter = $studio_pattern[$__match]['artist']['delimeter'];
-        $group     = $studio_pattern[$__match]['artist']['group'];
-
-        logger("studio_pattern", $pattern);
-        logger("studio_pattern", $delimeter);
-        logger("studio_pattern", $group);
-        logger("studio_pattern", $row['filename']);
-        preg_match($pattern, $row['filename'], $matches);
+            logger("studio_pattern", $pattern);
+            logger("studio_pattern", $delimeter);
+            logger("studio_pattern", $group);
+            logger("studio_pattern", $row['filename']);
+            preg_match($pattern, $row['filename'], $matches);
 
             if (count($matches) > 0) {
                 $names_array = explode($delimeter, $matches[$group]);
@@ -209,7 +202,6 @@ function missingArtist($key, $row)
     }//end if
 
     return $value_array;
-
 }//end missingArtist()
 
 
@@ -219,13 +211,13 @@ function missingTitle($key, $row)
     global $__namesArray;
 
     $value_array  = [];
-    if($row['substudio'] != ''){
+    if ($row['substudio'] != '') {
         $match_studio = $row['substudio'];
-    }else {
+    } else {
         $match_studio = $row['studio'];
     }
 
-    
+
 
     $studio_match = strtolower(str_replace(' ', '_', $match_studio));
 
@@ -233,7 +225,7 @@ function missingTitle($key, $row)
     if (key_exists($studio_match, $studio_pattern)) {
         $__match = $studio_match;
     }
-   
+
     if (isset($__match)) {
         if (key_exists('title', $studio_pattern[$__match])) {
             $pattern = $studio_pattern[$__match]['title']['pattern'];
@@ -253,12 +245,11 @@ function missingTitle($key, $row)
                 if (key_exists('episode_pattern', $studio_pattern[$__match]['title'])) {
                     $epi_pattern = $studio_pattern[$__match]['title']['episode_pattern'];
 
-                    preg_match($epi_pattern, $title, $epi_matches);  
+                    preg_match($epi_pattern, $title, $epi_matches);
                     $title       = $epi_matches[3];
                     $__episode = strtoupper($epi_matches[2]);
                     $__season = strtoupper($epi_matches[1]);
                     $title = "$__season:$__episode $title";
-
                 }
 
                 $title       = ucwords($title);
@@ -271,5 +262,4 @@ function missingTitle($key, $row)
     }
 
     return $value_array;
-
 }//end missingTitle()

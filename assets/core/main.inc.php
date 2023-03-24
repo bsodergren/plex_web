@@ -2,7 +2,6 @@
 
 function videoDuration($duration)
 {
-
     $seconds         = round($duration / 1000);
     $hours =   round($seconds / 3600);
 
@@ -170,7 +169,6 @@ function urlQuerystring($input_string, $exclude = '')
     $query_string = '';
 
     if ($input_string != '') {
-
         parse_str($input_string, $query_parts);
 
         if (key_exists($exclude, $query_parts)) {
@@ -185,8 +183,6 @@ function urlQuerystring($input_string, $exclude = '')
 
 function uri_String($request_array, $start = '?')
 {
-
-
     foreach ($request_array as $key => $value) {
         if ($key == 'direction') {
             continue;
@@ -216,8 +212,6 @@ function process_form($redirect_url = '')
 
 
     if (isset($_POST['submit'])) {
-
-
         if ($_POST['submit'] == 'GenreConfigSave') {
             return GenreConfigSave($_POST, $redirect_url);
             exit;
@@ -232,8 +226,6 @@ function process_form($redirect_url = '')
             exit;
         }
         if ($_POST['submit'] == 'save') {
-
-
             return saveData($_POST, $redirect_url);
             exit;
         }
@@ -375,7 +367,6 @@ function hideEntry($data_array, $redirect = false, $timeout = 4)
 
 function addNewEntry($data_array, $redirect, $timeout = 0)
 {
-
     global $db;
 
     if ($data_array['studio'] == '') {
@@ -407,11 +398,9 @@ function GenreConfigSave($data_array, $redirect, $timeout = 0)
 
     foreach ($data_array as $key => $val) {
         if (str_contains($key, '_') == true) {
-
             $value = trim($val);
 
             if ($value != '') {
-
                 $pcs = explode('_', $key);
 
                 $id         = $pcs[1];
@@ -444,11 +433,9 @@ function saveStudioConfig($data_array, $redirect, $timeout = 0)
 
     foreach ($data_array as $key => $val) {
         if (str_contains($key, '_') == true) {
-
             $value = trim($val);
 
             if ($value != '') {
-
                 $pcs = explode('_', $key);
 
                 $id         = $pcs[1];
@@ -480,13 +467,10 @@ function saveData($data_array, $redirect = false, $timeout = 4)
     $__output = '';
 
     foreach ($data_array as $key => $val) {
-
         if (str_contains($key, '_') == true) {
-
             $value = trim($val);
 
             if ($value != '') {
-
                 $pcs = explode('_', $key);
 
                 $id         = $pcs[0];
@@ -584,7 +568,6 @@ function saveData($data_array, $redirect = false, $timeout = 4)
 
 function updateTags($id, $tags)
 {
-
     global $db;
 
     $tag_array = explode(",", $tags);
@@ -599,7 +582,6 @@ function updateTags($id, $tags)
 
 function moveFiles($data_array, $playlist_id)
 {
-
     global $db;
     global $_SESSION;
     // $video_file     = $user['fullpath'] . $user['filename'];

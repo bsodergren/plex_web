@@ -6,13 +6,12 @@
         <?php
 
                 $library_links = '';
-                $sql = query_builder('DISTINCT(library) as library ');
-                foreach ( $db->query($sql) as $k => $v) 
-                {
-                    $library_links .= display_navbar_left_links('home.php?library='.$v['library'], $v['library']);
-                }
-                echo   process_template('navbar/library_menu', ["LIBRARY_SELECT_LINKS" => $library_links]);
-                ?>
+        $sql = query_builder('DISTINCT(library) as library ');
+        foreach ($db->query($sql) as $k => $v) {
+            $library_links .= display_navbar_left_links('home.php?library='.$v['library'], $v['library']);
+        }
+        echo   process_template('navbar/library_menu', ["LIBRARY_SELECT_LINKS" => $library_links]);
+        ?>
             <ul class="navbar-nav">
                 <?php echo display_navbar_links(); ?>
             </ul>
@@ -22,6 +21,7 @@
     </div>
 
 </nav>
-<?php 
-if ( defined('BREADCRUMB')) {
-    echo display_breadcrumbs(); }?>
+<?php
+if (defined('BREADCRUMB')) {
+    echo display_breadcrumbs();
+}?>

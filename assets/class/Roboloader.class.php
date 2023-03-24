@@ -2,7 +2,6 @@
 
 use Nette\Utils\FileSystem;
 
-
 class RoboLoader
 {
     public $refresh = false;
@@ -15,7 +14,6 @@ class RoboLoader
 
     public static function echo($value, $exit = 0)
     {
-
         echo '<pre>' . var_export($value, 1) . '</pre>';
 
         if ($exit == 1) {
@@ -80,7 +78,6 @@ class RoboLoader
 
     public static function setSkipFile($filename)
     {
-
         if (!self::skipFile($filename)) {
             $replacement = '<?php';
             $replacement .= ' #skip';
@@ -89,7 +86,4 @@ class RoboLoader
             FileSystem::write($filename, $__db_write);
         }
     }
-
-
 }
-
