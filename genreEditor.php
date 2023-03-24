@@ -67,6 +67,7 @@ include __LAYOUT_HEADER__;
     
     $genre_row_html = '';
 
+   
     foreach ($results as $key => $row) {
         $genre_row_html .= process_template(
             "config/genre/genre_row",

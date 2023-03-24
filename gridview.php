@@ -86,7 +86,6 @@ $pageObj = new pageinate($where, $currentPage, $urlPattern);
 
 $sql = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
 logger('all files', $sql);
-print_r($sql);
 $results       = $db->query($sql);
 $request_key   = uri_String($uri);
 
@@ -121,6 +120,7 @@ for ($i = 0; $i < count($results); $i++) {
 
     $file_info = match ($_SESSION['sort']) {
       'genre' => $results[$i]['genre'],
+      'Duration' => videoDuration($results[$i]['duration']),
       'duration' => videoDuration($results[$i]['duration']),
       'studio' => $results[$i]['studio'],
       'artist' => $results[$i]['artist'],

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://vjs.zencdn.net/8.0.4/video-js.css" rel="stylesheet" />
+  <link href="node_modules/videojs-playlist-ui/dist/videojs-playlist-ui.css" rel="stylesheet">
+  
+</head>
+
+<body>
+
+
+
+    <video
+    id="video"
+    class="video-js"
+    controls
+    preload="auto"
+    width="640"
+    height="264"
+    poster="MY_VIDEO_POSTER.jpg"
+    data-setup="{}"
+  >
+  
+
+    <source src="%%VIDEO_FILE%%" type="video/mp4" />
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a
+      web browser that
+      <a href="https://videojs.com/html5-video-support/" target="_blank"
+        >supports HTML5 video</a
+      >
+    </p>
+  </video>
+
+  <div class="vjs-playlist"></div>
+
+  
+  <script src="node_modules/video.js/dist/video.js"></script>
+  <script src="node_modules/videojs-playlist/dist/videojs-playlist.js"></script>
+  <script src="node_modules/videojs-playlist-ui/dist/videojs-playlist.js"></script>
+  <script src="node_modules/videojs-playlist-ui/dist/videojs-playlist-ui.js"></script>
+
+%%PLAYLIST_JS_HTML%%
+  <!-- <script src="https://vjs.zencdn.net/8.0.4/video.min.js"></script> -->
+</body>

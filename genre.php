@@ -62,8 +62,11 @@ foreach ($result as $k => $v) {
 
 $genre_array = array_unique($genre_array);
 
-$all_url = 'gridview.php?' . $request_key . 'allfiles=1';
-DEFINE('BREADCRUMB', ['home' => "home.php",'genre'=> '', 'all' => $all_url]);
+$all_url = 'files.php?' . $request_key . 'allfiles=1';
+$grid_url = 'gridview.php?' . $request_key . 'allfiles=1';
+
+DEFINE('BREADCRUMB', ['home' => "home.php",'genre'=> '', 'all' => $all_url, 'grid' => $grid_url]);
+
 require __LAYOUT_HEADER__;
 ?>
 <main role="main" class="container">

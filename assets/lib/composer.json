@@ -3,7 +3,8 @@
         "nette/utils": "^4.0",
         "formr/formr": "^1.4",
         "jasongrimes/paginator": "~1.0",
-        "mhor/php-mediainfo": "^5.4"
+        "mhor/php-mediainfo": "^5.4",
+        "videojs/video.js": "^8.2"
         
     }
 }
