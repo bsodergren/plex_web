@@ -9,8 +9,8 @@ html {
 
 }
 
-body {
-    padding-top: 80px;
+main {
+    padding-top: 0px;
     padding-bottom: 65px;
 }
 
@@ -138,3 +138,12 @@ ul>.multi-opened::after {
     left: 0;
 }
 */
+.navbar.top-navbar {
+    margin-top: 00px;
+    z-index:2
+  }
+
+  .navbar.second-navbar {
+    margin-top: 60px;
+    z-index:1
+  }

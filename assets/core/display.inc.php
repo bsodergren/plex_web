@@ -133,18 +133,18 @@ function display_fileInfo($fileInfoArray, $total_files)
                 break;
 
             case 'added':
-            $params['FIELD_ROW_HTML'] .= process_template(
-                "filelist/file_row",
-                [
-                    'FIELD' => 'Added',
-                    'VALUE' => $value,
-                    'ALT_CLASS' => $class
-                ]
-            );
+                $params['FIELD_ROW_HTML'] .= process_template(
+                    "filelist/file_row",
+                    [
+                        'FIELD' => 'Added',
+                        'VALUE' => $value,
+                        'ALT_CLASS' => $class
+                    ]
+                );
 
-            $x++;
+                $x++;
 
-            break;
+                break;
             case 'duration':
                 $params['FIELD_ROW_HTML'] .= process_template(
                     "filelist/file_row",
@@ -522,23 +522,29 @@ function display_breadcrumbs()
     global $_REQUEST;
     global $_SERVER;
 
-    echo '<nav style="--bs-breadcrumb-divider: \'>\';" aria-label="breadcrumb">';
-    echo '<ol class="breadcrumb">';
 
+    $crumbs_html = '';
     foreach (BREADCRUMB as $text => $url) {
         if ($text == '') {
             continue;
         }
-        $class = '';
+
+
+        $class = 'breadcrumb-item';
         $link = '<a href="' . $url . '">' . $text . '</a>';
+
         if ($url == '') {
-            $class = ' active" aria-current="page';
+            $class .= ' active" aria-current="page';
             $link = $text;
         }
-        echo '<li class="breadcrumb-item' . $class . '">' . $link . '</li>';
+
+        $params['CLASS'] = $class;
+        $params['LINK'] = $link;
+        $crumbs_html .= process_template('navbar/crumb', $params);
     }
-    echo '</ol>';
-    echo '</nav>';
+
+
+    return process_template('navbar/breadcrumb', ['CRUMB_LINKS' => $crumbs_html]);
 }
 
 
