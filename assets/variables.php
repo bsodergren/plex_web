@@ -1,5 +1,16 @@
 <?php
 
+$sort_types   = [
+    'studio',
+    'artist',
+    'title',
+    'filename',
+    'duration',
+    'added',
+    'genre',
+];
+
+
 $navigation_link_array = [
 /*
     'dropdown' => [

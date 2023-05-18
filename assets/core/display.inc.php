@@ -73,6 +73,19 @@ function display_directory_navlinks($url, $text, $request_uri = '', $class = '',
 } //end display_directory_navlinks()
 
 
+function display_fileRow($params, $field, $value, $class)
+{
+
+    $params['FIELD_ROW_HTML'] .= process_template(
+        "filelist/file_row",
+        [
+            'FIELD' => $field,
+            'VALUE' => $value,
+            'ALT_CLASS' => $class
+        ]
+    );
+    return $params;
+}
 
 
 function display_fileInfo($fileInfoArray, $total_files)
@@ -98,28 +111,35 @@ function display_fileInfo($fileInfoArray, $total_files)
     if ($fileInfoArray['title']) {
         $params['FILE_NAME'] = $fileInfoArray['title'];
     }
+    $params['ROW_ID'] = '';
+    if (!defined('NONAVBAR')) {
+        $params['FILE_NAME'] = '<span onclick="popup(\'/plex_web/videoinfo.php?id=' . $row_id . '\', \'fileinfo\',\'1000\',\'400\')">' . $params['FILE_NAME'] . '</span>';
+        $params['ROW_ID'] = "&nbsp;&nbsp;&nbsp;".$result_number . " of " . $total_files;
+    }
     $params['DELETE_ID']    = 'delete_' . $row_id;
     $params['FILE_NAME_ID'] = $row_id . '_filename';
     $params['FULL_PATH']    = $row_fullpath;
-
-    $params['ROW_ID'] = $result_number . " <br> of<br> " . $total_files;
-    ;
-
     $params['FILE_ID'] = $row_id;
+    krsort($fileInfoArray);
 
     foreach ($fileInfoArray as $key => $value) {
         $class = ($x % 2 == 0) ? 'blueTable-tr-even' : '';
         $value_array = [];
         switch ($key) {
-            case 'id':
-            case 'filename':
-            case 'fullpath':
-            case 'video_key':
-            case 'result_number':
-            case 'library':
 
+                //case 'favorite':
+            case 'title':
+            case 'fullpath':
+
+                $value = str_replace(__PLEX_LIBRARY__ . "/", "", $value);
+                $params = display_fileRow($params, ucfirst($key), $value, $class);
+                $x++;
                 break;
 
+            case 'added':
+                $params = display_fileRow($params, ucfirst($key), $value, $class);
+                $x++;
+                break;
             case 'thumbnail':
                 if (__SHOW_THUMBNAILS__ == true) {
                     $params['THUMBNAIL_HTML'] .= process_template(
@@ -132,264 +152,66 @@ function display_fileInfo($fileInfoArray, $total_files)
                 }
                 break;
 
-            case 'added':
-                $params['FIELD_ROW_HTML'] .= process_template(
-                    "filelist/file_row",
-                    [
-                        'FIELD' => 'Added',
-                        'VALUE' => $value,
-                        'ALT_CLASS' => $class
-                    ]
-                );
-
-                $x++;
-
-                break;
             case 'duration':
-                $params['FIELD_ROW_HTML'] .= process_template(
-                    "filelist/file_row",
-                    [
-                        'FIELD' => 'Duration',
-                        'VALUE' => videoDuration($value),
-                        'ALT_CLASS' => $class
-                    ]
-                );
-                $x++;
-
-                break;
-
-
-            case 'favorite':
-                /*
-                $yeschecked = ($value == '1') ? 'checked' : '';
-                $nochecked  = ($value == '0') ? 'checked' : '';
-
-                // "PLACEHOLDER" =>  $placeholder,
-                $params['YESCHECKED'] = $yeschecked;
-                $params['NOCHECKED']  = $nochecked;
-*/
-                /*
-                                $sql                 = 'select  * from ' . Db_TABLE_FILEINFO . " WHERE video_key = '" . $row_video_key . "'";
-                                $result              = $db->query($sql);
-
-                                $params['FULL_PATH'] = $row_fullpath;
-                                if (isset($result[0])) {
-                                    $file_info = $result[0];
-                                    $params['HEIGHT']   = $file_info['height'];
-                                    $params['WIDTH']    = $file_info['width'];
-                                    $params['BITRATE']  = display_size($file_info['bit_rate']);
-                                    $params['FILESIZE'] = byte_convert($file_info['filesize']);
-                                }
-                */
-                break;
-
-            case 'artist':
-                if ($value != '') {
-                    $value = keyword_list($key, $value);
-                }
-
-                $params['FIELD_ROW_HTML'] .= process_template(
-                    "filelist/file_row",
-                    [
-                        'FIELD' => 'Artist',
-                        'VALUE' => $value,
-                        'ALT_CLASS' => $class
-                    ]
-                );
-                $x++;
-
-                break;
-
-            case 'title':
-                /*    $params['FIELD_ROW_HTML'] .= process_template(
-                    "filelist/file_row",
-                    [
-                        'FIELD' => 'title',
-                        'VALUE' => $value,
-                        'ALT_CLASS' => "text-fg-info"
-                    ]
-                );
-                if ($value != '') {
-                    $params['FILE_NAME'] = $value;
-                }
-*/
-                //  $x++;
-
-                break;
-
-            case 'genre':
-                if ($value != '') {
-                    $value = keyword_list($key, $value);
-                }
-                $params['FIELD_ROW_HTML'] .= process_template(
-                    "filelist/file_row",
-                    [
-                        'FIELD' => 'Genre',
-                        'VALUE' => $value,
-                        'ALT_CLASS' => $class
-                    ]
-                );
-                $x++;
-                break;
-            case 'keyword':
-
-                /*
-                if( $value != ''){
-                    $value = keyword_cloud($value);
-                    $params['TAG_CLOUD'] = $value;
-                }
-                */
-                $x++;
-                break;
-            case 'studio':
-                if ($value != '') {
-                    $value = process_template(
-                        "filelist/search_link",
-                        [
-                            'KEY' => $key,
-                            'QUERY' => urlencode($value),
-                            'URL_TEXT' => $value
-                        ]
-                    );
-                }
-                $params['FIELD_ROW_HTML'] .= process_template(
-                    "filelist/file_row",
-                    [
-                        'FIELD' => 'Studio',
-                        'VALUE' => $value,
-                        'ALT_CLASS' => $class
-                    ]
-                );
+                $params = display_fileRow($params, 'Duration', videoDuration($value), $class);
                 $x++;
                 break;
 
-            case 'substudio':
-                if ($value != '') {
-                    $value = process_template(
-                        "filelist/search_link",
-                        [
-                            'KEY' => $key,
-                            'QUERY' => urlencode($value),
-                            'URL_TEXT' => $value
-                        ]
-                    );
-                }
-                $params['FIELD_ROW_HTML'] .= process_template(
-                    "filelist/file_row",
-                    [
-                        'FIELD' => 'Studio', 'VALUE' => $value,
-                        'ALT_CLASS' => $class
-                    ]
-                );
-                $x++;
-
-                break;
-                /*
-            default:
-                $placeholder = 'placeholder="' . $value . '"';
-
-              //  if ($value == '') {
-                    $placeholder = '';
-                    switch ($key) {
-                        case 'artist':
-                            $params['FIELD_ROW_HTML'] .= process_template(
-                                "filelist/file_row",
-                                ['FIELD' => 'Artist', 'VALUE' => $value,
-                                'ALT_CLASS' => $class]);
-                                $x++;
-
-                            break;
-
-                        case 'title':
-                            $params['FIELD_ROW_HTML'] .= process_template(
-                                "filelist/file_row",
-                                ['FIELD' => 'title', 'VALUE' => $value,
-                                'ALT_CLASS' => $class]);
-                                $x++;
-
-                            break;
-
-                        case 'genre':
-                            $params['FIELD_ROW_HTML'] .= process_template(
-                                "filelist/file_row",
-                                ['FIELD' => 'genre', 'VALUE' => $value,
-                                'ALT_CLASS' => $class]);
-                                $x++;
-                                break;
-
-                        case 'studio':
-                            $params['FIELD_ROW_HTML'] .= process_template(
-                                "filelist/file_row",
-                                ['FIELD' => 'studio', 'VALUE' => $value,
-                                'ALT_CLASS' => $class]);
-                                $x++;
-                                break;
-
-                        case 'substudio':
-                            $params['FIELD_ROW_HTML'] .= process_template(
-                                "filelist/file_row",
-                                ['FIELD' => 'substudio', 'VALUE' => $value,
-                                'ALT_CLASS' => $class]);
-                                $x++;
-
-                                                          break;
-                    } //end switch
-                //} //end if
-
-                if ($key == "studio") {
-                    $studio_value = $value;
-                }
-
-                if ($key == "substudio") {
-                    if (isset($value_array[$key][0]) && $value_array[$key][0] != '') {
-
-                        if (trim($studio_value) == trim($value_array[$key][0])) {
-                            unset($value_array[$key]);
-                            unset($value_array['style']);
+                case 'studio':
+                    case 'substudio':
+        
+                        if ($value != '') {
+                            if (!defined('NONAVBAR')) {
+                                $value = process_template(
+                                    "filelist/search_link",
+                                    [
+                                        'KEY' => $key,
+                                        'QUERY' => urlencode($value),
+                                        'URL_TEXT' => $value
+                                    ]
+                                );
+                            }
+        
+                            $params = display_fileRow($params, ucfirst($key), $value, $class);
+                            $x++;
                         }
+                        break;
+            case 'artist':
+            case 'genre':
+            case 'keyword':
+                if ($value != '') {
+                    if (!defined('NONAVBAR')) {
+                        $value = keyword_list($key, $value);
                     }
+                    $params = display_fileRow($params, ucfirst($key), $value, $class);
+                    $x++;
                 }
-
-
-
-                if (isset($value_array[$key][0]) && $value_array[$key][0] != '') {
-                    $value = ' value="' . $value_array[$key][0] . '"';
-                    if (isset($value_array['style'][0]) && $value_array['style'][0] != '') {
-                        $value = $value . ' style="' . $value_array['style'][0] . '"';
-                    }
-                }
-
-
-
-
-               # $params[strtoupper($key) . '_PLACEHOLDER'] = $placeholder;
-               # $params[strtoupper($key) . '_VALUE']       = $value;
-
-                unset($value_array);
-                unset($value);
-
-                #  echo  $table_body_html;
                 break;
-                */
+
+
+
+
         } //end switch
     } //end foreach
     $table_body_html['filecards'] = process_template("filelist/file", $params);
-    $tag_list = '';
-    $sql = "SELECT tag_name FROM tags WHERE file_id = " . $row_id;
-    $res = $db->query($sql);
-    if (count($res) > 0) {
-        foreach ($res as $_ => $row) {
-            $tag_array[$_] = $row['tag_name'];
+    if (!defined('NONAVBAR')) {
+        $tag_list = '';
+        $sql = "SELECT tag_name FROM tags WHERE file_id = " . $row_id;
+        $res = $db->query($sql);
+        if (count($res) > 0) {
+            foreach ($res as $_ => $row) {
+                $tag_array[$_] = $row['tag_name'];
+            }
+
+            $tag_list = implode(",", $tag_array);
+            $tag_list = str_replace(",", "','", $tag_list);
+            $tag_list = "['" . $tag_list . "']";
+
+            $tag_list = " tagInput" . $row_id . ".addData(" . $tag_list . ");";
         }
 
-        $tag_list = implode(",", $tag_array);
-        $tag_list = str_replace(",", "','", $tag_list);
-        $tag_list = "['" . $tag_list . "']";
-
-        $tag_list = " tagInput" . $row_id . ".addData(" . $tag_list . ");";
+        $params['TAG_DATA'] = $tag_list;
     }
-
-    $params['TAG_DATA'] = $tag_list;
     #    $table_body_html['js'] = process_template("filelist/tag_js", $params);
 
     return $table_body_html;

@@ -104,7 +104,7 @@ require __LAYOUT_HEADER__;
 
 ?>
 
-<main role="main" class="container mt-5">
+<main class="container-fluid mt-5">
     <?php
     $page_array = [
         'total_files'     => $pageObj->totalRecords ,

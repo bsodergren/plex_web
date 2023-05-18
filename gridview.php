@@ -51,7 +51,7 @@ if (isset($_SESSION['direction'])) {
 if (isset($uri)) {
     $sql_studio = '';
     $res_array  = uri_SQLQuery($uri);
-
+    
     if (key_exists('sort', $res_array)) {
         $order_sort = $res_array['sort'];
     }
@@ -81,11 +81,11 @@ if (isset($_REQUEST['genre'])) {
 
 } 
 
-
 $pageObj = new pageinate($where, $currentPage, $urlPattern);
 
 $sql = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
 logger('all files', $sql);
+
 $results       = $db->query($sql);
 $request_key   = uri_String($uri);
 

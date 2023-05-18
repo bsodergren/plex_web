@@ -4,7 +4,7 @@
     $page_html = '';
     $navbar ='';
     $js_html = '';
-
+if (!defined('NONAVBAR')) {
     if (__BOTTOM_NAV__ == 1) {
         if (__SHOW_SORT__ == true && isset($pageObj)) {
             $sort_html = template::echo("footer/sort", ['SORT_HTML' => display_sort_options($url_array)]);
@@ -24,6 +24,6 @@
         $param = ['JSON_ARRAY' => $json_string];
         $js_html = template::echo("footer/javascript", $param);
     }
-
+}
     echo Template::echo("footer/main", [
         'JAVASCRIPT_HTML' => $js_html, 'FOOT_NAVBAR' => $navbar ]);

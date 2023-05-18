@@ -4,13 +4,12 @@
             <img src="%%THUMBNAIL%%" class="img-thumbnail  rounded float-start"
                 onclick="popup('/plex_web/video.php?id=%%ROW_ID%%', 'video')"
                 onerror="this.onerror=null;this.src='/images/default.jpg'">
-
             <input class='category-input' type="checkbox" name="playlist[]" value="%%ROW_ID%%">
             <label for="checker"></label>
         </div>
         <div class="flex-grow-1 ms-3">
             <div class="text-wrap text-align-baseline text-truncate row fs-5">
-                %%FILE_INFO%%
+                <span onclick="popup('/plex_web/videoinfo.php?id=%%ROW_ID%%', 'fileinfo')">%%FILE_INFO%%</span>
             </div>
         </div>
     </div>

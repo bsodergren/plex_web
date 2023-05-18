@@ -298,7 +298,7 @@ document.addEventListener("keyup", keyboardShortcuts);
 function resize() {
   var img = document.getElementsByTagName("video");
   var vh = img[0].clientHeight  + 25;
-  var vw = img[0].clientWidth - 65 ;
+  var vw = img[0].clientWidth; // - 65 ;
   console.log("Image H" + vh + " W" + vw);
   window.resizeTo(vw, vh);
   console.log("Window H" + window.innerHeight + " W" + window.innerWidth);

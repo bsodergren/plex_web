@@ -8,7 +8,7 @@ include __LAYOUT_HEADER__;
 
 	
 		
-	$sql = "select  artist from ".Db_TABLE_FILEDB." WHERE library = '".$in_directory."' GROUP by artist ORDER BY `artist` ASC;";
+	$sql = "select  artist from ".Db_TABLE_FILEDB." WHERE library = '".$in_directory."' and artist is not null GROUP by artist ORDER BY `artist` ASC;";
 	$result = $db->query($sql);
 
 	
@@ -18,40 +18,27 @@ include __LAYOUT_HEADER__;
 
     <?php
 	
-	echo "<ul> \n";
-	foreach($result as $k => $v )
-	{
-		
-		if($v["studio"] != "" ){
-		$cnt = $v["cnt"];
-			
-			$query='select count(substudio) as cnt, substudio from '.Db_TABLE_FILEDB.' WHERE studio like "'.$v['studio'].'" GROUP by substudio ORDER BY `substudio` ASC';
-			$alt_result = $db->query($query);
-			
-			$studio = str_replace(" ","-",$v['studio']);
-			$studio = str_replace("/","_",$studio);
-			
-			echo "<li><a href='studio.php?viewstudio=".$studio."'>".$v["studio"]."</a> (".$cnt.")<br>";
+	$new_names[] = '';
+foreach ($result as $k => $v) 
+{
+	$artist = array($v['artist']);
 
-			if(count($alt_result) > 1) {
-				echo "<ul>";
-			
-				foreach($alt_result as $k_a => $v_a )
-				{
-					if($v_a["substudio"] != "" ){
-						$cntv_a = $v_a["cnt"];
-						$substudio = str_replace(" ","-",$v_a['substudio']);
-						$substudio = str_replace("/","_",$substudio);
-						echo "<li><a href='studio.php?viewstudio=".$substudio."'>".$v_a["substudio"]."</a>(".$cntv_a.") <br>";
-					}
-					
-				}
-				echo "</ul>";
-			}
-			
-		}
-	}
-	echo "</ul><li><a href='studio.php?viewstudio=NULL'>Studio not Set</a><br>";
+	if(str_contains( $v['artist'],",")){
+		$artist = explode(",",$v['artist']);
+	} 
+
+	$new_names = array_merge($new_names,$artist);
+
+}
+$new_names = array_map("strtolower",$new_names);
+
+$new_names = array_map("ucfirst",$new_names);
+$new_names = array_unique($new_names);
+sort($new_names);
+print_r2($new_names);
+		
+
+	
 
  ?>
  </ul>

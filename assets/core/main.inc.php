@@ -121,7 +121,10 @@ function byte_convert($size)
 
 function uri_SQLQuery($request_array)
 {
+    global $sort_types;
+
     $uri_array = [];
+$uri_query = [];
     foreach ($request_array as $key => $value) {
         if ($key == 'sort') {
             continue;
@@ -153,9 +156,15 @@ function uri_SQLQuery($request_array)
         $uri_query['sql'] = implode(' AND ', $uri_array);
     }
 
+
     if (key_exists('sort', $request_array) && key_exists('direction', $request_array)) {
-        $sort_query  = $request_array['sort'] . ' ' . $request_array['direction'];
-        $uri_query['sort'] = $sort_query;
+        if (matcharray($sort_types, $request_array['sort']) === false) {
+            $_SESSION['sort'] = 'title';
+            $request_array['sort'] = 'title';
+        }
+            $sort_query  = $request_array['sort'] . ' ' . $request_array['direction'];
+            $uri_query['sort'] = $sort_query;
+        
     }
 
     return $uri_query;

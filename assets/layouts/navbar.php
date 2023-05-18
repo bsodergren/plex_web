@@ -14,5 +14,5 @@ $params['NAV_BAR_RIGHT_LINKS']  = display_navbar_links();
 if (defined('BREADCRUMB')) {
     $params['BREADCRUMB']  =   display_breadcrumbs();
 }
+    echo process_template('navbar/main', $params);
 
-echo process_template('navbar/main', $params);

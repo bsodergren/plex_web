@@ -3,7 +3,15 @@
 
 use Nette\Utils\FileSystem;
 use Nette\Utils\DateTime;
+use Nette\Utils\Arrays;
 
+function matcharray($array, $string)
+{
+    if (!Arrays::contains($array, $string)) {
+        return false;
+    }
+    return true;
+}
 class Colors
 {
     private $foreground_colors = [];
@@ -62,8 +70,7 @@ class Colors
     public function getColoredSpan($string, $foreground_color = null, $background_color = null)
     {
         $this->fg_color = $foreground_color;
-        $colored_string = '<span style="' . $this->getClassColor() . '">' . $string . '</span>';
-        ;
+        $colored_string = '<span style="' . $this->getClassColor() . '">' . $string . '</span>';;
         return $colored_string;
     } //end getColoredHTML()
 
