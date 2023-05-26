@@ -5,5 +5,8 @@
         "jasongrimes/paginator": "~1.0",
         "mhor/php-mediainfo": "^5.4"
         
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^6.2"
     }
 }

@@ -3,6 +3,11 @@ require_once("_config.inc.php");
 
 define('TITLE', "search");
 
+if (isset($_REQUEST['genre'])) {
+    $_REQUEST['field'] = 'genre';
+    $_REQUEST['query'] = implode(",",$_REQUEST['genre']);
+}
+
 if (isset($_SESSION['sort'])) {
     $uri['sort'] = $_SESSION['sort'];
 }
@@ -24,9 +29,18 @@ $redirect_string = 'search.php' . $request_key;
 if ($_REQUEST['submit'] == "Search" || isset($_REQUEST['query'])) {
 
     $query = $_REQUEST['query'];
+    $query = str_replace("+"," ",$query);
 
     if(isset($_REQUEST['field'])) {
-        $where = $_REQUEST['field']." LIKE '%" . $query . "%' ";
+        if(str_contains($query,",")) {
+            $query_array = explode(",",$query);
+            foreach($query_array as $q){
+                $whereArray[] = $_REQUEST['field']." LIKE '%" . $q . "%' ";               
+            }
+            $where = implode(" AND ", $whereArray);
+        } else {
+            $where = $_REQUEST['field']." LIKE '%" . $query . "%' ";
+        }
         $keyword = " ".$_REQUEST['field'] ." named ";
     } else {
         $where = " ((filename LIKE '%" . $query . "%') OR ";
