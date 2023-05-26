@@ -29,7 +29,7 @@ function keyword_list($key, $list)
     return $value;
 }
 
-function keyword_cloud($list)
+function keyword_cloud($list,$field='keyword')
 {
     $tag_links = '';
 
@@ -41,7 +41,7 @@ function keyword_cloud($list)
         $list_array = explode(",", $list);
     }
 
-    $search_url = "search.php?field=keyword&query=";
+    $search_url = "search.php?field=".$field."&query=";
 
     foreach ($list_array as $key => $keyword) {
         $url = $search_url . urlencode($keyword);

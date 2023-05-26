@@ -2,7 +2,6 @@
 require_once("_config.inc.php");
 
 define('TITLE', "search");
-
 if (isset($_REQUEST['genre'])) {
     $_REQUEST['field'] = 'genre';
     $_REQUEST['query'] = implode(",",$_REQUEST['genre']);

@@ -115,6 +115,7 @@ function display_fileInfo($fileInfoArray, $total_files)
     if (!defined('NONAVBAR')) {
         $params['FILE_NAME'] = '<span onclick="popup(\'/plex_web/videoinfo.php?id=' . $row_id . '\', \'fileinfo\',\'1000\',\'400\')">' . $params['FILE_NAME'] . '</span>';
         $params['ROW_ID'] = "&nbsp;&nbsp;&nbsp;".$result_number . " of " . $total_files;
+        $params['SEARCH_BUTTON'] = process_template("filelist/file_search",[]);
     }
     $params['DELETE_ID']    = 'delete_' . $row_id;
     $params['FILE_NAME_ID'] = $row_id . '_filename';

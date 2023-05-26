@@ -8,15 +8,19 @@ define('TITLE', 'View Studios');
 
 require __LAYOUT_HEADER__;
 
-$lib_where = $lib_where . ' AND ';
+$lib_where = $lib_where . '  ';
 
 $null = '';
 
 if (isset($_REQUEST['substudio'])) {
     $studio_key  = 'substudio';
+    $studio_field =  'substudio';
+
     $studio_text = $_REQUEST['substudio'];
 } else {
     $studio_key  = 'studio';
+    $studio_field =  'substudio';
+
     $studio_text = $_REQUEST['studio'];
     // $null=' and substudio is null ';
 }
@@ -28,18 +32,21 @@ $sql_studio = $lib_where.$studio_key." = '".$studio."'";
 
 $request_key = $studio_key.'='.$studio_text;
 
-$order = 'genre ASC';
+$order = $studio_field.' ASC';
 $sql   = query_builder(
-    'DISTINCT(genre) as genre, count(genre) as cnt ',
+    'DISTINCT('.$studio_field.') as '.$studio_field.', count('.$studio_field.') as cnt ',
     $sql_studio,
-    'genre',
+    ''.$studio_field.'',
     $order
 );
 
 
 $result = $db->query($sql);
 
-
+$rows = count($result);
+if($rows <= 1) {
+    JavaRefresh("genre.php?".$request_key, 0);
+}
 ?>
 
 <main role="main" class="container">
@@ -51,8 +58,8 @@ $result = $db->query($sql);
 <?php
 foreach ($result as $k => $v) {
     // $v["cnt"]=1; ".$v["cnt"]."
-    if ($v['genre'] != '') {
-        echo $studio." <a href='genre.php?".$request_key.'&genre='.$v['genre']."'>".$v['genre'].'</a> '.$v['cnt'].'<br>';
+    if ($v[$studio_field] != '') {
+        echo $studio." <a href='genre.php?".$studio_field."=".$v[$studio_field]."&prev=".$studio_text."'>".$v[$studio_field].'</a> '.$v['cnt'].'<br>';
     }
 }
 

@@ -13,7 +13,7 @@ $result2 = $db->query($sql);
 
 $all_url = 'genre.php?allfiles=1';
 
-DEFINE('BREADCRUMB', ['home' => "", 'all' => $all_url]);
+DEFINE('BREADCRUMB', [$in_directory => "", 'all' => $all_url]);
 require __LAYOUT_HEADER__;
 
 $json_array['menu'] = [];

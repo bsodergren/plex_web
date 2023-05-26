@@ -55,6 +55,15 @@ $genre_array = [];
 logger('qyefasd', $sql);
 $result = $db->query($sql);
 
+$all_url = 'files.php?' . $request_key . 'allfiles=1';
+
+
+$rows = count($result);
+
+if($rows <= 1) {
+    JavaRefresh($all_url, 0);
+}
+
 foreach ($result as $k => $v) {
     $row_genre_array = explode(",", $v['genre']);
     $genre_array = array_merge($genre_array, $row_genre_array);
@@ -62,9 +71,10 @@ foreach ($result as $k => $v) {
 
 $genre_array = array_unique($genre_array);
 
-$all_url = 'files.php?' . $request_key . 'allfiles=1';
+$studio_url = 'studio.php?studio=' . $_REQUEST['prev'];
 
-DEFINE('BREADCRUMB', ['home' => "home.php",$_REQUEST[$studio_key] => '', 'all' => $all_url]);
+
+DEFINE('BREADCRUMB', ['home' => "home.php",$_REQUEST['prev']=>$studio_url, $_REQUEST[$studio_key] => '', 'all' => $all_url]);
 
 require __LAYOUT_HEADER__;
 ?>
