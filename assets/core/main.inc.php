@@ -609,28 +609,22 @@ function createPlaylist($data_array, $redirect = false, $timeout = 0)
 {
     global $db;
     global $_SESSION;
-    $sql = 'select max(playlist_id) as playlist_id from playlists';
-    $res = $db->rawQueryOne($sql);
-    $playlist_id = $res['playlist_id'];
-    if ($playlist_id === null) {
-        $playlist_id = 0;
-    } else {
-        $playlist_id++;
-    }
 
+    $data = [
+        'name' => "User Playlist",
+        'genre' => "mmf,mff",
+    ];
+    $playlist_id = $db->insert(Db_TABLE_PLAYLIST_INFO, $data);
 
     foreach ($data_array["playlist"] as $_ => $id) {
         $data = [
             'playlist_id' => $playlist_id,
             'playlist_videos' => $id,
-            'playlist_name' => 'Playlist',
             'library' => $_SESSION['library'],
         ];
         $db->insert(Db_TABLE_PLAYLIST, $data);
     }
-
-
-
+    
     return  $playlist_id;
 }
 

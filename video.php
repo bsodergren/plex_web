@@ -26,7 +26,9 @@ $video_js_params['PLAYLIST_WIDTH'] = 20;
 
 
 if (isset($playlist_id)) {
-    $sql = "select f.thumbnail,f.filename,p.playlist_videos from metatags_filedb as f, playlists as p where (p.playlist_id = ".$playlist_id ." and p.playlist_videos = f.id);";
+
+
+    $sql = "select f.thumbnail,f.filename,p.playlist_videos from " . Db_TABLE_FILEDB . " as f, " . Db_TABLE_PLAYLIST . " as p where (p.playlist_id = ".$playlist_id ." and p.playlist_videos = f.id);";
     $results = $db->query($sql);
 
 
@@ -48,7 +50,7 @@ if (isset($playlist_id)) {
 
     $carousel_js = process_template("video/carousel_js", []);
     $carousel = process_template("video/carousel", ['CAROUSEL_INNER_HTML' => $carousel_item]);
-    $video_js_params['PLAYLIST_HEIGHT'] = 125;
+    $video_js_params['PLAYLIST_HEIGHT'] = 145;
    $video_js_params['PLAYLIST_WIDTH'] = 50;
 }
 
