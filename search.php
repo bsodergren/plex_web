@@ -1,5 +1,6 @@
 <?php
 require_once("_config.inc.php");
+define('GRID_VIEW',true);
 
 define('TITLE', "search");
 if (isset($_REQUEST['genre'])) {
@@ -65,7 +66,9 @@ if ($_REQUEST['submit'] == "Search" || isset($_REQUEST['query'])) {
         $msg = "Showing ".$pageObj->totalRecords." results for for ".$keyword." $query";
         $html_msg = process_template("search/search_msg", [   'MSG' => $msg] );
       #  $html_msg .= process_template("search/search_msg", [   'MSG' => $sql] );
-    $search_results = display_filelist($results, '', $page_array);
+      $search_results =  gridview($results);
+
+ //   $search_results = display_filelist($results, '', $page_array);
 }
 include_once __LAYOUT_HEADER__;
 

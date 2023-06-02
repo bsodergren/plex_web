@@ -98,7 +98,6 @@ foreach ($result as $row => $name)
 
 } //end foreach
 
-
 $body = process_template("home/main", ['BODY_HTML' =>  $studio_box]);
 $template->render("page", ['BODY' => $body]);
 

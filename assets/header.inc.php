@@ -49,7 +49,7 @@ $uri['current'] = $currentPage;
 
 
 if (!isset($_SESSION['library'])) {
-    $_SESSION['library'] = 'Studio';
+    $_SESSION['library'] = 'Studios';
 }
 
 if (isset($_REQUEST['library'])) {
@@ -61,7 +61,7 @@ $cache_directory = $_SESSION['library'];
 
 
 
-if ($in_directory == 'Studio') {
+if ($in_directory == 'Studios') {
     $in_directory = 'Studios';
 }
 

@@ -43,14 +43,20 @@ function keyword_cloud($list,$field='keyword')
 
     $search_url = "search.php?field=".$field."&query=";
 
-    foreach ($list_array as $key => $keyword) {
-        $url = $search_url . urlencode($keyword);
-        $tag_links .= process_template("cloud/tag", [
-            'TAG_URL' => $url,
-            'TAG_TEXT' => $keyword,
-            'CLASS' => ''
-        ]);
+    foreach ($list_array as $k => $keyword) {
+        $link_array[] = process_template(
+            "filelist/search_link",
+            [
+                'KEY' => $field,
+                'QUERY' => urlencode($keyword),
+                'URL_TEXT' => $keyword,
+                'CLASS' => ' class="badge fs-6 blueTable-thead" '
+            ]
+        );
     }
+
+    $tag_links = implode("  ", $link_array);
+  //  return $value;
 
     $html_links = process_template("cloud/main", ['TAG_CLOUD_HTML' => $tag_links]);
     return $html_links;

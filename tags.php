@@ -34,11 +34,9 @@ include_once __LAYOUT_HEADER__;
 
 echo '<main role="main" class="container mt-5">';
 
+echo keyword_cloud($results, $field);
 
-
-$tag_cloud_html = keyword_cloud($results, $field);
-
-echo process_template("cloud/main", ['TAG_CLOUD_HTML' => $tag_cloud_html ]);
+//echo process_template("cloud/main", ['TAG_CLOUD_HTML' => $tag_cloud_html ]);
 
 echo '</main>';
 
