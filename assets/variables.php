@@ -38,35 +38,39 @@ $navigation_link_array = [
         'secure' => false,
         'js'     => false,
     ],
+/*
     'studioEditor'     => [
-        'url'    => 'studioEditor.php',
+        'url'    => 'Config/studioEditor.php',
         'text'   => 'Config Studio',
         'secure' => false,
         'js'     => false,
     ],
     'genreEditor'     => [
-        'url'    => 'genreEditor.php',
+        'url'    => 'Config/genreEditor.php',
         'text'   => 'Config Genre',
         'secure' => false,
         'js'     => false,
     ],
+    */
     'search'     => [
         'url'    => 'search.php',
         'text'   => 'Search',
         'secure' => false,
         'js'     => false,
     ],
-    'grid'      => [
+/*    'grid'      => [
         'url'    => 'grid.php',
         'text'   => 'Grid Display',
         'secure' => false,
         'js'     => false,
     ],
+    */
     'gridview'      => [
         'url'    => 'gridview.php',
         'text'   => 'Grid Display',
         'secure' => false,
         'js'     => false,
+        'studio' => true,
     ],
     'playlist'      => [
         'url'    => 'playlist.php',
@@ -74,6 +78,7 @@ $navigation_link_array = [
         'secure' => false,
         'js'     => false,
     ],
+/*
     'File Browser' => [
         'url'    => 'filebrowser.php',
         'text'   => 'File Browser',
@@ -86,6 +91,7 @@ $navigation_link_array = [
         'secure' => false,
         'js'     => false,
     ],
+    */
     'tag'     => [
         'url'    => 'tags.php',
         'text'   => 'Tags',

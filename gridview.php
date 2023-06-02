@@ -4,6 +4,7 @@ require_once '_config.inc.php';
 define('TITLE', 'Home');
 
 
+define('GRID_VIEW',true);
 
 $where = '';
 // . ' AND ';
@@ -102,10 +103,6 @@ define('BREADCRUMB', ['home' => "home.php", 'genre' => 'genre.php?allfiles=1', $
 
 require __LAYOUT_HEADER__;
 
-?>
-
-<main role="main" class="container mt-5">
-    <?php
     $page_array = [
         'total_files'     => $pageObj->totalRecords ,
         'redirect_string' => $redirect_string,
@@ -147,9 +144,6 @@ $table_body_html = process_template("grid/table", ['ROWS_HTML' =>  $row_html,
 'INFO_NAME' => $_SESSION['sort'],
 ]);
 
-echo process_template("grid/main", ['BODY_HTML' =>  $table_body_html]);
+echo process_template("page", ['BODY' =>  $table_body_html]);
 
-
-  ?>
-</main>
-<?php require __LAYOUT_FOOTER__;
+ require __LAYOUT_FOOTER__;

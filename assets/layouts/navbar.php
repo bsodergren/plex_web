@@ -7,12 +7,12 @@ $params['APP_NAME'] = APP_NAME;
 $library_links = '';
 $sql = query_builder('DISTINCT(library) as library ');
 foreach ($db->query($sql) as $k => $v) {
-    $library_links .= display_navbar_left_links('home.php?library='.$v['library'], $v['library']);
+    $library_links .= Render::display_navbar_left_links('home.php?library='.$v['library'], $v['library']);
 }
 $params['NAV_BAR_LEFT_LINKS'] =  process_template('navbar/library_menu', ["LIBRARY_SELECT_LINKS" => $library_links]);
-$params['NAV_BAR_RIGHT_LINKS']  = display_navbar_links();
+$params['NAV_BAR_RIGHT_LINKS']  = Render::display_navbar_links();
 if (defined('BREADCRUMB')) {
-    $params['BREADCRUMB']  =   display_breadcrumbs();
+    $params['BREADCRUMB']  =   Render::display_breadcrumbs();
 }
     echo process_template('navbar/main', $params);
 

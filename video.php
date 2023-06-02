@@ -21,8 +21,8 @@ $result = $db->getone(Db_TABLE_FILEDB, null, $cols);
 $title = $result['title'];
 $fullpath = str_replace("/home/bjorn/plex/XXX", "/videos", $result['fullpath']);
 $video_file = $fullpath . "/" . $result['filename'];
-$video_js_params['PLAYLIST_HEIGHT'] = 25;
-$video_js_params['PLAYLIST_WIDTH'] = 65;
+$video_js_params['PLAYLIST_HEIGHT'] = 50;
+$video_js_params['PLAYLIST_WIDTH'] = 20;
 
 
 if (isset($playlist_id)) {
@@ -48,8 +48,8 @@ if (isset($playlist_id)) {
 
     $carousel_js = process_template("video/carousel_js", []);
     $carousel = process_template("video/carousel", ['CAROUSEL_INNER_HTML' => $carousel_item]);
-    $video_js_params['PLAYLIST_HEIGHT'] = 170;
-    $video_js_params['PLAYLIST_WIDTH'] = 45;
+    $video_js_params['PLAYLIST_HEIGHT'] = 125;
+   $video_js_params['PLAYLIST_WIDTH'] = 50;
 }
 
 $params = [

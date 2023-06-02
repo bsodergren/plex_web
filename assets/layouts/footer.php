@@ -7,7 +7,7 @@
 if (!defined('NONAVBAR')) {
     if (__BOTTOM_NAV__ == 1) {
         if (__SHOW_SORT__ == true && isset($pageObj)) {
-            $sort_html = template::echo("footer/sort", ['SORT_HTML' => display_sort_options($url_array)]);
+            $sort_html = template::echo("footer/sort", ['SORT_HTML' => render::display_sort_options($url_array)]);
         }
 
         if (__SHOW_PAGES__ == true && isset($pageObj)) {

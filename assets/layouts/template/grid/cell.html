@@ -1,16 +1,21 @@
-<div style="width:320px">
-    <div class="categories-wrapper p-2">
-        <div class="flex-shrink-0">
-            <img src="%%THUMBNAIL%%" class="img-thumbnail  rounded float-start"
-                onclick="popup('/plex_web/video.php?id=%%ROW_ID%%', 'video')"
-                onerror="this.onerror=null;this.src='/images/default.jpg'">
-            <input class='category-input' type="checkbox" name="playlist[]" value="%%ROW_ID%%">
-            <label for="checker"></label>
-        </div>
-        <div class="flex-grow-1 ms-3">
-            <div class="text-wrap text-align-baseline text-truncate row fs-5">
-                <span onclick="popup('/plex_web/videoinfo.php?id=%%ROW_ID%%', 'fileinfo')">%%FILE_INFO%%</span>
-            </div>
+<div style="width:320px" class="border p-2 categories-wrapper ">
+    <div class="flex-shrink-0">
+
+
+        <div class="custom-control custom-checkbox image-checkbox">
+            <input type="checkbox" class="category-input custom-control-input" id="ck1a_%%ROW_ID%%" name="playlist[]"
+                value="%%ROW_ID%%">
+            <label class="custom-control-label" for="ck1a_%%ROW_ID%%">
+                <img src="%%THUMBNAIL%%" alt="#" class="img-fluid"
+                    onerror="this.onerror=null;this.src='/images/default.jpg'">
+            </label>
+
+            <div onclick="popup('/plex_web/videoinfo.php?id=%%ROW_ID%%', 'fileinfo')" class="videoInfo videoBadge badge">File Info</div>
+
+            <div class="text-truncate  videoText badge videoBadge">%%FILE_INFO%%</div>
+
+            <div onclick="popup('/plex_web/video.php?id=%%ROW_ID%%', 'video')" class="videoLink videoBadge badge">Video</div>
+
         </div>
     </div>
 </div>

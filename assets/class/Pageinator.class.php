@@ -12,6 +12,7 @@ class pageinate extends Paginator
     public $offset;
     private $library_query;
     public $results;
+    public $paginator;
 
     public function __construct($query, $currentPage, $urlPattern)
     {
@@ -51,7 +52,9 @@ class pageinate extends Paginator
     public function toHtml()
     {
         global $_SERVER;
-
+        $link_list = '';
+        $hidden_text = '';
+        
         if ($this->paginator->numPages <= 1) {
             return '';
         }
@@ -104,7 +107,7 @@ class pageinate extends Paginator
             $hidden_text .= hidden_Field($name, $value);
         }
 
-        $option_text = display_SelectOptions([10,25,30,40,50,100,250,500], $this->itemsPerPage);
+        $option_text =  Render::display_SelectOptions([10,25,30,40,50,100,250,500], $this->itemsPerPage);
         $params = [
             'HIDDEN' => $hidden_text,
             'PAGE_UPDATE' => $current_url ,
@@ -129,6 +132,7 @@ class ConfigPagenate extends Paginator
     public $offset;
     private $library_query;
     public $results;
+    public $paginator;
 
     public function __construct($query, $currentPage, $urlPattern)
     {
@@ -162,7 +166,9 @@ class ConfigPagenate extends Paginator
     public function toHtml()
     {
         global $_SERVER;
-
+        $link_list = '';
+        $hidden_text = '';
+        
         if ($this->paginator->numPages <= 1) {
             return '';
         }
@@ -215,7 +221,7 @@ class ConfigPagenate extends Paginator
             $hidden_text .= hidden_Field($name, $value);
         }
 
-        $option_text = display_SelectOptions([10,25,30,40,50,100,250,500], $this->itemsPerPage);
+        $option_text =  Render::display_SelectOptions([10,25,30,40,50,100,250,500], $this->itemsPerPage);
         $params = [
             'HIDDEN' => $hidden_text,
             'PAGE_UPDATE' => $current_url ,
@@ -238,6 +244,7 @@ class GenrePagenate extends Paginator
     public $offset;
     private $library_query;
     public $results;
+    public $paginator;
 
     public function __construct($currentPage, $urlPattern)
     {
@@ -270,7 +277,9 @@ class GenrePagenate extends Paginator
     public function toHtml()
     {
         global $_SERVER;
-
+        $link_list = '';
+        $hidden_text = '';
+        
         if ($this->paginator->numPages <= 1) {
             return '';
         }
@@ -323,7 +332,7 @@ class GenrePagenate extends Paginator
             $hidden_text .= hidden_Field($name, $value);
         }
 
-        $option_text = display_SelectOptions([10,25,30,40,50,100,250,500], $this->itemsPerPage);
+        $option_text = Render::display_SelectOptions([10,25,30,40,50,100,250,500], $this->itemsPerPage);
         $params = [
             'HIDDEN' => $hidden_text,
             'PAGE_UPDATE' => $current_url ,

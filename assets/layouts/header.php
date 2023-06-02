@@ -18,11 +18,40 @@ if (!defined('VIDEOINFO')) {
 } else {
     $params['SCRIPTS'] .= process_template('header/header_videoinfo', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
 }
-if (__HTML_POPUP__ == true) {
-    $params['ONLOAD'] = " onLoad=\"popup('/plex_web/logs.php', 'logs',1000,1000)\"";
+
+if (defined('GRID_VIEW')) {
+    $params['SCRIPTS'] .= process_template('header/header_grid', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
+
 }
+
 echo process_template('header/header', $params);
 
 if (!defined('NONAVBAR')) {
+
+    $crumbs[$in_directory] = "";
+    $crumbs['Home'] = "home.php";
+    
+    if(key_exists('studio',$_REQUEST)) {
+        $crumbs[$_REQUEST['studio']] = '';
+
+    }
+
+    if(key_exists('prev',$_REQUEST)) {
+        $crumbs[$_REQUEST['prev']]= $studio_url;
+    }
+
+    if(isset($genre_url)) {
+        $crumbs['Genre'] = $genre_url;
+    }
+
+    $crumbs['All'] = "";
+    if(isset($all_url)) {
+        $crumbs['All'] = $all_url;
+    }
+
+    DEFINE('BREADCRUMB', $crumbs);
+
+
+
     require __LAYOUT_NAVBAR__;
 }

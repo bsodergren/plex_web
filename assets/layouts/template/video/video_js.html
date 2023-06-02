@@ -299,22 +299,21 @@ document.addEventListener("keyup", keyboardShortcuts);
 
 function resize() {
   var img = document.getElementsByTagName("video");
-  var vh = img[0].clientHeight  + %%PLAYLIST_HEIGHT%%;
-  var vw = img[0].clientWidth - %%PLAYLIST_WIDTH%% ;
-  console.log("added H" + %%PLAYLIST_HEIGHT%% + " W" + %%PLAYLIST_WIDTH%% );
-  console.log("Image H" + vh + " W" + vw);
+
+  var vh = img[0].clientHeight;
+  var vw = img[0].clientWidth;
+  console.log("Image W" + vw + " H" + vh);
+  console.log("added W" + %%PLAYLIST_WIDTH%% + " H" + %%PLAYLIST_HEIGHT%% );
+
+  vw = vw + %%PLAYLIST_WIDTH%%;
+  vh = vh + %%PLAYLIST_HEIGHT%%;
+
+  console.log("New Size W" + vw + " H" + vh);
+
   window.resizeTo(vw, vh);
-  console.log("Window H" + window.innerHeight + " W" + window.innerWidth);
+  console.log("Window W" + window.innerWidth + " H" + window.innerHeight);
 
 }
-
-function reportWindowSize() {
-
-  console.log("Resized Window H" + window.innerHeight + " W" + window.innerWidth);
-}
-
-window.onresize = reportWindowSize;
-
 
 
 </script>

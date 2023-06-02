@@ -89,7 +89,7 @@ if (basename($_SERVER["HTTP_REFERER"]) != 'home.php') {
     $referer_url = $_SERVER["HTTP_REFERER"];
 }
 
-define('BREADCRUMB', ['home' => "home.php", 'genre' => $referer_url, $genre => '']);
+//define('BREADCRUMB', ['home' => "home.php", 'genre' => $referer_url, $genre => '']);
 
 require __LAYOUT_HEADER__;
 
@@ -129,7 +129,7 @@ $row_html =  process_template("grid/row", ['ROW_CELLS' => $cell_html]);
 
 $table_body_html = process_template("grid/table", ['ROWS_HTML' =>  $row_html]);
 
-echo process_template("grid/main", ['BODY_HTML' =>  $table_body_html]);
+echo process_template("page", ['BODY' =>  $table_body_html]);
 
 
 require __LAYOUT_FOOTER__;

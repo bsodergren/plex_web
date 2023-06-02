@@ -67,7 +67,7 @@ function checkValue(id) {
     document.getElementById(f_id).style = "background:black";
   }
     
- function popup(mylink, windowname,width=800,height=400)
+ function popup(mylink, windowname,width=900,height=600)
  {
     if (! window.focus)return true;
     var href; 

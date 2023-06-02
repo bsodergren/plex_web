@@ -6,8 +6,6 @@ define('TITLE', 'View Studios');
 
 
 
-require __LAYOUT_HEADER__;
-
 $lib_where = $lib_where . '  ';
 
 $null = '';
@@ -47,23 +45,22 @@ $rows = count($result);
 if($rows <= 1) {
     JavaRefresh("genre.php?".$request_key, 0);
 }
-?>
 
-<main role="main" class="container">
-<a href="home.php">back</a>
-<br>
-<br>
-<a href='genre.php?<?php echo $request_key; ?>&genre=NULL'>All</a><br>
+$all_url = 'files.php?' . $request_key . '&allfiles=1';
 
-<?php
+//$genre_url = "genre.php?".$request_key;
+//DEFINE('BREADCRUMB', ['home' => "home.php",$_REQUEST['prev']=>$studio_url, $_REQUEST[$studio_key] => '', 'all' => $all_url]);
+
+require __LAYOUT_HEADER__;
+
 foreach ($result as $k => $v) {
     // $v["cnt"]=1; ".$v["cnt"]."
     if ($v[$studio_field] != '') {
-        echo $studio." <a href='genre.php?".$studio_field."=".$v[$studio_field]."&prev=".$studio_text."'>".$v[$studio_field].'</a> '.$v['cnt'].'<br>';
+        $body .=  $studio." <a href='genre.php?".$studio_field."=".$v[$studio_field]."&prev=".$studio_text."'>".$v[$studio_field].'</a> '.$v['cnt'].'<br>' . "\n";
     }
 }
 
-?>
-</main>
-<?php
+
+$template->render("page",['BODY' => $body]);
+
 require __LAYOUT_FOOTER__;

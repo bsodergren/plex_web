@@ -69,8 +69,9 @@ if ($_REQUEST['submit'] == "Search" || isset($_REQUEST['query'])) {
 }
 include_once __LAYOUT_HEADER__;
 
-echo process_template("search/search", ['SEARCH_RESULTS' => $search_results,
+$body = process_template("search/search", ['SEARCH_RESULTS' => $search_results,
 'HTML_MSG' => $html_msg] );
 
+$template->render("page",['BODY' => $body]);
 
 include_once __LAYOUT_FOOTER__;
