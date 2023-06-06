@@ -116,7 +116,6 @@ class display
     private $model_popup = '';
     private $model_buttons = array();
 
-
     public static function echo($text, $var = '')
     {
         /*
@@ -369,10 +368,9 @@ class Logger
 
     public static function log($text, $var = '', $logfile = 'default.log')
     {
-        if (Settings::isTrue('__SHOW_DEBUG_PANEL__')) {
+      //  if (Settings::isTrue('__SHOW_DEBUG_PANEL__')) {
             $function_list = self::get_caller_info();
             $errorLogFile = __ERROR_LOG_DIRECTORY__ . "/" . $logfile;
-
             $html_var = '';
             $html_string = '';
             $html_msg = '';
@@ -392,9 +390,10 @@ class Logger
                 'MSG_TEXT' => $text,
                 'MSG_VALUE' => $html_var,
             ]);
+           $r = file_put_contents( $errorLogFile ,$html_string . "\n",FILE_APPEND );
 
-            Log::append($errorLogFile, $html_string . "\n");
-        }
+
+      //  }
 
         //        $logger->INFO($log_string);
     }

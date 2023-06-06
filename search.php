@@ -2,9 +2,10 @@
 require_once("_config.inc.php");
 define('GRID_VIEW',true);
 
+
 define('TITLE', "search");
+
 if (isset($_REQUEST['genre'])) {
-    $_REQUEST['field'] = 'genre';
     $_REQUEST['query'] = implode(",",$_REQUEST['genre']);
 }
 
@@ -28,43 +29,27 @@ $redirect_string = 'search.php' . $request_key;
 
 if ($_REQUEST['submit'] == "Search" || isset($_REQUEST['query'])) {
 
-    $query = $_REQUEST['query'];
-    $query = str_replace("+"," ",$query);
-
-    if(isset($_REQUEST['field'])) {
-        if(str_contains($query,",")) {
-            $query_array = explode(",",$query);
-            foreach($query_array as $q){
-                $whereArray[] = $_REQUEST['field']." LIKE '%" . $q . "%' ";               
-            }
-            $where = implode(" AND ", $whereArray);
-        } else {
-            $where = $_REQUEST['field']." LIKE '%" . $query . "%' ";
-        }
-        $keyword = " ".$_REQUEST['field'] ." named ";
-    } else {
-        $where = " ((filename LIKE '%" . $query . "%') OR ";
-        $where .= " (title LIKE '%" . $query . "%') OR ";
-        $where .= " (artist LIKE '%" . $query . "%') OR ";
-        $where .= " (genre LIKE '%" . $query . "%') OR ";
-        $where .= " (studio LIKE '%" . $query . "%') OR ";
-        $where .= " (substudio LIKE '%" . $query . "%') OR ";
-        $where .= " (keyword LIKE '%" . $query . "%')) ";
-
+ 
+    $res = searchDBVideos($_REQUEST);
+    $where= $res[0];
+    $queryArr = $res[1];
+    foreach($queryArr as $key => $value)
+    {
+        $keys[] = $key."  !!primary,5!!". $value. "!! ";
+        
     }
 
     $pageObj = new pageinate($where, $currentPage, $urlPattern);
 
     $sql = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
     $results = $db->query($sql);
-
     $page_array = [
         'total_files'     => $pageObj->totalRecords,
         'redirect_string' => $redirect_string,
     ];
 
-        $msg = "Showing ".$pageObj->totalRecords." results for for ".$keyword." $query";
-        $html_msg = process_template("search/search_msg", [   'MSG' => $msg] );
+        $msg = "Showing ".$pageObj->totalRecords." results for for " . implode(",, ",$keys);
+        $html_msg = process_template("search/search_msg", ['SQL'=>str_replace("WHERE","WHERE<br>",$sql),   'MSG' => $msg] );
       #  $html_msg .= process_template("search/search_msg", [   'MSG' => $sql] );
       $search_results =  gridview($results);
 

@@ -4,8 +4,9 @@
         <form action="%%PAGE_UPDATE%%" method="GET">
             %%HIDDEN%%
             <input type=submit style="display:none;">
-        <ul class="pagination"> 
-        <select name="itemsPerPage" id="itemsPerPage"  onchange="this.form.submit()">
+        <ul class="pagination pagination-lg"> 
+          %%SHOW_PLACEHOLDER%%
+        <select class="page-link page-item" name="itemsPerPage" id="itemsPerPage"  onchange="this.form.submit()">
 
       %%OPTIONS%%
 

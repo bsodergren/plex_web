@@ -54,10 +54,15 @@ class pageinate extends Paginator
         global $_SERVER;
         $link_list = '';
         $hidden_text = '';
+        $placeholder='';
         
         if ($this->paginator->numPages <= 1) {
-            return '';
+
+            //$placeholder = '<li class="page-item page-link">Show</li>';
+
+       //     return '';
         }
+
         if ($this->paginator->getPrevUrl()) {
             $params = [
                 'LI_CLASS' => ' class="page-item" ',
@@ -69,7 +74,7 @@ class pageinate extends Paginator
         }
 
         foreach ($this->paginator->getPages() as $page) {
-            $params = [];
+           // $params = [];
             if ($page['url']) {
                 $params = [
                     'LI_CLASS' => $page['isCurrent'] ? ' class="page-item  active"' : ' class="page-item" ',
@@ -110,6 +115,7 @@ class pageinate extends Paginator
         $option_text =  Render::display_SelectOptions([10,25,30,40,50,100,250,500], $this->itemsPerPage);
         $params = [
             'HIDDEN' => $hidden_text,
+            'SHOW_PLACEHOLDER' => $placeholder,
             'PAGE_UPDATE' => $current_url ,
         'OPTIONS' => $option_text,
         'PREVIOUS_LINK' => $previous,

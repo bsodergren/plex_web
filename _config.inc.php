@@ -23,7 +23,7 @@ DEFINE("__PHP_ASSETS_DIR__", APP_PATH . "/assets");
 define('__PHP_INC_CLASS_DIR__', __PHP_ASSETS_DIR__ . '/class');
 define('__PHP_INC_CORE_DIR__', __PHP_ASSETS_DIR__ . '/core');
 
-define('__COMPOSER_LIB__', __PHP_ASSETS_DIR__ . '/lib/vendor');
+define('__COMPOSER_LIB__', '/home/bjorn/library/vendor');
 set_include_path(get_include_path() . PATH_SEPARATOR . __COMPOSER_LIB__);
 require_once __COMPOSER_LIB__ . '/autoload.php';
 
@@ -32,7 +32,7 @@ require_once __COMPOSER_LIB__ . '/autoload.php';
 define('__PLEX_LIBRARY__', '/home/bjorn/plex/XXX');
 define('__CACHE_DIR', __PLEX_LIBRARY__ . "/.cache");
 
-
+define('__ERROR_LOG_DIRECTORY__','/home/bjorn/www/public_html/plex_web/logs');
 
 
 

@@ -99,7 +99,8 @@ if (basename($_SERVER["HTTP_REFERER"]) != 'home.php') {
     $referer_url = $_SERVER["HTTP_REFERER"];
 }
 
-define('BREADCRUMB', ['home' => "home.php", 'genre' => 'genre.php?allfiles=1', $genre => '']);
+$filelist_url = 'files.php'.$request_key;
+//define('BREADCRUMB', ['home' => "home.php", 'genre' => 'genre.php?allfiles=1', $genre => '',"file list"=>$filelist_url]);
 
 require __LAYOUT_HEADER__;
 

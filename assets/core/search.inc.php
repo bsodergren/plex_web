@@ -1,22 +1,49 @@
 <?php
 
 
-function command_search($search_directory='', $search_pattern="mp4", $max='')
+function searchDBVideos($request)
 {
-    global $options_arg;
 
-    if (!isset($search_directory)) {
-        $search_directory =  getcwd();
+    $group = "OR";
+    if(key_exists('grp',$request)){
+        $group = $request['grp'];
+    }
+    if(key_exists('field',$request)){
+        $request[$request['field']][]=$request['query'];
     }
 
-    logger("search_directory: ".$search_directory);
-    logger("search_pattern: ".$search_pattern);
 
-    $search_array = file_search($search_directory, $search_pattern, $options_arg, $max);
-    $max_result=file_get_num_results($search_array, $options_arg);
+    foreach($request as $field => $value){
 
-    $result = array($max_result, $search_array);
-    return $result;
+    switch($field){
+        case 'studio':
+        case 'substudio':
+        case 'keyword':
+        case 'genre':
+        case 'artist':
+            
+            
+            $whereArray = [];
+            $qArray = [];
+            if(is_array($value))
+            {
+                foreach($value as $q){
+                    $q = str_replace("+"," ",$q);
+                    $whereArray[] = $field . " LIKE '%" . $q . "%' ";               
+                    $qArray[]=$q;
+                }
+                $words[$field] = implode(",", $qArray);
+                
+                  $where[] = " ( ". implode(" ".$group." ", $whereArray) . ") ";
+            }
+        break;
+        }
+    }
+
+    $where_clause = " ( ". implode(" ".$group." ", $where) . ") ";
+
+    return [$where_clause,$words];
+
 }
 
 

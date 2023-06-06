@@ -73,7 +73,6 @@ if ($in_directory == 'Studios') {
 
 $request_key   = '';
 
-
 if (!isset($_SESSION['sort'])) {
     $_SESSION['sort'] = 'title';
 }
@@ -118,6 +117,8 @@ $url_array = [
     'direction'    => $_SESSION['direction'],
     'sort_types'   => [
         'Studio'   => 'studio',
+        'Sub Studio'   => 'substudio',
+
         'Artist'   => 'artist',
         'Title'    => 'title',
         'Filename' => 'filename',

@@ -22,10 +22,9 @@ $results = $db->query($sql);
 if ($playlist_id === null) {
     for ($i = 0; $i < count($results); $i++) {
 
-        $main_links .= $studio . "<a href='playlist.php?playlist_id=" . $results[$i]['playlist_id'] . "'>" . $results[$i]['name'] . "</a> " . $results[$i]['count'] . " videos <br>";
+        $table_body_html .= $studio . "<a href='playlist.php?playlist_id=" . $results[$i]['playlist_id'] . "'>" . $results[$i]['name'] . "</a> " . $results[$i]['count'] . " videos <br>";
     }
 } else {
-    $main_links .=  $studio . "<a href='playlist.php'>back </a> <br>";
 
     for ($i = 0; $i < count($results); $i++) {
         $cell_html .= process_template(
@@ -41,12 +40,10 @@ if ($playlist_id === null) {
 
     $table_body_html = process_template("playlist/table", [
         'PLAYLIST_NAME' =>  $results[0]['name'],
-         'ROWS_HTML' =>  $row_html]);
+        'ROWS_HTML' =>  $row_html
+    ]);
 }
 
-echo process_template("playlist/main", [
-    'BODY_HTML' =>  $table_body_html,
-    'MAIN_LINKS' => $main_links
-]);
 
+$template->render("page", ['BODY' => $table_body_html]);
 require __LAYOUT_FOOTER__;

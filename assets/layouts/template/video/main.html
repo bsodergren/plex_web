@@ -18,6 +18,18 @@
 
 
   <link rel="stylesheet" href="%%__LAYOUT_URL__%%css/video.css??">
+  <script>
+    function popup(mylink, windowname,width=900,height=600)
+{
+   if (! window.focus)return true;
+   var href; 
+   if (typeof(mylink) == 'string') href=mylink; else href=mylink.href;
+   window.open(href, windowname, 'width='+width+',height='+height+',scrollbars=yes'); 
+   return false; 
+} 
+
+
+  </script>
 </head>
 
 <body>
@@ -71,7 +83,7 @@
               <time id="duration">00:00</time>
             </div>
           </div>
-          <div class="center-controls">
+          <div class="center-controls" onclick="popup('/plex_web/videoinfo.php?id=%%VIDEO_ID%%', 'fileinfo')">
           <span id="topText">%%VIDEO_TITLE%%</span>
           </div>
           <div class="right-controls">

@@ -75,9 +75,45 @@ class Template
             $html_text = preg_replace_callback('|(%%\w+%%)|', array($this, "callback_replace"), $html_text);
         }
 
+       $html_text = preg_replace_callback('/(##(\w+,?\w+)##)(.*)(##)/iU', array($this, "callback_color"), $html_text);
+       $html_text = preg_replace_callback('/(!!(\w+,?\w+)!!)(.*)(!!)/iU', array($this, "callback_badge"), $html_text);
+
+       //'<span $2>$3</span>'
+
+
         $html_text = "<!-- start $template --> \n" . $html_text . "\n";
         $this->html .= $html_text;
         $this->html .= "\n <!-- end $template --> \n" ;
         return $this->html;
     }
+
+    private function callback_badge($matches)
+    {
+
+        $text = $matches[3];
+        $font='';
+        $class = $matches[2];
+        if (str_contains($matches[2], ",")) {
+            $arr = explode(",", $matches[2]);
+            $class = $arr[0];
+            $font = "fs-".$arr[1];
+        }
+
+        $style = 'class="badge text-bg-' . $class.' '.$font.'"';
+        return '<span '.$style.'>' . $text . '</span>';
+    }
+    private function callback_color($matches)
+    {
+        $text = $matches[3];
+        $style = 'style="';
+        if (str_contains($matches[2], ",")) {
+            $colors = explode(",",$matches[2]);
+            $style .= 'color: ' . $colors[0].'; background:' .$colors[1] .';';
+        } else {
+            $style .= 'color: ' . $matches[2].';';
+        }
+        $style .= '"';
+
+        return '<span '.$style.'>' . $text . '</span>';
+    }   
 }

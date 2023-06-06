@@ -91,6 +91,8 @@ function display_fileInfo($fileInfoArray, $total_files)
 
                 if ($value != '') {
                     if (!defined('NONAVBAR')) {
+                            $value = keyword_list($key, $value);
+                        
 /*
                         $value = process_template(
                             "filelist/search_link",

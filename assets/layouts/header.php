@@ -28,14 +28,17 @@ echo process_template('header/header', $params);
 
 if (!defined('NONAVBAR')) {
 
-    $crumbs[$in_directory] = "";
     $crumbs['Home'] = "home.php";
-    
+    $crumbs[$in_directory] = "";
+
     if(key_exists('studio',$_REQUEST)) {
         $crumbs[$_REQUEST['studio']] = '';
 
     }
+    if(key_exists('substudio',$_REQUEST)) {
+        $crumbs[$_REQUEST['substudio']] = '';
 
+    }
     if(key_exists('prev',$_REQUEST)) {
         $crumbs[$_REQUEST['prev']]= $studio_url;
     }
@@ -44,7 +47,19 @@ if (!defined('NONAVBAR')) {
         $crumbs['Genre'] = $genre_url;
     }
 
-    $crumbs['All'] = "";
+//    $crumbs['Grid'] = "";
+    if(isset($gridview_url)) {
+        $crumbs['Grid'] = $gridview_url;
+    }
+
+    //$crumbs['List'] = "";
+    if(isset($filelist_url)) {
+        $crumbs['List'] = $filelist_url;
+    }
+
+    
+
+    //$crumbs['All'] = "";
     if(isset($all_url)) {
         $crumbs['All'] = $all_url;
     }

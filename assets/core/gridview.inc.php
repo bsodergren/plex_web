@@ -10,16 +10,31 @@ function gridview($results)
 
     for ($i = 0; $i < count($results); $i++) {
 
-        $file_info = match ($_SESSION['sort']) {
-            'genre' => $results[$i]['genre'],
-            'Duration' => videoDuration($results[$i]['duration']),
-            'duration' => videoDuration($results[$i]['duration']),
-            'studio' => $results[$i]['studio'],
-            'artist' => $results[$i]['artist'],
+        $file_info = [
             'title' => $results[$i]['title'],
-            'added' => $results[$i]['added'],
-            'filename' => $results[$i]['filename'],
-        };
+            'studio' => $results[$i]['studio'],
+            'substudio' => $results[$i]['substudio'],
+            'artist' => $results[$i]['artist'],
+
+            'genre' => $results[$i]['genre'],
+
+            // 'Duration' => videoDuration($results[$i]['duration']),
+
+        ];
+
+        $videoInfo = '';
+        foreach ($file_info as $field => $value) {
+            //if ($value != '') {
+            $videoInfo .= process_template(
+                "grid/video_data",
+                [
+                    'FILE_FIELD' => ucfirst($field),
+                    'FILE_INFO'  => $value,
+                ]
+            );
+            // }
+
+        }
 
 
         $cell_html .= process_template(
@@ -27,7 +42,7 @@ function gridview($results)
             [
                 'THUMBNAIL' => $results[$i]['thumbnail'],
                 'ROW_ID' =>  $results[$i]['id'],
-                'FILE_INFO'  => $file_info,
+                'VIDEO_DATA'  => $videoInfo,
             ]
         );
     }

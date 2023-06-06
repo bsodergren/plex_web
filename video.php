@@ -56,6 +56,7 @@ if (isset($playlist_id)) {
 
 $params = [
  'PAGE_TITLE' => $result['title'],
+ 'VIDEO_ID' => $id ,
  '__LAYOUT_URL__' => __LAYOUT_URL__,
  'VIDEO_URL' => $video_file,
  'VIDEO_TITLE' => $title,

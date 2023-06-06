@@ -97,6 +97,7 @@ if (basename($_SERVER["HTTP_REFERER"]) != 'home.php') {
 
     $referer_url = $_SERVER["HTTP_REFERER"];
 }
+$gridview_url = 'gridview.php'.$request_key;
 
 //define('BREADCRUMB', ['home' => "home.php", $_REQUEST[$studio_key] => 'genre.php'.$request_key, $genre => '']);
 
