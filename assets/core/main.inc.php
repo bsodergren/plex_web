@@ -225,32 +225,10 @@ function process_form($redirect_url = '')
             return GenreConfigSave($_POST, $redirect_url);
             exit;
         }
-        if ($_POST['submit'] == 'addNewEntry') {
-            return addNewEntry($_POST, $redirect_url);
-            exit;
-        }
+
 
         if ($_POST['submit'] == 'StudioConfigSave') {
             return saveStudioConfig($_POST, $redirect_url);
-            exit;
-        }
-        if ($_POST['submit'] == 'save') {
-            return saveData($_POST, $redirect_url);
-            exit;
-        }
-
-        if (str_starts_with($_POST['submit'], 'clear')) {
-            return deleteEntry($_POST, $redirect_url);
-            exit;
-        }
-
-        if (str_starts_with($_POST['submit'], 'delete')) {
-            return deleteFile($_POST, $redirect_url);
-            exit;
-        }
-
-        if (str_starts_with($_POST['submit'], 'hide')) {
-            return hideEntry($_POST, $redirect_url);
             exit;
         }
 
@@ -266,7 +244,7 @@ function process_form($redirect_url = '')
         }
     } //end if
 
-    if ($rediredirect_urlrect != '') {
+    if ($redirect_url != '') {
         return myHeader($redirect_url, 0);
     }
 } //end process_form()
@@ -290,111 +268,6 @@ function doRequest($request, $callback, $return = 0, $redirect = false)
 } //end doRequest()
 
 
-
-function deleteEntry($data_array, $redirect = false, $timeout = 4)
-{
-    global $db;
-    global $_SERVER;
-    if (key_exists('submit', $data_array)) {
-        if ($data_array['submit'] == 'clear') {
-            $id = $data_array['fileid'];
-            logger('clear entry', $id);
-            $db->where('id', $id);
-            $user = $db->getOne(Db_TABLE_FILEDB);
-
-            $thumbnail_file = $_SERVER['DOCUMENT_ROOT'] . $user['thumbnail'];
-            chk_file($thumbnail_file, 'delete');
-
-            $db->where('id', $id);
-            $db->delete(Db_TABLE_FILEDB);
-        }
-    }
-
-
-    if ($redirect != false) {
-        return JavaRefresh($redirect, $timeout);
-    }
-} //end deleteEntry()
-
-
-function deleteFile($data_array, $redirect = false, $timeout = 2)
-{
-    global $db;
-    global $_SERVER;
-    if (key_exists('submit', $data_array)) {
-        if ($data_array['submit'] == 'delete') {
-            $id = $data_array['fileid'];
-
-
-            $db->where('id', $id);
-            $user = $db->getOne(Db_TABLE_FILEDB);
-
-            $thumbnail_file = $_SERVER['DOCUMENT_ROOT'] . $user['thumbnail'];
-            $video_file     = $user['fullpath'] . $user['filename'];
-
-            chk_file($thumbnail_file, 'delete');
-            chk_file($video_file, 'delete');
-
-            $db->where('id', $id);
-            $db->delete(Db_TABLE_FILEDB);
-        }
-    } //end if
-
-    if ($redirect != false) {
-        return JavaRefresh($redirect, $timeout);
-    }
-} //end deleteFile()
-
-
-function hideEntry($data_array, $redirect = false, $timeout = 4)
-{
-    global $db;
-
-    if (key_exists('submit', $data_array)) {
-        $key = $data_array['submit'];
-        if (str_contains($key, '_') == true) {
-            $pcs   = explode('_', $key);
-            $id    = $pcs[1];
-            $field = $pcs[0];
-            if ($field == 'hide') {
-                $sql = 'UPDATE ' . Db_TABLE_FILEDB . ' SET added = (CURRENT_TIMESTAMP - INTERVAL 3 day) WHERE id = ' . $id;
-                logger('hide sql', $sql);
-
-                $result = $db->query($sql);
-
-                $db->where('id', $id);
-                $db->delete(Db_TABLE_FILEDB);
-            }
-        }
-    }
-
-    if ($redirect != false) {
-        return JavaRefresh($redirect, $timeout);
-    }
-} //end hideEntry()
-
-
-function addNewEntry($data_array, $redirect, $timeout = 0)
-{
-    global $db;
-
-    if ($data_array['studio'] == '') {
-        $data_array['studio'] = $data_array['name'];
-    }
-
-    $sql = "INSERT IGNORE INTO " . Db_TABLE_STUDIO . " (name, library, studio, path) VALUES";
-    $sql .= " ( '" . $data_array['name'] . "',";
-    $sql .= " '" . $data_array['library'] . "',";
-    $sql .= " '" . $data_array['studio'] . "',";
-    $sql .= " '" . $data_array['path'] . "')";
-
-    $db->query($sql);
-
-
-    if ($redirect != false) {
-        return JavaRefresh($redirect, $timeout);
-    }
-}
 
 
 
