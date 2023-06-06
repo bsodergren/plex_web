@@ -45,5 +45,5 @@ if ($playlist_id === null) {
 }
 
 
-$template->render("page", ['BODY' => $table_body_html]);
+template::echo("base/page", ['BODY' => $table_body_html]);
 require __LAYOUT_FOOTER__;

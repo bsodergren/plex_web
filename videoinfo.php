@@ -16,16 +16,16 @@ $db->where("v.id",  $id);
 $videoInfo = $db->get(Db_TABLE_FILEDB." v", null, $cols);
 */
 
-$cols = array("id","filename","video_key","thumbnail","title","artist","genre","studio","substudio","keyword","added","fullpath","duration");
+$cols = array("id", "filename", "video_key", "thumbnail", "title", "artist", "genre", "studio", "substudio", "keyword", "added", "fullpath", "duration");
 $db->where("id", $id);
-$videoInfo = $db->get(Db_TABLE_FILEDB,null,$cols);
+$videoInfo = $db->get(Db_TABLE_FILEDB, null, $cols);
 
 
 
 require __LAYOUT_HEADER__;
 
-    
-$body = display_filelist($videoInfo); 
 
-        $template->render("filelist/videoinfo",['BODY' => $body]);
-        require __LAYOUT_FOOTER__;
+$body = display_filelist($videoInfo);
+
+template::echo("filelist/videoinfo", ['BODY' => $body]);
+require __LAYOUT_FOOTER__;

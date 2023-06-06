@@ -111,7 +111,7 @@ require __LAYOUT_HEADER__;
 
     $body = display_filelist($results, '', $page_array); 
 
-    $template->render("page",['BODY' => $body]);
+    template::echo("base/page",['BODY' => $body]);
 
 
  require __LAYOUT_FOOTER__;

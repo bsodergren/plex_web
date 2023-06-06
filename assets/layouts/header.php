@@ -10,21 +10,21 @@ $params['__LAYOUT_URL__'] = __LAYOUT_URL__;
 
 
 
-$params['SCRIPTS'] = process_template('header/header_scripts', $params);
+$params['SCRIPTS'] = process_template('base/header/header_scripts', $params);
 
 if (!defined('VIDEOINFO')) {
 
-    $params['SCRIPTS'] .= process_template('header/header_filelist', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
+    $params['SCRIPTS'] .= process_template('base/header/header_filelist', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
 } else {
-    $params['SCRIPTS'] .= process_template('header/header_videoinfo', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
+    $params['SCRIPTS'] .= process_template('base/header/header_videoinfo', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
 }
 
 if (defined('GRID_VIEW')) {
-    $params['SCRIPTS'] .= process_template('header/header_grid', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
+    $params['SCRIPTS'] .= process_template('base/header/header_grid', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
 
 }
 
-echo process_template('header/header', $params);
+echo process_template('base/header/header', $params);
 
 if (!defined('NONAVBAR')) {
 

@@ -70,7 +70,7 @@ class pageinate extends Paginator
                 'A_HREF' => htmlspecialchars($this->paginator->getPrevUrl()),
                 'A_TExT' => '&laquo; ' . $this->paginator->previousText,
             ];
-            $previous =    template::echo("footer/page_item", $params);
+            $previous =    template::return("base/footer/page_item", $params);
         }
 
         foreach ($this->paginator->getPages() as $page) {
@@ -87,9 +87,9 @@ class pageinate extends Paginator
                     $current_url = htmlspecialchars($page['url']);
                 }
 
-                $link_list .=    template::echo("footer/page_item", $params);
+                $link_list .=    template::return("base/footer/page_item", $params);
             } else {
-                $link_list .=    template::echo("footer/page_item_disabled", ['A_TEXT' => htmlspecialchars($page['num'])]);
+                $link_list .=    template::return("base/footer/page_item_disabled", ['A_TEXT' => htmlspecialchars($page['num'])]);
             }
         }
 
@@ -100,7 +100,7 @@ class pageinate extends Paginator
                 'A_HREF' =>  htmlspecialchars($this->paginator->getNextUrl()),
                 'A_TExT' => $this->paginator->nextText . ' &raquo;',
             ];
-            $next =    template::echo("footer/page_item", $params);
+            $next =    template::return("base/footer/page_item", $params);
         }
 
         parse_str($_SERVER['QUERY_STRING'], $query_array);
@@ -121,7 +121,7 @@ class pageinate extends Paginator
         'PREVIOUS_LINK' => $previous,
         'LINK_LIST' => $link_list ,
         'NEXT_LINK' => $next ];
-        $html = template::echo("footer/pages", $params);
+        $html = template::return("base/footer/pages", $params);
         return $html;
     }
 }
@@ -185,7 +185,7 @@ class ConfigPagenate extends Paginator
                 'A_HREF' => htmlspecialchars($this->paginator->getPrevUrl()),
                 'A_TExT' => '&laquo; ' . $this->paginator->previousText,
             ];
-            $previous =    template::echo("footer/page_item", $params);
+            $previous =    template::return("base/footer/page_item", $params);
         }
 
         foreach ($this->paginator->getPages() as $page) {
@@ -202,9 +202,9 @@ class ConfigPagenate extends Paginator
                     $current_url = htmlspecialchars($page['url']);
                 }
 
-                $link_list .=    template::echo("footer/page_item", $params);
+                $link_list .=    template::return("base/footer/page_item", $params);
             } else {
-                $link_list .=    template::echo("footer/page_item_disabled", ['A_TEXT' => htmlspecialchars($page['num'])]);
+                $link_list .=    template::return("base/footer/page_item_disabled", ['A_TEXT' => htmlspecialchars($page['num'])]);
             }
         }
 
@@ -215,7 +215,7 @@ class ConfigPagenate extends Paginator
                 'A_HREF' =>  htmlspecialchars($this->paginator->getNextUrl()),
                 'A_TExT' => $this->paginator->nextText . ' &raquo;',
             ];
-            $next =    template::echo("footer/page_item", $params);
+            $next =    template::return("base/footer/page_item", $params);
         }
 
         parse_str($_SERVER['QUERY_STRING'], $query_array);
@@ -235,7 +235,7 @@ class ConfigPagenate extends Paginator
         'PREVIOUS_LINK' => $previous,
         'LINK_LIST' => $link_list ,
         'NEXT_LINK' => $next ];
-        $html = template::echo("footer/pages", $params);
+        $html = template::return("base/footer/pages", $params);
         return $html;
     }
 }
@@ -296,7 +296,7 @@ class GenrePagenate extends Paginator
                 'A_HREF' => htmlspecialchars($this->paginator->getPrevUrl()),
                 'A_TExT' => '&laquo; ' . $this->paginator->previousText,
             ];
-            $previous =    template::echo("footer/page_item", $params);
+            $previous =    template::return("base/footer/page_item", $params);
         }
 
         foreach ($this->paginator->getPages() as $page) {
@@ -313,9 +313,9 @@ class GenrePagenate extends Paginator
                     $current_url = htmlspecialchars($page['url']);
                 }
 
-                $link_list .=    template::echo("footer/page_item", $params);
+                $link_list .=    template::return("base/footer/page_item", $params);
             } else {
-                $link_list .=    template::echo("footer/page_item_disabled", ['A_TEXT' => htmlspecialchars($page['num'])]);
+                $link_list .=    template::return("base/footer/page_item_disabled", ['A_TEXT' => htmlspecialchars($page['num'])]);
             }
         }
 
@@ -326,7 +326,7 @@ class GenrePagenate extends Paginator
                 'A_HREF' =>  htmlspecialchars($this->paginator->getNextUrl()),
                 'A_TExT' => $this->paginator->nextText . ' &raquo;',
             ];
-            $next =    template::echo("footer/page_item", $params);
+            $next =    template::return("base/footer/page_item", $params);
         }
 
         parse_str($_SERVER['QUERY_STRING'], $query_array);
@@ -346,7 +346,7 @@ class GenrePagenate extends Paginator
         'PREVIOUS_LINK' => $previous,
         'LINK_LIST' => $link_list ,
         'NEXT_LINK' => $next ];
-        $html = template::echo("footer/pages", $params);
+        $html = template::return("base/footer/pages", $params);
         return $html;
     }
 }

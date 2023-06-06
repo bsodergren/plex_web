@@ -11,13 +11,22 @@ class Template
     {
         $template_obj = new Template();
         $template_obj->template($template, $array);
-        return $template_obj->html;
+        echo $template_obj->html;
     }
 
+
+    public static function return($template='', $array='')
+    {
+        $template_obj = new Template();
+        $template_obj->template($template, $array);
+        return $template_obj->html;
+    }
     public function callback_replace($matches)
     {
         return "";
     }
+
+/*
 
     public function clear()
     {
@@ -45,7 +54,7 @@ class Template
         $this->clear();
         echo $html;
     }
-
+*/
 
     public function template($template, $replacement_array='')
     {

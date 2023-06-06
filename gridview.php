@@ -113,6 +113,6 @@ require __LAYOUT_HEADER__;
 
 $table_body_html =  gridview($results);
 
-echo process_template("page", ['BODY' =>  $table_body_html]);
+template::echo("base/page",['BODY' => $table_body_html]);
 
  require __LAYOUT_FOOTER__;

@@ -60,6 +60,6 @@ include_once __LAYOUT_HEADER__;
 $body = process_template("search/search", ['SEARCH_RESULTS' => $search_results,
 'HTML_MSG' => $html_msg] );
 
-$template->render("page",['BODY' => $body]);
+template::echo("base/page",['BODY' => $body]);
 
 include_once __LAYOUT_FOOTER__;

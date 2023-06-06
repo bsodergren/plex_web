@@ -106,7 +106,7 @@ public static function display_navbar_left_links($url, $text, $js = '')
         'MENULINK_JS'   => $style,
         'MENULINK_TEXT' =>  $text,
     ];
-    return process_template('navbar/library_links', $array);
+    return process_template('base/navbar/library_links', $array);
 } //end display_navbar_left_links()
 
 
@@ -130,7 +130,7 @@ public static function display_navbar_links()
                         'DROPDOWN_URL_TEXT' => $d_name,
                         'DROPDOWN_URL'      => $d_values,
                     ];
-                    $dropdown_link_html .= process_template('menu_dropdown_link', $array);
+                    $dropdown_link_html .= process_template('base/navbar/menu_dropdown_link', $array);
                 }
 
                 $array = [
@@ -138,7 +138,7 @@ public static function display_navbar_links()
                     'DROPDOWN_LINKS' => $dropdown_link_html,
                 ];
 
-                $dropdown_html .= process_template('menu_dropdown', $array);
+                $dropdown_html .= process_template('base/navbar/menu_dropdown', $array);
             }
         } else {
 
@@ -161,7 +161,7 @@ public static function display_navbar_links()
 
 
 
-            $url_text = process_template('menu_link', $array);
+            $url_text = process_template('base/navbar/menu_link', $array);
 
             if ($link_array['secure'] == true && $_SERVER['REMOTE_USER'] != 'bjorn') {
                 $html = $html . $url_text . "\n";
@@ -197,11 +197,11 @@ public static function display_breadcrumbs()
 
         $params['CLASS'] = $class;
         $params['LINK'] = $link;
-        $crumbs_html .= process_template('navbar/crumb', $params);
+        $crumbs_html .= process_template('base/navbar/crumb', $params);
     }
 
 
-    return process_template('navbar/breadcrumb', ['CRUMB_LINKS' => $crumbs_html]);
+    return process_template('base/navbar/breadcrumb', ['CRUMB_LINKS' => $crumbs_html]);
 }
 
 

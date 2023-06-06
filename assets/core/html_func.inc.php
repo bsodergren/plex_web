@@ -2,11 +2,6 @@
 
 use Nette\Utils\Random;
 
-function createLink($url, $text)
-{
-    return "<a href=\"" . $url . "\" > " . $text . "</a> ";
-}
-
 function keyword_list($key, $list)
 {
     $link_array = [];
@@ -68,23 +63,11 @@ function keyword_cloud($list,$field='keyword')
 
 function process_template($template, $replacement_array = '')
 {
-    return template::echo($template, $replacement_array);
+    return template::return($template, $replacement_array);
 } //end process_template()
 
 
 
-
-
-function output($var)
-{
-    if (is_array($var)) {
-        print_r2($var);
-        return 0;
-    }
-
-    echo $var . "<br>\n";
-    // return 0;
-} //end output()
 
 
 
@@ -100,7 +83,7 @@ function add_hidden($name, $value, $attributes='')
     return $html. "\n";
 }
 
-function draw_checkbox($name, $value, $text='Face Trim')
+function draw_checkbox($name, $value, $text='')
 {
     global $pub_keywords;
 
