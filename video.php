@@ -2,7 +2,10 @@
 
 require_once("_config.inc.php");
 $carousel_js = '';
+
 $id = $_REQUEST['id'];
+
+
 $cols = array("playlist_id");
 $db->where("playlist_videos", $id);
 

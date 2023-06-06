@@ -8,6 +8,7 @@ require __LAYOUT_HEADER__;
 if (isset($_REQUEST['playlist_id'])) {
     $playlist_id = $_REQUEST['playlist_id'];
 }
+
 $table_body_html = '';
 $main_links = '';
 
@@ -22,7 +23,14 @@ $results = $db->query($sql);
 if ($playlist_id === null) {
     for ($i = 0; $i < count($results); $i++) {
 
-        $table_body_html .= $studio . "<a href='playlist.php?playlist_id=" . $results[$i]['playlist_id'] . "'>" . $results[$i]['name'] . "</a> " . $results[$i]['count'] . " videos <br>";
+
+        $params = [
+            'LIBRARY' => $studio,
+            'PLAYLIST_ID' => $results[$i]['playlist_id'],
+            'PLAYLIST_NAME' => $results[$i]['name'],
+            'PLAYLIST_COUNT' => $results[$i]['count']
+        ];
+        $table_body_html .=  process_template("playlist/playlist_link", $params);
     }
 } else {
 
@@ -31,16 +39,15 @@ if ($playlist_id === null) {
             "playlist/cell",
             [
                 'THUMBNAIL' => $results[$i]['thumbnail'],
-                'ROW_ID' =>  $results[$i]['id'],
+                'VIDEO_ID' =>  $results[$i]['id'],
             ]
         );
     }
 
-    $row_html =  process_template("playlist/row", ['ROW_CELLS' => $cell_html]);
 
     $table_body_html = process_template("playlist/table", [
         'PLAYLIST_NAME' =>  $results[0]['name'],
-        'ROWS_HTML' =>  $row_html
+        'CELLS_HTML' =>  $cell_html
     ]);
 }
 

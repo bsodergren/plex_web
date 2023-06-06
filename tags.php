@@ -26,18 +26,10 @@ $sql = "SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(".$field.", ',', n.digit
  FROM metatags_filedb INNER JOIN (SELECT 0 digit UNION ALL SELECT 
  1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n 
  ON LENGTH(REPLACE(".$field.", ',' , '')) <= LENGTH(".$field.")-n.digit WHERE library = '". $_SESSION['library']."' ORDER BY `val` ASC";
-
 $results = $db->query($sql);
-
 
 include_once __LAYOUT_HEADER__;
 
-echo '<main role="main" class="container mt-5">';
-
-echo keyword_cloud($results, $field);
-
-//echo process_template("cloud/main", ['TAG_CLOUD_HTML' => $tag_cloud_html ]);
-
-echo '</main>';
+template::echo("base/page", ['BODY' => keyword_cloud($results, $field)]);
 
 include_once __LAYOUT_FOOTER__;

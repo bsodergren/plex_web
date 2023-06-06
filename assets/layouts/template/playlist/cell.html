@@ -1,11 +1,8 @@
-<!-- <div style="width:320px"> -->
-    <div class="categories-wrapper p-2">
-        <img src="%%THUMBNAIL%%" class="img-thumbnail  rounded float-start"
-            onclick="popup('/plex_web/video.php?id=%%ROW_ID%%', 'video')"
-            onerror="this.onerror=null;this.src='/images/default.jpg'">
-        <label for="checker"></label>
-    <!-- </div>
-    <div class="text-wrap text-align-baseline text-truncate row "> -->
-        <span> %%FILE_INFO%% </span>
+<div style="width:320px" class="border p-2 categories-wrapper ">
+    <div class="flex-shrink-0">
+
+            <img src="%%THUMBNAIL%%" alt="#" class="img-fluid"
+                onerror="this.onerror=null;this.src='/images/default.jpg'"
+                onclick="popup('/plex_web/video.php?id=%%VIDEO_ID%%', 'video')">
     </div>
-<!-- </div> -->
+</div>

@@ -28,7 +28,7 @@ if(isset($_REQUEST['viewstudio']))
 	$studio = str_replace("-"," ",$_REQUEST['viewstudio']);
 	$studio = str_replace("_","/",$studio);
 	
-		$sql = "SELECT id,filename,title,artist,genre,studio,substudio,studio_b from ".Db_TABLE_FILEDB."   WHERE `".__NULL_FIELD."` IS NULL and  studio = \"".$studio."\" ORDER BY `studio`,`filename` ASC";
+		$sql = "SELECT id,filename,title,artist,genre,studio,substudio from ".Db_TABLE_FILEDB."   WHERE `".__NULL_FIELD."` IS NULL and  studio = \"".$studio."\" ORDER BY `studio`,`filename` ASC";
 
 	//display_log($sql);
 	$results = $db->query($sql);
@@ -107,7 +107,7 @@ if(isset($_REQUEST['viewstudio']))
 			$studio = str_replace(" ","-",$v['studio']);
 			$studio = str_replace("/","_",$studio);
 			
-			echo "<li><a href='".__THIS_FILE__."?viewstudio=".$studio."'>".$v["studio"]."</a> (".$cnt.")<br>";
+			echo "<li><a href='missing/".__THIS_FILE__."?viewstudio=".$studio."'>".$v["studio"]."</a> (".$cnt.")<br>";
 		}
 	}
 	echo "</ul>";
