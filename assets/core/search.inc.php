@@ -3,52 +3,55 @@
 
 function searchDBVideos($request)
 {
-
     $group = "OR";
-    if(key_exists('grp',$request)){
+    if (key_exists('grp', $request)) {
         $group = $request['grp'];
     }
-    if(key_exists('field',$request)){
-        $request[$request['field']][]=$request['query'];
+
+    if (key_exists('field', $request)) {
+        $request[$request['field']][] = $request['query'];
     }
 
-
-    foreach($request as $field => $value){
-
-    switch($field){
-        case 'studio':
-        case 'substudio':
-        case 'keyword':
-        case 'genre':
-        case 'artist':
-            
-            
-            $whereArray = [];
-            $qArray = [];
-            if(is_array($value))
-            {
-                foreach($value as $q){
-                    $q = str_replace("+"," ",$q);
-                    $whereArray[] = $field . " LIKE '%" . $q . "%' ";               
-                    $qArray[]=$q;
-                }
-                $words[$field] = implode(",", $qArray);
-                
-                  $where[] = " ( ". implode(" ".$group." ", $whereArray) . ") ";
-            }
-        break;
+    if (key_exists("searchField", $request)) {
+        foreach ($request["searchField"] as $_ => $f) {
+            $request[$f] = explode(",", $request['query']);
         }
     }
 
-    $where_clause = " ( ". implode(" ".$group." ", $where) . ") ";
+    foreach ($request as $field => $value) {
 
-    return [$where_clause,$words];
+        switch ($field) {
+            case 'studio':
+            case 'substudio':
+            case 'keyword':
+            case 'genre':
+            case 'artist':
 
+
+                $whereArray = [];
+                $qArray = [];
+                if (is_array($value)) {
+                    foreach ($value as $q) {
+                        $q = str_replace("+", " ", $q);
+                        $whereArray[] = $field . " LIKE '%" . $q . "%' ";
+                        $qArray[] = $q;
+                    }
+                    $words[$field] = implode(",", $qArray);
+
+                    $where[] = " ( " . implode(" " . $group . " ", $whereArray) . ") ";
+                }
+                break;
+        }
+    }
+
+    $where_clause = " ( " . implode(" " . $group . " ", $where) . ") ";
+
+    return [$where_clause, $words];
 }
 
 
 
-function file_search($location='', $fileregex='', $class_options='', $maxdepth='')
+function file_search($location = '', $fileregex = '', $class_options = '', $maxdepth = '')
 {
     $matchedfiles = array();
 
@@ -61,11 +64,11 @@ function file_search($location='', $fileregex='', $class_options='', $maxdepth='
         $matchedfiles = explode(",", $class_options->options["file"]);
     } else {
         if ($maxdepth == 1) {
-            $my_DirectoryIterator="DirectoryIterator";
-            $my_IteratorIterator="IteratorIterator";
+            $my_DirectoryIterator = "DirectoryIterator";
+            $my_IteratorIterator = "IteratorIterator";
         } else {
-            $my_DirectoryIterator="RecursiveDirectoryIterator";
-            $my_IteratorIterator="RecursiveIteratorIterator";
+            $my_DirectoryIterator = "RecursiveDirectoryIterator";
+            $my_IteratorIterator = "RecursiveIteratorIterator";
         }
 
 

@@ -2,6 +2,7 @@
 
 $sort_types   = [
     'studio',
+    'substudio',
     'artist',
     'title',
     'filename',
@@ -21,6 +22,7 @@ $navigation_link_array = [
 
 
         ],
+    ],
 
         'Missing' => [
             'Titles' => 'missing/title.php',

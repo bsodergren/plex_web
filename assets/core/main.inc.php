@@ -192,22 +192,26 @@ function urlQuerystring($input_string, $exclude = '')
 
 function uri_String($request_array, $start = '?')
 {
+
+
     foreach ($request_array as $key => $value) {
         if ($key == 'direction') {
             continue;
         }
+        
         if (is_array($value)) {
-            $string_value = $value[0];
+            foreach($value as $n => $v)
+             $uri_array[] = $key."[]=".urlencode($v);
         } else {
-            $string_value = $value;
+            $uri_array[] = $key."=".urlencode($value);
         }
 
-        $string_value = urlencode($string_value);
-        $uri_array[] = "$key=$string_value";
+
     }
 
     if (is_array($uri_array)) {
         $uri_string = implode('&', $uri_array);
+
         return $start . $uri_string;
     }
 
@@ -250,22 +254,6 @@ function process_form($redirect_url = '')
 } //end process_form()
 
 
-function doRequest($request, $callback, $return = 0, $redirect = false)
-{
-    global $_REQUEST;
-
-    $arr = array_keys($_REQUEST, $request, true);
-
-    if (count($arr) > 0) {
-        $request = $arr[0];
-    }
-
-    if (isset($_REQUEST[$request])) {
-        return $callback($_REQUEST, $redirect);
-    } else {
-        return 0;
-    }
-} //end doRequest()
 
 
 
@@ -307,6 +295,7 @@ function GenreConfigSave($data_array, $redirect, $timeout = 0)
         return JavaRefresh($redirect, $timeout);
     }
 }
+
 function saveStudioConfig($data_array, $redirect, $timeout = 0)
 {
     global $db;
@@ -342,141 +331,6 @@ function saveStudioConfig($data_array, $redirect, $timeout = 0)
 
 
 
-function saveData($data_array, $redirect = false, $timeout = 4)
-{
-    global $db;
-
-    $__output = '';
-
-    foreach ($data_array as $key => $val) {
-        if (str_contains($key, '_') == true) {
-            $value = trim($val);
-
-            if ($value != '') {
-                $pcs = explode('_', $key);
-
-                $id         = $pcs[0];
-                $field      = $pcs[1];
-                $atom_field = $field;
-                $atom_value = $value;
-
-                if ($field == 'id') {
-                    continue;
-                }
-
-                if ($field == 'filename') {
-                    $filename = $value;
-                    continue;
-                }
-                if ($field == 'tags') {
-                    updateTags($id, $value);
-                    continue;
-                }
-
-                if (isset($pcs[2])) {
-                    $field .= '_' . $pcs[2];
-                }
-
-                if ($value == 'NULL') {
-                    $sql = 'UPDATE ' . Db_TABLE_FILEDB . '  SET `' . $field . '` = NULL WHERE id = ' . $id;
-
-                    $db->query($sql);
-                    $value = '';
-                    $atom_value = $value;
-                }
-
-                if ($value != '') {
-                    if ($field == 'artist') {
-                        if (str_contains($value, '-') == true) {
-                            $value = str_replace('-', ' ', $value);
-                        }
-
-                        if (str_contains($value, ',') == true) {
-                            $value = str_replace(' ,', ',', $value);
-                            $value = str_replace(', ', ',', $value);
-                        }
-
-                        $names_arr = explode(',', $value);
-                        $names_list = '';
-
-                        foreach ($names_arr as $str_name) {
-                            $str_name = ucwords(strtolower($str_name));
-                            $names_list = $str_name . ',' . $names_list;
-                        }
-
-                        $value = rtrim($names_list, ',');
-                    }
-
-
-
-                    if ($field == 'studio' || $field == 'substudio') {
-                        if ($field == 'substudio') {
-                            $studio_value = metadata_get_value($filename, 'studio');
-                            $atom_field = 'studio';
-                            $atom_value = "$studio_value/$value";
-                        }
-                    }
-                }
-                $atom_value = trim($atom_value);
-                $value      = trim($value);
-                $__filename = basename($filename);
-                $__output .= "$__filename -> $atom_field = \"$atom_value\"<br/>";
-
-                logger("Metadata", $atom_field);
-                logger("Metadata", $atom_value);
-
-
-                metadata_write_filedata($filename, [$atom_field => $atom_value]);
-
-
-
-                $data = [$field => $value];
-
-                $db->where('id', $id);
-                if ($db->update(Db_TABLE_FILEDB, $data)) {
-                    logger('records were updated', $db->count);
-                } else {
-                    logger('update failed: ', $db->getLastError());
-                }
-            } //end if
-        } //end if
-    } //end foreach
-
-    if ($redirect != false) {
-        return myHeader($redirect);
-    }
-    return $__output;
-} //end saveData()
-
-function updateTags($id, $tags)
-{
-    global $db;
-
-    $tag_array = explode(",", $tags);
-
-    $sql = "delete from tags where file_id = " . $id;
-    $db->query($sql);
-
-    foreach ($tag_array as $tag) {
-        $db->query("INSERT INTO tags (file_id, tag_name) VALUES ( " . $id . ", '" . $tag . "'); ");
-    }
-}
-
-function moveFiles($data_array, $playlist_id)
-{
-    global $db;
-    global $_SESSION;
-    // $video_file     = $user['fullpath'] . $user['filename'];
-    $sql = "select f.fullpath, f.filename from metatags_filedb as f, playlists as p where (p.playlist_id = " . $playlist_id . " and p.playlist_videos = f.id);";
-    $results = $db->query($sql);
-
-
-    foreach ($results as $_ => $row) {
-        print_r2($row);
-    }
-    exit;
-}
-
 
 function createPlaylist($data_array, $redirect = false, $timeout = 0)
 {
@@ -507,28 +361,6 @@ function myHeader($redirect = __URL_PATH__ . '/home.php')
 } //end myHeader()
 
 
-function getBaseUrl($pathOnly = false)
-{
-    // output: /myproject/index.php
-    $currentPath = $_SERVER['PHP_SELF'];
-
-    // output: Array ( [dirname] => /myproject [basename] => index.php [extension] => php [filename] => index )
-    $pathInfo = pathinfo($currentPath);
-
-    // output: localhost
-    $hostName = $_SERVER['HTTP_HOST'];
-
-    // output: http://
-    $protocol = strtolower(substr($_SERVER['SERVER_PROTOCOL'], 0, 5)) == 'https://' ? 'https://' : 'http://';
-
-    if ($pathOnly == true) {
-        return $protocol . $hostName . $pathInfo['dirname'] . '/';
-    }
-
-    // return: http://localhost/myproject/
-    return $protocol . $hostName . $pathInfo['dirname'] . '/';
-} //end getBaseUrl()
-
 
 function print_r2($val)
 {
@@ -538,39 +370,6 @@ function print_r2($val)
 } //end print_r2()
 
 
-function print_request($array)
-{
-    if (is_array($array)) {
-        // $newarray=array();
-        foreach ($array as $key => $value) {
-            if ($value != '') {
-                $newarray[$key] = $value;
-            }
-        }
-
-        if (isset($newarray)) {
-            print_r2($newarray);
-        }
-    }
-} //end print_request()
-
-
-function toint($string)
-{
-    $string_ret = str_replace(',', '', $string);
-    return $string_ret;
-} //end toint()
-
-
-function array_find($needle, $haystack)
-{
-    foreach ($haystack as $item) {
-        if (strpos($item, $needle) !== false) {
-            return $item;
-            break;
-        }
-    }
-} //end array_find()
 
 
 function getReferer()

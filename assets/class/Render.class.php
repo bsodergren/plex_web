@@ -31,10 +31,6 @@ public static function display_sort_options($url_array)
     $sep         = '?';
     $current = '';
 
-
-
-
-
     if ($url_array['query_string'] != '') {
         parse_str($url_array['query_string'], $query_parts);
 
