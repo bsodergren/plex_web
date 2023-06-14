@@ -1,79 +1,75 @@
 <?php
-
+/**
+ * Command like Metatag writer for video files.
+ */
 
 function searchDBVideos($request)
 {
-    $group = "OR";
-    if (key_exists('grp', $request)) {
+    $group        = 'OR';
+    if (array_key_exists('grp', $request)) {
         $group = $request['grp'];
     }
 
-    if (key_exists('field', $request)) {
+    if (array_key_exists('field', $request)) {
         $request[$request['field']][] = $request['query'];
     }
 
-    if (key_exists("searchField", $request)) {
-        foreach ($request["searchField"] as $_ => $f) {
-            $request[$f] = explode(",", $request['query']);
+    if (array_key_exists('searchField', $request)) {
+        foreach ($request['searchField'] as $_ => $f) {
+            $request[$f] = explode(',', $request['query']);
         }
     }
 
     foreach ($request as $field => $value) {
-
         switch ($field) {
             case 'studio':
             case 'substudio':
             case 'keyword':
             case 'genre':
             case 'artist':
-
-
                 $whereArray = [];
-                $qArray = [];
+                $qArray     = [];
                 if (is_array($value)) {
                     foreach ($value as $q) {
-                        $q = str_replace("+", " ", $q);
-                        $whereArray[] = $field . " LIKE '%" . $q . "%' ";
-                        $qArray[] = $q;
+                        $q            = str_replace('+', ' ', $q);
+                        $whereArray[] = $field." LIKE '%".$q."%' ";
+                        $qArray[]     = $q;
                     }
-                    $words[$field] = implode(",", $qArray);
+                    $words[$field] = implode(',', $qArray);
 
-                    $where[] = " ( " . implode(" " . $group . " ", $whereArray) . ") ";
+                    $where[]       = ' ( '.implode(' '.$group.' ', $whereArray).') ';
                 }
                 break;
         }
     }
 
-    $where_clause = " ( " . implode(" " . $group . " ", $where) . ") ";
+    $where_clause = ' ( '.implode(' '.$group.' ', $where).') ';
 
     return [$where_clause, $words];
 }
 
-
-
 function file_search($location = '', $fileregex = '', $class_options = '', $maxdepth = '')
 {
-    $matchedfiles = array();
+    $matchedfiles = [];
 
-    if (!$location or !is_dir($location) or !$fileregex) {
+    if (!$location || !is_dir($location) || !$fileregex) {
         return false;
     }
 
-    if (isset($class_options->options["file"])) {
+    if (isset($class_options->options['file'])) {
         // turn comma separeted list of files into array
-        $matchedfiles = explode(",", $class_options->options["file"]);
+        $matchedfiles = explode(',', $class_options->options['file']);
     } else {
-        if ($maxdepth == 1) {
-            $my_DirectoryIterator = "DirectoryIterator";
-            $my_IteratorIterator = "IteratorIterator";
+        if (1 == $maxdepth) {
+            $my_DirectoryIterator = 'DirectoryIterator';
+            $my_IteratorIterator  = 'IteratorIterator';
         } else {
-            $my_DirectoryIterator = "RecursiveDirectoryIterator";
-            $my_IteratorIterator = "RecursiveIteratorIterator";
+            $my_DirectoryIterator = 'RecursiveDirectoryIterator';
+            $my_IteratorIterator  = 'RecursiveIteratorIterator';
         }
 
-
         $Directory = new $my_DirectoryIterator($location);
-        $Iterator = new $my_IteratorIterator($Directory);
+        $Iterator  = new $my_IteratorIterator($Directory);
 
         foreach ($Iterator as $info) {
             $__file_ext = $info->getExtension();
@@ -85,19 +81,19 @@ function file_search($location = '', $fileregex = '', $class_options = '', $maxd
 
     if (count($matchedfiles) >= 1) {
         sort($matchedfiles);
+
         return $matchedfiles;
     } else {
-        return array();
+        return [];
     }
 }
 
-
 function file_get_num_results($array, $options_arg)
 {
-    if (isset($options_arg->options["max"])) {
-        verbose_output("Max number of results " . $options_arg->options["max"]);
+    if (isset($options_arg->options['max'])) {
+        verbose_output('Max number of results '.$options_arg->options['max']);
 
-        return $options_arg->options["max"];
+        return $options_arg->options['max'];
     } else {
         return count($array);
     }

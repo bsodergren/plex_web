@@ -1,220 +1,198 @@
 <?php
-
-
+/**
+ * Command like Metatag writer for video files.
+ */
 
 class Render
 {
-
     public $_SERVER;
     public $_SESSION;
     public $_REQUEST;
     public $navigation_link_array;
 
+    public function __construct($navigation_link_array)
+    {
+        global $_SESSION;
+        global $_REQUEST;
+        global $_SERVER;
 
-public function __construct($navigation_link_array)
-{
+        $this->_SESSION              = $_SESSION;
+        $this->navigation_link_array = $navigation_link_array;
+        $this->_REQUEST              = $_REQUEST;
+        $this->_SERVER               = $_SERVER;
+    }
 
-    global $_SESSION;
-    global $_REQUEST;
-    global $_SERVER;
+    public static function display_sort_options($url_array)
+    {
+        $html        = '';
+        $request_uri = '';
+        $sep         = '?';
+        $current     = '';
 
-    $this->_SESSION = $_SESSION;
-    $this->navigation_link_array = $navigation_link_array;
-    $this->_REQUEST = $_REQUEST;
-    $this->_SERVER = $_SERVER;
+        if ('' != $url_array['query_string']) {
+            parse_str($url_array['query_string'], $query_parts);
 
-}
-public static function display_sort_options($url_array)
-{
-    $html        = '';
-    $request_uri = '';
-    $sep         = '?';
-    $current = '';
+            $current     = 'studio';
 
-    if ($url_array['query_string'] != '') {
-        parse_str($url_array['query_string'], $query_parts);
+            if (isset($url_array['direction'])) {
+                $query_parts['direction'] = $url_array['direction'];
+            }
 
-        $current = 'studio';
+            if (isset($query_parts['sort'])) {
+                $current = $query_parts['sort'];
+                unset($query_parts['sort']);
+            }
 
-        if (isset($url_array['direction'])) {
-            $query_parts['direction'] = $url_array['direction'];
+            $request_uri = '?'.http_build_query($query_parts);
+            $sep         = '&';
         }
 
-        if (isset($query_parts['sort'])) {
-            $current = $query_parts['sort'];
-            unset($query_parts['sort']);
+        foreach ($url_array['sort_types'] as $key => $value) {
+            $bg             = '';
+
+            if ($current == $value) {
+                $bg = ' active';
+            }
+            $class          = 'btn btn-primary btn-m'.$bg;
+            $request_string = $request_uri.$sep.'sort='.$value;
+
+            $html .= self::display_directory_navlinks($url_array['url'], $key, $request_string, $class, 'role="button" aria-pressed="true"')."\n";
         }
 
+        return $html;
+    } // end display_sort_options()
 
-        $request_uri = '?' . http_build_query($query_parts);
-        $sep         = '&';
-    }
+    public static function display_directory_navlinks($url, $text, $request_uri = '', $class = '', $additional = '')
+    {
+        global $_SESSION;
+        global $_REQUEST;
 
+        $request_string = '';
 
-    foreach ($url_array['sort_types'] as $key => $value) {
-        $bg = '';
-
-
-        if ($current == $value) {
-            $bg = ' active';
+        if ('' != $request_uri) {
+            $request_string = $request_uri;
         }
-        $class = "btn btn-primary btn-m" . $bg;
-        $request_string = $request_uri . $sep . 'sort=' . $value;
+        if ('' != $class) {
+            $class = ' class="'.$class.'"';
+        }
 
-        $html          .= self::display_directory_navlinks($url_array['url'], $key, $request_string, $class, 'role="button" aria-pressed="true"') . "\n";
-    }
+        // $link_url = $url . "?" . $request_key ."&genre=".$_REQUEST["genre"]."&". ;
+        $html           = "<a href='".$url.$request_string."' ".$class.' '.$additional.'>'.$text.'</a>';
 
-    return $html;
-} //end display_sort_options()
+        return $html;
+    } // end display_directory_navlinks()
 
+    public static function display_navbar_left_links($url, $text, $js = '')
+    {
+        $style = '';
+        global $_SESSION;
 
-public static function display_directory_navlinks($url, $text, $request_uri = '', $class = '', $additional = '')
-{
-    global $_SESSION;
-    global $_REQUEST;
+        if ($text == $_SESSION['library']) {
+            $style = ' style="background:#778899"';
+        }
 
-    $request_string = '';
+        $array = [
+            'MENULINK_URL'  => $url,
+            'MENULINK_JS'   => $style,
+            'MENULINK_TEXT' => $text,
+        ];
 
-    if ($request_uri != '') {
-        $request_string = $request_uri;
-    }
-    if ($class != '') {
-        $class = " class=\"" . $class . "\"";
-    }
+        return process_template('base/navbar/library_links', $array);
+    } // end display_navbar_left_links()
 
-    // $link_url = $url . "?" . $request_key ."&genre=".$_REQUEST["genre"]."&". ;
-    $html = "<a href='" . $url . $request_string . "' " . $class . " " . $additional . ">" . $text . '</a>';
+    public static function display_navbar_links()
+    {
+        $html          = '';
+        $dropdown_html = '';
+        global $navigation_link_array;
+        global $_REQUEST;
 
-    return $html;
-} //end display_directory_navlinks()
+        foreach ($navigation_link_array as $name => $link_array) {
+            if ('dropdown' == $name) {
+                $dropdown_html = '';
 
-public static function display_navbar_left_links($url, $text, $js = '')
-{
-    $style = '';
-    global $_SESSION;
+                foreach ($link_array as $dropdown_name => $dropdown_array) {
+                    $dropdown_link_html = '';
 
-    if ($text == $_SESSION['library']) {
-        $style = ' style="background:#778899"';
-    }
+                    foreach ($dropdown_array as $d_name => $d_values) {
+                        $array               = [
+                            'DROPDOWN_URL_TEXT' => $d_name,
+                            'DROPDOWN_URL'      => $d_values,
+                        ];
+                        $dropdown_link_html .= process_template('base/navbar/menu_dropdown_link', $array);
+                    }
 
-    $array = [
-        'MENULINK_URL'  => $url,
-        'MENULINK_JS'   => $style,
-        'MENULINK_TEXT' =>  $text,
-    ];
-    return process_template('base/navbar/library_links', $array);
-} //end display_navbar_left_links()
-
-
-public static function display_navbar_links()
-{
-
-    $html          = '';
-    $dropdown_html = '';
-    global $navigation_link_array;
-    global $_REQUEST;
-
-    foreach ($navigation_link_array as $name => $link_array) {
-        if ($name == 'dropdown') {
-            $dropdown_html = '';
-
-            foreach ($link_array as $dropdown_name => $dropdown_array) {
-                $dropdown_link_html = '';
-
-                foreach ($dropdown_array as $d_name => $d_values) {
-                    $array               = [
-                        'DROPDOWN_URL_TEXT' => $d_name,
-                        'DROPDOWN_URL'      => $d_values,
+                    $array              = [
+                        'DROPDOWN_TEXT'  => $dropdown_name,
+                        'DROPDOWN_LINKS' => $dropdown_link_html,
                     ];
-                    $dropdown_link_html .= process_template('base/navbar/menu_dropdown_link', $array);
+
+                    $dropdown_html .= process_template('base/navbar/menu_dropdown', $array);
+                }
+            } else {
+                if (true == $link_array['studio']) {
+                    if ($_REQUEST['studio']) {
+                        $link_array['url'] = $link_array['url'].'?studio='.$_REQUEST['studio'];
+                    }
+                    if ($_REQUEST['substudio']) {
+                        $link_array['url'] = $link_array['url'].'?substudio='.$_REQUEST['substudio'];
+                    }
                 }
 
-                $array = [
-                    'DROPDOWN_TEXT'  => $dropdown_name,
-                    'DROPDOWN_LINKS' => $dropdown_link_html,
+                $array    = [
+                    'MENULINK_URL'  => $link_array['url'],
+                    'MENULINK_JS'   => $link_array['js'],
+                    'MENULINK_TEXT' => $link_array['text'],
                 ];
 
-                $dropdown_html .= process_template('base/navbar/menu_dropdown', $array);
-            }
-        } else {
+                $url_text = process_template('base/navbar/menu_link', $array);
 
-            if ($link_array['studio'] == true)
-            {
-                if($_REQUEST['studio']){
-                    $link_array['url'] = $link_array['url'] . "?studio=".$_REQUEST['studio'];
+                if (true == $link_array['secure'] && 'bjorn' != $_SERVER['REMOTE_USER']) {
+                    $html = $html.$url_text."\n";
+                } else {
+                    $html = $html.$url_text."\n";
                 }
-                if($_REQUEST['substudio']){
-                    $link_array['url'] = $link_array['url'] . "?substudio=".$_REQUEST['substudio'];
-                }
-                
-            }
-            
-            $array    = [
-                'MENULINK_URL'  => $link_array['url'],
-                'MENULINK_JS'   => $link_array['js'],
-                'MENULINK_TEXT' => $link_array['text'],
-            ];
+            } // end if
+        } // end foreach
 
+        return $html.$dropdown_html;
+    } // end display_navbar_links()
 
-
-            $url_text = process_template('base/navbar/menu_link', $array);
-
-            if ($link_array['secure'] == true && $_SERVER['REMOTE_USER'] != 'bjorn') {
-                $html = $html . $url_text . "\n";
-            } else {
-                $html = $html . $url_text . "\n";
+    public static function display_breadcrumbs()
+    {
+        $crumbs_html = '';
+        foreach (BREADCRUMB as $text => $url) {
+            if ('' == $text) {
+                continue;
             }
 
+            $class           = 'breadcrumb-item';
+            $link            = '<a href="'.$url.'">'.$text.'</a>';
 
+            if ('' == $url) {
+                $class .= ' active" aria-current="page';
+                $link = $text;
+            }
 
-        } //end if
-    } //end foreach
-
-    return $html . $dropdown_html;
-} //end display_navbar_links()
-
-public static function display_breadcrumbs()
-{
-
-
-    $crumbs_html = '';
-    foreach (BREADCRUMB as $text => $url) {
-        if ($text == '') {
-            continue;
+            $params['CLASS'] = $class;
+            $params['LINK']  = $link;
+            $crumbs_html .= process_template('base/navbar/crumb', $params);
         }
 
-        $class = 'breadcrumb-item';
-        $link = '<a href="' . $url . '">' . $text . '</a>';
-
-        if ($url == '') {
-            $class .= ' active" aria-current="page';
-            $link = $text;
-        }
-
-        $params['CLASS'] = $class;
-        $params['LINK'] = $link;
-        $crumbs_html .= process_template('base/navbar/crumb', $params);
+        return process_template('base/navbar/breadcrumb', ['CRUMB_LINKS' => $crumbs_html]);
     }
 
-
-    return process_template('base/navbar/breadcrumb', ['CRUMB_LINKS' => $crumbs_html]);
-}
-
-
-
-public static function display_SelectOptions($array, $selected = '')
-{
-    $html = '';
-    foreach ($array as $val) {
-        $checked = '';
-        if ($val == $selected) {
-            $checked = ' selected';
+    public static function display_SelectOptions($array, $selected = '')
+    {
+        $html = '';
+        foreach ($array as $val) {
+            $checked = '';
+            if ($val == $selected) {
+                $checked = ' selected';
+            }
+            $html .= '<option value="'.$val.'" '.$checked.'>'.$val.'</option>'."\n";
         }
-        $html .= '<option value="' . $val . '" ' . $checked . '>' . $val . '</option>' . "\n";
+
+        return $html;
     }
-
-    return $html;
-}
-
-
 }

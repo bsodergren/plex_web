@@ -1,4 +1,7 @@
 <?php
+/**
+ * Command like Metatag writer for video files.
+ */
 
 use Nette\Utils\FileSystem;
 
@@ -14,9 +17,9 @@ class RoboLoader
 
     public static function echo($value, $exit = 0)
     {
-        echo '<pre>' . var_export($value, 1) . '</pre>';
+        echo '<pre>'.var_export($value, 1).'</pre>';
 
-        if ($exit == 1) {
+        if (1 == $exit) {
             exit;
         }
     }
@@ -26,31 +29,33 @@ class RoboLoader
         $files_array = [];
         if ($all = opendir($directory)) {
             while ($filename = readdir($all)) {
-                if (!is_dir($directory . '/' . $filename)) {
-                    if (preg_match('/(' . $ext . ')$/', $filename)) {
-                        $file = filesystem::normalizePath($directory . '/' . $filename);
+                if (!is_dir($directory.'/'.$filename)) {
+                    if (preg_match('/('.$ext.')$/', $filename)) {
+                        $file = filesystem::normalizePath($directory.'/'.$filename);
 
-                        if ($skip_files == 1) {
+                        if (1 == $skip_files) {
                             if (!self::skipFile($file)) {
                                 $files_array[] = $file;
                             }
                         } else {
                             $files_array[] = $file;
                         }
-                    } //end if
-                } //end if
-            } //end while
+                    } // end if
+                } // end if
+            } // end while
             closedir($all);
-        } //end if
+        } // end if
         sort($files_array);
+
         return $files_array;
     }
 
     public static function skipFile($filename)
     {
-        $f = fopen($filename, 'r');
+        $f    = fopen($filename, 'r');
         $line = fgets($f);
         fclose($f);
+
         return strpos($line, '#skip');
     }
 
@@ -58,20 +63,19 @@ class RoboLoader
     {
         global $_REQUEST;
 
-        $html = '<script>' . "\n";
-
+        $html = '<script>'."\n";
 
         if ($timeout > 0) {
             $html .= 'setTimeout(function(){ ';
         }
 
-        $html .= "window.location.href = '" . $url . "';";
+        $html .= "window.location.href = '".$url."';";
 
         if ($timeout > 0) {
             $timeout = $timeout * 1000;
-            $html .= '}, ' . $timeout . ');';
+            $html .= '}, '.$timeout.');';
         }
-        $html .= "\n" . '</script>';
+        $html .= "\n".'</script>';
 
         echo $html;
     }
@@ -82,7 +86,7 @@ class RoboLoader
             $replacement = '<?php';
             $replacement .= ' #skip';
             $__db_string = FileSystem::read($filename);
-            $__db_write = str_replace('<?php', $replacement, $__db_string);
+            $__db_write  = str_replace('<?php', $replacement, $__db_string);
             FileSystem::write($filename, $__db_write);
         }
     }

@@ -1,6 +1,10 @@
 <?php
+/**
+ * Command like Metatag writer for video files.
+ *
+ */
 
-$sort_types   = [
+$sort_types            = [
     'studio',
     'substudio',
     'artist',
@@ -11,9 +15,8 @@ $sort_types   = [
     'genre',
 ];
 
-
 $navigation_link_array = [
-/*
+    /*
     'dropdown' => [
         'View'    => [
             'Artist' => 'view/artist.php',
@@ -34,53 +37,53 @@ $navigation_link_array = [
     ],
 */
 
-    'home'     => [
+    'home'             => [
         'url'    => 'home.php',
         'text'   => 'Home',
         'secure' => false,
         'js'     => false,
     ],
-/*
+
     'studioEditor'     => [
         'url'    => 'Config/studioEditor.php',
         'text'   => 'Config Studio',
         'secure' => false,
         'js'     => false,
     ],
-    'genreEditor'     => [
+    'genreEditor'      => [
         'url'    => 'Config/genreEditor.php',
         'text'   => 'Config Genre',
         'secure' => false,
         'js'     => false,
     ],
-    */
-    'search'     => [
+
+    'search'           => [
         'url'    => 'search.php',
         'text'   => 'Search',
         'secure' => false,
         'js'     => false,
     ],
-/*    'grid'      => [
+    /*    'grid'      => [
         'url'    => 'grid.php',
         'text'   => 'Grid Display',
         'secure' => false,
         'js'     => false,
     ],
     */
-    'gridview'      => [
+    'gridview'         => [
         'url'    => 'gridview.php',
         'text'   => 'Grid Display',
         'secure' => false,
         'js'     => false,
         'studio' => true,
     ],
-    'playlist'      => [
+    'playlist'         => [
         'url'    => 'playlist.php',
         'text'   => 'Playlist Display',
         'secure' => false,
         'js'     => false,
     ],
-/*
+    /*
     'File Browser' => [
         'url'    => 'filebrowser.php',
         'text'   => 'File Browser',
@@ -94,36 +97,32 @@ $navigation_link_array = [
         'js'     => false,
     ],
     */
-    'tag'     => [
+    'tag'              => [
         'url'    => 'tags.php',
         'text'   => 'Tags',
         'secure' => false,
         'js'     => false,
     ],
-'settings' => [
+    'settings'         => [
         'url'    => 'settings.php',
         'text'   => 'Settings',
         'secure' => false,
         'js'     => false,
     ],
-    'logout'   => [
+    'logout'           => [
         'url'    => '#',
         'text'   => 'Log Out',
         'secure' => true,
         'js'     => ' onclick="logout();"',
     ],
-
-
 ];
 
-
-$artistNameFixArray = [
+$artistNameFixArray    = [
     'Chloé' => 'Chloe Lacourt',
     'Chloe' => 'Chloe Lacourt',
 ];
 
-
-$namesArray = [
+$namesArray            = [
     'Filthy Rich',
     'Chad Rockwell',
     'Ricky Johnson',

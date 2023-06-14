@@ -1,100 +1,95 @@
 <?php
-
-use Nette\Utils\Random;
+/**
+ * Command like Metatag writer for video files.
+ */
 
 function keyword_list($key, $list)
 {
     $link_array = [];
-    $value = '';
-    $list_array = explode(",", $list);
+    $value      = '';
+    $list_array = explode(',', $list);
 
     foreach ($list_array as $k => $keyword) {
         $link_array[] = process_template(
-            "filelist/search_link",
+            'filelist/search_link',
             [
-                'KEY' => $key,
-                'QUERY' => urlencode($keyword),
+                'KEY'      => $key,
+                'QUERY'    => urlencode($keyword),
                 'URL_TEXT' => $keyword,
-                'CLASS' => ' class="badge fs-6 blueTable-thead" '
+                'CLASS'    => ' class="badge fs-6 blueTable-thead" ',
             ]
         );
     }
 
-    $value = implode("  ", $link_array);
+    $value      = implode('  ', $link_array);
+
     return $value;
 }
 
-function keyword_cloud($list,$field='keyword')
+function keyword_cloud($list, $field = 'keyword')
 {
-    $tag_links = '';
+    $tag_links  = '';
 
     if (is_array($list)) {
         foreach ($list as $key => $keyword) {
             $list_array[] = $keyword['val'];
         }
     } else {
-        $list_array = explode(",", $list);
+        $list_array = explode(',', $list);
     }
 
-    $search_url = "search.php?field=".$field."&query=";
+    $search_url = 'search.php?field='.$field.'&query=';
 
     foreach ($list_array as $k => $keyword) {
         $link_array[] = process_template(
-            "filelist/search_link",
+            'filelist/search_link',
             [
-                'KEY' => $field,
-                'QUERY' => urlencode($keyword),
+                'KEY'      => $field,
+                'QUERY'    => urlencode($keyword),
                 'URL_TEXT' => $keyword,
-                'CLASS' => ' class="badge fs-6 blueTable-thead" '
+                'CLASS'    => ' class="badge fs-6 blueTable-thead" ',
             ]
         );
     }
 
-    $tag_links = implode("  ", $link_array);
-  //  return $value;
+    $tag_links  = implode('  ', $link_array);
+    //  return $value;
 
-    $html_links = process_template("cloud/main", ['TAG_CLOUD_HTML' => $tag_links]);
+    $html_links = process_template('cloud/main', ['TAG_CLOUD_HTML' => $tag_links]);
+
     return $html_links;
 }
-
-
-
-
 
 function process_template($template, $replacement_array = '')
 {
     return template::return($template, $replacement_array);
-} //end process_template()
-
-
-
-
-
+} // end process_template()
 
 function JavaRefresh($url, $timeout = 0)
 {
     roboloader::javaRefresh($url, $timeout);
-}//end JavaRefresh()
+}// end JavaRefresh()
 
-function add_hidden($name, $value, $attributes='')
+function add_hidden($name, $value, $attributes = '')
 {
-    $html='';
-    $html.='<input '.$attributes.' type="hidden" name="'.$name.'"  value="'.$value.'">';
-    return $html. "\n";
+    $html = '';
+    $html .= '<input '.$attributes.' type="hidden" name="'.$name.'"  value="'.$value.'">';
+
+    return $html."\n";
 }
 
-function draw_checkbox($name, $value, $text='')
+function draw_checkbox($name, $value, $text = '')
 {
     global $pub_keywords;
 
-    $checked="";
+    $checked       = '';
     $current_value = $value;
 
-    if ($current_value == 1) {
-        $checked = "checked";
+    if (1 == $current_value) {
+        $checked = 'checked';
     }
 
-    $html = '<input type="hidden" name="'.$name.'" value="0">';
+    $html          = '<input type="hidden" name="'.$name.'" value="0">';
     $html .= '<input class="form-check-input" type="checkbox" name="'.$name.'" value=1 '.$checked.'>'.$text;
 
     return $html;

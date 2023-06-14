@@ -1,15 +1,18 @@
 <?php
+/**
+ * Command like Metatag writer for video files.
+ */
 
-
-use Nette\Utils\FileSystem;
-use Nette\Utils\DateTime;
 use Nette\Utils\Arrays;
+use Nette\Utils\DateTime;
+use Nette\Utils\FileSystem;
 
 function matcharray($array, $string)
 {
     if (!Arrays::contains($array, $string)) {
         return false;
     }
+
     return true;
 }
 class Colors
@@ -40,21 +43,22 @@ class Colors
         $this->foreground_colors['light_gray']   = '0;37';
         $this->foreground_colors['white']        = '1;37';
 
-        $this->background_colors['black']      = '40';
-        $this->background_colors['red']        = '41';
-        $this->background_colors['green']      = '42';
-        $this->background_colors['yellow']     = '43';
-        $this->background_colors['blue']       = '44';
-        $this->background_colors['magenta']    = '45';
-        $this->background_colors['cyan']       = '46';
-        $this->background_colors['light_gray'] = '47';
-    } //end __construct()
+        $this->background_colors['black']        = '40';
+        $this->background_colors['red']          = '41';
+        $this->background_colors['green']        = '42';
+        $this->background_colors['yellow']       = '43';
+        $this->background_colors['blue']         = '44';
+        $this->background_colors['magenta']      = '45';
+        $this->background_colors['cyan']         = '46';
+        $this->background_colors['light_gray']   = '47';
+    } // end __construct()
 
     public function getClassColor()
     {
         if (isset($this->foreground_colors[$this->fg_color])) {
-            return 'color:' . $this->fg_color . ';';
+            return 'color:'.$this->fg_color.';';
         }
+
         return '';
     }
 
@@ -62,7 +66,7 @@ class Colors
     {
         $class_tag = '';
         if (isset($this->background_colors[$background_color])) {
-            $class_tag = "class";
+            $class_tag = 'class';
         }
     }
 
@@ -70,10 +74,10 @@ class Colors
     public function getColoredSpan($string, $foreground_color = null, $background_color = null)
     {
         $this->fg_color = $foreground_color;
-        $colored_string = '<span style="' . $this->getClassColor() . '">' . $string . '</span>';;
-        return $colored_string;
-    } //end getColoredHTML()
+        $colored_string = '<span style="'.$this->getClassColor().'">'.$string.'</span>';
 
+        return $colored_string;
+    } // end getColoredHTML()
 
     public function getColoredString($string, $foreground_color = null, $background_color = null)
     {
@@ -81,40 +85,37 @@ class Colors
 
         // Check if given foreground color found
         if (isset($this->foreground_colors[$foreground_color])) {
-            $colored_string .= "\033[" . $this->foreground_colors[$foreground_color] . 'm';
+            $colored_string .= "\033[".$this->foreground_colors[$foreground_color].'m';
         }
 
         // Check if given background color found
         if (isset($this->background_colors[$background_color])) {
-            $colored_string .= "\033[" . $this->background_colors[$background_color] . 'm';
+            $colored_string .= "\033[".$this->background_colors[$background_color].'m';
         }
 
         // Add string and end coloring
-        $colored_string .= $string . "\033[0m";
+        $colored_string .= $string."\033[0m";
 
         return $colored_string;
-    } //end getColoredString()
-
+    } // end getColoredString()
 
     // Returns all foreground color names
     public function getForegroundColors()
     {
         return array_keys($this->foreground_colors);
-    } //end getForegroundColors()
-
+    } // end getForegroundColors()
 
     // Returns all background color names
     public function getBackgroundColors()
     {
         return array_keys($this->background_colors);
-    } //end getBackgroundColors()
-} //end class
-
+    } // end getBackgroundColors()
+} // end class
 
 class display
 {
-    private $model_popup = '';
-    private $model_buttons = array();
+    private $model_popup   = '';
+    private $model_buttons = [];
 
     public static function echo($text, $var = '')
     {
@@ -129,58 +130,57 @@ class display
         $pre_style = 'style="border: 1px solid #ddd;border-left: 3px solid #f36d33;color: #666;page-break-inside: avoid;font-family: monospace;font-size: 15px;line-height: 1.6;margin-bottom: 1.6em;max-width: 100%;overflow: auto;padding: 1em 1.5em;display: block;word-wrap: break-word;"';
         $div_style = 'style="display: inline-block;width: 100%;border: 1px solid #000;text-align: left;font-size:1.5rem;"';
         global $colors;
-        $is_array = false;
+        $is_array  = false;
 
         if (is_array($text)) {
-            $var = $text;
-            $text = "Array";
+            $var  = $text;
+            $text = 'Array';
         }
 
         if (is_array($var)) {
-            $var = var_export($var, 1);
-            $var = $colors->getColoredHTML($var, "green");
-            $var = "<pre $pre_style>" . $var . "</pre>";
+            $var      = var_export($var, 1);
+            $var      = $colors->getColoredHTML($var, 'green');
+            $var      = "<pre $pre_style>".$var.'</pre>';
             $is_array = true;
         } else {
-            $var = $colors->getColoredHTML($var, "green");
+            $var = $colors->getColoredHTML($var, 'green');
         }
 
-        $text = $colors->getColoredHTML($text);
+        $text      = $colors->getColoredHTML($text);
 
-        echo "<div $div_style>" . $text . ' ' . $var . "</div><br>\n";
+        echo "<div $div_style>".$text.' '.$var."</div><br>\n";
     }
 
     public function model($text, $var = '')
     {
-        $pre_style = 'style="border: 1px solid #ddd;border-left: 3px solid #f36d33;color: #666;page-break-inside: avoid;font-family: monospace;font-size: 15px;line-height: 1.6;margin-bottom: 1.6em;max-width: 100%;overflow: auto;padding: 1em 1.5em;display: block;word-wrap: break-word;"';
+        $pre_style             = 'style="border: 1px solid #ddd;border-left: 3px solid #f36d33;color: #666;page-break-inside: avoid;font-family: monospace;font-size: 15px;line-height: 1.6;margin-bottom: 1.6em;max-width: 100%;overflow: auto;padding: 1em 1.5em;display: block;word-wrap: break-word;"';
 
         global $colors;
 
-        $is_array = false;
+        $is_array              = false;
 
         if (is_array($text)) {
-            $var = $text;
-            $text = "Array";
+            $var  = $text;
+            $text = 'Array';
         }
 
         if (is_array($var)) {
-            $var = var_export($var, 1);
+            $var      = var_export($var, 1);
             // $var=$colors->getColoredHTML($var, "green");
-            $var = "<pre $pre_style>" . $var . "</pre>";
+            $var      = "<pre $pre_style>".$var.'</pre>';
             $is_array = true;
         }
 
-        //else {
+        // else {
         //    $var = $colors->getColoredHTML($var, "green");
-        //}
-        //$text=$colors->getColoredHTML($text);
+        // }
+        // $text=$colors->getColoredHTML($text);
 
-
-        $random_id = "Model_" . substr(md5(rand()), 0, 7);
+        $random_id             = 'Model_'.substr(md5(rand()), 0, 7);
         $this->model_popup .= process_template('popup_debug_model', ['MODEL_TITLE' => $text, 'MODEL_BODY' => $var, 'MODEL_ID' =>  $random_id]);
 
-        $button_html = process_template('popup_debug_button', ['MODEL_TITLE' => $text, 'MODEL_ID' =>  $random_id]);
-        array_push($this->model_buttons, $button_html);
+        $button_html           = process_template('popup_debug_button', ['MODEL_TITLE' => $text, 'MODEL_ID' =>  $random_id]);
+        $this->model_buttons[] = $button_html;
     }
 
     public function writeModelHtml()
@@ -193,13 +193,10 @@ class display
                 echo $html_button;
             }
 
-
             echo '</div>';
         }
     }
 }
-
-
 
 class ExecutionTime
 {
@@ -207,65 +204,58 @@ class ExecutionTime
 
     private $endTime;
 
-
     public function start()
     {
         $this->startTime = getrusage();
-    } //end start()
-
+    } // end start()
 
     public function end()
     {
         $this->endTime = getrusage();
-    } //end end()
-
+    } // end end()
 
     private function runTime($ru, $rus, $index)
     {
-        return (($ru["ru_$index.tv_sec"] * 1000 + intval(($ru["ru_$index.tv_usec"] / 1000))) - ($rus["ru_$index.tv_sec"] * 1000 + intval(($rus["ru_$index.tv_usec"] / 1000))));
-    } //end runTime()
-
+        return ($ru["ru_$index.tv_sec"] * 1000 + (int) ($ru["ru_$index.tv_usec"] / 1000)) - ($rus["ru_$index.tv_sec"] * 1000 + (int) ($rus["ru_$index.tv_usec"] / 1000));
+    } // end runTime()
 
     public function __toString()
     {
-        return 'This process used ' . $this->runTime($this->endTime, $this->startTime, 'utime') . " ms for its computations\nIt spent " . $this->runTime($this->endTime, $this->startTime, 'stime') . " ms in system calls\n";
-    } //end __toString()
-} //end class
+        return 'This process used '.$this->runTime($this->endTime, $this->startTime, 'utime')." ms for its computations\nIt spent ".$this->runTime($this->endTime, $this->startTime, 'stime')." ms in system calls\n";
+    } // end __toString()
+} // end class
 
 class escape
 {
     private $string;
-
 
     public function string($string)
     {
         for ($i = 0; $i < strlen($string); ++$i) {
             $char = $string[$i];
             $ord  = ord($char);
-            if ($char !== "'" && $char !== '"' && $char !== '\\' && $ord >= 32 && $ord <= 126) {
+            if ("'" !== $char && '"' !== $char && '\\' !== $char && $ord >= 32 && $ord <= 126) {
                 $return .= $char;
             } else {
-                $return .= '\\x' . dechex($ord);
+                $return .= '\\x'.dechex($ord);
             }
         }
 
         return $string;
-    } //end string()
-
+    } // end string()
 
     public function mysql($string)
     {
         global $mysqli;
 
-        $string = Escape::string($string);
+        $string = self::string($string);
 
         if (__USE_MSYQL__ == true) {
             $string = mysqli_real_escape_string($mysqli, $string);
         }
 
         return $string;
-    } //end mysql()
-
+    } // end mysql()
 
     public function clean($string)
     {
@@ -293,9 +283,8 @@ class escape
         logger("string = '%s%'", $string);
 
         return $string;
-    } //end clean()
-} //end class
-
+    } // end clean()
+} // end class
 
 class Logger
 {
@@ -305,128 +294,122 @@ class Logger
 
         if ($all = opendir(__ERROR_LOG_DIRECTORY__)) {
             while ($file = readdir($all)) {
-                if (!is_dir(__ERROR_LOG_DIRECTORY__ . '/' . $file)) {
+                if (!is_dir(__ERROR_LOG_DIRECTORY__.'/'.$file)) {
                     if (preg_match('/(log)$/', $file)) {
-                        $err_array[]  = filesystem::normalizePath(__ERROR_LOG_DIRECTORY__ . '/' . $file);
-                    } //end if
-                } //end if
-            } //end while
+                        $err_array[]  = filesystem::normalizePath(__ERROR_LOG_DIRECTORY__.'/'.$file);
+                    } // end if
+                } // end if
+            } // end while
             closedir($all);
-        } //end if
+        } // end if
 
         return $err_array;
     }
-
-
-
 
     private static function get_caller_info()
     {
         $trace = debug_backtrace();
 
-        $s = '';
-        $file = $trace[2]['file'];
+        $s     = '';
+        $file  = $trace[2]['file'];
         foreach ($trace as $row) {
             $class = '';
             switch ($row['function']) {
                 case __FUNCTION__:
                     break;
-                case "logger":
-                    $lineno = $row["line"];
+                case 'logger':
+                    $lineno = $row['line'];
                     break;
-                case "log":
+                case 'log':
                     break;
-                case "require_once":
+                case 'require_once':
                     break;
-                case "include_once":
+                case 'include_once':
                     break;
-                case "require":
+                case 'require':
                     break;
-                case "include":
+                case 'include':
                     break;
-                case "__construct":
+                case '__construct':
                     break;
-                case "__directory":
+                case '__directory':
                     break;
-                case "__filename":
+                case '__filename':
                     break;
 
                 default:
-
-                    if ($row['class'] != '') {
-                        $class = $row['class'] . $row['type'];
+                    if ('' != $row['class']) {
+                        $class = $row['class'].$row['type'];
                     }
-                    $s =  $class . $row['function'] . ":" . $s;
-                    $file = $row['file'];
+                    $s      =  $class.$row['function'].':'.$s;
+                    $file   = $row['file'];
                     break;
             }
         }
-        $file = pathinfo($file, PATHINFO_BASENAME);
-        return $file . ":" . $lineno . ":" . $s;
-    }
+        $file  = pathinfo($file, \PATHINFO_BASENAME);
 
+        return $file.':'.$lineno.':'.$s;
+    }
 
     public static function log($text, $var = '', $logfile = 'default.log')
     {
-      //  if (Settings::isTrue('__SHOW_DEBUG_PANEL__')) {
-            $function_list = self::get_caller_info();
-            $errorLogFile = __ERROR_LOG_DIRECTORY__ . "/" . $logfile;
-            $html_var = '';
-            $html_string = '';
-            $html_msg = '';
-            $html_func = '';
+        //  if (Settings::isTrue('__SHOW_DEBUG_PANEL__')) {
+        $function_list = self::get_caller_info();
+        $errorLogFile  = __ERROR_LOG_DIRECTORY__.'/'.$logfile;
+        $html_var      = '';
+        $html_string   = '';
+        $html_msg      = '';
+        $html_func     = '';
 
-            if (is_array($var) || is_object($var)) {
-                $html_var = self::printCode($var);
-            } else {
-                $html_var = $var;
-            }
-            //$html_var = htmlentities($html_var);
-            // $html_var = '<pre>' . $html_var . '</pre>';
+        if (is_array($var) || is_object($var)) {
+            $html_var = self::printCode($var);
+        } else {
+            $html_var = $var;
+        }
+        // $html_var = htmlentities($html_var);
+        // $html_var = '<pre>' . $html_var . '</pre>';
 
-            $html_string = json_encode([
-                'TIMESTAMP' => DateTime::from(null),
-                'FUNCTION' => $function_list,
-                'MSG_TEXT' => $text,
-                'MSG_VALUE' => $html_var,
-            ]);
-           $r = file_put_contents( $errorLogFile ,$html_string . "\n",FILE_APPEND );
+        $html_string   = json_encode([
+            'TIMESTAMP' => DateTime::from(null),
+            'FUNCTION'  => $function_list,
+            'MSG_TEXT'  => $text,
+            'MSG_VALUE' => $html_var,
+        ]);
+        $r             = file_put_contents($errorLogFile, $html_string."\n", \FILE_APPEND);
 
-
-      //  }
+        //  }
 
         //        $logger->INFO($log_string);
     }
 
-
-
     public static function printCode($array, $path = false, $top = true)
     {
-        $data = "";
-        $delimiter = "~~|~~";
+        $data      = '';
+        $delimiter = '~~|~~';
 
-        $p = null;
+        $p         = null;
         if (is_array($array)) {
             foreach ($array as $key => $a) {
                 if (!is_array($a) || empty($a)) {
                     if (is_array($a)) {
-                        $data .= $path . "['{$key}'] = array();" . $delimiter;
+                        $data .= $path."['{$key}'] = array();".$delimiter;
                     } else {
-                        $data .= $path . "['{$key}'] = \"" . htmlentities(addslashes($a)) . "\";" . $delimiter;
+                        $data .= $path."['{$key}'] = \"".htmlentities(addslashes($a)).'";'.$delimiter;
                     }
                 } else {
-                    $data .= self::printCode($a, $path . "['{$key}']", false);
+                    $data .= self::printCode($a, $path."['{$key}']", false);
                 }
             }
         }
 
         if ($top) {
-            $return = "";
+            $return = '';
             foreach (explode($delimiter, $data) as $value) {
                 if (!empty($value)) {
-                    $return .= '$array' . $value . "<br>";
+                    $return .= '$array'.$value.'<br>';
                 }
-            };
+            }
+
             return $return;
         }
 
@@ -438,8 +421,6 @@ function logger($text, $var = '', $logfile = 'default.log')
 {
     logger::log($text, $var, $logfile);
 }
-
-
 
 function getErrorLogs()
 {

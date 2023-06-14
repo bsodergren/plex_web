@@ -1,7 +1,9 @@
 <?php
+/**
+ * Command like Metatag writer for video files.
+ */
 
-
-function chk_file($value, $command='delete', $options='')
+function chk_file($value, $command = 'delete', $options = '')
 {
     switch ($command) {
         case 'rename':
@@ -12,15 +14,14 @@ function chk_file($value, $command='delete', $options='')
 
                 logger("Renaming $value to $options");
                 rename($value, $options);
-            };
+            }
             break;
 
         case 'delete':
             if (is_file($value)) {
                 logger("deleting $value");
                 unlink($value);
-            };
+            }
             break;
     }
-}//end chk_file()
-
+}// end chk_file()

@@ -1,15 +1,19 @@
 <?php
+/**
+ * Command like Metatag writer for video files.
+ */
 
 class Settings
 {
     public static function isTrue($define_name)
     {
         if (defined($define_name)) {
-            if (constant($define_name) == true) {
+            if (true == constant($define_name)) {
                 //  mediaUpdate::echo(constant($define_name));
                 return 1;
             }
         }
+
         return 0;
     }
 
@@ -18,6 +22,7 @@ class Settings
         if (defined($define_name)) {
             return 1;
         }
+
         return 0;
     }
 }
@@ -25,7 +30,7 @@ class Settings
 class MetaSettings extends dbObject
 {
     protected $dbTable = Db_TABLE_SETTINGS;
-} //end class
+} // end class
 
 class MetaFiledb extends dbObject
 {

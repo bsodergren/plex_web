@@ -1,105 +1,102 @@
 <?php
+/**
+ * Command like Metatag writer for video files.
+ */
 
 require_once '_config.inc.php';
-const TITLE = 'Home';
+const TITLE         = 'Home';
 
-$sql = query_builder('studio', '', 'studio', 'studio ASC');
-$result = $db->query($sql);
+$sql                = query_builder('studio', '', 'studio', 'studio ASC');
+$result             = $db->query($sql);
 
-$all_url = 'files.php?allfiles=1';
+$all_url            = 'files.php?allfiles=1';
 
-//DEFINE('BREADCRUMB', [$in_directory => "", 'all' => $all_url]);
+// DEFINE('BREADCRUMB', [$in_directory => "", 'all' => $all_url]);
 require __LAYOUT_HEADER__;
 $index              = 1;
-foreach ($result as $row => $name)
-{
-
-    $cnt = '';
+foreach ($result as $row => $name) {
+    $cnt           = '';
     if (0 == $index % 4) {
-        if ($studio_links != '') {
-            $studio_box .= process_template("home/studio_box", [
+        if ('' != $studio_links) {
+            $studio_box .= process_template('home/studio_box', [
                 'STUDIO_LINKS' => $studio_links,
-                'CLASS' => '',
+                'CLASS'        => '',
             ]);
         }
         $studio_links = '';
     }
 
-    if ($name['studio'] == '') {
+    if ('' == $name['studio']) {
         $name['studio'] = 'NULL';
-        $sql_studio  = ' IS NULL';
+        $sql_studio     = ' IS NULL';
     } else {
-        $sql_studio = ' LIKE "' . $name['studio'] . '"';
+        $sql_studio = ' LIKE "'.$name['studio'].'"';
     }
 
-    $studio = urlencode($name['studio']);
+    $studio        = urlencode($name['studio']);
 
-    $sql = query_builder('count(video_key) as cnt', ' studio ' . $sql_studio . ' and substudio is null', 'studio', 'studio ASC');
-    $rar = $db->rawQueryOne($sql);
+    $sql           = query_builder('count(video_key) as cnt', ' studio '.$sql_studio.' and substudio is null', 'studio', 'studio ASC');
+    $rar           = $db->rawQueryOne($sql);
     if (isset($rar['cnt'])) {
-        $cnt = ' (' . $rar['cnt'] . ') ';
+        $cnt = ' ('.$rar['cnt'].') ';
     }
 
-    $studio_links .= process_template("home/studio_link", [
-        'GET_REQUEST' =>  "studio=" . $studio,
-        'NAME' =>  $name["studio"],
-        'COUNT' => $cnt,
-        'CLASS' => "btn btn-primary",
+    $studio_links .= process_template('home/studio_link', [
+        'GET_REQUEST' => 'studio='.$studio,
+        'NAME'        => $name['studio'],
+        'COUNT'       => $cnt,
+        'CLASS'       => 'btn btn-primary',
     ]);
 
-    $substudio_sql = query_builder('count(substudio) as cnt, substudio', ' studio  ' . $sql_studio, 'substudio', 'substudio ASC ');
-    $ss_result = $db->query($substudio_sql);
+    $substudio_sql = query_builder('count(substudio) as cnt, substudio', ' studio  '.$sql_studio, 'substudio', 'substudio ASC ');
+    $ss_result     = $db->query($substudio_sql);
 
     if (count($ss_result) > 1) {
-        $iindex = 1;
+        $iindex       = 1;
         foreach ($ss_result as $ssRow => $ssName) {
-            if ($ssName['substudio'] != null) {
-  $iindex++;
-                $ssCnt    = ' (' . $ssName['cnt'] . ')';
+            if (null != $ssName['substudio']) {
+                ++$iindex;
+                $ssCnt     = ' ('.$ssName['cnt'].')';
 
                 $substudio = urlencode($ssName['substudio']);
-                $studio_links .= process_template("home/studio_link", [
-                    'GET_REQUEST' =>  "substudio=" . $substudio,
-                    'NAME' =>  $ssName["substudio"],
-                    'COUNT' => $ssCnt,
-                    'CLASS' => 'btn btn-secondary',
+                $studio_links .= process_template('home/studio_link', [
+                    'GET_REQUEST' => 'substudio='.$substudio,
+                    'NAME'        => $ssName['substudio'],
+                    'COUNT'       => $ssCnt,
+                    'CLASS'       => 'btn btn-secondary',
                 ]);
                 if (0 == $iindex % 4) {
-                    $studio_box .= process_template("home/studio_box", [
+                    $studio_box .= process_template('home/studio_box', [
                         'STUDIO_LINKS' => $studio_links,
-                        'CLASS' => '',
+                        'CLASS'        => '',
                     ]);
                     $studio_links = '';
                 }
-              
-    
             }
         }
-        if ($studio_links != '') {
-            $studio_box .= process_template("home/studio_box", [
+        if ('' != $studio_links) {
+            $studio_box .= process_template('home/studio_box', [
                 'STUDIO_LINKS' => $studio_links,
-                'CLASS' => '',
+                'CLASS'        => '',
             ]);
         }
         $studio_links = '';
     } else {
-        if ($studio_links != '') {
-            $studio_box .= process_template("home/studio_box", [
+        if ('' != $studio_links) {
+            $studio_box .= process_template('home/studio_box', [
                 'STUDIO_LINKS' => $studio_links,
-                'CLASS' => '',
+                'CLASS'        => '',
             ]);
             $studio_links = '';
         }
-    } //end if
+    } // end if
 
     // echo "</ul>";
-    $index++;
+    ++$index;
     // }
+} // end foreach
 
-} //end foreach
-
-$body = process_template("home/main", ['BODY_HTML' =>  $studio_box]);
-template::echo("base/page", ['BODY' => $body]);
-
+$body               = process_template('home/main', ['BODY_HTML' =>  $studio_box]);
+template::echo('base/page', ['BODY' => $body]);
 
 require __LAYOUT_FOOTER__;

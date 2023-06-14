@@ -1,16 +1,14 @@
 <?php
 
-require_once("_config.inc.php");
+require_once '_config.inc.php';
 
 $form = new Formr\Formr('bootstrap4');
 
-if ($form->submitted())
-{
-	echo proccess_settings('home.php');
+if ($form->submitted()) {
+    echo proccess_settings('home.php');
 }
 
-define('TITLE', "Test Page");
-
+define('TITLE', 'Test Page');
 
 require __LAYOUT_HEADER__;
 ?>
@@ -22,80 +20,70 @@ require __LAYOUT_HEADER__;
 
 <?php
 
-
 $form->open('MyForm');
 
- //$form->messages(); 
-# $form->create_form('Name, Email, Comments|textarea');
-foreach(__SETTINGS__ as $name => $value_type)
-{
+// $form->messages();
+// $form->create_form('Name, Email, Comments|textarea');
+foreach (__SETTINGS__ as $name => $value_type) {
+    $pcs   = explode(';', $value_type);
 
-	$pcs = explode(';', $value_type);
+    $type  = $pcs[0];
+    $value = $pcs[1];
 
-	$type = $pcs[0];
-	$value = $pcs[1];
+    if ('bool' == $type) {
+        $checked    = '';
+        $notchecked = '';
 
-	if ($type == "bool") {
-		$checked = '';
-		$notchecked = '';
-
-		if ($value == 1) {
-			$checked = "checked";
-		} else {
-			$notchecked = "checked";;
-		}
-?>
+        if (1 == $value) {
+            $checked = 'checked';
+        } else {
+            $notchecked = 'checked';
+        }
+        ?>
 
 
 <div class="form-check form-switch">
-<input type="hidden" name="<?php echo $name ?>" value="0">
- <label class="form-check-label" for="flexSwitchCheckDefault"><?php echo $name ?></label>
-  <input class="form-check-input" name="<?php echo $name ?>" value="1"  type="checkbox" role="switch" id="flexSwitchCheckDefault" <?php echo $checked ?> />
- 
-  
+<input type="hidden" name="<?php echo $name; ?>" value="0">
+ <label class="form-check-label" for="flexSwitchCheckDefault"><?php echo $name; ?></label>
+  <input class="form-check-input" name="<?php echo $name; ?>" value="1"  type="checkbox" role="switch" id="flexSwitchCheckDefault" <?php echo $checked; ?> />
+
+
 
 
 	</div>
 <?php
 
-	}
+    }
 
-	if($type == "text")
-	{
-?>
+    if ('text' == $type) {
+        ?>
 <div class="form-group">
-	<div class="row mb-3"> 
-		<label for="<?php echo $name ?>" class="col-sm-3 col-form-label "><?php echo $name ?></label>
+	<div class="row mb-3">
+		<label for="<?php echo $name; ?>" class="col-sm-3 col-form-label "><?php echo $name; ?></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control border border-info" 
-			name="<?php echo $name ?>"
-			id="<?php echo $name ?>" placeholder="<?php echo $value ?>" value="<?php echo $value ?>">
+			<input type="text" class="form-control border border-info"
+			name="<?php echo $name; ?>"
+			id="<?php echo $name; ?>" placeholder="<?php echo $value; ?>" value="<?php echo $value; ?>">
 		</div>
 	</div>
 </div>
-<?php 
-	}
+<?php
+    }
 
-
-	if($type == "array")
-	{
-?>
+    if ('array' == $type) {
+        ?>
 <div class="form-group">
-	<div class="row mb-3"> 
-		<label for="<?php echo $name ?>" class="col-sm-3 col-form-label "><?php echo $name ?></label>
+	<div class="row mb-3">
+		<label for="<?php echo $name; ?>" class="col-sm-3 col-form-label "><?php echo $name; ?></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control border border-info" 
-			name="<?php echo $name ?>"
-			id="<?php echo $name ?>" placeholder='<?php echo $value ?>' value='<?php echo $value ?>'>
+			<input type="text" class="form-control border border-info"
+			name="<?php echo $name; ?>"
+			id="<?php echo $name; ?>" placeholder='<?php echo $value; ?>' value='<?php echo $value; ?>'>
 		</div>
 	</div>
 </div>
-<?php 
-	}
-	
-
-
-
+<?php
+    }
 }
 
 ?>
@@ -114,15 +102,15 @@ foreach(__SETTINGS__ as $name => $value_type)
   <option value="bool">Boolean</option>
   <option value="text">Text</option>
   <option value="array">Array</option>
-  
+
 </select>
 </div>
 </div>
-<?php 
+<?php
 
 $form->submit_button();
 $form->close();
 
- ?>
+?>
  </main>
- <?php include __LAYOUT_FOOTER__;  ?>
+ <?php include __LAYOUT_FOOTER__; ?>

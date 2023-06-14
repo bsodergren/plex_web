@@ -1,20 +1,19 @@
 <?php
-
-
-
+/**
+ * Command like Metatag writer for video files.
+ */
 
 if (!function_exists('str_starts_with')) {
     function str_starts_with($haystack, $needle)
     {
-        return strpos($haystack, $needle) === 0;
+        return str_starts_with($haystack, $needle);
     }
 }
-
 
 if (!function_exists('str_contains')) {
     function str_contains($haystack, $needle)
     {
-        return $needle !== '' && mb_strpos($haystack, $needle) !== false;
+        return '' !== $needle && false !== mb_strpos($haystack, $needle);
     }
 }
 
@@ -28,7 +27,7 @@ function strpos_array($haystack, $needles, &$str_return)
                 $pos = strpos($haystack, $str);
             }
 
-            if ($pos !== false) {
+            if (false !== $pos) {
                 $str_return[] = $str;
             }
         }
@@ -44,29 +43,28 @@ function truncateString($string, $maxlength, $ellipsis = false)
     }
 
     if (str_contains($string, "\033[0m")) {
-        $string = str_replace("\033[0m", "", $string);
+        $string       = str_replace("\033[0m", '', $string);
         $color_length = mb_strlen("\033[0m");
-        $color_close = "\033[0m";
+        $color_close  = "\033[0m";
     }
     if (empty($ellipsis)) {
         $ellipsis = '';
     }
 
-    if ($ellipsis === true) {
+    if (true === $ellipsis) {
         $ellipsis = '…';
     }
 
     $ellipsis_length = mb_strlen($ellipsis);
 
-    $maxlength = $maxlength - $ellipsis_length - $color_length;
+    $maxlength       = $maxlength - $ellipsis_length - $color_length;
 
-    $string = trim(mb_substr($string, 0, $maxlength)) . $ellipsis . $color_close;
+    $string          = trim(mb_substr($string, 0, $maxlength)).$ellipsis.$color_close;
 
     return $string;
 }
 
-
-function translate($string = "")
+function translate($string = '')
 {
     // "trans -b -no-warn -no-autocorrect "
     return $string;
@@ -74,31 +72,32 @@ function translate($string = "")
 
 function printCode($array, $path = false, $top = true)
 {
-    $data = "";
-    $delimiter = "~~|~~";
+    $data      = '';
+    $delimiter = '~~|~~';
 
-    $p = null;
+    $p         = null;
     if (is_array($array)) {
         foreach ($array as $key => $a) {
             if (!is_array($a) || empty($a)) {
                 if (is_array($a)) {
-                    $data .= $path . "['{$key}'] = array();" . $delimiter;
+                    $data .= $path."['{$key}'] = array();".$delimiter;
                 } else {
-                    $data .= $path . "['{$key}'] = \"" . htmlentities(addslashes($a)) . "\";" . $delimiter;
+                    $data .= $path."['{$key}'] = \"".htmlentities(addslashes($a)).'";'.$delimiter;
                 }
             } else {
-                $data .= printCode($a, $path . "['{$key}']", false);
+                $data .= printCode($a, $path."['{$key}']", false);
             }
         }
     }
 
     if ($top) {
-        $return = "";
+        $return = '';
         foreach (explode($delimiter, $data) as $value) {
             if (!empty($value)) {
-                $return .= '$array' . $value . "<br>";
+                $return .= '$array'.$value.'<br>';
             }
-        };
+        }
+
         return $return;
     }
 
