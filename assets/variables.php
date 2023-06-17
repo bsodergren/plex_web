@@ -4,6 +4,17 @@
  *
  */
 
+
+ define('__AUTH_FUNCTION__',
+ [
+    'verify' => 'check_logged_in_butnot_verified',
+    'login' => 'check_logged_out',
+    'register' => 'check_logged_out',
+    'logout' => 'check_logged_in',
+    
+ ]
+);
+
 $sort_types            = [
     'studio',
     'substudio',
@@ -14,6 +25,23 @@ $sort_types            = [
     'added',
     'genre',
 ];
+
+$login_link_array = [
+    'login'             => [
+        'url'    => 'login.php',
+        'text'   => 'login',
+        'secure' => false,
+        'js'     => false,
+    ],
+/*    'register'             => [
+        'url'    => 'register.php',
+        'text'   => 'register',
+        'secure' => false,
+        'js'     => false,
+    ],
+    */
+];
+
 
 $navigation_link_array = [
     /*
@@ -110,10 +138,11 @@ $navigation_link_array = [
         'js'     => false,
     ],
     'logout'           => [
-        'url'    => '#',
+        'url'    => 'logout.php',
         'text'   => 'Log Out',
         'secure' => true,
-        'js'     => ' onclick="logout();"',
+//        'js'     => ' onclick="logout();"',
+'js' => false,
     ],
 ];
 

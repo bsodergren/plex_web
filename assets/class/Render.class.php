@@ -104,9 +104,14 @@ class Render
     {
         $html          = '';
         $dropdown_html = '';
-        global $navigation_link_array;
+        global $navigation_link_array,$login_link_array;
         global $_REQUEST;
 
+        if (!isset($_SESSION['auth']) or 
+        $_SESSION['auth'] != 'verified' ) {
+            $navigation_link_array = $login_link_array;
+        }
+        
         foreach ($navigation_link_array as $name => $link_array) {
             if ('dropdown' == $name) {
                 $dropdown_html = '';

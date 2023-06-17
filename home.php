@@ -6,6 +6,8 @@
 require_once '_config.inc.php';
 const TITLE         = 'Home';
 
+
+
 $sql                = query_builder('studio', '', 'studio', 'studio ASC');
 $result             = $db->query($sql);
 
@@ -13,6 +15,9 @@ $all_url            = 'files.php?allfiles=1';
 
 // DEFINE('BREADCRUMB', [$in_directory => "", 'all' => $all_url]);
 require __LAYOUT_HEADER__;
+
+
+
 $index              = 1;
 foreach ($result as $row => $name) {
     $cnt           = '';

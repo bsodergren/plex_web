@@ -4,6 +4,8 @@
  */
 
 $db       = new MysqliDb('localhost', __SQL_USER__, __SQL_PASSWD__, __SQL_DB__);
+$conn = mysqli_connect('localhost', __SQL_USER__, __SQL_PASSWD__, __SQL_DB__);
+
 dbObject::autoload('models');
 
 $settings = new MetaSettings();

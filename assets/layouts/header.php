@@ -3,6 +3,23 @@
  * Command like Metatag writer for video files.
  */
 
+
+
+ if (isset($_SESSION['auth'])){
+    $_SESSION['expire'] = ALLOWED_INACTIVITY_TIME;
+}
+generate_csrf_token();
+check_remember_me();
+
+if(key_exists(basename(__THIS_FILE__,".php"),__AUTH_FUNCTION__)){
+    
+    __AUTH_FUNCTION__[basename(__THIS_FILE__,".php")]();
+} else {
+
+    check_verified();
+
+}
+
 $params['APP_DESCRIPTION'] = APP_DESCRIPTION;
 $params['APP_OWNER']       = APP_OWNER;
 $params['__URL_HOME__']    = __URL_HOME__;

@@ -55,7 +55,7 @@ class Template
     }
 */
 
-    public function __construct($template, $replacement_array = '')
+    public function template($template='', $replacement_array = '')
     {
         $template_file = __HTML_TEMPLATE__.'/'.$template.'.html';
 
@@ -69,6 +69,13 @@ class Template
             $this->html .= $html_text;
         }
         $html_text     = file_get_contents($template_file);
+        foreach (__TEMPLATE_CONSTANTS__ as $key) {
+            $value = constant($key);
+            $key = '%%'.strtoupper($key).'%%';
+            if (null != $value) {
+                $html_text = str_replace($key, $value, $html_text);
+            }
+        }
 
         if (is_array($replacement_array)) {
             foreach ($replacement_array as $key => $value) {
@@ -78,9 +85,9 @@ class Template
                     $html_text = str_replace($key, $value, $html_text);
                 }
             }
-
-            $html_text = preg_replace_callback('|(%%\w+%%)|', [$this, 'callback_replace'], $html_text);
         }
+
+        $html_text = preg_replace_callback('|(%%\w+%%)|', [$this, 'callback_replace'], $html_text);
 
         $html_text     = preg_replace_callback('/(##(\w+,?\w+)##)(.*)(##)/iU', [$this, 'callback_color'], $html_text);
         $html_text     = preg_replace_callback('/(!!(\w+,?\w+)!!)(.*)(!!)/iU', [$this, 'callback_badge'], $html_text);

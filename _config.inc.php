@@ -42,6 +42,7 @@ define('Db_TABLE_PREFIX', 'metatags_');
 define('__PHP_ASSETS_DIR__', APP_PATH.'/assets');
 define('__PHP_INC_CLASS_DIR__', __PHP_ASSETS_DIR__.'/class');
 define('__PHP_INC_CORE_DIR__', __PHP_ASSETS_DIR__.'/core');
+define('__PHP_INC_INCLUDE_DIR__', __PHP_ASSETS_DIR__.'/includes');
 
 define('__COMPOSER_LIB__', '/home/bjorn/library/vendor');
 set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
@@ -85,8 +86,17 @@ define('__LAYOUT_URL__', __URL_HOME__.'/assets/layouts/');
 
 define('__MAX_PAGES_TO_SHOW__', 8);
 
+define('ALLOWED_INACTIVITY_TIME', time()+1*60);
+
+define('__TEMPLATE_CONSTANTS__', [
+'__LAYOUT_URL__',
+'__URL_HOME__',
+]);
+
 require_once __PHP_ASSETS_DIR__.'/header.inc.php';
 require_once __PHP_ASSETS_DIR__.'/settings.inc.php';
 
 require_once __PHP_ASSETS_DIR__.'/variables.php';
 define('__METADB_HASH', __CACHE_DIR.'/'.$cache_directory.'/metadb.hash');
+
+

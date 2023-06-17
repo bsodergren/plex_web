@@ -17,9 +17,14 @@ foreach ($const['user'] as $name => $value) {
     } // end if
 } // end foreach
 
+global $_SESSION;
+
 foreach ($include_array as $required_file) {
     require_once $required_file;
 }
+
+
+
 
 $template        = new Template();
 
