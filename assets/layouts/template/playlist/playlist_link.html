@@ -1,3 +1,9 @@
-<li  class="list-group-item align-items-center fs-3">%%LIBRARY%% <a
-      href='playlist.php?playlist_id=%%PLAYLIST_ID%%'>%%PLAYLIST_NAME%%</a> 
-      <span class="badge bg-primary rounded-pill">%%PLAYLIST_COUNT%% videos</span> </li>
+<div class="row align-items-start w-50 p-1">
+      <div class="col">
+            <a class="btn btn-secondary  position-relative"
+                  href='playlist.php?playlist_id=%%PLAYLIST_ID%%'>%%PLAYLIST_NAME%%
+                  <span
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">%%PLAYLIST_COUNT%%</span>
+            </a>
+      </div>
+</div>

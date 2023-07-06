@@ -20,7 +20,12 @@ function gridview($results)
 
             // 'Duration' => videoDuration($results[$i]['duration']),
         ];
-
+        if($results[$i]['substudio'] != '') {
+            $substudio = $results[$i]['substudio'];
+        }
+        if($results[$i]['studio'] != '') {
+            $studio = $results[$i]['studio'];
+        }
         $videoInfo = '';
         foreach ($file_info as $field => $value) {
             // if ($value != '') {
@@ -47,6 +52,7 @@ function gridview($results)
     $row_html        =  process_template('grid/row', ['ROW_CELLS' => $cell_html]);
 
     $table_body_html = process_template('grid/table', [
+        'HIDDEN_STUDIO_NAME' => add_hidden("studio", $studio) . add_hidden('substudio',$substudio),
         'ROWS_HTML' => $row_html,
         'INFO_NAME' => $_SESSION['sort'],
     ]);

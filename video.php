@@ -6,16 +6,24 @@
 require_once '_config.inc.php';
 $carousel_js                        = '';
 
-$id                                 = $_REQUEST['id'];
+if(key_exists('id',$_REQUEST)) {
+    $id                                 = $_REQUEST['id'];
+    $cols                               = ['playlist_id'];
+    $db->where('playlist_videos', $id);
+}
 
-$cols                               = ['playlist_id'];
-$db->where('playlist_videos', $id);
+if(key_exists('playlist_id',$_REQUEST)) {
+    $id                                 = $_REQUEST['playlist_id'];
+    $cols                               = ['playlist_id'];
+    $db->where('playlist_id', $id);  
+}
 
-$playlist_result                    = $db->getOne(Db_TABLE_PLAYLIST, null, $cols);
 
+$playlist_result                    = $db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
 if (is_array($playlist_result)) {
     if (array_key_exists('playlist_id', $playlist_result)) {
         $playlist_id = $playlist_result['playlist_id'];
+        $id = $playlist_result['playlist_videos'];
     }
 }
 
@@ -30,7 +38,7 @@ $video_js_params['PLAYLIST_HEIGHT'] = 50;
 $video_js_params['PLAYLIST_WIDTH']  = 20;
 
 if (isset($playlist_id)) {
-    $sql                                = 'select f.thumbnail,f.filename,p.playlist_videos from '.Db_TABLE_FILEDB.' as f, '.Db_TABLE_PLAYLIST.' as p where (p.playlist_id = '.$playlist_id.' and p.playlist_videos = f.id);';
+    $sql                                = 'select f.thumbnail,f.filename,p.playlist_videos from '.Db_TABLE_FILEDB.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = '.$playlist_id.' and p.playlist_videos = f.id);';
     $results                            = $db->query($sql);
 
     for ($i = 0; $i < count($results); ++$i) {

@@ -94,9 +94,8 @@ else {
             $result = mysqli_stmt_get_result($stmt);
 
             if ($row = mysqli_fetch_assoc($result)) {
-
+              
                 $pwdCheck = password_verify($password, $row['password']);
-
                 if ($pwdCheck == false) {
 
                     $_SESSION['ERRORS']['wrongpassword'] = 'wrong password';

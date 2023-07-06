@@ -11,6 +11,7 @@
     'login' => 'check_logged_out',
     'register' => 'check_logged_out',
     'logout' => 'check_logged_in',
+    'reset' => 'check_logged_out',
     
  ]
 );

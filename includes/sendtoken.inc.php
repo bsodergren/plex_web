@@ -4,6 +4,14 @@ require_once '../_config.inc.php';
 
 check_logged_out();
 
+$json_url = '/home/bjorn/.config/passwords.json';
+$json = file_get_contents($json_url);
+$json_data = json_decode($json, true);
+
+define('GMAIL_USER', $json_data['username']);
+define('GMAIL_PWD', $json_data['password']);
+define('MAIL_USERNAME', GMAIL_USER);
+
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -31,14 +39,16 @@ if (isset($_POST['resentsend'])) {
     if (!verify_csrf_token()){
 
         $_SESSION['STATUS']['resentsend'] = 'Request could not be validated';
-        header("Location: ../");
+        header('Location: '. __URL_HOME__);
         exit();
     }
 
 
     $selector = bin2hex(random_bytes(8));
     $token = random_bytes(32);
-    $url = "localhost/loginsystem/reset-password/?selector=" . $selector . "&validator=" . bin2hex($token);
+    //$url = "localhost/loginsystem/reset-password/?selector=" . $selector . "&validator=" . bin2hex($token);
+    $url = __URL_HOME__.'/reset.php?selector='.$selector.'&validator='.bin2hex($token);
+
     $expires = 'DATE_ADD(NOW(), INTERVAL 1 HOUR)';
 
     $email = $_POST['email'];
@@ -48,7 +58,7 @@ if (isset($_POST['resentsend'])) {
     if (!mysqli_stmt_prepare($stmt, $sql)){
 
         $_SESSION['ERRORS']['sqlerror'] = 'SQL ERROR';
-        header("Location: ../");
+        header('Location: '. __URL_HOME__);
         exit();
     }
     else {
@@ -60,7 +70,7 @@ if (isset($_POST['resentsend'])) {
         if (mysqli_stmt_num_rows($stmt) == 0){
 
             $_SESSION['ERRORS']['emailerror'] = 'given email does not exist in our records';
-            header("Location: ../");
+            header('Location: '. __URL_HOME__);
             exit();
         }
     }
@@ -71,7 +81,7 @@ if (isset($_POST['resentsend'])) {
     if (!mysqli_stmt_prepare($stmt, $sql)) {
 
         $_SESSION['ERRORS']['sqlerror'] = 'SQL ERROR';
-        header("Location: ../");
+        header('Location: '. __URL_HOME__);
         exit();
     }
     else {
@@ -87,7 +97,7 @@ if (isset($_POST['resentsend'])) {
     if (!mysqli_stmt_prepare($stmt, $sql)) {
 
         $_SESSION['ERRORS']['sqlerror'] = 'SQL ERROR';
-        header("Location: ../");
+        header('Location: '. __URL_HOME__);
         exit();
     }
     else {
@@ -116,7 +126,7 @@ if (isset($_POST['resentsend'])) {
     $mail_variables['email'] = $email;
     $mail_variables['url'] = $url;
 
-    $message = file_get_contents("./template_passwordresetemail.php");
+    $message = file_get_contents("/home/bjorn/www/public_html/plex_web/includes/template_passwordresetemail.php");
 
     foreach($mail_variables as $key => $value) {
         
@@ -128,19 +138,19 @@ if (isset($_POST['resentsend'])) {
     try {
 
         $mail->isSMTP();
-        $mail->Host = MAIL_HOST;
+        $mail->Port = 465;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->SMTPAuth = true;
-        $mail->Username = MAIL_USERNAME;
-        $mail->Password = MAIL_PASSWORD;
-        $mail->SMTPSecure = MAIL_ENCRYPTION;
-        $mail->Port = MAIL_PORT;
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Username = GMAIL_USER;
+        $mail->Password = GMAIL_PWD;
 
         $mail->setFrom(MAIL_USERNAME, APP_NAME);
         $mail->addAddress($to, APP_NAME);
 
         $mail->isHTML(true);
         $mail->Subject = $subject;
-        $mail->Body    = $message;
+        $mail->Body = $message;
 
         $mail->send();
     } 
@@ -152,16 +162,17 @@ if (isset($_POST['resentsend'])) {
         // for development use
         // $_SESSION['STATUS']['mailstatus'] = 'message could not be sent. ERROR: ' . $mail->ErrorInfo;
 
-        header("Location: ../");
+        header('Location: '. __URL_HOME__);
         exit();
     }
 
     $_SESSION['STATUS']['resentsend'] = 'verification email sent';
-    header("Location: ../");
+    header('Location: '. __URL_HOME__);
     exit();
 }
 else {
 
-    header("Location: ../");
+    header('Location: '. __URL_HOME__);
     exit();
 }
+

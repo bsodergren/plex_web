@@ -2,34 +2,28 @@
 /**
  * Command like Metatag writer for video files.
  */
-
-
-
- if (isset($_SESSION['auth'])){
+if (isset($_SESSION['auth'])) {
     $_SESSION['expire'] = ALLOWED_INACTIVITY_TIME;
 }
 generate_csrf_token();
 check_remember_me();
 
-if(key_exists(basename(__THIS_FILE__,".php"),__AUTH_FUNCTION__)){
-    
-    __AUTH_FUNCTION__[basename(__THIS_FILE__,".php")]();
+if (array_key_exists(basename(__THIS_FILE__, '.php'), __AUTH_FUNCTION__)) {
+    __AUTH_FUNCTION__[basename(__THIS_FILE__, '.php')]();
 } else {
-
     check_verified();
-
 }
 
 $params['APP_DESCRIPTION'] = APP_DESCRIPTION;
-$params['APP_OWNER']       = APP_OWNER;
-$params['__URL_HOME__']    = __URL_HOME__;
-$params['TITLE']           = TITLE;
-$params['APP_NAME']        = APP_NAME;
-$params['__LAYOUT_URL__']  = __LAYOUT_URL__;
+$params['APP_OWNER'] = APP_OWNER;
+$params['__URL_HOME__'] = __URL_HOME__;
+$params['TITLE'] = TITLE;
+$params['APP_NAME'] = APP_NAME;
+$params['__LAYOUT_URL__'] = __LAYOUT_URL__;
 
-$params['SCRIPTS']         = process_template('base/header/header_scripts', $params);
+$params['SCRIPTS'] = process_template('base/header/header_scripts', $params);
 
-if (!defined('VIDEOINFO')) {
+if (! defined('VIDEOINFO')) {
     $params['SCRIPTS'] .= process_template('base/header/header_filelist', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
 } else {
     $params['SCRIPTS'] .= process_template('base/header/header_videoinfo', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
@@ -41,8 +35,8 @@ if (defined('GRID_VIEW')) {
 
 echo process_template('base/header/header', $params);
 
-if (!defined('NONAVBAR')) {
-    $crumbs['Home']        = 'home.php';
+if (! defined('NONAVBAR')) {
+    $crumbs['Home'] = 'home.php';
     $crumbs[$in_directory] = '';
 
     if (array_key_exists('studio', $_REQUEST)) {

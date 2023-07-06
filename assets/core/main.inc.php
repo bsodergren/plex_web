@@ -2,15 +2,14 @@
 /**
  * Command like Metatag writer for video files.
  */
-
 function videoDuration($duration)
 {
-    $seconds         = round($duration / 1000);
-    $hours           =   round($seconds / 3600);
+    $seconds = round($duration / 1000);
+    $hours = round($seconds / 3600);
 
-    $minutes         =   round((float) $seconds / 60 % 60);
+    $minutes = round((float) $seconds / 60 % 60);
 
-    $sec             =  round($seconds % 60);
+    $sec = round($seconds % 60);
 
     return sprintf('%02d:%02d:%02d', $hours, $minutes, $sec);
 }
@@ -27,8 +26,8 @@ function proccess_settings($redirect_url = '')
                 break;
 
             case str_contains($key, 'setting_'):
-                $pcs                   = explode('_', $key);
-                $field                 = $pcs[1];
+                $pcs = explode('_', $key);
+                $field = $pcs[1];
                 $new_settiings[$field] = $value;
                 break;
 
@@ -36,18 +35,18 @@ function proccess_settings($redirect_url = '')
                 break;
 
             case array_key_exists($key, __SETTINGS__):
-                $data                  = ['value' => $value];
+                $data = ['value' => $value];
                 $db->where('name', $key);
                 $db->update(Db_TABLE_SETTINGS, $data);
                 break;
 
             case str_contains($key, '-ADD'):
-                if (!array_key_exists(str_replace('-ADD', '', $key), __SETTINGS__)) {
-                    if (!array_key_exists(str_replace('-NAME', '', $key), __SETTINGS__)) {
+                if (! array_key_exists(str_replace('-ADD', '', $key), __SETTINGS__)) {
+                    if (! array_key_exists(str_replace('-NAME', '', $key), __SETTINGS__)) {
                         $key_name = str_replace('-ADD', '-NAME', $key);
                         if (array_key_exists($key_name, $_POST)) {
-                            $value                     = $_POST[$key_name];
-                            $field                     = str_replace('-NAME', '', $key_name);
+                            $value = $_POST[$key_name];
+                            $field = str_replace('-NAME', '', $key_name);
                             $transfer_settings[$field] = [
                                 'value' => $value,
                                 'type'  => 'text',
@@ -80,16 +79,16 @@ function proccess_settings($redirect_url = '')
 
 function display_size($bytes, $precision = 2)
 {
-    $units  = [
+    $units = [
         'B',
         'KB',
         'MB',
         'GB',
         'TB',
     ];
-    $bytes  = max($bytes, 0);
-    $pow    = floor(($bytes ? log($bytes) : 0) / log(1024));
-    $pow    = min($pow, count($units) - 1);
+    $bytes = max($bytes, 0);
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+    $pow = min($pow, count($units) - 1);
     $bytes /= (1 << (10 * $pow));
 
     return round($bytes, $precision).'<span class="fs-0-8 bold">'.$units[$pow].'</span>';
@@ -151,7 +150,7 @@ function uri_SQLQuery($request_array)
             $query_string = 'IS NULL';
         }
         // exit;
-        $uri_array[]  = "$key $query_string";
+        $uri_array[] = "$key $query_string";
     } // end foreach
 
     if (count($uri_array) >= 1) {
@@ -160,10 +159,10 @@ function uri_SQLQuery($request_array)
 
     if (array_key_exists('sort', $request_array) && array_key_exists('direction', $request_array)) {
         if (false === matcharray($sort_types, $request_array['sort'])) {
-            $_SESSION['sort']      = 'title';
+            $_SESSION['sort'] = 'title';
             $request_array['sort'] = 'title';
         }
-        $sort_query        = $request_array['sort'].' '.$request_array['direction'];
+        $sort_query = $request_array['sort'].' '.$request_array['direction'];
         $uri_query['sort'] = $sort_query;
     }
 
@@ -188,14 +187,14 @@ function urlQuerystring($input_string, $exclude = '')
 
 function uri_String($request_array, $start = '?')
 {
+    // dd($request_array);
     foreach ($request_array as $key => $value) {
         if ('direction' == $key) {
             continue;
         }
-
         if (is_array($value)) {
             foreach ($value as $n => $v) {
-                $uri_array[] = $key.'[]='.urlencode($v);
+                $uri_array[] = $key.'='.urlencode($v);
             }
         } else {
             $uri_array[] = $key.'='.urlencode($value);
@@ -213,8 +212,7 @@ function uri_String($request_array, $start = '?')
 
 function process_form($redirect_url = '')
 {
-    global $_POST;
-
+    global $_POST,$_REQUEST;
     if (isset($_POST['submit'])) {
         if ('GenreConfigSave' == $_POST['submit']) {
             return GenreConfigSave($_POST, $redirect_url);
@@ -254,10 +252,10 @@ function GenreConfigSave($data_array, $redirect, $timeout = 0)
             $value = trim($val);
 
             if ('' != $value) {
-                $pcs        = explode('_', $key);
+                $pcs = explode('_', $key);
 
-                $id         = $pcs[1];
-                $field      = $pcs[0];
+                $id = $pcs[1];
+                $field = $pcs[0];
                 if ('null' == $value) {
                     $set = '`'.$field.'`= NULL ';
                 } else {
@@ -268,7 +266,7 @@ function GenreConfigSave($data_array, $redirect, $timeout = 0)
                     $set = '`'.$field.'` = '.$value;
                 }
 
-                $sql        = 'UPDATE '.Db_TABLE_GENRE.'  SET '.$set.' WHERE id = '.$id;
+                $sql = 'UPDATE '.Db_TABLE_GENRE.'  SET '.$set.' WHERE id = '.$id;
                 $db->query($sql);
             }
         }
@@ -289,17 +287,17 @@ function saveStudioConfig($data_array, $redirect, $timeout = 0)
             $value = trim($val);
 
             if ('' != $value) {
-                $pcs        = explode('_', $key);
+                $pcs = explode('_', $key);
 
-                $id         = $pcs[1];
-                $field      = $pcs[0];
-                $set        = '`'.$field.'` = "'.$value.'"';
+                $id = $pcs[1];
+                $field = $pcs[0];
+                $set = '`'.$field.'` = "'.$value.'"';
 
                 if ('null' == $value) {
                     $set = '`'.$field.'`= NULL ';
                 }
 
-                $sql        = 'UPDATE '.Db_TABLE_STUDIO.'  SET '.$set.' WHERE id = '.$id;
+                $sql = 'UPDATE '.Db_TABLE_STUDIO.'  SET '.$set.' WHERE id = '.$id;
                 $db->query($sql);
             }
         }
@@ -315,25 +313,39 @@ function createPlaylist($data_array, $redirect = false, $timeout = 0)
     global $db;
     global $_SESSION;
 
-    $data        = [
-        'name'  => 'User Playlist',
+    $name = 'User Playlist';
+    $studio = [];
+
+    if(key_exists('substudio',$data_array) ){
+        $name = '';
+        $studio[]  = $data_array['substudio'];
+    }
+    if(key_exists('studio',$data_array) ){
+        $name = '';
+        $studio[]  = $data_array['studio'];
+    }
+
+    $data = [
+        'name'  => $name . implode(" ",$studio),
         'genre' => 'mmf,mff',
+        'library'         => $_SESSION['library'],
     ];
-    $playlist_id = $db->insert(Db_TABLE_PLAYLIST_INFO, $data);
+    $playlist_id = $db->insert(Db_TABLE_PLAYLIST_DATA, $data);
 
     foreach ($data_array['playlist'] as $_ => $id) {
         $data = [
             'playlist_id'     => $playlist_id,
             'playlist_videos' => $id,
             'library'         => $_SESSION['library'],
+            
         ];
-        $db->insert(Db_TABLE_PLAYLIST, $data);
+        $db->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
     }
 
     return $playlist_id;
 }
 
-function myHeader($redirect = __URL_PATH__.'/home.php')
+function myHeader($redirect = __URL_PATH__.'/home.php',$timeout = 0)
 {
     header('refresh:0;url='.$redirect);
 } // end myHeader()
@@ -348,7 +360,7 @@ function print_r2($val)
 function getReferer()
 {
     global $_SERVER;
-    $url   = $_SERVER['HTTP_REFERER'];
+    $url = $_SERVER['HTTP_REFERER'];
     $parts = parse_url($url);
 
     return $parts['path'];

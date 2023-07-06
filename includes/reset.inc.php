@@ -39,7 +39,7 @@ if (isset($_POST['resetsubmit'])) {
     if (empty($selector) || empty($validator)) {
 
         $_SESSION['STATUS']['resentsend'] = 'invalid token, please use new reset email';
-        header("Location: ../");
+        header('Location: '. __URL_HOME__);
         exit();
     }
     if (empty($password) || empty($passwordRepeat)) {
@@ -73,7 +73,7 @@ if (isset($_POST['resetsubmit'])) {
         if (!($row = mysqli_fetch_assoc($results))) {
 
             $_SESSION['STATUS']['resentsend'] = 'non-existent or expired token, please use new reset email';
-            header("Location: ../");
+            header('Location: '. __URL_HOME__);
             exit();
         }
         else {
@@ -84,7 +84,7 @@ if (isset($_POST['resetsubmit'])) {
             if ($tokenCheck === false) {
 
                 $_SESSION['STATUS']['resentsend'] = 'invalid token, please use new reset email';
-                header("Location: ../");
+                header('Location: '. __URL_HOME__);
                 exit();
             }
             else if ($tokenCheck === true) {
@@ -109,7 +109,7 @@ if (isset($_POST['resetsubmit'])) {
                     if (!$row = mysqli_fetch_assoc($results)) {
                         
                         $_SESSION['STATUS']['resentsend'] = 'invalid token, please use new reset email';
-                        header("Location: ../");
+                        header('Location: '. __URL_HOME__);
                         exit();
                     }
                     else {
@@ -142,7 +142,7 @@ if (isset($_POST['resetsubmit'])) {
                                 mysqli_stmt_execute($stmt);
                                 
                                 $_SESSION['STATUS']['loginstatus'] = 'password updated, please log in';
-                                header ("Location: ../../login/");
+                                header('Location: '. __URL_HOME__);
                             }
                         }
                     }
@@ -153,6 +153,6 @@ if (isset($_POST['resetsubmit'])) {
 }
 else {
 
-    header("Location: ../");
+    header('Location: '. __URL_HOME__);
     exit();
 }
