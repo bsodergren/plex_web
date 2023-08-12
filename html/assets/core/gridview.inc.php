@@ -42,7 +42,7 @@ function gridview($results)
         $cell_html .= process_template(
             'grid/cell',
             [
-                'THUMBNAIL'   => $results[$i]['thumbnail'],
+                'THUMBNAIL'   => __URL_HOME__.$results[$i]['thumbnail'],
                 'ROW_ID'      => $results[$i]['id'],
                 'VIDEO_DATA'  => $videoInfo,
             ]

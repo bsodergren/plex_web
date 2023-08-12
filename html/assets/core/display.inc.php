@@ -74,7 +74,7 @@ function display_fileInfo($fileInfoArray, $total_files)
                     $params['THUMBNAIL_HTML'] .= process_template(
                         'filelist/file_thumbnail',
                         [
-                            'THUMBNAIL' => $value,
+                            'THUMBNAIL' => __URL_HOME__.$value,
                             'FILE_ID'   => $row_id,
                         ]
                     );

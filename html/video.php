@@ -32,7 +32,9 @@ $db->where('id', $id);
 $result                             = $db->getone(Db_TABLE_FILEDB, null, $cols);
 
 $title                              = $result['title'];
-$fullpath                           = str_replace('/home/bjorn/plex/XXX', '/videos', $result['fullpath']);
+$fullpath                           = str_replace(__PLEX_LIBRARY__, APP_HOME.'/videos', $result['fullpath']);
+
+
 $video_file                         = $fullpath.'/'.$result['filename'];
 $video_js_params['PLAYLIST_HEIGHT'] = 50;
 $video_js_params['PLAYLIST_WIDTH']  = 20;
