@@ -1,0 +1,70 @@
+
+<!-- </main> -->
+
+%%FOOT_NAVBAR%%
+
+</body>
+<script type="text/javascript">
+    const writeLog = function(msg) {
+        let date = new Date();
+        window.console.log(date.toISOString() + ' ' + msg);
+    };
+
+/*
+    jQuery(function($) {
+        let f = $('#formId');
+
+        let xhrOptions = {
+            url: f.attr('action'),
+            type: f.attr('method'),
+            data: {},
+            cache: false,
+            xhr: function() {
+                let xhr = $.ajaxSettings.xhr();
+                if ('undefined' === typeof xhr.upload.onload || null === xhr.upload.onload) {
+                    //override the upload.onload event, only if it has not already been
+                    xhr.upload.onload = function() {
+                        //onload is triggered immediately after the POST headers are sent to the recipient
+                        writeLog('Upload Completed - Ending Request');
+                        xhr.abort();
+                    };
+                }
+                return xhr;
+            },
+        };
+
+        f.on('submit', function(e) {
+            e.preventDefault();
+
+            let formData = f.serialize();
+
+            let redirect_url = document.getElementById(f[0][0].id).value;
+            writeLog(redirect_url);
+
+      
+            $.ajax($.extend(true, xhrOptions, {
+                data: formData
+            })).done(function(responseText) {
+                //this is never triggered since the request is aborted
+                writeLog('Success');
+                writeLog(responseText);
+            }).fail(function(jqxhr) {
+                writeLog('Request ' + (jqxhr.readyState !== 4 ? 'Aborted' : 'Failed'));
+
+                location.href = redirect_url;
+            });
+
+
+
+            return false;
+        });
+    });
+    */
+</script>
+
+
+
+%%_JAVASCRIPT_HTML%%
+
+</html>
+
