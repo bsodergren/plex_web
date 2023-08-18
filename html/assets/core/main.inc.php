@@ -5,7 +5,7 @@
 function videoDuration($duration)
 {
     $seconds = round($duration / 1000);
-    $hours = round($seconds / 3600);
+    $hours = floor($seconds / 3600);
 
     $minutes = round((float) $seconds / 60 % 60);
 
