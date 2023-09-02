@@ -42,7 +42,7 @@ function display_fileInfo($fileInfoArray, $total_files)
     }
     $params['ROW_ID']             = '';
     if (!defined('NONAVBAR')) {
-        $params['FILE_NAME']     = '<span onclick="popup(\'/plex_web/videoinfo.php?id='.$row_id.'\', \'fileinfo\',\'1000\',\'400\')">'.$params['FILE_NAME'].'</span>';
+        $params['FILE_NAME']     = '<span onclick="popup(\''.APP_HOME.'/videoinfo.php?id='.$row_id.'\', \'fileinfo\',\'1000\',\'400\')">'.$params['FILE_NAME'].'</span>';
 
         $params['VERTICAL_TEXT'] = process_template('filelist/file_vertical', ['ROW_ID' => '&nbsp;&nbsp;&nbsp;'.$result_number.' of '.$total_files]);
         $params['SEARCH_BUTTON'] = process_template('filelist/file_search', []);

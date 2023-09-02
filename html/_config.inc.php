@@ -7,10 +7,10 @@
 session_start();
 
 if (!defined('APP_AUTHENTICATION')) {
-    define('APP_AUTHENTICATION', true);
+    define('APP_AUTHENTICATION', false);
 }
 if (!defined('APP_HOME')) {
-    define('APP_HOME', '/plex_web');
+    define('APP_HOME', '/plex');
 }
 if (!defined('APP_PATH')) {
     define('APP_PATH', $_SERVER['CONTEXT_DOCUMENT_ROOT']);// . APP_HOME);
@@ -48,7 +48,7 @@ define('__COMPOSER_LIB__', APP_PATH.'/../vendor');
 set_include_path(get_include_path() . \PATH_SEPARATOR . __COMPOSER_LIB__);
 require_once __COMPOSER_LIB__ . '/autoload.php';
 
-define('__PLEX_LIBRARY__', '/home/bjorn/plex/XXX');
+define('__PLEX_LIBRARY__', '/home/plex/XXX');
 define('__CACHE_DIR', __PLEX_LIBRARY__ . '/.cache');
 
 define('__ERROR_LOG_DIRECTORY__', APP_PATH.'/logs');

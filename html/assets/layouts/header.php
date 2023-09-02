@@ -2,6 +2,9 @@
 /**
  * Command like Metatag writer for video files.
  */
+
+if (APP_AUTHENTICATION == true) {
+
 if (isset($_SESSION['auth'])) {
     $_SESSION['expire'] = ALLOWED_INACTIVITY_TIME;
 }
@@ -13,7 +16,9 @@ if (array_key_exists(basename(__THIS_FILE__, '.php'), __AUTH_FUNCTION__)) {
 } else {
     check_verified();
 }
-
+} else {
+    $_SESSION['auth'] = 'verified';
+}
 $params['APP_DESCRIPTION'] = APP_DESCRIPTION;
 $params['APP_OWNER'] = APP_OWNER;
 $params['__URL_HOME__'] = __URL_HOME__;

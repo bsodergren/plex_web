@@ -125,8 +125,7 @@ if (isset($_POST['resentsend'])) {
     $mail_variables['APP_NAME'] = APP_NAME;
     $mail_variables['email'] = $email;
     $mail_variables['url'] = $url;
-
-    $message = file_get_contents("/home/bjorn/www/public_html/plex_web/includes/template_passwordresetemail.php");
+    $message = file_get_contents("/home/bjorn/www/plex_web/html/includes/template_passwordresetemail.php");
 
     foreach($mail_variables as $key => $value) {
         
