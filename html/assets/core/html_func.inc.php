@@ -1,8 +1,11 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
+/**
+ * Command like Metatag writer for video files.
+ */
 function keyword_list($key, $list)
 {
     $link_array = [];
@@ -21,9 +24,7 @@ function keyword_list($key, $list)
         );
     }
 
-    $value      = implode('  ', $link_array);
-
-    return $value;
+    return implode('  ', $link_array);
 }
 
 function keyword_cloud($list, $field = 'keyword')
@@ -55,9 +56,7 @@ function keyword_cloud($list, $field = 'keyword')
     $tag_links  = implode('  ', $link_array);
     //  return $value;
 
-    $html_links = process_template('cloud/main', ['TAG_CLOUD_HTML' => $tag_links]);
-
-    return $html_links;
+    return process_template('cloud/main', ['TAG_CLOUD_HTML' => $tag_links]);
 }
 
 function process_template($template, $replacement_array = '')

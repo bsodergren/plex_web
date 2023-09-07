@@ -1,20 +1,16 @@
 <div style="width:320px" class="border p-2 categories-wrapper ">
     <div class="flex-shrink-0">
-
-
         <div class="custom-control custom-checkbox image-checkbox">
             <input type="checkbox" class="category-input custom-control-input" id="ck1a_%%ROW_ID%%" name="playlist[]"
                 value="%%ROW_ID%%">
             <label class="custom-control-label" for="ck1a_%%ROW_ID%%">
-                <img src="%%THUMBNAIL%%" alt="#" class="img-fluid"
-                    onerror="this.onerror=null;this.src='%%__URL_HOME__%%/images/default.jpg'"
-                    >
+                <img src="%%__URL_HOME__%%%%THUMBNAIL%%" alt="#" class="img-fluid"
+                    onerror="this.onerror=null;this.src='%%__URL_HOME__%%/images/default.jpg'">
             </label>
             <div onclick="popup('%%__URL_HOME__%%/video.php?id=%%ROW_ID%%', 'video')"
-             class="videoLink videoBadge badge">Video</div>
+                class="videoLink videoBadge badge">Video</div>
         </div>
-        <div class="container text-start" 
-        onclick="popup('%%__URL_HOME__%%/videoinfo.php?id=%%ROW_ID%%', 'fileinfo')">
+        <div class="container text-start" onclick="popup('%%__URL_HOME__%%/videoinfo.php?id=%%ROW_ID%%', 'fileinfo')">
             %%VIDEO_DATA%%
         </div>
     </div>

@@ -50,7 +50,7 @@ if (array_key_exists('action', $_REQUEST)) {
             $results = $db->query($sql);
         }
 
-        $form_url = 'playlist.php?playlist_id='.$playlist_id.'';
+        $form_url = __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
         echo  myHeader($form_url);
     }
 } else {
@@ -94,7 +94,6 @@ if (array_key_exists('action', $_REQUEST)) {
     } else {
         $sql = 'select f.thumbnail,f.id,d.name,d.genre,p.id as playlist_video_id from  '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_FILEDB.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = '.$playlist_id.' and p.playlist_videos = f.id and d.id = p.playlist_id);';
         $results = $db->query($sql);
-
         for ($i = 0; $i < count($results); $i++) {
             $cell_html .= process_template(
                 'playlist/cell',
@@ -106,7 +105,7 @@ if (array_key_exists('action', $_REQUEST)) {
             );
         }
 
-        $form_url = 'playlist.php?playlist_id='.$playlist_id.'';
+        $form_url = __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
         $form_action = add_hidden('playlist_id', $playlist_id);
 
         $table_body_html = process_template('playlist/table', [

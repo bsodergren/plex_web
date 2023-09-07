@@ -1,10 +1,10 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
-/*
+
 $fileHeaderComment = <<<'EOF'
-Command like Metatag writer for video files.
+plex web viewer
 EOF;
 
 return (new PhpCsFixer\Config())->setRules([
@@ -26,10 +26,10 @@ return (new PhpCsFixer\Config())->setRules([
     'header_comment'                                          => ['header' => $fileHeaderComment, 'comment_type' => 'PHPDoc', 'location' => 'after_open', 'separate' => 'bottom'],
     'modernize_strpos'                                        => true,
     'get_class_to_class_keyword'                              => true,
-    'braces' => [
-        'allow_single_line_closure' => true, 
+    'braces'                                                  => [
+        'allow_single_line_closure'                   => true,
         'position_after_functions_and_oop_constructs' => 'same'],
-    
+
     'binary_operator_spaces'                                  => [
         'operators' => [
             '=>'  => 'align_single_space_by_scope',
@@ -39,8 +39,9 @@ return (new PhpCsFixer\Config())->setRules([
     ],
 ])
     ->setRiskyAllowed(true)
-    ->setCacheFile('.php-cs-fixer.cache');
-*/
+    ->setCacheFile('.php-cs-fixer.cache')
+;
+/*
 
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
@@ -200,3 +201,4 @@ return (new Config)
     ->setRules($rules)
     ->setRiskyAllowed(true)
     ->setUsingCache(true);
+    */

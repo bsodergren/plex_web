@@ -1,8 +1,11 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
+/**
+ * plex web viewer.
+ */
 function chk_file($value, $command = 'delete', $options = '')
 {
     switch ($command) {
@@ -12,16 +15,18 @@ function chk_file($value, $command = 'delete', $options = '')
                     chk_file($options, 'delete');
                 }
 
-                logger("Renaming $value to $options");
+                logger("Renaming {$value} to {$options}");
                 rename($value, $options);
             }
+
             break;
 
         case 'delete':
             if (is_file($value)) {
-                logger("deleting $value");
+                logger("deleting {$value}");
                 unlink($value);
             }
+
             break;
     }
 }// end chk_file()

@@ -40,14 +40,18 @@ $video_js_params['PLAYLIST_HEIGHT'] = 50;
 $video_js_params['PLAYLIST_WIDTH']  = 20;
 
 if (isset($playlist_id)) {
-    $sql                                = 'select f.thumbnail,f.filename,p.playlist_videos from '.Db_TABLE_FILEDB.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = '.$playlist_id.' and p.playlist_videos = f.id);';
+    $sql                                = 'select f.thumbnail,f.filename,f.title,p.playlist_videos from '.Db_TABLE_FILEDB.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = '.$playlist_id.' and p.playlist_videos = f.id);';
     $results                            = $db->query($sql);
 
     for ($i = 0; $i < count($results); ++$i) {
-        $class = 'carousel-item ';
+        $class = '';
 
+        $title =  $results[$i]['title'];
+        if($results[$i]['title'] == "") {
+            $title =  $results[$i]['filename'];
+        }
         if ($id == $results[$i]['playlist_videos']) {
-            $class = 'carousel-item active';
+            $class = ' active';
         }
         $carousel_item .= process_template(
             'video/carousel_item',
@@ -55,14 +59,35 @@ if (isset($playlist_id)) {
                 'THUMBNAIL'    => $results[$i]['thumbnail'],
                 'CLASS_ACTIVE' => $class,
                 'VIDEO_ID'     => $results[$i]['playlist_videos'],
+                'TITLE'  => $title,
             ]
         );
+        if($class == ' active'){
+            $active_title = $title;
+            $indx = $i + 1;
+            if (key_exists($indx, $results)) {
+                $next_video_id =  $results[$indx]['playlist_videos'];
+            } else {
+                $next_video_id =  $results[0]['playlist_videos'];
+            }
+
+            $pndx = $i - 1;
+            if (key_exists($pndx, $results)) {
+                $prev_video_id =  $results[$pndx]['playlist_videos'];
+            } else {
+                $prev_video_id =  $results[0]['playlist_videos'];
+            }
+
+
+        }
     }
 
     $carousel_js                        = process_template('video/carousel_js', []);
     $carousel                           = process_template('video/carousel', ['CAROUSEL_INNER_HTML' => $carousel_item]);
     $video_js_params['PLAYLIST_HEIGHT'] = 145;
     $video_js_params['PLAYLIST_WIDTH']  = 50;
+    $video_js_params['NEXT_VIDEO_ID']  = $next_video_id;
+    $video_js_params['PREV_VIDEO_ID']  = $prev_video_id;
 }
 
 $params                             = [
@@ -70,7 +95,7 @@ $params                             = [
  'VIDEO_ID'       => $id,
  '__LAYOUT_URL__' => __LAYOUT_URL__,
  'VIDEO_URL'      => $video_file,
- 'VIDEO_TITLE'    => $title,
+ 'VIDEO_TITLE'    => $active_title,
  'CAROUSEL_HTML'  => $carousel,
  'CAROUSEL_JS'    => $carousel_js,
  'VIDEO_JS'       => process_template('video/video_js', $video_js_params),

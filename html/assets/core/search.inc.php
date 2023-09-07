@@ -1,8 +1,11 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
+/**
+ * Command like Metatag writer for video files.
+ */
 function searchDBVideos($request)
 {
     $group        = 'OR';
@@ -15,11 +18,14 @@ function searchDBVideos($request)
     }
 
     if (array_key_exists('searchField', $request)) {
-        foreach ($request['searchField'] as $_ => $f) {
-            $request[$f] = explode(',', $request['query']);
+        if (is_array($request['searchField'])) {
+            foreach ($request['searchField'] as $_ => $f) {
+                $request[$f] = explode(',', $request['query']);
+            }
+        } else {
+            $request[$request['searchField']][] = $request['query'];
         }
     }
-
     foreach ($request as $field => $value) {
         switch ($field) {
             case 'studio':
@@ -39,12 +45,12 @@ function searchDBVideos($request)
 
                     $where[]       = ' ( '.implode(' '.$group.' ', $whereArray).') ';
                 }
+
                 break;
         }
     }
 
     $where_clause = ' ( '.implode(' '.$group.' ', $where).') ';
-
     return [$where_clause, $words];
 }
 
@@ -83,9 +89,9 @@ function file_search($location = '', $fileregex = '', $class_options = '', $maxd
         sort($matchedfiles);
 
         return $matchedfiles;
-    } else {
-        return [];
     }
+
+    return [];
 }
 
 function file_get_num_results($array, $options_arg)
@@ -94,7 +100,7 @@ function file_get_num_results($array, $options_arg)
         verbose_output('Max number of results '.$options_arg->options['max']);
 
         return $options_arg->options['max'];
-    } else {
-        return count($array);
     }
+
+    return count($array);
 }

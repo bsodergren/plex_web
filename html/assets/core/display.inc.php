@@ -1,8 +1,11 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
+/**
+ * Command like Metatag writer for video files.
+ */
 function display_fileRow($params, $field, $value, $class)
 {
     $params['FIELD_ROW_HTML'] .= process_template(
@@ -56,6 +59,7 @@ function display_fileInfo($fileInfoArray, $total_files)
     foreach ($fileInfoArray as $key => $value) {
         $class       = (0 == $x % 2) ? 'blueTable-tr-even' : '';
         $value_array = [];
+
         switch ($key) {
             // case 'favorite':
             case 'title':
@@ -63,12 +67,15 @@ function display_fileInfo($fileInfoArray, $total_files)
                 $value  = str_replace(__PLEX_LIBRARY__.'/', '', $value);
                 $params = display_fileRow($params, ucfirst($key), $value, $class);
                 ++$x;
+
                 break;
 
             case 'added':
                 $params = display_fileRow($params, ucfirst($key), $value, $class);
                 ++$x;
+
                 break;
+
             case 'thumbnail':
                 if (__SHOW_THUMBNAILS__ == true) {
                     $params['THUMBNAIL_HTML'] .= process_template(
@@ -79,11 +86,13 @@ function display_fileInfo($fileInfoArray, $total_files)
                         ]
                     );
                 }
+
                 break;
 
             case 'duration':
                 $params = display_fileRow($params, 'Duration', videoDuration($value), $class);
                 ++$x;
+
                 break;
 
             case 'studio':
@@ -107,7 +116,9 @@ function display_fileInfo($fileInfoArray, $total_files)
                     $params = display_fileRow($params, ucfirst($key), $value, $class);
                     ++$x;
                 }
+
                 break;
+
             case 'artist':
             case 'genre':
             case 'keyword':
@@ -118,6 +129,7 @@ function display_fileInfo($fileInfoArray, $total_files)
                     $params = display_fileRow($params, ucfirst($key), $value, $class);
                     ++$x;
                 }
+
                 break;
 
             case 'video_info':
@@ -128,15 +140,19 @@ function display_fileInfo($fileInfoArray, $total_files)
                     switch ($infokey) {
                         case 'filesize':
                             $infoParams[strtoupper($infokey)] =  display_size($fileInfoValue);
+
                             break;
 
                         case 'bit_rate':
                             $infoParams[strtoupper($infokey)] =  byte_convert($fileInfoValue);
+
                             break;
+
                         case 'width':
                         case 'height':
                         case 'format':
                             $infoParams[strtoupper($infokey)] = $fileInfoValue;
+
                             break;
                     }
                 }
@@ -148,6 +164,7 @@ function display_fileInfo($fileInfoArray, $total_files)
                 ), $class);
 
                 ++$x;
+
                 break;
         } // end switch
     } // end foreach

@@ -25,9 +25,11 @@ foreach ($result as $k => $v) {
 
     $new_names = array_merge($new_names, $artist);
 }
+
+$new_names       = array_map('trim', $new_names);
 $new_names       = array_map('strtolower', $new_names);
 
-$new_names       = array_map('ucfirst', $new_names);
+$new_names       = array_map('ucwords', $new_names);
 $new_names       = array_unique($new_names);
 sort($new_names);
 print_r2($new_names);

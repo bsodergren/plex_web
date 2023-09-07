@@ -37,7 +37,9 @@ if (isset($uri)) {
 $redirect_string = 'search.php'.$request_key;
 
 if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
+
     $res            = searchDBVideos($_REQUEST);
+
     $where          = $res[0];
     $queryArr       = $res[1];
     foreach ($queryArr as $key => $value) {
@@ -45,6 +47,14 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     }
 
     $pageObj        = new pageinate($where, $currentPage, $urlPattern);
+
+    $sql            = query_builder('id', $where, false, $order_sort);
+    $results        = $db->query($sql);
+    foreach($results as $n => $row){
+        $playlist_ids[] = $row['id'];
+    }
+
+    $playlist_ids_str = implode(",",$playlist_ids);
 
     $sql            = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
     $results        = $db->query($sql);
@@ -71,6 +81,8 @@ foreach ($search_types as $key) {
 }
 
 $body            = process_template('search/search', [
+    'HIDDEN_IDS'    => add_hidden("playlist",$playlist_ids_str),
+    'HIDDEN_STUDIO'    => add_hidden("studio",$_REQUEST['query']." Search"),
     'SEARCH_RESULTS' => $search_results,
     'CHECKBOXES'     => $checkboxes,
     'HTML_MSG'       => $html_msg,

@@ -1,6 +1,6 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
 if (!function_exists('str_starts_with')) {
@@ -59,9 +59,7 @@ function truncateString($string, $maxlength, $ellipsis = false)
 
     $maxlength       = $maxlength - $ellipsis_length - $color_length;
 
-    $string          = trim(mb_substr($string, 0, $maxlength)).$ellipsis.$color_close;
-
-    return $string;
+    return trim(mb_substr($string, 0, $maxlength)).$ellipsis.$color_close;
 }
 
 function translate($string = '')
