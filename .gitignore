@@ -4,7 +4,6 @@ logs/**
 assets/lib/composer.lock
 assets/layouts/misc/**
 node_modules/*
-composer.json
 composer.lock
 vendor/**
 tags
