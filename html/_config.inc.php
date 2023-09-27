@@ -3,10 +3,10 @@
  * plex web viewer
  */
 
+use Camoo\Config\Config;
 use Dotenv\Dotenv;
 
 session_start();
-define('__MEDIA_APP_ROOT__', 'D:\\development\\Mediatag');
 
 // HOME=D:\\development\\plex_web
 // APP_PATH D:\\development\\plex_web
@@ -17,7 +17,9 @@ set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
 
 require_once __COMPOSER_LIB__.'/autoload.php';
 
-$dotenv    = Dotenv::createImmutable(__MEDIA_APP_ROOT__);
+$config    = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
+
+$dotenv    = Dotenv::createImmutable($config['path']['mediatag']);
 $dotenv->load();
 
 if (!defined('APP_AUTHENTICATION')) {

@@ -16,3 +16,4 @@ php_errors.log
 html/images/plex/*
 html/videos
 .env
+config.ini

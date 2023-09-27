@@ -44,7 +44,8 @@
         "nesbot/carbon": "^2.66",
         "jasongrimes/paginator": "~1.0",
         "symfony/security-bundle": "^6.3",
-        "delight-im/auth": "^8.3"
+        "delight-im/auth": "^8.3",
+        "camoo/config": "^1.0"
         
     },
 	   "require-dev": {
