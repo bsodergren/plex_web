@@ -1,10 +1,10 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
-$db       = new MysqliDb('localhost', __SQL_USER__, __SQL_PASSWD__, __SQL_DB__);
-$conn = mysqli_connect('localhost', __SQL_USER__, __SQL_PASSWD__, __SQL_DB__);
+$db       = new MysqliDb('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+$conn     = mysqli_connect('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
 dbObject::autoload('models');
 

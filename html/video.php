@@ -3,8 +3,14 @@
  * plex web viewer
  */
 
+use Nette\Utils\FileSystem;
+
+/**
+ * plex web viewer.
+ */
+
 require_once '_config.inc.php';
-$carousel_js                        = '';
+$carousel_js                               = '';
 
 if (key_exists('id', $_REQUEST)) {
     $id                                 = $_REQUEST['id'];
@@ -18,7 +24,7 @@ if (key_exists('playlist_id', $_REQUEST)) {
     $db->where('playlist_id', $id);
 }
 
-$playlist_result                    = $db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
+$playlist_result                           = $db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
 if (is_array($playlist_result)) {
     if (array_key_exists('playlist_id', $playlist_result)) {
         $playlist_id = $playlist_result['playlist_id'];
@@ -26,16 +32,16 @@ if (is_array($playlist_result)) {
     }
 }
 
-$cols                               = ['filename', 'fullpath', 'title'];
+$cols                                      = ['filename', 'fullpath', 'title'];
 $db->where('id', $id);
-$result                             = $db->getone(Db_TABLE_FILEDB, null, $cols);
+$result                                    = $db->getone(Db_TABLE_FILEDB, null, $cols);
 
-$title                              = $result['title'];
-$fullpath                           = str_replace(__PLEX_LIBRARY__, APP_HOME.'/videos', $result['fullpath']);
+$title                                     = $result['title'];
+$fullpath                                  = str_replace(__PLEX_LIBRARY__, APP_HOME.'/videos', $result['fullpath']);
 
-$video_file                         = $fullpath.'/'.$result['filename'];
-$video_js_params['PLAYLIST_HEIGHT'] = 50;
-$video_js_params['PLAYLIST_WIDTH']  = 20;
+$video_file                                = $fullpath.'/'.$result['filename'];
+$video_js_params['PLAYLIST_HEIGHT']        = 50;
+$video_js_params['PLAYLIST_WIDTH']         = 20;
 
 if (isset($playlist_id)) {
     $sql                                = 'select f.thumbnail,f.filename,f.title,p.playlist_videos from '.Db_TABLE_FILEDB.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = '.$playlist_id.' and p.playlist_videos = f.id);';
@@ -85,8 +91,9 @@ if (isset($playlist_id)) {
     $video_js_params['NEXT_VIDEO_ID']   = $next_video_id;
     $video_js_params['PREV_VIDEO_ID']   = $prev_video_id;
 }
+$video_file                                = FileSystem::unixSlashes(FileSystem::normalizePath($video_file));
 
-$params                             = [
+$params                                    = [
     'PAGE_TITLE'     => $result['title'],
     'VIDEO_ID'       => $id,
     '__LAYOUT_URL__' => __LAYOUT_URL__,

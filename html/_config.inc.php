@@ -3,39 +3,40 @@
  * plex web viewer
  */
 
+use Dotenv\Dotenv;
+
 session_start();
+define('__MEDIA_APP_ROOT__', 'D:\\development\\Mediatag');
+
+// HOME=D:\\development\\plex_web
+// APP_PATH D:\\development\\plex_web
+
+define('__ROOT_DIRECTORY__', dirname(realpath($_SERVER['SCRIPT_FILENAME']), 2));
+define('__COMPOSER_LIB__', __ROOT_DIRECTORY__.'/vendor');
+set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
+
+require_once __COMPOSER_LIB__.'/autoload.php';
+
+$dotenv    = Dotenv::createImmutable(__MEDIA_APP_ROOT__);
+$dotenv->load();
 
 if (!defined('APP_AUTHENTICATION')) {
-    define('APP_AUTHENTICATION', true);
+    define('APP_AUTHENTICATION', false);
 }
-if (!defined('APP_HOME')) {
-    define('APP_HOME', '/plex');
-}
-if (!defined('APP_PATH')) {
-    define('APP_PATH', $_SERVER['CONTEXT_DOCUMENT_ROOT']); // . APP_HOME);
-}
+define('APP_HOME', '');
+
+define('APP_PATH', $_SERVER['CONTEXT_DOCUMENT_ROOT']); // . APP_HOME);
 
 define('__THIS_FILE__', basename($_SERVER['SCRIPT_FILENAME']));
 define('__THIS_PAGE__', basename($_SERVER['SCRIPT_FILENAME'], '.php'));
 
-require_once '/home/bjorn/mysql_pwd.php';
-define('__SQL_DB__', 'pornhub_2');
+define('DB_DATABASE', $_ENV['DB_DATABASE']);
 
-if (!defined('DB_DATABASE')) {
-    define('DB_DATABASE', __SQL_DB__);
-}
-if (!defined('DB_HOST')) {
-    define('DB_HOST', '127.0.0.1');
-}
-if (!defined('DB_USERNAME')) {
-    define('DB_USERNAME', __SQL_USER__);
-}
-if (!defined('DB_PASSWORD')) {
-    define('DB_PASSWORD', __SQL_PASSWD__);
-}
-if (!defined('DB_PORT')) {
-    define('DB_PORT', '');
-}
+define('DB_HOST', $_ENV['DB_HOST']);
+
+define('DB_USERNAME', $_ENV['DB_USER']);
+
+define('DB_PASSWORD', $_ENV['DB_PASS']);
 
 define('Db_TABLE_PREFIX', 'metatags_');
 define('__PHP_ASSETS_DIR__', APP_PATH.'/assets');
@@ -43,12 +44,7 @@ define('__PHP_INC_CLASS_DIR__', __PHP_ASSETS_DIR__.'/class');
 define('__PHP_INC_CORE_DIR__', __PHP_ASSETS_DIR__.'/core');
 define('__PHP_INC_INCLUDE_DIR__', __PHP_ASSETS_DIR__.'/includes');
 
-define('__COMPOSER_LIB__', APP_PATH.'/../vendor');
-set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
-
-require_once __COMPOSER_LIB__.'/autoload.php';
-
-define('__PLEX_LIBRARY__', '/home/bjorn/plex/XXX');
+define('__PLEX_LIBRARY__', $_ENV['PLEX_HOME']);
 define('__CACHE_DIR', __PLEX_LIBRARY__.'/.cache');
 
 define('__ERROR_LOG_DIRECTORY__', APP_PATH.'/logs');

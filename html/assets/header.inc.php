@@ -1,6 +1,6 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
 use Nette\Utils\Strings;
@@ -8,6 +8,7 @@ use Nette\Utils\Strings;
 require_once __PHP_INC_CLASS_DIR__.'/Roboloader.class.php';
 
 $const           = get_defined_constants(true);
+$query_string    = '';
 
 $include_array   = [];
 
@@ -22,9 +23,6 @@ global $_SESSION;
 foreach ($include_array as $required_file) {
     require_once $required_file;
 }
-
-
-
 
 $template        = new Template();
 
