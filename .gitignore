@@ -17,3 +17,4 @@ html/images/plex/*
 html/videos
 .env
 config.ini
+.vscode/settings.json

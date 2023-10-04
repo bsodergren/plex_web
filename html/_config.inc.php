@@ -25,9 +25,8 @@ $dotenv->load();
 if (!defined('APP_AUTHENTICATION')) {
     define('APP_AUTHENTICATION', false);
 }
-define('APP_HOME', '');
-
-define('APP_PATH', $_SERVER['CONTEXT_DOCUMENT_ROOT']); // . APP_HOME);
+define('APP_HOME', $config['path']['APP_HOME']);
+define('APP_PATH', $_SERVER['CONTEXT_DOCUMENT_ROOT'].APP_HOME);
 
 define('__THIS_FILE__', basename($_SERVER['SCRIPT_FILENAME']));
 define('__THIS_PAGE__', basename($_SERVER['SCRIPT_FILENAME'], '.php'));
@@ -41,7 +40,7 @@ define('DB_USERNAME', $_ENV['DB_USER']);
 define('DB_PASSWORD', $_ENV['DB_PASS']);
 
 define('Db_TABLE_PREFIX', 'metatags_');
-define('__PHP_ASSETS_DIR__', APP_PATH.'/assets');
+define('__PHP_ASSETS_DIR__', $_ENV['WEB_HOME'].'/assets');
 define('__PHP_INC_CLASS_DIR__', __PHP_ASSETS_DIR__.'/class');
 define('__PHP_INC_CORE_DIR__', __PHP_ASSETS_DIR__.'/core');
 define('__PHP_INC_INCLUDE_DIR__', __PHP_ASSETS_DIR__.'/includes');
