@@ -18,3 +18,5 @@ html/videos
 .env
 config.ini
 .vscode/settings.json
+.vscode/
+.vscode/*

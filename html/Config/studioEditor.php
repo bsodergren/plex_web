@@ -4,9 +4,10 @@ require_once '../_config.inc.php';
 
 define('TITLE', 'Home');
 
-$pageObj          = new ConfigPagenate("library = 'Channels'", $currentPage, $urlPattern);
+$pageObj          = new ConfigPagenate("library = 'Studios'", $currentPage, $urlPattern);
 
-$sql              = 'SELECT * FROM '.Db_TABLE_STUDIO." WHERE library = 'Channels' ORDER BY studio,path,name";
+$sql              = 'SELECT * FROM '.Db_TABLE_STUDIO." WHERE library = 'Studios' ORDER BY studio,path,name";
+
 $limit            = $pageObj->itemsPerPage;
 $offset           = $pageObj->offset;
 
@@ -19,17 +20,18 @@ if (false != $limit && false != $offset) {
 
 $results          = $db->query($sql);
 
-$redirect_string  = '../'.__THIS_FILE__;
+$redirect_string  = __THIS_FILE__;
 
 include __LAYOUT_HEADER__;
 
 ?>
 
 <main role="main" class="container">
-    <a href="<?php echo '../'.__THIS_FILE__; ?>">back</a>
-    <br>
-    <br>
-    <?php
+	<a
+		href="<?php echo '../'.__THIS_FILE__; ?>">back</a>
+	<br>
+	<br>
+	<?php
 
     $hidden       = add_hidden('library', 'Amateur');
 $hidden .= add_hidden('submit', 'addNewEntry');
@@ -40,10 +42,10 @@ $studio_add_entry = process_template('config/studio/studio_row', ['STUDIO_ID' =>
 $studio_add_entry =  process_template('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' =>  $studio_add_entry]);
 $studio_main_html =  process_template('config/studio/form_wrapper', ['HIDDEN' => $hidden, 'STUDIO_FORM_HTML' => $studio_add_entry]);
 
-$hidden           = add_hidden('library', 'Channels');
+$hidden           = add_hidden('library', 'Studios');
 $hidden .= add_hidden('submit', 'addNewEntry');
 $hidden .= add_hidden('redirect', $redirect_string);
-$lib_name         = 'Add Channels entry';
+$lib_name         = 'Add Studios entry';
 
 $studio_add_entry = process_template('config/studio/studio_row', ['STUDIO_ID' => 'studio', 'PATH_ID' => 'path', 'STUDIO_NAME' => '<input type="text" name="name">']);
 $studio_add_entry =  process_template('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' =>  $studio_add_entry]);
@@ -101,3 +103,4 @@ echo process_template(
 define('__SHOW_PAGES__', 1);
 
 require __LAYOUT_FOOTER__;
+?>

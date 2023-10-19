@@ -10,8 +10,8 @@ session_start();
 
 // HOME=D:\\development\\plex_web
 // APP_PATH D:\\development\\plex_web
+define('__ROOT_DIRECTORY__', dirname(realpath($_SERVER['CONTEXT_DOCUMENT_ROOT']), 1));
 
-define('__ROOT_DIRECTORY__', dirname(realpath($_SERVER['SCRIPT_FILENAME']), 2));
 define('__COMPOSER_LIB__', __ROOT_DIRECTORY__.'/vendor');
 set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
 
