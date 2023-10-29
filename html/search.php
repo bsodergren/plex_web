@@ -1,11 +1,11 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
 require_once '_config.inc.php';
 define('GRID_VIEW', true);
-
+$playlist_ids    = [];
 define('TITLE', 'search');
 
 if (isset($_REQUEST['genre'])) {
@@ -37,32 +37,31 @@ if (isset($uri)) {
 $redirect_string = 'search.php'.$request_key;
 
 if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
+    $res              = searchDBVideos($_REQUEST);
 
-    $res            = searchDBVideos($_REQUEST);
-
-    $where          = $res[0];
-    $queryArr       = $res[1];
+    $where            = $res[0];
+    $queryArr         = $res[1];
     foreach ($queryArr as $key => $value) {
         $keys[] = $key.'  !!primary,5!!'.$value.'!! ';
     }
 
-    $pageObj        = new pageinate($where, $currentPage, $urlPattern);
+    $pageObj          = new pageinate($where, $currentPage, $urlPattern);
 
-    $sql            = query_builder('id', $where, false, $order_sort);
-    $results        = $db->query($sql);
-    foreach($results as $n => $row){
+    $sql              = query_builder('id', $where, false, $order_sort);
+    $results          = $db->query($sql);
+    foreach ($results as $n => $row) {
         $playlist_ids[] = $row['id'];
     }
 
-    $playlist_ids_str = implode(",",$playlist_ids);
+    $playlist_ids_str = implode(',', $playlist_ids);
 
-    $sql            = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
-    $results        = $db->query($sql);
+    $sql              = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
+    $results          = $db->query($sql);
 
-    $msg            = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);
-    $html_msg       = process_template('search/search_msg', ['SQL' => str_replace('WHERE', 'WHERE<br>', $sql),   'MSG' => $msg]);
+    $msg              = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);
+    $html_msg         = process_template('search/search_msg', ['SQL' => str_replace('WHERE', 'WHERE<br>', $sql), 'MSG' => $msg]);
     //  $html_msg .= process_template("search/search_msg", [   'MSG' => $sql] );
-    $search_results =  gridview($results);
+    $search_results   =  gridview($results);
 
     //   $search_results =     display_filelist($results, '', $page_array);
 }
@@ -81,11 +80,11 @@ foreach ($search_types as $key) {
 }
 
 $body            = process_template('search/search', [
-    'HIDDEN_IDS'    => add_hidden("playlist",$playlist_ids_str),
-    'HIDDEN_STUDIO'    => add_hidden("studio",$_REQUEST['query']." Search"),
-    'SEARCH_RESULTS' => $search_results,
-    'CHECKBOXES'     => $checkboxes,
-    'HTML_MSG'       => $html_msg,
+    'HIDDEN_IDS'       => add_hidden('playlist', $playlist_ids_str),
+    'HIDDEN_STUDIO'    => add_hidden('studio', $_REQUEST['query'].' Search'),
+    'SEARCH_RESULTS'   => $search_results,
+    'CHECKBOXES'       => $checkboxes,
+    'HTML_MSG'         => $html_msg,
 ]);
 
 include_once __LAYOUT_HEADER__;
