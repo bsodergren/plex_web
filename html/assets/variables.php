@@ -132,6 +132,12 @@ $navigation_link_array = [
         'secure' => false,
         'js'     => false,
     ],
+    'artist'     => [
+        'url'    => 'artist.php',
+        'text'   => 'Artist Page',
+        'secure' => false,
+        'js'     => false,
+    ],
     'settings'         => [
         'url'    => 'settings.php',
         'text'   => 'Settings',

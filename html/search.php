@@ -59,6 +59,8 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     $results          = $db->query($sql);
 
     $msg              = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);
+    $msg = strtolower(str_replace('-', '.', $msg));
+    $msg = strtolower(str_replace('_', ' ', $msg));
     $html_msg         = process_template('search/search_msg', ['SQL' => str_replace('WHERE', 'WHERE<br>', $sql), 'MSG' => $msg]);
     //  $html_msg .= process_template("search/search_msg", [   'MSG' => $sql] );
     $search_results   =  gridview($results);
