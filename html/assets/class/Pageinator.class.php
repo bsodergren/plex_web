@@ -30,12 +30,12 @@ class pageinate extends Paginator
         $this->currentPage   = $currentPage;
 
         if (false == $query) {
-           // $query = $this->library_query;
+            $query = $this->library_query;
         } else {
-            $db->where($query);
-           // $query = $query;.' and '.$this->library_query;
+            
+           $query = $query .' and '.$this->library_query;
         }
-   
+   $db->where($query);
 
         $this->results       = $db->withTotalCount()->get(Db_TABLE_FILEDB);
         $this->totalRecords  = $db->totalCount;
