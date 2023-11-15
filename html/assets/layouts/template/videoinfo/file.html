@@ -1,16 +1,20 @@
 <div class="blueTable">
     <div class="row">
-        <div class="col blueTable-th blueTable-thead blueTable-thead-th text-center">
-            %%FILE_NAME%%
+        <div class="col blueTable-th blueTable-thead blueTable-thead-th text-left" style="max-width: 65px;"></div>
+        <div class="col blueTable-th blueTable-thead blueTable-thead-th text-left">%%FILE_NAME%%</div>
+        <div class="col blueTable-th blueTable-thead blueTable-thead-th text-end ">
+            <input class="form-check-input  align-text-top" type="checkbox" value="yes" id="flexCheckDefault"
+                name="doFile">
+            <button class="blueTable-thead blueTable-thead-th" id='Closebtn' type="submit" name="submit"
+                value="delete_file">Delete</button>
         </div>
     </div>
+
     <div class="row">
-        %%VERTICAL_TEXT%%
-
         %%THUMBNAIL_HTML%%
-
         <div class="col">
             %%FIELD_ROW_HTML%%
         </div>
     </div>
+
 </div>

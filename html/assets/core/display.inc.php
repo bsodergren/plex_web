@@ -49,6 +49,7 @@ function display_fileInfo($fileInfoArray, $total_files,$template_base = 'filelis
         $params['VERTICAL_TEXT'] = process_template($template_base.'/file_vertical',  ['ROW_ID' => '&nbsp;&nbsp;&nbsp;'.$result_number.' of '.$total_files]);
         $params['SEARCH_BUTTON'] = process_template($template_base.'/file_search', []);
     }
+
     $params['DELETE_ID']          = 'delete_'.$row_id;
     $params['FILE_NAME_ID']       = $row_id.'_filename';
     $params['FULL_PATH']          = $row_fullpath;
