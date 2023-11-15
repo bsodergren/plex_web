@@ -2,12 +2,13 @@
 .box-shadow {
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
-
-
-footer {
-    margin-top: 100px;
+body{
+    margin-bottom: 60px;
 }
-
+footer {
+    margin-top: 150px;
+}
+/* 
 #myFooter {
     background-color: #3c3d41;
     color: white;
@@ -79,4 +80,4 @@ footer {
     margin: 0 auto;
     margin-top: 10px;
     line-height: 25px;
-}
+} */

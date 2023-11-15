@@ -1,19 +1,17 @@
 <?php
 /**
- * Command like Metatag writer for video files.
- *
+ * plex web viewer
  */
 
-
- define('__AUTH_FUNCTION__',
- [
-    'verify' => 'check_logged_in_butnot_verified',
-    'login' => 'check_logged_out',
-    'register' => 'check_logged_out',
-    'logout' => 'check_logged_in',
-    'reset' => 'check_logged_out',
-    
- ]
+define(
+    '__AUTH_FUNCTION__',
+    [
+        'verify'   => 'check_logged_in_butnot_verified',
+        'login'    => 'check_logged_out',
+        'register' => 'check_logged_out',
+        'logout'   => 'check_logged_in',
+        'reset'    => 'check_logged_out',
+    ]
 );
 
 $sort_types            = [
@@ -25,16 +23,17 @@ $sort_types            = [
     'duration',
     'added',
     'genre',
+    'filesize',
 ];
 
-$login_link_array = [
+$login_link_array      = [
     'login'             => [
         'url'    => 'login.php',
         'text'   => 'login',
         'secure' => false,
         'js'     => false,
     ],
-/*    'register'             => [
+    /*    'register'             => [
         'url'    => 'register.php',
         'text'   => 'register',
         'secure' => false,
@@ -42,7 +41,6 @@ $login_link_array = [
     ],
     */
 ];
-
 
 $navigation_link_array = [
     /*
@@ -66,27 +64,32 @@ $navigation_link_array = [
     ],
 */
 
-    'home'             => [
+    'home'              => [
         'url'    => 'home.php',
         'text'   => 'Home',
         'secure' => false,
         'js'     => false,
     ],
-
-    'studioEditor'     => [
+    'artistEditor'      => [
+        'url'    => 'Config/artistEditor.php',
+        'text'   => 'Config artists',
+        'secure' => false,
+        'js'     => false,
+    ],
+    'studioEditor'      => [
         'url'    => 'Config/studioEditor.php',
         'text'   => 'Config Studio',
         'secure' => false,
         'js'     => false,
     ],
-    'genreEditor'      => [
+    'genreEditor'       => [
         'url'    => 'Config/genreEditor.php',
         'text'   => 'Config Genre',
         'secure' => false,
         'js'     => false,
     ],
 
-    'search'           => [
+    'search'            => [
         'url'    => 'search.php',
         'text'   => 'Search',
         'secure' => false,
@@ -99,14 +102,14 @@ $navigation_link_array = [
         'js'     => false,
     ],
     */
-    'gridview'         => [
+    'gridview'          => [
         'url'    => 'gridview.php',
         'text'   => 'Grid Display',
         'secure' => false,
         'js'     => false,
         'studio' => true,
     ],
-    'playlist'         => [
+    'playlist'          => [
         'url'    => 'playlist.php',
         'text'   => 'Playlist Display',
         'secure' => false,
@@ -126,30 +129,30 @@ $navigation_link_array = [
         'js'     => false,
     ],
     */
-    'tag'              => [
+    'tag'               => [
         'url'    => 'tags.php',
         'text'   => 'Tags',
         'secure' => false,
         'js'     => false,
     ],
-    'artist'     => [
+    'artist'            => [
         'url'    => 'artist.php',
         'text'   => 'Artist Page',
         'secure' => false,
         'js'     => false,
     ],
-    'settings'         => [
+    'settings'          => [
         'url'    => 'settings.php',
         'text'   => 'Settings',
         'secure' => false,
         'js'     => false,
     ],
-    'logout'           => [
+    'logout'            => [
         'url'    => 'logout.php',
         'text'   => 'Log Out',
         'secure' => true,
-//        'js'     => ' onclick="logout();"',
-'js' => false,
+        //        'js'     => ' onclick="logout();"',
+        'js'     => false,
     ],
 ];
 

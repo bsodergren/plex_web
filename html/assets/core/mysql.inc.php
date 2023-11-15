@@ -10,7 +10,7 @@ function query_builder($fields = 'select', $where = false, $group = false, $orde
 {
     global $_SESSION;
     $conditional = false;
-    $field_list  = ' id, video_key,filename,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added ,fullpath,library';
+    $field_list  = ' id, video_key,filename,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added ,fullpath,library,filesize';
 
     if ('select' == $fields) {
         $conditional = true;

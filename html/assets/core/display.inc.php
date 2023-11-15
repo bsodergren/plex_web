@@ -6,10 +6,10 @@
 /**
  * Command like Metatag writer for video files.
  */
-function display_fileRow($params, $field, $value, $class)
+function display_fileRow($params, $field, $value, $class, $template_base = 'filelist')
 {
     $params['FIELD_ROW_HTML'] .= process_template(
-        'filelist/file_row',
+        $template_base.'/file_row',
         [
             'FIELD'     => $field,
             'VALUE'     => $value,
@@ -20,11 +20,10 @@ function display_fileRow($params, $field, $value, $class)
     return $params;
 }
 
-function display_fileInfo($fileInfoArray, $total_files)
+function display_fileInfo($fileInfoArray, $total_files,$template_base = 'filelist')
 {
     global $db;
     $table_body_html              = [];
-
     $x                            = 0;
     $row_id                       = $fileInfoArray['id'];
     // $row_filename = $row_id.":".$row['filename'];
@@ -36,8 +35,7 @@ function display_fileInfo($fileInfoArray, $total_files)
         $result_number = $fileInfoArray['result_number'];
     }
 
-    if ($total_files >= 1) {
-    }
+  
 
     $params['FILE_NAME']          = $row_filename;
     if ($fileInfoArray['title']) {
@@ -45,10 +43,11 @@ function display_fileInfo($fileInfoArray, $total_files)
     }
     $params['ROW_ID']             = '';
     if (!defined('NONAVBAR')) {
-        $params['FILE_NAME']     = '<span onclick="popup(\''.APP_HOME.'/videoinfo.php?id='.$row_id.'\', \'fileinfo\',\'1000\',\'400\')">'.$params['FILE_NAME'].'</span>';
 
-        $params['VERTICAL_TEXT'] = process_template('filelist/file_vertical', ['ROW_ID' => '&nbsp;&nbsp;&nbsp;'.$result_number.' of '.$total_files]);
-        $params['SEARCH_BUTTON'] = process_template('filelist/file_search', []);
+        $params['FILE_NAME']     =  process_template($template_base.'/popup_js',  ['APP_HOME'=>APP_HOME,'ROW_ID' => $row_id,'FILE_NAME'=>$params['FILE_NAME']]);
+
+        $params['VERTICAL_TEXT'] = process_template($template_base.'/file_vertical',  ['ROW_ID' => '&nbsp;&nbsp;&nbsp;'.$result_number.' of '.$total_files]);
+        $params['SEARCH_BUTTON'] = process_template($template_base.'/file_search', []);
     }
     $params['DELETE_ID']          = 'delete_'.$row_id;
     $params['FILE_NAME_ID']       = $row_id.'_filename';
@@ -65,13 +64,13 @@ function display_fileInfo($fileInfoArray, $total_files)
             case 'title':
             case 'fullpath':
                 $value  = str_replace(__PLEX_LIBRARY__.'/', '', $value);
-                $params = display_fileRow($params, ucfirst($key), $value, $class);
+                $params = display_fileRow($params, ucfirst($key), $value, $class, $template_base);
                 ++$x;
 
                 break;
 
             case 'added':
-                $params = display_fileRow($params, ucfirst($key), $value, $class);
+                $params = display_fileRow($params, ucfirst($key), $value, $class, $template_base);
                 ++$x;
 
                 break;
@@ -79,7 +78,7 @@ function display_fileInfo($fileInfoArray, $total_files)
             case 'thumbnail':
                 if (__SHOW_THUMBNAILS__ == true) {
                     $params['THUMBNAIL_HTML'] .= process_template(
-                        'filelist/file_thumbnail',
+                        $template_base.'/file_thumbnail',
                         [
                             'THUMBNAIL' => __URL_HOME__.$value,
                             'FILE_ID'   => $row_id,
@@ -90,7 +89,7 @@ function display_fileInfo($fileInfoArray, $total_files)
                 break;
 
             case 'duration':
-                $params = display_fileRow($params, 'Duration', videoDuration($value), $class);
+                $params = display_fileRow($params, 'Duration', videoDuration($value), $class, $template_base);
                 ++$x;
 
                 break;
@@ -101,23 +100,24 @@ function display_fileInfo($fileInfoArray, $total_files)
                     if (!defined('NONAVBAR')) {
                         $value = keyword_list($key, $value);
 
-                        /*
-                                                $value = process_template(
-                                                    "filelist/search_link",
-                                                    [
-                                                        'KEY' => $key,
-                                                        'QUERY' => urlencode($value),
-                                                        'URL_TEXT' => $value
-                                                    ]
-                                                );
-                                                */
+                        
+                                                // $value = process_template(
+                                                //     "filelist/search_link",
+                                                //     [
+                                                //         'KEY' => $key,
+                                                //         'QUERY' => urlencode($value),
+                                                //         'URL_TEXT' => $value
+                                                //     ]
+                                                // );
+                                                
                     }
 
-                    $params = display_fileRow($params, ucfirst($key), $value, $class);
+                    $params = display_fileRow($params, ucfirst($key), $value, $class, $template_base);
                     ++$x;
                 }
 
                 break;
+         
 
             case 'artist':
             case 'genre':
@@ -126,22 +126,22 @@ function display_fileInfo($fileInfoArray, $total_files)
                     if (!defined('NONAVBAR')) {
                         $value = keyword_list($key, $value);
                     }
-                    $params = display_fileRow($params, ucfirst($key), $value, $class);
+                    $params = display_fileRow($params, ucfirst($key), $value, $class, $template_base);
                     ++$x;
                 }
 
                 break;
-
+                case 'filesize':
+                    $params = display_fileRow($params, ucfirst($key), display_size($value), $class, $template_base);
+                    ++$x;
+                    break;
             case 'video_info':
                 // if (defined('NONAVBAR')) {
                 foreach ($value as $infokey => $fileInfoValue) {
                     //    $class = ($x % 2 == 0) ? 'blueTable-tr-even' : '';
                     //    $value_array = [];
                     switch ($infokey) {
-                        case 'filesize':
-                            $infoParams[strtoupper($infokey)] =  display_size($fileInfoValue);
-
-                            break;
+                  
 
                         case 'bit_rate':
                             $infoParams[strtoupper($infokey)] =  byte_convert($fileInfoValue);
@@ -159,16 +159,16 @@ function display_fileInfo($fileInfoArray, $total_files)
                 // $infoParams['ALT_CLASS'] =  $class;
 
                 $params = display_fileRow($params, '', process_template(
-                    'filelist/file_videoinfo',
+                    $template_base.'/file_videoinfo',
                     $infoParams
-                ), $class);
+                ), $class, $template_base);
 
                 ++$x;
 
                 break;
         } // end switch
     } // end foreach
-    $table_body_html['filecards'] = process_template('filelist/file', $params);
+    $table_body_html['filecards'] = process_template($template_base.'/file', $params);
     if (!defined('NONAVBAR')) {
         $tag_list           = '';
         $sql                = 'SELECT tag_name FROM tags WHERE file_id = '.$row_id;
@@ -192,7 +192,7 @@ function display_fileInfo($fileInfoArray, $total_files)
     return $table_body_html;
 }
 
-function display_videoInfo($row)
+function display_videoInfo($row, $template_base = 'filelist')
 {
     global $db;
     global $hidden_fields;
@@ -203,9 +203,9 @@ function display_videoInfo($row)
 
     $row_id          = $row['id'];
 
-    $table_body      = display_fileInfo($row, $total_files);
+    $table_body      = display_fileInfo($row,  $total_files,$template_base);
     $js_html .= $table_body['js'];
-    $table_html .= process_template('filelist/file_form_wrapper', [
+    $table_html .= process_template($template_base.'/file_form_wrapper', [
         'FILE_ID'         => $row_id,
         'FILE_TABLE'      => $table_body['filecards'],
         'REDIRECT_STRING' => $redirect_string,
@@ -213,18 +213,18 @@ function display_videoInfo($row)
         'HIDDEN_INPUT'    => $hidden_fields,
     ]);
 
-    $javascript_html = process_template(
-        'filelist/list_js',
-        [
-            '__LAYOUT_URL__' => __LAYOUT_URL__,
-            'JS_TAG_HTML'    => $js_html,
-        ]
-    );
+    // $javascript_html = process_template(
+    //     $template_base.'/list_js',
+    //     [
+    //         '__LAYOUT_URL__' => __LAYOUT_URL__,
+    //         'JS_TAG_HTML'    => $js_html,
+    //     ]
+    // );
 
-    return $table_html.$javascript_html;
+    return $table_html;//.$javascript_html;
 }
 
-function display_filelist($results, $option = '', $page_array = [])
+function display_filelist($results, $option = '', $page_array = [], $template_base = 'filelist')
 {
     global $db;
     global $hidden_fields;
@@ -253,9 +253,9 @@ function display_filelist($results, $option = '', $page_array = [])
             $row['video_info'] = $videoInfo[0];
         }
 
-        $table_body = display_fileInfo($row, $total_files);
+        $table_body = display_fileInfo($row, $total_files, $template_base);
         $js_html .= $table_body['js'];
-        $table_html .= process_template('filelist/file_form_wrapper', [
+        $table_html .= process_template($template_base.'/file_form_wrapper', [
             'FILE_ID'         => $row_id,
             'FILE_TABLE'      => $table_body['filecards'],
             'REDIRECT_STRING' => $redirect_string,
@@ -264,15 +264,15 @@ function display_filelist($results, $option = '', $page_array = [])
         ]);
     } // end foreach
 
-    $javascript_html = process_template(
-        'filelist/list_js',
-        [
-            '__LAYOUT_URL__' => __LAYOUT_URL__,
-            'JS_TAG_HTML'    => $js_html,
-        ]
-    );
+    // $javascript_html = process_template(
+    //     $template_base.'/list_js',
+    //     [
+    //         '__LAYOUT_URL__' => __LAYOUT_URL__,
+    //         'JS_TAG_HTML'    => $js_html,
+    //     ]
+    // );
 
-    return $table_html.$javascript_html;
+    return $table_html;//.$javascript_html;
 } // end display_filelist()
 
 function hidden_Field($name, $value)

@@ -25,7 +25,8 @@ $videoInfo = $db->get(Db_TABLE_FILEDB, null, $cols);
 
 require __LAYOUT_HEADER__;
 
-$body      = display_filelist($videoInfo);
+$body      = display_filelist($videoInfo,null,null,'videoinfo');
+$delete_html         = process_template('videoinfo/delete_form', ['HIDDEN' => add_hidden('id', $id),]);
 
-template::echo('filelist/videoinfo', ['BODY' => $body]);
+template::echo('videoinfo/videoinfo', ['BODY' => $body,'DELETE_HTML'=>$delete_html]);
 require __LAYOUT_FOOTER__;

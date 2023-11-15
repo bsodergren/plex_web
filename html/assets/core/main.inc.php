@@ -226,13 +226,23 @@ function process_form($redirect_url = '')
 
             exit;
         }
+        if ('ArtistConfigSave' == $_POST['submit']) {
+            return ArtistConfigSave($_POST, $redirect_url);
+
+            exit;
+        }
 
         if ('StudioConfigSave' == $_POST['submit']) {
             return saveStudioConfig($_POST, $redirect_url);
 
             exit;
         }
+        if ('delete_file' == $_POST['submit']) {
+            return deleteFile($_POST);
 
+            exit;
+        }
+        
         if (str_starts_with($_POST['submit'], 'Playlist')) {
             createPlaylist($_POST, $redirect_url);
             myHeader();
@@ -292,6 +302,42 @@ function GenreConfigSave($data_array, $redirect, $timeout = 0)
         return JavaRefresh($redirect, $timeout);
     }
 }
+
+
+function ArtistConfigSave($data_array, $redirect, $timeout = 0)
+{
+    global $db;
+
+    $__output = '';
+    foreach ($data_array as $key => $val) {
+        if (true == str_contains($key, '_')) {
+            $value = trim($val);
+
+            if ('' != $value) {
+                $pcs   = explode('_', $key);
+
+                $id    = $pcs[1];
+                $field = $pcs[0];
+                if ('null' == $value) {
+                    $set = '`'.$field.'`= NULL ';
+                } else {
+                    if ('hide' != $field) {
+                        $value = '"'.$value.'"';
+                    }
+
+                    $set = '`'.$field.'` = '.$value;
+                }
+
+                $sql   = 'UPDATE '.Db_TABLE_ARTISTS.'  SET '.$set.' WHERE id = '.$id;
+                $db->query($sql);
+            }
+        }
+    }
+    if (false != $redirect) {
+        return JavaRefresh($redirect, $timeout);
+    }
+}
+
 
 function saveStudioConfig($data_array, $redirect, $timeout = 0)
 {

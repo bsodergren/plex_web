@@ -108,7 +108,7 @@ $url_array       = [
     'sort_types'   => [
         'Studio'       => 'studio',
         'Sub Studio'   => 'substudio',
-
+        'File size' => 'filesize',
         'Artist'       => 'artist',
         'Title'        => 'title',
         'Filename'     => 'filename',

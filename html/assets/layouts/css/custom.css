@@ -17,6 +17,9 @@
 }
 
 
+body {
+    margin-bottom: 60px;
+}
 
 .blueTable-td,
 .blueTable-th {
@@ -106,6 +109,11 @@ table.blueTable thead th:first-child {
 }
 
 .navbar.second-navbar {
+    margin-top: 60px;
+    z-index: 1
+}
+
+.navbar.pagenate-navbar {
     margin-top: 60px;
     z-index: 1
 }
