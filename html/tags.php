@@ -2,6 +2,7 @@
 /**
  * Command like Metatag writer for video files.
  */
+define('__TAG_CAT_CLASS__','border border-1 border-dark mx-2 ');
 
 require_once '_config.inc.php';
 
@@ -26,14 +27,18 @@ if (isset($uri)) {
 $redirect_string = 'search.php'.$request_key;
 $field           = 'genre';
 
-$sql             = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val
- FROM metatags_filedb INNER JOIN (SELECT 0 digit UNION ALL SELECT
- 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
- ON LENGTH(REPLACE(".$field.", ',' , '')) <= LENGTH(".$field.")-n.digit WHERE library = '".$_SESSION['library']."' ORDER BY `val` ASC";
-$results         = $db->query($sql);
+
 
 include_once __LAYOUT_HEADER__;
 
-template::echo('base/page', ['BODY' => keyword_cloud($results, $field)]);
+define('__TAG_CAT_CLASS__','border border-1 border-black');
+
+$html = process_template('cloud/main', 
+[
+    'TAG_CAT_CLASS' => __TAG_CAT_CLASS__,
+    'TAG_CLOUD_HTML' => keyword_cloud('genre'),
+    'TAG_CLOUD_KEYWORD' => keyword_cloud('keyword')
+]);
+template::echo('base/page', ['BODY' => $html ]);
 
 include_once __LAYOUT_FOOTER__;

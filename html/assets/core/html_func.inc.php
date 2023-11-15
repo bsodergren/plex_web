@@ -27,9 +27,16 @@ function keyword_list($key, $list)
     return implode('  ', $link_array);
 }
 
-function keyword_cloud($list, $field = 'keyword')
+function keyword_cloud($field = 'keyword')
 {
-    $tag_links  = '';
+    global $db;
+    global $_SESSION;
+    $sql             = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val
+ FROM metatags_filedb INNER JOIN (SELECT 0 digit UNION ALL SELECT
+ 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
+ ON LENGTH(REPLACE(".$field.", ',' , '')) <= LENGTH(".$field.")-n.digit WHERE library = '".$_SESSION['library']."' ORDER BY `val` ASC";
+    $list            = $db->query($sql);
+    $tag_links       = '';
 
     if (is_array($list)) {
         foreach ($list as $key => $keyword) {
@@ -39,24 +46,35 @@ function keyword_cloud($list, $field = 'keyword')
         $list_array = explode(',', $list);
     }
 
-    $search_url = 'search.php?field='.$field.'&query=';
+    // $search_url = 'search.php?field='.$field.'&query=';
 
     foreach ($list_array as $k => $keyword) {
+        $letter       = substr($keyword, 0, 1);
+        if (!isset($last_letter)) {
+            $last_letter = $letter;
+        }
+        if ($letter != $last_letter) {
+            $last_letter  = $letter;
+            $link_array[] = '</div>    <div class="'.__TAG_CAT_CLASS__.' ">';
+            
+
+        }
+
         $link_array[] = process_template(
-            'filelist/search_link',
+            'cloud/tag',
             [
                 'KEY'      => $field,
                 'QUERY'    => urlencode($keyword),
                 'URL_TEXT' => $keyword,
-                'CLASS'    => ' class="badge fs-6 blueTable-thead" ',
+                'CLASS'    => ' badge fs-6 blueTable-thead ',
             ]
         );
     }
 
-    $tag_links  = implode('  ', $link_array);
+    $tag_links       = implode('  ', $link_array);
     //  return $value;
 
-    return process_template('cloud/main', ['TAG_CLOUD_HTML' => $tag_links]);
+    return $tag_links;
 }
 
 function process_template($template, $replacement_array = '')

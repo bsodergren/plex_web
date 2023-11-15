@@ -9,9 +9,22 @@
 function gridview($results)
 {
     global $_SESSION;
-
+    global $db;
+    $sql = 'select * from '.Db_TABLE_PLAYLIST_DATA.';';
+    $playlists = $db->query($sql);
+    foreach($playlists as $p){
+        $playlist_html .= process_template(
+            'grid/playlist_link',
+            [
+                'PL_NAME'   => $p['name'],
+                'PL_ID'      => $p['id'],
+                'VIDEO_DATA'  => 'VIDEO_ID',
+            ]
+        );
+        
+    }
     $r               = 0;
-
+   
     for ($i = 0; $i < count($results); ++$i) {
         
         $file_info = [
@@ -47,6 +60,7 @@ function gridview($results)
         $cell_html .= process_template(
             'grid/cell',
             [
+                'PLAYLIST_LINKS' => str_replace('VIDEO_ID',$results[$i]['id'],  $playlist_html ),
                 'THUMBNAIL'   => $results[$i]['thumbnail'],
                 'ROW_ID'      => $results[$i]['id'],
                 'VIDEO_DATA'  => $videoInfo,

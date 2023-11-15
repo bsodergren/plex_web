@@ -181,9 +181,9 @@ function urlQuerystring($input_string, $exclude = '')
 
     if ('' != $input_string) {
         parse_str($input_string, $query_parts);
-
+       
         if (array_key_exists($exclude, $query_parts)) {
-            unset($query_parts[$exclude]);
+           // unset($query_parts[$exclude]);
         }
         $query_string = uri_String($query_parts, '');
     }
@@ -199,9 +199,10 @@ function uri_String($request_array, $start = '?')
             continue;
         }
         if (is_array($value)) {
-            foreach ($value as $n => $v) {
-                $uri_array[] = $key.'='.urlencode($v);
-            }
+            //dd($key);
+            //foreach ($value as $n => $v) {
+                $uri_array[] = $key.'='.urlencode(implode(",",$value));
+            //}
         } else {
             $uri_array[] = $key.'='.urlencode($value);
         }

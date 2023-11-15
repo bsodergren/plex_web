@@ -53,6 +53,27 @@ if (!isset($_SESSION['library'])) {
 if (isset($_REQUEST['library'])) {
     $_SESSION['library'] = $_REQUEST['library'];
 }
+$tag_array       = ['genre', 'artist', 'keyword'];
+if (isset($_REQUEST['submit'])) {
+    if ('Search' == $_REQUEST['submit']) {
+        $delim                   = ',';
+        $q_str[]                 = 'submit=Search';
+        foreach ($tag_array as $tag) {
+            if (isset($_REQUEST[$tag])) {
+                $fields[]=$tag;
+                $q_str[] = 'field[]='.$tag;
+                if (is_array($_REQUEST[$tag])) {
+                    foreach ($_REQUEST[$tag] as $str) {
+                        $q_str[] = $tag.'[]='.$str;
+                    }
+                }
+            }
+        }
+        $genreStr                = implode('&', $q_str);
+        $_SERVER['QUERY_STRING'] = $_SERVER['QUERY_STRING'].'&'.$genreStr.'&grp='.$_REQUEST['grp'];
+        $_REQUEST['field'] = $fields;
+    }
+}
 
 $in_directory    = $_SESSION['library'];
 $cache_directory = $_SESSION['library'];
@@ -81,7 +102,8 @@ if ('' != $_SERVER['QUERY_STRING']) {
     $request_string_query    = '?'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
     $query_string_no_current = '&'.urlQuerystring($_SERVER['QUERY_STRING'], 'current');
 
-    $query_string_no_current = '&'.urlQuerystring($query_string_no_current, 'itemsPerPage');
+    // $query_string_no_current = '&'.urlQuerystring($query_string_no_current, 'itemsPerPage');
+    // dd([$_SERVER['QUERY_STRING'],$query_string_no_current]);
 }
 
 $urlPattern      = $_SERVER['PHP_SELF'].'?current=(:num)'.$query_string_no_current;
@@ -108,7 +130,7 @@ $url_array       = [
     'sort_types'   => [
         'Studio'       => 'studio',
         'Sub Studio'   => 'substudio',
-        'File size' => 'filesize',
+        'File size'    => 'filesize',
         'Artist'       => 'artist',
         'Title'        => 'title',
         'Filename'     => 'filename',

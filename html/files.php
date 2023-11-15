@@ -81,6 +81,7 @@ if (isset($_REQUEST['genre'])) {
 $pageObj = new pageinate($where, $currentPage, $urlPattern);
 
 $sql = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
+//dd($sql);
 logger('all files', $sql);
 $results = $db->query($sql);
 $request_key = uri_String($uri);

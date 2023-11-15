@@ -51,5 +51,12 @@
     },
 	   "require-dev": {
         "symfony/var-dumper": "^6.2"
+        },
+    "config": {
+        
+        
+        "allow-plugins": {
+            "robloach/component-installer": true
         }
+    }
 }

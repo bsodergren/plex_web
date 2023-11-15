@@ -14,7 +14,26 @@ function searchDBVideos($request)
     }
 
     if (array_key_exists('field', $request)) {
-        $request[$request['field']][] = $request['query'];
+        if (array_key_exists('query', $request)) {
+            $request[$request['field']][] = $request['query'];
+        }
+    }
+
+    if (array_key_exists('field', $request)) {
+        $req_field = $request['field'];
+        if (is_array($req_field)) {
+            foreach ($req_field as $f) {
+                if (array_key_exists($f, $request)) {
+                    $field = $request[$f];
+                    if (!is_array($field)) {
+                        $array       = explode(',', $field);
+                        $request[$f] = $array;
+                    } else {
+                        $request[$f] = $field;
+                    }
+                }
+            }
+        }
     }
 
     if (array_key_exists('searchField', $request)) {
@@ -26,12 +45,19 @@ function searchDBVideos($request)
             $request[$request['searchField']][] = $request['query'];
         }
     }
+
     foreach ($request as $field => $value) {
         switch ($field) {
             case 'studio':
             case 'substudio':
             case 'keyword':
+                $whereArray = [];
+                $qArray     = [];
+
             case 'genre':
+                $whereArray = [];
+                $qArray     = [];
+
             case 'artist':
                 $whereArray = [];
                 $qArray     = [];
@@ -49,8 +75,8 @@ function searchDBVideos($request)
                 break;
         }
     }
-
-    $where_clause = ' ( '.implode(' '.$group.' ', $where).') ';
+    
+    $where_clause = ' ( '.implode(' OR ', $where).') ';
     return [$where_clause, $words];
 }
 

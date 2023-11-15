@@ -1,6 +1,6 @@
 /* ==========================================================================
-   #Custom HTML5 Video Player
-   ========================================================================== */
+#Custom HTML5 Video Player
+========================================================================== */
 
 :root {
     --youtube-red: #FE0900;
@@ -24,7 +24,7 @@ html {
 body {
     height: 100%;
     background-color: black;
-    overflow: hidden;
+    /* overflow: hidden; */
     /* Hide scrollbars */
 
 
@@ -37,10 +37,10 @@ body {
     margin-top: 25px;
 
     /*  padding-right: 0px;
-  padding-left: 0px;
- margin-right: 0px;
-  margin-left: 0px;
-  */
+padding-left: 0px;
+margin-right: 0px;
+margin-left: 0px;
+*/
 }
 
 .video-container {
@@ -52,7 +52,7 @@ body {
     border-style: solid;
     overflow: hidden;
     /*  width: 800px; 
-  margin: 0 auto 0;
+margin: 0 auto 0;
 
 */
     border-radius: 4px;
@@ -412,3 +412,4 @@ svg {
         justify-content: center;
         /* align-self: center;*/
     }
+}

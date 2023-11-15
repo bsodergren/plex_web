@@ -8,8 +8,18 @@ define('GRID_VIEW', true);
 $playlist_ids    = [];
 define('TITLE', 'search');
 
-if (isset($_REQUEST['genre'])) {
-    $_REQUEST['query'] = implode(',', $_REQUEST['genre']);
+foreach ($tag_array as $tag) {
+    if (isset($_REQUEST[$tag])) {
+        if (is_array($_REQUEST[$tag])) {
+            $queries[] = implode(',', $_REQUEST[$tag]);
+
+
+        }
+    }
+}
+
+if (is_array($_REQUEST['query'])) {
+    $_REQUEST['query'] = implode(',', $queries);
 }
 
 if (isset($_REQUEST['sort'])) {
@@ -44,7 +54,6 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     foreach ($queryArr as $key => $value) {
         $keys[] = $key.'  !!primary,5!!'.$value.'!! ';
     }
-
     $pageObj          = new pageinate($where, $currentPage, $urlPattern);
 
     $sql              = query_builder('id', $where, false, $order_sort);

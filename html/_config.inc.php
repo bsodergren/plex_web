@@ -18,7 +18,7 @@ set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
 
 require_once __COMPOSER_LIB__.'/autoload.php';
 
-Debugger::enable();
+//Debugger::enable();
 
 // Debugger::$showLocation = Tracy\Dumper::LOCATION_SOURCE; // Shows path to where the dump() was called
 // //Debugger::$logSeverity  = \E_WARNING | \E_NOTICE;

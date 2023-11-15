@@ -11,7 +11,7 @@ use Nette\Utils\FileSystem;
 
 require_once '_config.inc.php';
 $carousel_js                                      = '';
-
+$video_buttons='';
 if (key_exists('id', $_REQUEST)) {
     $id                                 = $_REQUEST['id'];
     $cols                               = ['playlist_id'];
@@ -93,6 +93,7 @@ if (isset($playlist_id)) {
     $video_js_params['PLAYLIST_WIDTH']  = 50;
     $video_js_params['NEXT_VIDEO_ID']   = $next_video_id;
     $video_js_params['PREV_VIDEO_ID']   = $prev_video_id;
+    $video_buttons= process_template('video/video_buttons', []);
 }
 
 // $video_file                                       = FileSystem::unixSlashes(FileSystem::normalizePath($video_file));
@@ -105,6 +106,7 @@ $params                                           = [
     'VIDEO_TITLE'    => $active_title,
     'CAROUSEL_HTML'  => $carousel,
     'CAROUSEL_JS'    => $carousel_js,
+    'VIDEO_BUTTONS' => $video_buttons,
     'VIDEO_JS'       => process_template('video/video_js', $video_js_params),
 ];
 echo process_template('video/main', $params);

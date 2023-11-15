@@ -12,7 +12,16 @@ if (array_key_exists('action', $_REQUEST)) {
     if (isset($_REQUEST['action'])) {
         $action = $_REQUEST['action'];
     }
-
+    if ($action == 'add') {
+        $data = [
+            'playlist_id'     => $playlist_id,
+            'playlist_videos' => $_REQUEST['video_id']  ,
+            'library'         => $_SESSION['library'],
+        ];
+       $res= $db->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
+        echo "<script type=\"text/javascript\">  window.close(); </script>";
+        exit;
+    }
     if ($action == 'delete') {
         $sql = 'delete d,v from '.Db_TABLE_PLAYLIST_DATA.'  d join '.Db_TABLE_PLAYLIST_VIDEOS.' v on d.id = v.playlist_id where d.id = '.$playlist_id.'';
         $results = $db->query($sql);

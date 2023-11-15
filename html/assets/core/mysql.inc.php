@@ -31,10 +31,10 @@ function query_builder($fields = 'select', $where = false, $group = false, $orde
     $sql         = $sql.' from '.Db_TABLE_FILEDB.' ';
 
     if ('library' == $where) {
-        $sql = $sql." WHERE library = '".$_SESSION['library']."' ";
+        $sql = $sql." WHERE "; //library = '".$_SESSION['library']."' ";
     } else {
         if (true == $conditional || false != $where) {
-            $sql = $sql." WHERE library = '".$_SESSION['library']."' ";
+            $sql = $sql."   "; //library = '".$_SESSION['library']."' ";
         }
 
         if (false != $where) {
@@ -64,6 +64,7 @@ function query_builder($fields = 'select', $where = false, $group = false, $orde
     }
 
     // logger("SQL Builder", $sql);
+    // dump($sql);
     return $sql;
 }
 // class studios extends dbObject {

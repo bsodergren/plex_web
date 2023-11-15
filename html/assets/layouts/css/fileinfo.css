@@ -1,12 +1,11 @@
-
 .container {
     width: 100%;
     height: 100%;
     padding-right: 1px;
     padding-left: 1px;
-   margin-right: 1px;
+    margin-right: 1px;
     margin-left: 1px;
-  }
+}
 
 .blueTable {
     border: 0px solid #a4401c;
@@ -15,10 +14,10 @@
     margin: 0px;
 
     text-align: left;
-    
+
     /*  padding: 20px 20px 20px 20px; */
     padding: 0px 0px 0px 0px;
-    
+
     /*    border-bottom: 2px solid #1C6EA4;*/
     /*	border-collapse: collapse; */
 
@@ -45,7 +44,7 @@
 .blueTable-thead {
     background: #a4551c;
     text-align: center;
-/* 
+    /* 
     background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
     background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
     background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
@@ -64,6 +63,7 @@
 table.blueTable thead th:first-child {
     border-left: none;
 }
+
 /*
 
 

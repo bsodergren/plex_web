@@ -300,7 +300,12 @@
     pipButton.addEventListener("click", togglePip);
     nextButton.addEventListener("click", nextVideo);
     prevButton.addEventListener("click", prevVideo);
-
+    video.addEventListener('loadedmetadata', (e) => {
+        let player = e.target;
+        player.width = player.clientWidth;
+        player.height = player.clientHeight;
+        console.log(player.height);
+});
 
     document.addEventListener("DOMContentLoaded", () => {
         if (!("pictureInPictureEnabled" in document)) {
@@ -312,19 +317,21 @@
     function resize() {
         var img = document.getElementsByTagName("video");
 
-        var vh = img[0].clientHeight;
-        var vw = img[0].clientWidth;
-        console.log("Image W" + vw + " H" + vh);
-        console.log("added W" + %%PLAYLIST_WIDTH%% + " H" + %%PLAYLIST_HEIGHT%% );
+       // console.log(video.clientHeight);
 
-        vw = vw + %%PLAYLIST_WIDTH%%;
-        vh = vh + %%PLAYLIST_HEIGHT%%;
-        vw = vw + 150;
-        vh = vh + 150;
-         console.log("New Size W" + vw + " H" + vh);
+        // var vh = img[0].clientHeight;
+        // var vw = img[0].clientWidth;
+        // console.log("Image W" + vw + " H" + vh);
+        // console.log("added W" + %% PLAYLIST_WIDTH %% + " H" + %% PLAYLIST_HEIGHT %% );
 
-        window.resizeTo(vw, vh);
-         console.log("Window W" + window.innerWidth + " H" + window.innerHeight);
+        // vw = vw + %% PLAYLIST_WIDTH %%;
+        // vh = vh + %% PLAYLIST_HEIGHT %%;
+        // vw = vw + 150;
+        // vh = vh + 150;
+        // console.log("New Size W" + vw + " H" + vh);
+
+        // window.resizeTo(vw, vh);
+        // console.log("Window W" + window.innerWidth + " H" + window.innerHeight);
 
     }
 
