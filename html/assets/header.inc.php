@@ -60,8 +60,8 @@ if (isset($_REQUEST['submit'])) {
         $q_str[]                 = 'submit=Search';
         foreach ($tag_array as $tag) {
             if (isset($_REQUEST[$tag])) {
-                $fields[]=$tag;
-                $q_str[] = 'field[]='.$tag;
+                $fields[] = $tag;
+                $q_str[]  = 'field[]='.$tag;
                 if (is_array($_REQUEST[$tag])) {
                     foreach ($_REQUEST[$tag] as $str) {
                         $q_str[] = $tag.'[]='.$str;
@@ -71,7 +71,7 @@ if (isset($_REQUEST['submit'])) {
         }
         $genreStr                = implode('&', $q_str);
         $_SERVER['QUERY_STRING'] = $_SERVER['QUERY_STRING'].'&'.$genreStr.'&grp='.$_REQUEST['grp'];
-        $_REQUEST['field'] = $fields;
+        $_REQUEST['field']       = $fields;
     }
 }
 
@@ -102,7 +102,7 @@ if ('' != $_SERVER['QUERY_STRING']) {
     $request_string_query    = '?'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
     $query_string_no_current = '&'.urlQuerystring($_SERVER['QUERY_STRING'], 'current');
 
-    // $query_string_no_current = '&'.urlQuerystring($query_string_no_current, 'itemsPerPage');
+    $query_string_no_current = '&'.urlQuerystring($query_string_no_current, 'itemsPerPage');
     // dd([$_SERVER['QUERY_STRING'],$query_string_no_current]);
 }
 

@@ -24,7 +24,7 @@ $db->where('id', $id);
 $videoInfo = $db->get(Db_TABLE_FILEDB, null, $cols);
 
 require __LAYOUT_HEADER__;
-$hidden_fields = add_hidden('id', $id);
+
 $body      = display_filelist($videoInfo,'',[],'videoinfo');
 $delete_html     ='';//    = process_template('videoinfo/delete_form', ['HIDDEN' => add_hidden('id', $id),]);
 

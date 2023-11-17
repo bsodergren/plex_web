@@ -35,8 +35,12 @@ function keyword_cloud($field = 'keyword')
  FROM metatags_filedb INNER JOIN (SELECT 0 digit UNION ALL SELECT
  1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
  ON LENGTH(REPLACE(".$field.", ',' , '')) <= LENGTH(".$field.")-n.digit WHERE library = '".$_SESSION['library']."' ORDER BY `val` ASC";
+ 
     $list            = $db->query($sql);
     $tag_links       = '';
+if(count($list) == 0){
+    return false;
+}
 
     if (is_array($list)) {
         foreach ($list as $key => $keyword) {
@@ -80,6 +84,11 @@ function keyword_cloud($field = 'keyword')
 function process_template($template, $replacement_array = '')
 {
     return template::return($template, $replacement_array);
+} // end process_template()
+
+function process_javascript($template, $replacement_array = '')
+{
+    return template::return($template, $replacement_array,"javascript");
 } // end process_template()
 
 function JavaRefresh($url, $timeout = 0)

@@ -6,8 +6,6 @@
 require_once '_config.inc.php';
 const TITLE         = 'Home';
 
-
-
 $sql                = query_builder('studio', '', 'studio', 'studio ASC');
 $result             = $db->query($sql);
 

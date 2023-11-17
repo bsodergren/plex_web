@@ -12,10 +12,10 @@ class Template
         echo $template_obj->html;
     }
 
-    public static function return($template = '', $array = '')
+    public static function return($template = '', $array = '',$js='')
     {
         $template_obj = new self();
-        $template_obj->template($template, $array);
+        $template_obj->template($template, $array,$js);
 
         return $template_obj->html;
     }
@@ -55,9 +55,20 @@ class Template
     }
 */
 
-    public function template($template='', $replacement_array = '')
+    public function template($template='', $replacement_array = '',$js='')
     {
-        $template_file = __HTML_TEMPLATE__.'/'.$template.'.html';
+
+        
+        $extension = '.html';
+        $s_delim = '%%';
+        $e_delim = '%%';
+        if($js != '') {
+            $extension = '.js';
+            $s_delim = 'V__';
+            $e_delim = '__V';
+        }
+
+        $template_file = __HTML_TEMPLATE__.'/'.$template. $extension ;
 
         if (!file_exists($template_file)) {
             //    dump($template_file);
@@ -71,7 +82,7 @@ class Template
         $html_text     = file_get_contents($template_file);
         foreach (__TEMPLATE_CONSTANTS__ as $key) {
             $value = constant($key);
-            $key = '%%'.strtoupper($key).'%%';
+            $key = $s_delim.strtoupper($key).$e_delim;
             if (null != $value) {
                 $html_text = str_replace($key, $value, $html_text);
             }
@@ -80,7 +91,7 @@ class Template
         if (is_array($replacement_array)) {
             foreach ($replacement_array as $key => $value) {
                 // $value = "<!-- $key --> \n".$value;
-                $key = '%%'.strtoupper($key).'%%';
+                $key = $s_delim.strtoupper($key).$e_delim;
                 if (null != $value) {
                     $html_text = str_replace($key, $value, $html_text);
                 }
@@ -88,7 +99,7 @@ class Template
         }
 
         $html_text = preg_replace_callback('|(%%\w+%%)|', [$this, 'callback_replace'], $html_text);
-
+        
         $html_text     = preg_replace_callback('/(##(\w+,?\w+)##)(.*)(##)/iU', [$this, 'callback_color'], $html_text);
         $html_text     = preg_replace_callback('/(!!(\w+,?\w+)!!)(.*)(!!)/iU', [$this, 'callback_badge'], $html_text);
 

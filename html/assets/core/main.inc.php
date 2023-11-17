@@ -183,7 +183,7 @@ function urlQuerystring($input_string, $exclude = '')
         parse_str($input_string, $query_parts);
        
         if (array_key_exists($exclude, $query_parts)) {
-           // unset($query_parts[$exclude]);
+            unset($query_parts[$exclude]);
         }
         $query_string = uri_String($query_parts, '');
     }
@@ -217,57 +217,57 @@ function uri_String($request_array, $start = '?')
     return $request_array;
 } // end uri_String()
 
-function process_form($redirect_url = '')
-{
-    global $_POST,$_REQUEST;
+// function process_form($redirect_url = '')
+// {
+//     global $_POST,$_REQUEST;
 
-    if (isset($_POST['submit'])) {
-        if ('GenreConfigSave' == $_POST['submit']) {
-            return GenreConfigSave($_POST, $redirect_url);
+//     if (isset($_POST['submit'])) {
+//         if ('GenreConfigSave' == $_POST['submit']) {
+//             return GenreConfigSave($_POST, $redirect_url);
 
-            exit;
-        }
-        if ('ArtistConfigSave' == $_POST['submit']) {
-            return ArtistConfigSave($_POST, $redirect_url);
+//             exit;
+//         }
+//         if ('ArtistConfigSave' == $_POST['submit']) {
+//             return ArtistConfigSave($_POST, $redirect_url);
 
-            exit;
-        }
+//             exit;
+//         }
 
-        if ('StudioConfigSave' == $_POST['submit']) {
-            return saveStudioConfig($_POST, $redirect_url);
+//         if ('StudioConfigSave' == $_POST['submit']) {
+//             return saveStudioConfig($_POST, $redirect_url);
 
-            exit;
-        }
-        if ('delete_file' == $_POST['submit']) {
-            return deleteFile($_POST);
+//             exit;
+//         }
+//         if ('delete_file' == $_POST['submit']) {
+//             return deleteFile($_POST);
 
-            exit;
-        }
+//             exit;
+//         }
         
-        if (str_starts_with($_POST['submit'], 'Playlist')) {
-            createPlaylist($_POST, $redirect_url);
-            myHeader();
+//         if (str_starts_with($_POST['submit'], 'Playlist')) {
+//             createPlaylist($_POST, $redirect_url);
+//             myHeader();
 
-            exit;
-        }
-        if (str_starts_with($_POST['submit'], 'All Files')) {
-            createPlaylist($_POST, $redirect_url);
-            myHeader();
+//             exit;
+//         }
+//         if (str_starts_with($_POST['submit'], 'All Files')) {
+//             createPlaylist($_POST, $redirect_url);
+//             myHeader();
 
-            exit;
-        }
-        if (str_starts_with($_POST['submit'], 'Move')) {
-            $playlist_id = createPlaylist($_POST, $redirect_url);
-            moveFiles($_POST, $playlist_id);
+//             exit;
+//         }
+//         if (str_starts_with($_POST['submit'], 'Move')) {
+//             $playlist_id = createPlaylist($_POST, $redirect_url);
+//             moveFiles($_POST, $playlist_id);
 
-            exit;
-        }
-    } // end if
+//             exit;
+//         }
+//     } // end if
 
-    if ('' != $redirect_url) {
-        return myHeader($redirect_url, 0);
-    }
-} // end process_form()
+//     if ('' != $redirect_url) {
+//         return myHeader($redirect_url, 0);
+//     }
+// } // end process_form()
 
 function GenreConfigSave($data_array, $redirect, $timeout = 0)
 {
@@ -370,44 +370,6 @@ function saveStudioConfig($data_array, $redirect, $timeout = 0)
     if (false != $redirect) {
         return JavaRefresh($redirect, $timeout);
     }
-}
-
-function createPlaylist($data_array, $redirect = false, $timeout = 0)
-{
-    global $db;
-    global $_SESSION;
-    $name        = 'User Playlist';
-    $studio      = [];
-
-    if (key_exists('substudio', $data_array)) {
-        $name      = '';
-        $studio[]  = $data_array['substudio'];
-    }
-    if (key_exists('studio', $data_array)) {
-        $name      = '';
-        $studio[]  = $data_array['studio'];
-    }
-
-    $data        = [
-        'name'            => $name.implode(' ', $studio),
-        'genre'           => 'mmf,mff',
-        'library'         => $_SESSION['library'],
-    ];
-    $playlist_id = $db->insert(Db_TABLE_PLAYLIST_DATA, $data);
-
-if(!is_array($data_array['playlist'] )){
-    $data_array['playlist'] = explode(",",$data_array['playlist'] );
-}
-    foreach ($data_array['playlist'] as $_ => $id) {
-        $data = [
-            'playlist_id'     => $playlist_id,
-            'playlist_videos' => $id,
-            'library'         => $_SESSION['library'],
-        ];
-        $db->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
-    }
-
-    return $playlist_id;
 }
 
 function myHeader($redirect = __URL_PATH__.'/home.php', $timeout = 0)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
 require_once '_config.inc.php';
@@ -15,8 +15,8 @@ if (true == $_GET['q']) {
             echo $tag['tag_name']."\n";
         }
     }
+
     exit;
 }
-//  print_r2($_REQUEST);
-//  exit;
-process_form($_POST['redirect']);
+
+$forms = new ProcessForms($_POST);
