@@ -27,7 +27,7 @@ class ProcessForms
         if (isset($postArray['redirect_url'])) {
             $this->redirect  = $postArray['redirect_url'];
         }
-        dump(['Process Class', $postArray]);
+     //   dump(['Process Class', $postArray]);
 
         if (isset($postArray['submit'])) {
             $method = $this->postArray['submit'];
