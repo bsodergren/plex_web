@@ -14,7 +14,7 @@ $body               = process_template('auth/register', [
     'STATUS_EMAILERROR' =>$_SESSION['ERRORS']['emailerror'],
     'STATUS_PASSERROR' =>$_SESSION['ERRORS']['passworderror'],
 ]);
-template::echo('base/page', ['BODY' => $body]);
+Template::echo('base/page', ['BODY' => $body]);
 
 require __LAYOUT_FOOTER__;
 ?>

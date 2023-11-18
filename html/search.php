@@ -100,6 +100,6 @@ $body            = process_template('search/search', [
 
 include_once __LAYOUT_HEADER__;
 
-template::echo('base/page', ['BODY' => $body]);
+Template::echo('base/page', ['BODY' => $body]);
 
 include_once __LAYOUT_FOOTER__;

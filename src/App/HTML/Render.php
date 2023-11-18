@@ -1,4 +1,5 @@
 <?php
+namespace Plexweb\HTML;
 /**
  * Command like Metatag writer for video files.
  */

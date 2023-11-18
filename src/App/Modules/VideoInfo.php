@@ -1,4 +1,5 @@
 <?php
+namespace Plexweb\Modules;
 
 
 class VideoInfo

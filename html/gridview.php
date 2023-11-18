@@ -110,6 +110,6 @@ $page_array      = [
 
 $table_body_html =  gridview($results);
 
-template::echo('base/page', ['BODY' => $table_body_html]);
+Template::echo('base/page', ['BODY' => $table_body_html]);
 
 require __LAYOUT_FOOTER__;

@@ -104,6 +104,6 @@ $page_array = [
 
 $body = display_filelist($results, '', $page_array);
 
-template::echo('base/page', ['BODY' => $body]);
+Template::echo('base/page', ['BODY' => $body]);
 
 require __LAYOUT_FOOTER__;

@@ -60,6 +60,6 @@ foreach ($result as $k => $v) {
     }
 }
 
-template::echo('base/page', ['BODY' => $body]);
+Template::echo('base/page', ['BODY' => $body]);
 
 require __LAYOUT_FOOTER__;

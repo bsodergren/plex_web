@@ -1,4 +1,8 @@
 <?php
+namespace Plexweb\Core;
+
+use Plexweb\Modules\Playlist;
+use Plexweb\Modules\VideoInfo;
 /**
  * plex web viewer
  */

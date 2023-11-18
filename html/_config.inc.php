@@ -4,7 +4,6 @@
  */
 
 use Dotenv\Dotenv;
-use Tracy\Debugger;
 use Camoo\Config\Config;
 
 session_start();

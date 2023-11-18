@@ -80,6 +80,6 @@ define('TITLE', 'Home');
 define('GRID_VIEW', 1);
 
 require __LAYOUT_HEADER__;
-template::echo('base/page', ['BODY' => $table_body_html]);
+Template::echo('base/page', ['BODY' => $table_body_html]);
 
 require __LAYOUT_FOOTER__;

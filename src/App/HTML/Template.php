@@ -1,5 +1,7 @@
-
 <?php
+
+namespace Plexweb\HTML;
+
 
 class Template
 {

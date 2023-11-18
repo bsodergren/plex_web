@@ -100,6 +100,6 @@ foreach ($result as $row => $name) {
 } // end foreach
 
 $body               = process_template('home/main', ['BODY_HTML' =>  $studio_box]);
-template::echo('base/page', ['BODY' => $body]);
+Template::echo('base/page', ['BODY' => $body]);
 
 require __LAYOUT_FOOTER__;

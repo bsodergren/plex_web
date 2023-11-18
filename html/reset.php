@@ -29,7 +29,7 @@ if(isset($validator) && isset($selector) ) {
 
 }
 
-template::echo('base/page', ['BODY' => $body]);
+Template::echo('base/page', ['BODY' => $body]);
 
 require __LAYOUT_FOOTER__;
 

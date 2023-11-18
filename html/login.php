@@ -11,7 +11,7 @@ $body               = process_template('auth/login', [
     'STATUS_WRONGPASS' =>$_SESSION['ERRORS']['wrongpassword'],
 
 ]);
-template::echo('base/page', ['BODY' => $body]);
+Template::echo('base/page', ['BODY' => $body]);
 
 
 require __LAYOUT_FOOTER__;

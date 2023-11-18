@@ -39,6 +39,6 @@ $html = process_template('cloud/main',
     'TAG_CLOUD_HTML' => keyword_cloud('genre'),
     'TAG_CLOUD_KEYWORD' => keyword_cloud('keyword')
 ]);
-template::echo('base/page', ['BODY' => $html ]);
+Template::echo('base/page', ['BODY' => $html ]);
 
 include_once __LAYOUT_FOOTER__;

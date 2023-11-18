@@ -1,4 +1,7 @@
 <?php
+namespace Plexweb\Modules;
+
+use Plexweb\Core\ProcessForms;
 /**
  * plex web viewer
  */

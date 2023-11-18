@@ -1,4 +1,7 @@
 <?php
+namespace Plexweb\Core;
+
+use dbObject;
 /**
  * Command like Metatag writer for video files.
  */

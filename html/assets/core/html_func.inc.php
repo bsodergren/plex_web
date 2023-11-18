@@ -83,12 +83,12 @@ if(count($list) == 0){
 
 function process_template($template, $replacement_array = '')
 {
-    return template::return($template, $replacement_array);
+    return Template::return($template, $replacement_array);
 } // end process_template()
 
 function process_javascript($template, $replacement_array = '')
 {
-    return template::return($template, $replacement_array,"javascript");
+    return Template::return($template, $replacement_array,"javascript");
 } // end process_template()
 
 function JavaRefresh($url, $timeout = 0)
