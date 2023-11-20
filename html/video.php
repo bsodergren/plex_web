@@ -34,7 +34,7 @@ if (is_array($playlist_result)) {
 
 $cols                                             = ['filename', 'fullpath', 'title'];
 $db->where('id', $id);
-$result                                           = $db->getone(Db_TABLE_FILEDB, null, $cols);
+$result                                           = $db->getone(Db_TABLE_VIDEO_FILE, null, $cols);
 
 $active_title                                     = $result['title'];
 if (null === $active_title) {
@@ -47,7 +47,7 @@ $video_js_params['PLAYLIST_HEIGHT']               = 50;
 $video_js_params['PLAYLIST_WIDTH']                = 20;
 
 if (isset($playlist_id)) {
-    $sql                                = 'select f.thumbnail,f.filename,f.title,p.playlist_videos from '.Db_TABLE_FILEDB.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = '.$playlist_id.' and p.playlist_videos = f.id);';
+    $sql                                = 'select f.thumbnail,f.filename,f.title,p.playlist_videos from '.Db_TABLE_VIDEO_FILE.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = '.$playlist_id.' and p.playlist_videos = f.id);';
     $results                            = $db->query($sql);
 
     for ($i = 0; $i < count($results); ++$i) {

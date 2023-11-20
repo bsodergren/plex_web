@@ -8,7 +8,7 @@
  */
 function gridview($results)
 {
-    global $_SESSION;
+    global $_SESSION,$_REQUEST;
     global $db;
     $sql = 'select * from '.Db_TABLE_PLAYLIST_DATA.';';
     $playlists = $db->query($sql);
@@ -73,7 +73,7 @@ function gridview($results)
     $table_body_html = process_template('grid/table', [
         'HIDDEN_STUDIO_NAME' => add_hidden('studio', $studio).add_hidden('substudio', $substudio),
         'ROWS_HTML'          => $row_html,
-        'INFO_NAME'          => $_SESSION['sort'],
+        'INFO_NAME'          => $_REQUEST['sort'],
     ]);
 
     return $table_body_html;

@@ -12,7 +12,7 @@ class ProcessForms
     public $getArray  = [];
     public $redirect  =  __URL_PATH__.'/home.php';
     public object $VideoInfo;
-    
+
     public object $playlist;
     public object $db;
 
@@ -22,32 +22,30 @@ class ProcessForms
         $this->db        = $db;
         $this->VideoInfo = new VideoInfo();
         $this->postArray = $postArray;
-        $this->playlist = new Playlist($this->postArray);
+        $this->playlist  = new Playlist($this->postArray);
 
         if (isset($postArray['redirect_url'])) {
             $this->redirect  = $postArray['redirect_url'];
         }
-     //   dump(['Process Class', $postArray]);
+        dump(['Process Class', $postArray]);
 
         if (isset($postArray['submit'])) {
             $method = $this->postArray['submit'];
-            //  unset($this->postArray['submit']);
+            unset($this->postArray['submit']);
             if (method_exists($this, $method)) {
                 $this->{$method}();
             } else {
                 dd('No Method for '.$method.' Found');
             }
-            
         }
         if (isset($this->postArray['action'])) {
             $method = $this->postArray['action'].'Playlist';
-            if(method_exists(get_class($this->playlist),$method)){
-                $this->playlist->$method();
+            if (method_exists(get_class($this->playlist), $method)) {
+                $this->playlist->{$method}();
             } else {
-                dd($method,$this->playlist->data);
+                dd($method, $this->playlist->data);
             }
         }
-
     }
 
     // public function playliststuff()
@@ -68,7 +66,10 @@ class ProcessForms
     {
         $keys   = array_keys($this->postArray);
         $method = $keys[0];
-        $this->VideoInfo->{$method}($this->postArray[$method]);
+        $tagValue = $this->postArray[$method];
+        $video_key = $this->postArray[$keys[1]];
+        dump(['update', $method, $video_key]);
+        $this->VideoInfo->{$method}($tagValue, $video_key);
     }
 
     public function GenreConfigSave()
@@ -94,18 +95,15 @@ class ProcessForms
     public function playlist()
     {
         echo $this->playlist->createPlaylist();
-        
-//        
     }
-    public function  myHeader($redirect='',$timeout=0)
-    {   
 
-        if($redirect != ''){
+    public function myHeader($redirect = '', $timeout = 0)
+    {
+        if ('' != $redirect) {
             $this->redirect = $redirect;
         }
         echo JavaRefresh($this->redirect, $timeout);
-        
-        die();
-    } // end myHeader()
 
+        exit;
+    } // end myHeader()
 }

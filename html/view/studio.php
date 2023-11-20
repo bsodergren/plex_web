@@ -6,7 +6,7 @@ define('TITLE', 'Home');
 
 include __LAYOUT_HEADER__;
 
-$sql    = query_builder('count(studio) as cnt, studio',
+$sql    = query_builder(Db_TABLE_VIDEO_FILE,'count(studio) as cnt, studio',
     "library = '".$in_directory."'",
     'studio', 'studio asc');
 
@@ -22,7 +22,7 @@ $result = $db->query($sql);
 foreach ($result as $k => $v) {
     if ('' != $v['studio']) {
         $cnt        = $v['cnt'];
-        $query      = query_builder('count(substudio) as cnt, substudio',
+        $query      = query_builder(Db_TABLE_VIDEO_FILE,'count(substudio) as cnt, substudio',
             'studio like "'.$v['studio'].'"',
             'substudio', 'substudio asc');
         $alt_result = $db->query($query);

@@ -10,7 +10,7 @@ $library_links                  = '';
 if (isset($_SESSION['auth']) &&
     $_SESSION['auth'] == 'verified') {
 
-    $sql                            = query_builder('DISTINCT(library) as library ');
+    $sql                            = query_builder(Db_TABLE_VIDEO_TAGS,'DISTINCT(library) as library ');
     foreach ($db->query($sql) as $k => $v) {
         $library_links .= Render::display_navbar_left_links('home.php?library='.$v['library'], $v['library']);
     }

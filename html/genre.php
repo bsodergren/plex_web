@@ -40,7 +40,7 @@ if (isset($_REQUEST['allfiles'])) {
     $request_key = $studio_key.'='.$studio_text.$null_req;
 }
 $order       = 'genre ASC';
-$sql         = query_builder(
+$sql         = query_builder(Db_TABLE_VIDEO_TAGS,
     'DISTINCT(genre) as genre, count(genre) as cnt ',
     $sql_studio,
     'genre',
@@ -80,7 +80,7 @@ foreach ($genre_array as $k => $v) {
         }
         $db->where('genre', '%'.$v.'%', 'like');
         $db->where('library', $_SESSION['library'], 'like');
-        $count = $db->getOne('metatags_filedb ', 'count(*) as cnt');
+        $count = $db->getOne(Db_TABLE_VIDEO_TAGS, 'count(*) as cnt');
 
         echo $studio." <a href='files.php?".$request_key.'genre='.urlencode($v)."'>".$v.'</a> '.$count['cnt'].' <br>';
     }

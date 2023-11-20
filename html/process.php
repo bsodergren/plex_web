@@ -18,5 +18,4 @@ if (true == $_GET['q']) {
 
     exit;
 }
-
 $forms = new ProcessForms($_POST);

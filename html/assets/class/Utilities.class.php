@@ -353,8 +353,16 @@ class Logger
 
     public static function log($text, $var = '', $logfile = 'default.log')
     {
+
+         $colors = new Colors();
+
         //  if (Settings::isTrue('__SHOW_DEBUG_PANEL__')) {
-        $function_list = self::get_caller_info();
+            if(!file_exists (__ERROR_LOG_DIRECTORY__))
+            {
+                filesystem::createdir(__ERROR_LOG_DIRECTORY__,0755);
+            }
+
+            $function_list = self::get_caller_info();
         $errorLogFile  = __ERROR_LOG_DIRECTORY__.'/'.$logfile;
         $html_var      = '';
         $html_string   = '';
@@ -369,12 +377,19 @@ class Logger
         // $html_var = htmlentities($html_var);
         // $html_var = '<pre>' . $html_var . '</pre>';
 
-        $html_string   = json_encode([
-            'TIMESTAMP' => DateTime::from(null),
-            'FUNCTION'  => $function_list,
-            'MSG_TEXT'  => $text,
-            'MSG_VALUE' => $html_var,
-        ]);
+        // $html_string   = json_encode([
+        //     'TIMESTAMP' => DateTime::from(null),
+        //     'FUNCTION'  => $function_list,
+        //     'MSG_TEXT'  => $text,
+        //     'MSG_VALUE' => $html_var,
+        // ]);
+
+        $html_string   = implode("  ",[
+            DateTime::from(null),
+            $colors->getColoredString($function_list,'red'),
+            $colors->getColoredString($text,'blue'), 
+            $html_var
+         ]);
         $r             = file_put_contents($errorLogFile, $html_string."\n", \FILE_APPEND);
 
         //  }
@@ -419,6 +434,7 @@ class Logger
 
 function logger($text, $var = '', $logfile = 'default.log')
 {
+
     logger::log($text, $var, $logfile);
 }
 

@@ -6,7 +6,24 @@
 require_once '_config.inc.php';
 const TITLE         = 'Home';
 
-$sql                = query_builder('studio', '', 'studio', 'studio ASC');
+
+$subLibraries = [];
+$sql         = query_builder(Db_TABLE_VIDEO_TAGS,'DISTINCT(subLibrary) as subLibrary ','library');
+$result      = $db->query($sql);
+dump($result);
+if(count($result) > 0  ) {
+    foreach($result as $_ => $value)
+    {
+        
+        $subLibraries[] = $value['subLibrary'];
+    }
+}
+
+logger('qyefasd', $sql);
+$result      = $db->query($sql);
+$rar           = $db->rawQueryOne($sql);
+$sql                = query_builder(Db_TABLE_VIDEO_TAGS,'studio,subLibrary', '', 'studio,subLibrary', 'subLibrary ASC, studio ASC');
+
 $result             = $db->query($sql);
 
 $all_url            = 'files.php?allfiles=1';
@@ -14,10 +31,19 @@ $all_url            = 'files.php?allfiles=1';
 // DEFINE('BREADCRUMB', [$in_directory => "", 'all' => $all_url]);
 require __LAYOUT_HEADER__;
 
+foreach($result as $r => $row)
+{
+    $studioArray[$row['subLibrary']][]= $row['studio'];
+}
 
+//dd($studioArray);
+foreach ($studioArray as $subLibrary => $studioArr) {
+    $studio_box = '';
 
-$index              = 1;
-foreach ($result as $row => $name) {
+    $index              = 1;
+
+    foreach ($studioArr as $row => $sname) {
+        $name = ['studio'=> $sname];
     $cnt           = '';
     if (0 == $index % 4) {
         if ('' != $studio_links) {
@@ -38,7 +64,7 @@ foreach ($result as $row => $name) {
 
     $studio        = urlencode($name['studio']);
 
-    $sql           = query_builder('count(video_key) as cnt', ' studio '.$sql_studio.' and substudio is null', 'studio', 'studio ASC');
+    $sql           = query_builder(Db_TABLE_VIDEO_TAGS,'count(video_key) as cnt', ' studio '.$sql_studio.' and substudio is null', 'studio', 'studio ASC');
     $rar           = $db->rawQueryOne($sql);
     if (isset($rar['cnt'])) {
         $cnt = ' ('.$rar['cnt'].') ';
@@ -51,7 +77,7 @@ foreach ($result as $row => $name) {
         'CLASS'       => 'btn btn-primary',
     ]);
 
-    $substudio_sql = query_builder('count(substudio) as cnt, substudio', ' studio  '.$sql_studio, 'substudio', 'substudio ASC ');
+    $substudio_sql = query_builder(Db_TABLE_VIDEO_TAGS,'count(substudio) as cnt, substudio', ' studio  '.$sql_studio, 'substudio', 'substudio ASC ');
     $ss_result     = $db->query($substudio_sql);
 
     if (count($ss_result) > 1) {
@@ -97,9 +123,14 @@ foreach ($result as $row => $name) {
     // echo "</ul>";
     ++$index;
     // }
+    }
+
+    $studio_html .= process_template('home/studio_lib', [
+        'STUDIO_BOX_HTML' =>  $studio_box,
+    'LIBRARY_NAME' => $subLibrary]);
 } // end foreach
 
-$body               = process_template('home/main', ['BODY_HTML' =>  $studio_box]);
+$body               = process_template('home/main', ['BODY_HTML' =>  $studio_html]);
 template::echo('base/page', ['BODY' => $body]);
 
 require __LAYOUT_FOOTER__;

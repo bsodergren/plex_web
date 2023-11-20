@@ -18,7 +18,7 @@ if (isset($_REQUEST['substudio'])) {
     $studio_text  = $_REQUEST['substudio'];
 } else {
     $studio_key   = 'studio';
-    $studio_field =  'substudio';
+    $studio_field =  'studio';
 
     $studio_text  = $_REQUEST['studio'];
     // $null=' and substudio is null ';
@@ -32,7 +32,7 @@ $sql_studio  = $lib_where.$studio_key." = '".$studio."'";
 $request_key = $studio_key.'='.$studio_text;
 
 $order       = $studio_field.' ASC';
-$sql         = query_builder(
+$sql         = query_builder(Db_TABLE_VIDEO_TAGS,
     'DISTINCT('.$studio_field.') as '.$studio_field.', count('.$studio_field.') as cnt ',
     $sql_studio,
     ''.$studio_field.'',

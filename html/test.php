@@ -9,7 +9,22 @@ define('TITLE', 'Test Page');
 // define('BREADCRUMB', ['home' => "home.php"]);
 include __LAYOUT_HEADER__;
 
-$sql             = 'select artist from '.Db_TABLE_FILEDB;
+
+$db->join(Db_TABLE_VIDEO_TAGS." m", "m.video_key=f.video_key", "INNER");
+$db->joinWhere(Db_TABLE_VIDEO_TAGS." m", "m.studio", 'Brazzers');
+$db->joinWhere(Db_TABLE_VIDEO_TAGS." m", "m.library", 'Pornhub');
+$db->joinWhere(Db_TABLE_VIDEO_TAGS." m", "m.genre", '%MMF%', 'like');
+$db->orderBy ("m.title","asc");
+$products = $db->get(Db_TABLE_VIDEO_FILE." f",  [0,5], "m.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.filename ,f.fullpath,m.library,f.filesize");
+echo $db->getlastquery();
+
+print_r2($products);
+
+
+
+
+die();
+$sql             = 'select artist from '.Db_TABLE_VIDEO_FILE;
 $sql             = $sql." WHERE library = '".$_SESSION['library']."' and artist is not null";
 $results         = $db->query($sql);
 $AristArray      = [];

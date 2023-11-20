@@ -88,11 +88,9 @@ if ('Studios' == $in_directory) {
 */
 
 $request_key     = '';
-
 if (!isset($_SESSION['sort'])) {
-    $_SESSION['sort'] = 'title';
+    $_SESSION['sort'] = 'm.title';
 }
-
 if (isset($_REQUEST['sort'])) {
     $_SESSION['sort'] = $_REQUEST['sort'];
 }
@@ -128,14 +126,14 @@ $url_array       = [
     'current'      => $_SESSION['sort'],
     'direction'    => $_SESSION['direction'],
     'sort_types'   => [
-        'Studio'       => 'studio',
-        'Sub Studio'   => 'substudio',
-        'File size'    => 'filesize',
-        'Artist'       => 'artist',
-        'Title'        => 'title',
-        'Filename'     => 'filename',
-        'Duration'     => 'duration',
-        'Date Added'   => 'added',
-        'Genre'        => 'genre',
+        'Studio'       => 'm.studio',
+        'Sub Studio'   => 'm.substudio',
+        'File size'    => 'f.filesize',
+        'Artist'       => 'm.artist',
+        'Title'        => 'm.title',
+        'Filename'     => 'f.filename',
+        'Duration'     => 'f.duration',
+        'Date Added'   => 'f.added',
+        'Genre'        => 'm.genre',
     ],
 ];

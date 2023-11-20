@@ -34,7 +34,7 @@ class MetaSettings extends dbObject
 
 class MetaFiledb extends dbObject
 {
-    protected $dbTable = Db_TABLE_FILEDB;
+    protected $dbTable = Db_TABLE_VIDEO_FILE;
 }
 
 class MetaStudio extends dbObject
@@ -49,5 +49,5 @@ class MetaArtist extends dbObject
 
 class MetaFileinfo extends dbObject
 {
-    protected $dbTable = Db_TABLE_FILEINFO;
+    protected $dbTable = Db_TABLE_VIDEO_INFO;
 }

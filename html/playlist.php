@@ -50,7 +50,7 @@ if (null === $playlist_id) {
         'PLAYLIST_LIBRARY'        => $library,
     ]);
 } else {
-    $sql             = 'select f.thumbnail,f.id,d.name,d.genre,p.id as playlist_video_id from  '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_FILEDB.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = '.$playlist_id.' and p.playlist_videos = f.id and d.id = p.playlist_id);';
+    $sql             = 'select f.thumbnail,f.id,d.name,d.genre,p.id as playlist_video_id from  '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_VIDEO_FILE.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = '.$playlist_id.' and p.playlist_videos = f.id and d.id = p.playlist_id);';
     $results         = $db->query($sql);
     for ($i = 0; $i < count($results); ++$i) {
         $cell_html .= process_template(

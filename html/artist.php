@@ -9,7 +9,7 @@ define('TITLE', 'artist Page');
 // define('BREADCRUMB', ['home' => "home.php"]);
 include __LAYOUT_HEADER__;
 
-$sql                   = 'select artist from '.Db_TABLE_FILEDB;
+$sql                   = 'select artist from '.Db_TABLE_VIDEO_FILE;
 $sql                   = $sql." WHERE library = '".$_SESSION['library']."' and (artist is not null and artist != 'Missing')";
 $results               = $db->query($sql);
 $AristArray            = [];
@@ -93,7 +93,7 @@ foreach ($sortedArray as $num => $artistArray) {
 }
 $params['ARTIST_HTML'] = $artist_html;
 
-$sql                   = 'select * from '.Db_TABLE_FILEDB;
+$sql                   = 'select * from '.Db_TABLE_VIDEO_FILE;
 $sql                   = $sql." WHERE library = '".$_SESSION['library']."' and (artist is  null or artist = 'Missing')";
 $results               = $db->query($sql);
 foreach ($results as $num => $artistArray) {

@@ -56,7 +56,7 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     }
     $pageObj          = new pageinate($where, $currentPage, $urlPattern);
 
-    $sql              = query_builder('id', $where, false, $order_sort);
+    $sql              = query_builder(Db_TABLE_VIDEO_FILE,'id', $where, false, $order_sort);
     $results          = $db->query($sql);
     foreach ($results as $n => $row) {
         $playlist_ids[] = $row['id'];
@@ -64,7 +64,7 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
 
     $playlist_ids_str = implode(',', $playlist_ids);
 
-    $sql              = query_builder('select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
+    $sql              = query_builder(Db_TABLE_VIDEO_FILE,'select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
     $results          = $db->query($sql);
 
     $msg              = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);

@@ -3,9 +3,9 @@
  * plex web viewer
  */
 
+use Camoo\Config\Config;
 use Dotenv\Dotenv;
 use Tracy\Debugger;
-use Camoo\Config\Config;
 
 session_start();
 
@@ -17,14 +17,13 @@ define('__COMPOSER_LIB__', __ROOT_DIRECTORY__.'/vendor');
 set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
 
 require_once __COMPOSER_LIB__.'/autoload.php';
-
-//Debugger::enable();
+// Debugger::enable();
 
 // Debugger::$showLocation = Tracy\Dumper::LOCATION_SOURCE; // Shows path to where the dump() was called
 // //Debugger::$logSeverity  = \E_WARNING | \E_NOTICE;
 // Debugger::$dumpTheme    = 'dark';
 // Debugger::$showBar      = true;          // (bool) defaults to true
-//Debugger::$strictMode   = ~\E_DEPRECATED & ~\E_USER_DEPRECATED & ~\E_NOTICE;
+// Debugger::$strictMode   = ~\E_DEPRECATED & ~\E_USER_DEPRECATED & ~\E_NOTICE;
 
 // Debugger::$showLocation = Tracy\Dumper::LOCATION_CLASS | Tracy\Dumper::LOCATION_LINK; // Shows both paths to the classes and link to where the dump() was called
 // Debugger::$showLocation = false; // Hides additional location information
@@ -39,8 +38,8 @@ if (!defined('APP_AUTHENTICATION')) {
     define('APP_AUTHENTICATION', false);
 }
 define('APP_HOME', $config['path']['APP_HOME']);
-define('APP_HTML_ROOT', rtrim($_SERVER['CONTEXT_DOCUMENT_ROOT'],'/'));
-define('APP_PATH',APP_HTML_ROOT.APP_HOME);
+define('APP_HTML_ROOT', rtrim($_SERVER['CONTEXT_DOCUMENT_ROOT'], '/'));
+define('APP_PATH', APP_HTML_ROOT.APP_HOME);
 
 define('__THIS_FILE__', basename($_SERVER['SCRIPT_FILENAME']));
 define('__THIS_PAGE__', basename($_SERVER['SCRIPT_FILENAME'], '.php'));
@@ -62,9 +61,12 @@ define('__PHP_INC_INCLUDE_DIR__', __PHP_ASSETS_DIR__.'/includes');
 define('__PLEX_LIBRARY__', $_ENV['PLEX_HOME']);
 define('__CACHE_DIR', __PLEX_LIBRARY__.'/.cache');
 
-define('__ERROR_LOG_DIRECTORY__', APP_PATH.'/logs');
+define('__ERROR_LOG_DIRECTORY__', APP_HTML_ROOT.'/logs');
 
-define('Db_TABLE_FILEDB', Db_TABLE_PREFIX.'filedb');
+define('Db_TABLE_VIDEO_FILE', Db_TABLE_PREFIX.'video_file');
+define('Db_TABLE_VIDEO_INFO', Db_TABLE_PREFIX.'video_info');
+define('Db_TABLE_VIDEO_CUSTOM', Db_TABLE_PREFIX.'video_custom');
+define('Db_TABLE_VIDEO_TAGS', Db_TABLE_PREFIX.'video_metadata');
 
 define('Db_TABLE_STUDIO', Db_TABLE_PREFIX.'studios');
 define('Db_TABLE_GENRE', Db_TABLE_PREFIX.'genre');
@@ -72,8 +74,6 @@ define('Db_TABLE_GENRE', Db_TABLE_PREFIX.'genre');
 define('Db_TABLE_ARTISTS', Db_TABLE_PREFIX.'artists');
 
 define('Db_TABLE_SETTINGS', Db_TABLE_PREFIX.'settings');
-
-define('Db_TABLE_FILEINFO', Db_TABLE_PREFIX.'fileinfo');
 
 define('Db_TABLE_PLAYLIST_VIDEOS', 'playlist_videos');
 
@@ -111,4 +111,5 @@ require_once __PHP_ASSETS_DIR__.'/header.inc.php';
 require_once __PHP_ASSETS_DIR__.'/settings.inc.php';
 
 require_once __PHP_ASSETS_DIR__.'/variables.php';
+logger("____________________________________________________________________________________________________________________");
 define('__METADB_HASH', __CACHE_DIR.'/'.$cache_directory.'/metadb.hash');

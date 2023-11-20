@@ -6,7 +6,7 @@ define('TITLE', 'Home');
 
 include __LAYOUT_HEADER__;
 
-$sql             = 'select  artist from '.Db_TABLE_FILEDB." WHERE library = '".$in_directory."' and artist is not null GROUP by artist ORDER BY `artist` ASC;";
+$sql             = 'select  artist from '.Db_TABLE_VIDEO_FILE." WHERE library = '".$in_directory."' and artist is not null GROUP by artist ORDER BY `artist` ASC;";
 $result          = $db->query($sql);
 
 ?>

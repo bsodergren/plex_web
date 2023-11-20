@@ -133,6 +133,7 @@ function uri_SQLQuery($request_array)
 
     $uri_array = [];
     $uri_query = [];
+    dump([__FUNCTION__,$request_array]);
     foreach ($request_array as $key => $value) {
         if ('sort' == $key) {
             continue;
@@ -165,8 +166,8 @@ function uri_SQLQuery($request_array)
 
     if (array_key_exists('sort', $request_array) && array_key_exists('direction', $request_array)) {
         if (false === matcharray($sort_types, $request_array['sort'])) {
-            $_SESSION['sort']      = 'title';
-            $request_array['sort'] = 'title';
+            $_SESSION['sort']      = 'm.title';
+            $request_array['sort'] = 'm.title';
         }
         $sort_query        = $request_array['sort'].' '.$request_array['direction'];
         $uri_query['sort'] = $sort_query;

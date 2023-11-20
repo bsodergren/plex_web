@@ -10,7 +10,7 @@
                             $.ajax({
                                 type: 'post',
                                 url: 'process.php',                        
-                                data: jQuery.param({'submit': 'update', V__ID_NAME__V: data.content}) ,
+                                data: jQuery.param({'submit': 'update', V__ID_NAME__V: data.content,'video_key': 'V__VIDEO_KEY__V'}) ,
                             });
                             console.log('   * The text was changed -> ' + data.content);
                         }

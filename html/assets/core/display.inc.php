@@ -22,6 +22,7 @@ function display_fileRow($params, $field, $value, $class, $id = '')
                     'ID_NAME'  => $id,
                     'EDITABLE' => $editableClass,
                     'FUNCTION' => $functionName,
+                    'VIDEO_KEY' => $params['video_key'],
                 ]
             );
 
@@ -35,6 +36,7 @@ function display_fileRow($params, $field, $value, $class, $id = '')
             'VALUE'             => $value,
             'ALT_CLASS'         => $class,
             'EDITABLE'          => $editable,
+           
         ]
     );
 
@@ -75,7 +77,9 @@ function display_fileInfo($fileInfoArray, $total_files, $template_base = 'fileli
     $params['DELETE_ID']          = add_hidden('id', $row_id);
     // krsort($fileInfoArray);
     // dd($fileInfoArray);
+    $params['video_key'] = $row_video_key;
     foreach ($fileInfoArray as $key => $value) {
+        
         $class       = (0 == $x % 2) ? 'blueTable-tr-even' : '';
         $value_array = [];
 
@@ -87,7 +91,8 @@ function display_fileInfo($fileInfoArray, $total_files, $template_base = 'fileli
                 ++$x;
 
                 break;
-
+                case 'filename':
+       
             case 'fullpath':
                 $value  = str_replace(__PLEX_LIBRARY__.'/', '', $value);
                 $params = display_fileRow($params, ucfirst($key), $value, $class);
@@ -193,25 +198,6 @@ function display_fileInfo($fileInfoArray, $total_files, $template_base = 'fileli
         } // end switch
     } // end foreach
     $table_body_html['filecards'] = process_template($template_base.'/file', $params);
-    if (!defined('NONAVBAR')) {
-        $tag_list           = '';
-        $sql                = 'SELECT tag_name FROM tags WHERE file_id = '.$row_id;
-        $res                = $db->query($sql);
-        if (count($res) > 0) {
-            foreach ($res as $_ => $row) {
-                $tag_array[$_] = $row['tag_name'];
-            }
-
-            $tag_list = implode(',', $tag_array);
-            $tag_list = str_replace(',', "','", $tag_list);
-            $tag_list = "['".$tag_list."']";
-
-            $tag_list = ' tagInput'.$row_id.'.addData('.$tag_list.');';
-        }
-
-        $params['TAG_DATA'] = $tag_list;
-    }
-    //    $table_body_html['js'] = process_template("filelist/tag_js", $params);
 
     return $table_body_html;
 }
@@ -269,9 +255,9 @@ function display_filelist($results, $option = '', $page_array = [], $template_ba
         $row_id     = $row['id'];
         $videoInfo  = [];
 
-        $cols       = ['filesize', 'format', 'bit_rate', 'width', 'height'];
-        $db->where('video_key', $row['video_key']);
-        $videoInfo  = $db->get(Db_TABLE_FILEINFO, null, $cols);
+         $cols       = ['format', 'bit_rate', 'width', 'height'];
+         $db->where('video_key', $row['video_key']);
+         $videoInfo  = $db->get(Db_TABLE_VIDEO_INFO, null, $cols);
 
         if (array_key_exists(0, $videoInfo)) {
             $row['video_info'] = $videoInfo[0];
