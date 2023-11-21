@@ -47,30 +47,22 @@ if (isset($uri)) {
 $redirect_string = 'search.php'.$request_key;
 
 if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
-    $res              = searchDBVideos($_REQUEST);
+$search = new FileListing();
 
-    $where            = $res[0];
-    $queryArr         = $res[1];
-    foreach ($queryArr as $key => $value) {
-        $keys[] = $key.'  !!primary,5!!'.$value.'!! ';
-    }
-    $pageObj          = new pageinate($where, $currentPage, $urlPattern);
+    // foreach ($results as $n => $row) {
+    //     $playlist_ids[] = $row['id'];
+    // }
 
-    $sql              = query_builder(Db_TABLE_VIDEO_FILE,'id', $where, false, $order_sort);
-    $results          = $db->query($sql);
-    foreach ($results as $n => $row) {
-        $playlist_ids[] = $row['id'];
-    }
+    // $playlist_ids_str = implode(',', $playlist_ids);
 
-    $playlist_ids_str = implode(',', $playlist_ids);
+    $results          = $search->getSearchResults($_REQUEST['field'], $_REQUEST['query']);
 
-    $sql              = query_builder(Db_TABLE_VIDEO_FILE,'select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
-    $results          = $db->query($sql);
+   //$msg              = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);
 
-    $msg              = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);
+   $msg              = 'Showing '.count($results).' results for for '.$_REQUEST['query'];
     $msg = strtolower(str_replace('-', '.', $msg));
     $msg = strtolower(str_replace('_', ' ', $msg));
-    $html_msg         = process_template('search/search_msg', ['SQL' => str_replace('WHERE', 'WHERE<br>', $sql), 'MSG' => $msg]);
+    $html_msg         = process_template('search/search_msg', ['MSG' => $msg]);
     //  $html_msg .= process_template("search/search_msg", [   'MSG' => $sql] );
     $search_results   =  gridview($results);
 

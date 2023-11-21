@@ -21,6 +21,14 @@ class FileListing
         $this->urlPattern   = $urlPattern;
     }
 
+    public function getSearchResults($field, $value)
+    {
+
+       $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$field, '%'.$value.'%', 'like');
+        $results =  $this->buildSQL();
+        return $results;
+    }
+    
     public function getVideoArray()
     {
         global $_SESSION;

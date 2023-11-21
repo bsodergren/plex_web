@@ -10,7 +10,7 @@ const TITLE         = 'Home';
 $subLibraries = [];
 $sql         = query_builder(Db_TABLE_VIDEO_TAGS,'DISTINCT(subLibrary) as subLibrary ','library');
 $result      = $db->query($sql);
-dump($result);
+// dump($result);
 if(count($result) > 0  ) {
     foreach($result as $_ => $value)
     {

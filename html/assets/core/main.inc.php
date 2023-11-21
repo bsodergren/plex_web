@@ -133,7 +133,7 @@ function uri_SQLQuery($request_array)
 
     $uri_array = [];
     $uri_query = [];
-    dump([__FUNCTION__,$request_array]);
+    // dump([__FUNCTION__,$request_array]);
     foreach ($request_array as $key => $value) {
         if ('sort' == $key) {
             continue;

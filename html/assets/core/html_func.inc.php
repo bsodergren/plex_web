@@ -31,8 +31,7 @@ function keyword_cloud($field = 'keyword')
 {
     global $db;
     global $_SESSION;
-    $sql             = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val
- FROM metatags_filedb INNER JOIN (SELECT 0 digit UNION ALL SELECT
+    $sql             = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_TAGS." INNER JOIN (SELECT 0 digit UNION ALL SELECT
  1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
  ON LENGTH(REPLACE(".$field.", ',' , '')) <= LENGTH(".$field.")-n.digit WHERE library = '".$_SESSION['library']."' ORDER BY `val` ASC";
  

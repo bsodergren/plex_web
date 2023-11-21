@@ -2,6 +2,7 @@
 /**
  * plex web viewer
  */
+
 require_once 'Process.class.php';
 class Playlist extends ProcessForms
 {
@@ -22,14 +23,16 @@ class Playlist extends ProcessForms
             $this->playlist_id = $data['playlist_id'];
         }
     }
+
     public function addAllPlaylist()
     {
         $url = $this->createPlaylist();
         echo $this->myHeader($url);
     }
+
     public function createPlaylist()
     {
-        dump([__METHOD__,$this->data]);
+        // dump([__METHOD__,$this->data]);
 
         $name        = 'User Playlist';
         $studio      = [];
@@ -69,7 +72,7 @@ class Playlist extends ProcessForms
 
     public function addPlaylist()
     {
-        dump([__METHOD__,$this->data]);
+        // dump([__METHOD__,$this->data]);
 
         $data = [
             'playlist_id'     => $this->playlist_id,
@@ -83,7 +86,7 @@ class Playlist extends ProcessForms
 
     public function deletePlaylist()
     {
-        dump([__METHOD__,$this->playlist_id]);
+        // dump([__METHOD__,$this->playlist_id]);
 
         $sql     = 'delete d,v from '.Db_TABLE_PLAYLIST_DATA.'  d join '.Db_TABLE_PLAYLIST_VIDEOS.' v on d.id = v.playlist_id where d.id = '.$this->playlist_id.'';
         $results = $this->db->query($sql);
@@ -94,7 +97,7 @@ class Playlist extends ProcessForms
 
     public function savePlaylist()
     {
-        dump([__METHOD__,$this->data]);
+        // dump([__METHOD__,$this->data]);
         if (isset($this->data['playlist_name'])) {
             $playlist_name = $this->data['playlist_name'];
             if ('' != $playlist_name) {

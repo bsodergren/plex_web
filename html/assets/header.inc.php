@@ -47,7 +47,7 @@ $currentPage     = $_REQUEST['current'];
 $uri['current']  = $currentPage;
 
 if (!isset($_SESSION['library'])) {
-    $_SESSION['library'] = 'Studios';
+    $_SESSION['library'] = 'Pornhub';
 }
 
 if (isset($_REQUEST['library'])) {

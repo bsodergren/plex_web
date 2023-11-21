@@ -27,7 +27,7 @@ class ProcessForms
         if (isset($postArray['redirect_url'])) {
             $this->redirect  = $postArray['redirect_url'];
         }
-        dump(['Process Class', $postArray]);
+        // dump(['Process Class', $postArray]);
 
         if (isset($postArray['submit'])) {
             $method = $this->postArray['submit'];
@@ -64,11 +64,11 @@ class ProcessForms
 
     public function update()
     {
-        $keys   = array_keys($this->postArray);
-        $method = $keys[0];
-        $tagValue = $this->postArray[$method];
+        $keys      = array_keys($this->postArray);
+        $method    = $keys[0];
+        $tagValue  = $this->postArray[$method];
         $video_key = $this->postArray[$keys[1]];
-        dump(['update', $method, $video_key]);
+        // dump(['update', $method, $video_key]);
         $this->VideoInfo->{$method}($tagValue, $video_key);
     }
 
