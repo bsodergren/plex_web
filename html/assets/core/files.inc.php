@@ -47,7 +47,7 @@ function deleteFile($array)
 
     $res       = $db->where('id', $id)->delete(Db_TABLE_VIDEO_FILE);
     $res       =  $db->where('video_key', $videoInfo['video_key'])->delete(Db_TABLE_VIDEO_INFO);
-    $res       =  $db->where('playlist_videos', $id)->delete(Db_TABLE_PLAYLIST_VIDEOS);
+    $res       =  $db->where('playlist_video_id', $id)->delete(Db_TABLE_PLAYLIST_VIDEOS);
 
     echo '<script type="text/javascript">   window.opener.location.reload(true); window.close(); </script>';
 }

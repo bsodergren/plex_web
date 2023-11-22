@@ -13,9 +13,10 @@ if (!defined('NONAVBAR')) {
             $sort_html = template::return('base/footer/sort', ['SORT_HTML' => render::display_sort_options($url_array)]);
         }
 
-        if (__SHOW_PAGES__ == true && isset($pageObj)) {
+       if (__SHOW_PAGES__ == true && isset($pageObj)) {
             $page_html =  $pageObj->toHtml();
-        }
+            
+       }
 
         $footer_nav = ['FOOTER_NAV' => $sort_html.$page_html];
         $navbar     = template::return('base/footer/navbar', $footer_nav);

@@ -17,9 +17,10 @@ $table_body_html = '';
 $main_links      = '';
 
 if (null === $playlist_id) {
-    $sql     = 'select count(p.playlist_videos) as count, p.playlist_id, d.name, d.library from '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = d.id) group by p.playlist_id ORDER BY library ASC;';
+    $sql     = 'select count(p.playlist_video_id) as count, p.playlist_id, d.name, d.library from '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = d.id) group by p.playlist_id ORDER BY library ASC;';
     // dd($sql);
     $results = $db->query($sql);
+    $total = count($results);
     for ($i = 0; $i < count($results); ++$i) {
         $library = $results[$i]['library'];
 
@@ -50,12 +51,18 @@ if (null === $playlist_id) {
         'PLAYLIST_LIBRARY'        => $library,
     ]);
 } else {
-    $sql             = 'select f.thumbnail,f.id,d.name,d.genre,p.id as playlist_video_id from  '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_VIDEO_FILE.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = '.$playlist_id.' and p.playlist_videos = f.id and d.id = p.playlist_id);';
+    $sql             = 'select f.thumbnail,f.id,d.name,d.genre,p.id as playlist_video_id,m.title from  '.Db_TABLE_PLAYLIST_DATA.' as d,
+     '.Db_TABLE_VIDEO_FILE.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p, '.Db_TABLE_VIDEO_TAGS.' as m
+      where (p.playlist_id = '.$playlist_id.' and p.playlist_video_id = f.id and d.id = p.playlist_id and f.video_key = m.video_key);';
     $results         = $db->query($sql);
+    $total = count($results);
+
     for ($i = 0; $i < count($results); ++$i) {
         $cell_html .= process_template(
             'playlist/cell',
             [
+               // 'VID_NUMBER' => $i +1,
+                'TITLE'         => $results[$i]['title'],
                 'THUMBNAIL'          => $results[$i]['thumbnail'],
                 'VIDEO_ID'           => $results[$i]['id'],
                 'PLAYLIST_VIDEO_ID'  => $results[$i]['playlist_video_id'],
@@ -70,6 +77,7 @@ if (null === $playlist_id) {
         'FORM_URL'       => $form_url,
         'HIDDEN'         => $form_action,
         'PLAYLIST_ID'    => $playlist_id,
+        'PLAYLIST_VIDEOS' => $total,
         'PLAYLIST_GENRE' => $results[0]['genre'],
         'PLAYLIST_NAME'  => $results[0]['name'],
         'CELLS_HTML'     => $cell_html,

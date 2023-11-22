@@ -12,8 +12,6 @@ foreach ($tag_array as $tag) {
     if (isset($_REQUEST[$tag])) {
         if (is_array($_REQUEST[$tag])) {
             $queries[] = implode(',', $_REQUEST[$tag]);
-
-
         }
     }
 }
@@ -47,21 +45,20 @@ if (isset($uri)) {
 $redirect_string = 'search.php'.$request_key;
 
 if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
-$search = new FileListing();
+    $search           = new FileListing($_REQUEST, $currentPage, $urlPattern);
 
-    // foreach ($results as $n => $row) {
-    //     $playlist_ids[] = $row['id'];
-    // }
+    [$results,$pageObj]           = $search->getSearchResults($_REQUEST['field'], $_REQUEST['query']);
 
-    // $playlist_ids_str = implode(',', $playlist_ids);
+    foreach ($results as $n => $row) {
+        $playlist_ids[] = $row['id'];
+    }
 
-    $results          = $search->getSearchResults($_REQUEST['field'], $_REQUEST['query']);
+    $playlist_ids_str = implode(',', $playlist_ids);
+    // $msg              = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);
 
-   //$msg              = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);
-
-   $msg              = 'Showing '.count($results).' results for for '.$_REQUEST['query'];
-    $msg = strtolower(str_replace('-', '.', $msg));
-    $msg = strtolower(str_replace('_', ' ', $msg));
+    $msg              = 'Showing '.count($results).' results for for '.$_REQUEST['query'];
+    $msg              = strtolower(str_replace('-', '.', $msg));
+    $msg              = strtolower(str_replace('_', ' ', $msg));
     $html_msg         = process_template('search/search_msg', ['MSG' => $msg]);
     //  $html_msg .= process_template("search/search_msg", [   'MSG' => $sql] );
     $search_results   =  gridview($results);

@@ -31,17 +31,34 @@ class pageinate extends Paginator
         $this->currentPage   = $currentPage;
 
         if (false != $query) {
+            if(str_contains($query,"AND")) {
+                $findArr = explode("AND",$query);
+                foreach($findArr as $q){
+                    [$field,$value] = explode("=",$q);
+                    
+                    $field = trim($field);
+                    $value = trim(str_replace("'","%",$value));
+                    dump([__METHOD__, [$field,$value]]);
+                    $db->where($field,$value,'LIKE');                 
+        
+                }
+            } else {
+
+
             [$field,$value] = explode("=",$query);
-            $db->where($field,trim($value,"'"));            
+            
+
+            $field = trim($field);
+            $value = trim(str_replace("'","%",$value));
+            dump([__METHOD__, [$field,$value]]);
+            $db->where($field,$value,'LIKE');                 
+            }
         }
 
         if($this->library === true){
                 $db->where("library", $_SESSION['library']);
         }
         $this->results       = $db->withTotalCount()->get($this->table);
-        //dd($this->results );
-
-
         $this->totalRecords  = $db->totalCount;
 
         $this->limit_array   = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];

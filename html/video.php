@@ -11,11 +11,11 @@ use Nette\Utils\FileSystem;
 
 require_once '_config.inc.php';
 $carousel_js                                      = '';
-$video_buttons='';
+$video_buttons                                    = '';
 if (key_exists('id', $_REQUEST)) {
     $id                                 = $_REQUEST['id'];
     $cols                               = ['playlist_id'];
-    $db->where('playlist_videos', $id);
+    $db->where('playlist_video_id', $id);
 }
 
 if (key_exists('playlist_id', $_REQUEST)) {
@@ -28,15 +28,15 @@ $playlist_result                                  = $db->getOne(Db_TABLE_PLAYLIS
 if (is_array($playlist_result)) {
     if (array_key_exists('playlist_id', $playlist_result)) {
         $playlist_id = $playlist_result['playlist_id'];
-        $id          = $playlist_result['playlist_videos'];
+        $id          = $playlist_result['playlist_video_id'];
     }
 }
 
-$cols                                             = ['filename', 'fullpath', 'title'];
+$cols                                             = ['filename', 'fullpath'];
 $db->where('id', $id);
 $result                                           = $db->getone(Db_TABLE_VIDEO_FILE, null, $cols);
 
-$active_title                                     = $result['title'];
+$active_title                                     = null; // $result['title'];
 if (null === $active_title) {
     $active_title = $result['filename'];
 }
@@ -47,9 +47,11 @@ $video_js_params['PLAYLIST_HEIGHT']               = 50;
 $video_js_params['PLAYLIST_WIDTH']                = 20;
 
 if (isset($playlist_id)) {
-    $sql                                = 'select f.thumbnail,f.filename,f.title,p.playlist_videos from '.Db_TABLE_VIDEO_FILE.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = '.$playlist_id.' and p.playlist_videos = f.id);';
-    $results                            = $db->query($sql);
 
+    $sql                                = 'select 
+        f.thumbnail,f.filename,m.title,p.playlist_video_id from '.Db_TABLE_VIDEO_FILE.' as f,     '.Db_TABLE_PLAYLIST_VIDEOS.' as p, '.Db_TABLE_VIDEO_TAGS.' as m where (p.playlist_id = '.$playlist_id.' and p.playlist_video_id = f.id  and f.video_key = m.video_key);';
+    $results                            = $db->query($sql);
+    //    dd($results);
     for ($i = 0; $i < count($results); ++$i) {
         $class = '';
 
@@ -57,7 +59,7 @@ if (isset($playlist_id)) {
         if ('' == $results[$i]['title']) {
             $title =  $results[$i]['filename'];
         }
-        if ($id == $results[$i]['playlist_videos']) {
+        if ($id == $results[$i]['playlist_video_id']) {
             $class = ' active';
         }
         $carousel_item .= process_template(
@@ -65,7 +67,7 @@ if (isset($playlist_id)) {
             [
                 'THUMBNAIL'    => $results[$i]['thumbnail'],
                 'CLASS_ACTIVE' => $class,
-                'VIDEO_ID'     => $results[$i]['playlist_videos'],
+                'VIDEO_ID'     => $results[$i]['playlist_video_id'],
                 'TITLE'        => $title,
             ]
         );
@@ -73,16 +75,16 @@ if (isset($playlist_id)) {
             $active_title = $title;
             $indx         = $i + 1;
             if (key_exists($indx, $results)) {
-                $next_video_id =  $results[$indx]['playlist_videos'];
+                $next_video_id =  $results[$indx]['playlist_video_id'];
             } else {
-                $next_video_id =  $results[0]['playlist_videos'];
+                $next_video_id =  $results[0]['playlist_video_id'];
             }
 
             $pndx         = $i - 1;
             if (key_exists($pndx, $results)) {
-                $prev_video_id =  $results[$pndx]['playlist_videos'];
+                $prev_video_id =  $results[$pndx]['playlist_video_id'];
             } else {
-                $prev_video_id =  $results[0]['playlist_videos'];
+                $prev_video_id =  $results[0]['playlist_video_id'];
             }
         }
     }
@@ -93,7 +95,7 @@ if (isset($playlist_id)) {
     $video_js_params['PLAYLIST_WIDTH']  = 50;
     $video_js_params['NEXT_VIDEO_ID']   = $next_video_id;
     $video_js_params['PREV_VIDEO_ID']   = $prev_video_id;
-    $video_buttons= process_template('video/video_buttons', []);
+    $video_buttons                      = process_template('video/video_buttons', []);
 }
 
 // $video_file                                       = FileSystem::unixSlashes(FileSystem::normalizePath($video_file));
@@ -106,7 +108,7 @@ $params                                           = [
     'VIDEO_TITLE'    => $active_title,
     'CAROUSEL_HTML'  => $carousel,
     'CAROUSEL_JS'    => $carousel_js,
-    'VIDEO_BUTTONS' => $video_buttons,
+    'VIDEO_BUTTONS'  => $video_buttons,
     'VIDEO_JS'       => process_template('video/video_js', $video_js_params),
 ];
 echo process_template('video/main', $params);

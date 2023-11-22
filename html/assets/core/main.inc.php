@@ -133,7 +133,7 @@ function uri_SQLQuery($request_array)
 
     $uri_array = [];
     $uri_query = [];
-    // dump([__FUNCTION__,$request_array]);
+    dump([__FUNCTION__,$request_array]);
     foreach ($request_array as $key => $value) {
         if ('sort' == $key) {
             continue;
@@ -149,9 +149,9 @@ function uri_SQLQuery($request_array)
 
         $string_value = $value;
         if (is_array($value)) {
-            $string_value = $value[1];
+            dump(['value',$value]);
+            $string_value = $value[0];
         }
-
         $query_string = "= '{$string_value}'";
         if ('NULL' == $string_value) {
             $query_string = 'IS NULL';

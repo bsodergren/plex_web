@@ -60,9 +60,9 @@ class Playlist extends ProcessForms
 
         foreach ($this->data['playlist'] as $_ => $id) {
             $data = [
-                'playlist_id'     => $playlist_id,
-                'playlist_videos' => $id,
-                'library'         => $this->library,
+                'playlist_id'       => $playlist_id,
+                'playlist_video_id' => $id,
+                'library'           => $this->library,
             ];
             $this->db->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
         }
@@ -75,9 +75,9 @@ class Playlist extends ProcessForms
         // dump([__METHOD__,$this->data]);
 
         $data = [
-            'playlist_id'     => $this->playlist_id,
-            'playlist_videos' => $this->data['video_id'],
-            'library'         => $this->library,
+            'playlist_id'       => $this->playlist_id,
+            'playlist_video_id' => $this->data['video_id'],
+            'library'           => $this->library,
         ];
         $res  = $this->db->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
 

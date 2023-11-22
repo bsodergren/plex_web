@@ -22,7 +22,7 @@ if(count($result) > 0  ) {
 logger('qyefasd', $sql);
 $result      = $db->query($sql);
 $rar           = $db->rawQueryOne($sql);
-$sql                = query_builder(Db_TABLE_VIDEO_TAGS,'studio,subLibrary', '', 'studio,subLibrary', 'subLibrary ASC, studio ASC');
+$sql                = query_builder(Db_TABLE_VIDEO_TAGS,'studio,subLibrary', 'library', 'studio,subLibrary', 'subLibrary ASC, studio ASC');
 
 $result             = $db->query($sql);
 

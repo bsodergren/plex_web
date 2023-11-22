@@ -24,9 +24,13 @@ class FileListing
     public function getSearchResults($field, $value)
     {
 
+        $where = "$field='$value'";
+
+        $pageObj = new pageinate($where, $this->currentpage, $this->urlPattern);
+
        $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$field, '%'.$value.'%', 'like');
         $results =  $this->buildSQL();
-        return $results;
+        return [$results,$pageObj];
     }
     
     public function getVideoArray()
@@ -74,6 +78,7 @@ class FileListing
             $uri['direction']           = $_SESSION['direction'];
             $this->request['direction'] = $_SESSION['direction'];
         }
+
         if (isset($uri)) {
             $sql_studio = '';
             $res_array  = uri_SQLQuery($uri);
@@ -81,10 +86,10 @@ class FileListing
             if (array_key_exists('sort', $res_array)) {
                 $order_sort = $res_array['sort'];
             }
-
             if (array_key_exists('sql', $res_array)) {
                 $sql_studio = $res_array['sql'];
             }
+           
 
             if (isset($this->request['genre'])) {
                 $where = str_replace("genre  = '".$this->request['genre']."'", 'genre like \'%'.$this->request['genre'].'%\'', $sql_studio);
@@ -98,6 +103,8 @@ class FileListing
                 $genre           = '';
             }
         }
+
+
         $pageObj = new pageinate($where, $this->currentpage, $this->urlPattern);
 
         if (isset($this->request['studio'])) {

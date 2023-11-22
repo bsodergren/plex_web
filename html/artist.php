@@ -9,7 +9,7 @@ define('TITLE', 'artist Page');
 // define('BREADCRUMB', ['home' => "home.php"]);
 include __LAYOUT_HEADER__;
 
-$sql                   = 'select artist from '.Db_TABLE_VIDEO_FILE;
+$sql                   = 'select artist from '.Db_TABLE_VIDEO_TAGS;
 $sql                   = $sql." WHERE library = '".$_SESSION['library']."' and (artist is not null and artist != 'Missing')";
 $results               = $db->query($sql);
 $AristArray            = [];
@@ -93,19 +93,22 @@ foreach ($sortedArray as $num => $artistArray) {
 }
 $params['ARTIST_HTML'] = $artist_html;
 
-$sql                   = 'select * from '.Db_TABLE_VIDEO_FILE;
-$sql                   = $sql." WHERE library = '".$_SESSION['library']."' and (artist is  null or artist = 'Missing')";
+$sql                   = 'select m.title,f.id,f.thumbnail,f.filename from '.Db_TABLE_VIDEO_TAGS .' as m, '.Db_TABLE_VIDEO_FILE.' as f';
+$sql                   = $sql." WHERE m.library = '".$_SESSION['library']."' and (m.artist is  null or m.artist = 'Missing' ) and (f.video_key = m.video_key)";
 $results               = $db->query($sql);
 foreach ($results as $num => $artistArray) {
     $title     = $artistArray['title'];
     $id        = $artistArray['id'];
     $thumbnail = $artistArray['thumbnail'];
+    $titleBg = '';
     if ('' == $artistArray['title']) {
-        $title = $artistArray['filename'];
+        $title = str_replace("_"," ",$artistArray['filename']);
+        $titleBg = ' bg-info ';
     }
     $params['THUMBNAIL_HTML'] .= process_template(
         'artist/artist_thumbnail',
         [
+            'MISSING_TITLE_BG' => $titleBg,
             'THUMBNAIL' => __URL_HOME__.$thumbnail,
             'FILE_ID'   => $id,
             'TITLE'     => $title,
