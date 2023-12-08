@@ -170,11 +170,13 @@ class Render
             if ('' == $text) {
                 continue;
             }
+                 
 
             $class           = 'breadcrumb-item';
             $link            = '<a href="'.$url.'">'.$text.'</a>';
 
             if ('' == $url) {
+             
                 $class .= ' active" aria-current="page';
                 $link = $text;
             }
@@ -184,20 +186,67 @@ class Render
             $crumbs_html .= process_template('base/navbar/crumb', $params);
         }
 
-        return process_template('base/navbar/breadcrumb', ['CRUMB_LINKS' => $crumbs_html]);
+        if(defined('USE_FILTER')) {
+            $genre_box_html = Render::display_filter('genre');
+            $artist_box_html = Render::display_filter('artist');
+            $studio_box_html = Render::display_filter('studio');
+            foreach($_REQUEST as $name => $value){
+               if($value != ''){
+                $hidden .= add_hidden($name, $value);
+               }
+            }
+
+        }
+        return process_template('base/navbar/breadcrumb', ['CRUMB_LINKS' => $crumbs_html,
+        'GENREFILTERBOX' => $genre_box_html,
+        'ARTISTFILTERBOX' => $artist_box_html,
+                'STUDIOFILTERBOX' => $studio_box_html,
+
+        'HIDDEN' => $hidden]);
     }
 
-    public static function display_SelectOptions($array, $selected = '')
+    public static function display_filter($tag)
+    {
+
+        $selected = '';
+        $clear = $tag;
+        foreach($_REQUEST as $name => $value){
+            if($name == $tag){
+                if($value != ''){
+                $selected = $value;
+                $clear = "Clear ".$tag;
+                continue;
+                }
+            }
+        }
+
+        $genreArray = PlexSql::getFilterList($tag);
+        $params['NAME'] = $tag;
+        $params['OPTIONS'] = self::display_SelectOptions($genreArray, $selected, $clear);
+        return process_template('base/navbar/select/select_box', $params );
+
+
+    }
+    public static function display_SelectOptions($array, $selected = '',$blank=null)
     {
         $html = '';
+        $default_option = '';
+        $default = '';
+        $checked = '';
         foreach ($array as $val) {
             $checked = '';
             if ($val == $selected) {
                 $checked = ' selected';
             }
-            $html .= '<option value="'.$val.'" '.$checked.'>'.$val.'</option>'."\n";
+            $html .= '<option class="filter-option" value="'.$val.'" '.$checked.'>'.$val.'</option>'."\n";
         }
-
-        return $html;
+        if($blank !== null)
+        {
+            if($checked == '') {
+                $default = ' selected';
+            }
+            $default_option = '<option class="filter-option" value=""  '.$default.'>'.$blank.'</option>'."\n";
+        }
+        return $default_option.$html;
     }
 }

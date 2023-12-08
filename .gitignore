@@ -20,4 +20,5 @@ config.ini
 .vscode/settings.json
 .vscode/
 .vscode/*
-html/logs/default.log
+html/logs/*
+html/temp/*

@@ -6,7 +6,7 @@
 require_once '_config.inc.php';
 
 define('TITLE', 'Home');
-
+define('USE_FILTER',true);
 define('GRID_VIEW', true);
 
 $fileinfo = new FileListing($_REQUEST, $currentPage, $urlPattern);
@@ -34,7 +34,7 @@ $page_array      = [
 
 //    echo display_filelist($results, '', $page_array);
 
-$table_body_html =  gridview($results);
+$table_body_html =  gridview($results, $pageObj->totalRecords);
 
 template::echo('base/page', ['BODY' => $table_body_html]);
 

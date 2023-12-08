@@ -9,12 +9,10 @@ define('TITLE', 'artist Page');
 // define('BREADCRUMB', ['home' => "home.php"]);
 include __LAYOUT_HEADER__;
 
-$sql                   = 'select artist from '.Db_TABLE_VIDEO_TAGS;
-$sql                   = $sql." WHERE library = '".$_SESSION['library']."' and (artist is not null and artist != 'Missing')";
-$results               = $db->query($sql);
+$results = (new PlexSql)->getArtists();
+
 $AristArray            = [];
 // $sortedArray[0]      = [];
-
 function compareArtist(&$array, $artist)
 {
     $keyName = strtolower(str_replace('.', '-', $artist));

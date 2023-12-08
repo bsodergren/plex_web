@@ -1,7 +1,7 @@
 <?php
 require_once '_config.inc.php';
 define('TITLE', 'View Genres');
-
+define('USE_FILTER',true);
 $null        = '';
 $null_req    = '&';
 $sql_studio  = 'library';
@@ -79,7 +79,9 @@ foreach ($genre_array as $k => $v) {
             $db->where($studio_key, $studio, 'like');
         }
         $db->where('genre', '%'.$v.'%', 'like');
-        $db->where('library', $_SESSION['library'], 'like');
+        if($_SESSION['library'] != "All"){
+            $db->where('library', $_SESSION['library'], 'like');
+        }
         $count = $db->getOne(Db_TABLE_VIDEO_TAGS, 'count(*) as cnt');
 
         echo $studio." <a href='files.php?".$request_key.'genre='.urlencode($v)."'>".$v.'</a> '.$count['cnt'].' <br>';

@@ -45,6 +45,7 @@ if (isset($uri)) {
 $redirect_string = 'search.php'.$request_key;
 
 if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
+    dump($_REQUEST);
     $search           = new FileListing($_REQUEST, $currentPage, $urlPattern);
 
     [$results,$pageObj]           = $search->getSearchResults($_REQUEST['field'], $_REQUEST['query']);
@@ -61,7 +62,7 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     $msg              = strtolower(str_replace('_', ' ', $msg));
     $html_msg         = process_template('search/search_msg', ['MSG' => $msg]);
     //  $html_msg .= process_template("search/search_msg", [   'MSG' => $sql] );
-    $search_results   =  gridview($results);
+    $search_results   =  gridview($results,count($results));
 
     //   $search_results =     display_filelist($results, '', $page_array);
 }

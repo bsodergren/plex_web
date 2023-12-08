@@ -3,31 +3,43 @@
  * plex web viewer
  */
 
+use Plex\Template\Rain;
+
+/**
+ * plex web viewer.
+ */
+
+/**
+ * plex web viewer.
+ */
+
 require_once '_config.inc.php';
 define('TITLE', 'Test Page');
+
+$t                     = new Rain();
+$tpl                   = $t->init();
+$tpl->draw('body');
+
+exit;
 
 // define('BREADCRUMB', ['home' => "home.php"]);
 include __LAYOUT_HEADER__;
 
-
-$db->join(Db_TABLE_VIDEO_TAGS." m", "m.video_key=f.video_key", "INNER");
-$db->joinWhere(Db_TABLE_VIDEO_TAGS." m", "m.studio", 'Brazzers');
-$db->joinWhere(Db_TABLE_VIDEO_TAGS." m", "m.library", 'Pornhub');
-$db->joinWhere(Db_TABLE_VIDEO_TAGS." m", "m.genre", '%MMF%', 'like');
-$db->orderBy ("m.title","asc");
-$products = $db->get(Db_TABLE_VIDEO_FILE." f",  [0,5], "m.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.filename ,f.fullpath,m.library,f.filesize");
+$db->join(Db_TABLE_VIDEO_TAGS.' m', 'm.video_key=f.video_key', 'INNER');
+$db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.studio', 'Brazzers');
+$db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', 'Pornhub');
+$db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.genre', '%MMF%', 'like');
+$db->orderBy('m.title', 'asc');
+$products              = $db->get(Db_TABLE_VIDEO_FILE.' f', [0, 5], 'm.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.filename ,f.fullpath,m.library,f.filesize');
 echo $db->getlastquery();
 
 print_r2($products);
 
-
-
-
-die();
-$sql             = 'select artist from '.Db_TABLE_VIDEO_FILE;
-$sql             = $sql." WHERE library = '".$_SESSION['library']."' and artist is not null";
-$results         = $db->query($sql);
-$AristArray      = [];
+exit;
+$sql                   = 'select artist from '.Db_TABLE_VIDEO_FILE;
+$sql                   = $sql." WHERE library = '".$_SESSION['library']."' and artist is not null";
+$results               = $db->query($sql);
+$AristArray            = [];
 
 function compareArtist(&$array, $artist)
 {
@@ -56,30 +68,28 @@ foreach ($AristArray as $artist => $num) {
     $sortedArray[$num][] = $artist;
 }
 
-$array= asort($sortedArray);
-$artist_html = '';
-foreach($sortedArray as $num => $artistArray)
-{
-    $artist_box = [];
-    $link_array = [];
+$array                 = asort($sortedArray);
+$artist_html           = '';
+foreach ($sortedArray as $num => $artistArray) {
+    $artist_box                 = [];
+    $link_array                 = [];
 
-
-    $artist_box['COUNT_HTML'] = process_template("test/artist_count",['ARTIST_COUNT'=>$num]);
-    $artist_links = '';
+    $artist_box['COUNT_HTML']   = process_template('test/artist_count', ['ARTIST_COUNT' => $num]);
+    $artist_links               = '';
 
     // foreach($artistArray as $artist)
     // {
-        
+
     //    //$artist_links .= process_template("test/artist_link",['ARTIST'=>$artist,'ARTIST_NAME'=>$name]);
     //    //$artist_links .= keyword_cloud($name,'artist');
     //  //dump( [ $num ,$artist]);
     // }
-    $field = 'artist';
-    $search_url = 'search.php?field='.$field.'&query=';
+    $field                      = 'artist';
+    $search_url                 = 'search.php?field='.$field.'&query=';
 
     foreach ($artistArray as $k => $artist) {
-        $name = strtolower(str_replace('-', '.', $artist));
-        $name = strtolower(str_replace('_', ' ', $name));
+        $name         = strtolower(str_replace('-', '.', $artist));
+        $name         = strtolower(str_replace('_', ' ', $name));
         $link_array[] = process_template(
             'filelist/search_link',
             [
@@ -91,17 +101,15 @@ foreach($sortedArray as $num => $artistArray)
         );
     }
 
-    $artist_links  = implode('  ', $link_array);
-//dd($link_array);
+    $artist_links               = implode('  ', $link_array);
+    // dd($link_array);
     $artist_box['ARTIST_LINKS'] = $artist_links;
 
-    $artist_html .= process_template("test/artist_box",$artist_box);
-  
-
+    $artist_html .= process_template('test/artist_box', $artist_box);
 }
 
 $PARAMS['ARTIST_HTML'] = $artist_html;
 echo process_template('cloud/main', ['TAG_CLOUD_HTML' => $artist_html]);
-//echo process_template("test/main",$PARAMS);
+// echo process_template("test/main",$PARAMS);
 
 include __LAYOUT_FOOTER__;

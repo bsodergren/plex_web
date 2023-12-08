@@ -15,7 +15,8 @@ class FileListing
 
     public function __construct($request = '', $currentpage = '', $urlPattern = '')
     {
-        $this->db           = new MysqliDb('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+        //$this->db           = new PlexSql('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+        $this->db           = new PlexSql();
         $this->currentpage  = $currentpage;
         $this->request      = $request;
         $this->urlPattern   = $urlPattern;
@@ -23,50 +24,45 @@ class FileListing
 
     public function getSearchResults($field, $value)
     {
-
-        $where = "$field='$value'";
+        $where   = "{$field}='{$value}'";
 
         $pageObj = new pageinate($where, $this->currentpage, $this->urlPattern);
 
-       $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$field, '%'.$value.'%', 'like');
-        $results =  $this->buildSQL();
-        return [$results,$pageObj];
+        $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$field, '%'.$value.'%', 'like');
+        $results =  $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
+
+        return [$results, $pageObj];
     }
-    
+
+    private function loopTags($array)
+    {
+       
+
+
+    }
+
     public function getVideoArray()
     {
         global $_SESSION;
-        $where   = '';
+ $tag_array = ['studio','substudio','genre','artist'];
+    
+        $where     = '';
         // . ' AND ';
-        if (isset($this->request['substudio'])) {
-            // if  (!isset($_REQUEST['allfiles']))
-            // {
-            $substudio        = urldecode($this->request['substudio']);
-            $uri['substudio'] = [
-                $this->request['substudio'],
-                $substudio,
-            ];
-            $studio_key       = 'substudio';
-            // }
-            // $studio_key="substudio";
-        }
 
-        if (isset($this->request['studio'])) {
-            $studio        = urldecode($this->request['studio']);
-            // $studio = str_replace("_","/",$studio);
-            $uri['studio'] = [
-                $studio,
-            ];
-            if (!isset($studio_key)) {
-                $studio_key = 'studio';
+        foreach ($tag_array as $tag) {
+            if (isset($this->request[$tag]) && $this->request[$tag] != '')
+            {
+                
+                ${$tag}        = urldecode($this->request[$tag]);               
+                $uri[$tag]     = ${$tag};
+                if ('studio' == $tag || 'substudio' == $tag) {
+                    $studio_key       = $tag;
+                }
             }
         }
 
-        if (isset($this->request['genre'])) {
-            $genre        = urldecode($this->request['genre']);
-            $uri['genre'] = [
-                $genre,
-            ];
+        if (!isset($studio_key)) {
+            $studio_key = 'studio';
         }
 
         if (isset($_SESSION['sort'])) {
@@ -89,7 +85,6 @@ class FileListing
             if (array_key_exists('sql', $res_array)) {
                 $sql_studio = $res_array['sql'];
             }
-           
 
             if (isset($this->request['genre'])) {
                 $where = str_replace("genre  = '".$this->request['genre']."'", 'genre like \'%'.$this->request['genre'].'%\'', $sql_studio);
@@ -104,57 +99,92 @@ class FileListing
             }
         }
 
+        $pageObj   = new pageinate($where, $this->currentpage, $this->urlPattern);
 
-        $pageObj = new pageinate($where, $this->currentpage, $this->urlPattern);
+        foreach ($tag_array as $tag) {
+            if (isset($this->request[$tag]) && $this->request[$tag] != '')
+            {
+                    $value   = '%'.$this->request[$tag].'%';
+                    $comp    = ' like';
+               
+                if ('NULL' == $this->request[$tag]) {
+                    $value = null;
+                    $comp  = ' IS';
+                }
+                       // dump(['m.'.$tag, $value, $comp]);
 
-        if (isset($this->request['studio'])) {
-            $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.studio', '%'.$this->request['studio'].'%', 'like');
+                $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$tag, $value, $comp);
+            }
         }
-        if (isset($this->request['genre'])) {
-            $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.genre', '%'.$this->request['genre'].'%', 'like');
-        }
+
         if (isset($this->request['sort'], $this->request['direction'])) {
             $this->db->orderBy($this->request['sort'], $this->request['direction']);
         }
 
-        $results =  $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
+        $results   =  $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
 
         return [$results, $pageObj, $uri];
     }
 
+    public function getLibrary()
+    {
+        global $_SESSION;
+        if ('All' != $_SESSION['library']) {
+            return " AND m.library = '".$_SESSION['library']."'  ";
+        }
+
+        return null;
+    }
+
     public function getVideoDetails($id)
     {
-        $sql = "SELECT  COALESCE (c.title,m.title) as title, ";
-        $sql .= "COALESCE (c.artist,m.artist) as artist, ";
-        $sql .= " COALESCE (c.genre,m.genre) as genre, ";
-        $sql .= "COALESCE (c.studio,m.studio) as studio, ";
-        $sql .= "COALESCE (c.substudio,m.substudio) as substudio, ";
-        $sql .= "COALESCE (c.keyword,m.keyword) as keyword, ";
-        $sql .= "i.format, i.bit_rate, i.width, i.height, ";
-        $sql .= "f.filename, f.thumbnail, f.fullpath, f.duration, ";
-        $sql .= "f.filesize, f.added, f.id, f.video_key FROM metatags_video_file f ";
-        $sql .= "INNER JOIN metatags_video_metadata m on f.video_key=m.video_key AND m.library = '". $_SESSION['library'] ."'  ";
-        $sql .= "LEFT OUTER JOIN metatags_video_info i on f.video_key=i.video_key LEFT JOIN metatags_video_custom c on m.video_key=c.video_key WHERE   f.id = '".$id."'";
+        $sql = 'SELECT ';
+        $sql .= 'COALESCE (c.title,m.title) as title, ';
+        $sql .= 'COALESCE (c.artist,m.artist) as artist, ';
+        $sql .= 'COALESCE (c.genre,m.genre) as genre, ';
+        $sql .= 'COALESCE (c.studio,m.studio) as studio, ';
+        $sql .= 'COALESCE (c.substudio,m.substudio) as substudio, ';
+        $sql .= 'COALESCE (c.keyword,m.keyword) as keyword, ';
+        if (null === $this->getLibrary()) {
+            $sql .= 'm.library as library, ';
+        }
+        $sql .= 'i.format, i.bit_rate, i.width, i.height, ';
+        $sql .= 'f.filename, f.thumbnail, f.fullpath, f.duration, ';
+        $sql .= 'f.filesize, f.added, f.id, f.video_key FROM metatags_video_file f ';
+        $sql .= 'INNER JOIN metatags_video_metadata m on f.video_key=m.video_key '.$this->getLibrary();
+        $sql .= 'LEFT OUTER JOIN metatags_video_info i on f.video_key=i.video_key LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
+        $sql .= "WHERE   f.id = '".$id."'";
 
         return $this->db->query($sql);
     }
 
     private function buildSQL($limit = null)
     {
+        // SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( ) AS T1, (SELECT @rownum := 0) AS r
+
+        $fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
+
         $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'f.video_key=m.video_key', 'INNER');
         $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'f.video_key=i.video_key', 'LEFT OUTER');
-        $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', $_SESSION['library']);
+        if (null !== $this->getLibrary()) {
+            $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', $_SESSION['library']);
+        } else {
+            $fieldArray[] = 'm.library';
+        }
+        $fieldArray = array_merge($fieldArray, [
+            'i.format', 'i.bit_rate', 'i.width', 'i.height',
+            'f.filename', 'f.thumbnail', 'f.fullpath', 'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key']);
 
-        $results = $this->db->get(
+        $joinQuery  = $this->db->getQuery(
             Db_TABLE_VIDEO_FILE.' f',
             $limit,
-            [
-                'm.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword',
-
-                'i.format', 'i.bit_rate', 'i.width', 'i.height',
-                'f.filename', 'f.thumbnail', 'f.fullpath', 'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key']
+            $fieldArray
         );
 
+        $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
+        $results    = $this->db->rawQuery($query);
+
+        // dd($this->db->getlastquery());
         return $results;
     }
 }

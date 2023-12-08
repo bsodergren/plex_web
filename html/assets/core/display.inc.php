@@ -19,9 +19,9 @@ function display_fileRow($params, $field, $value, $class, $id = '')
             $params['VIDEOINFO_EDIT_JS'] .= process_javascript(
                 'videoinfo/filerow_js',
                 [
-                    'ID_NAME'  => $id,
-                    'EDITABLE' => $editableClass,
-                    'FUNCTION' => $functionName,
+                    'ID_NAME'   => $id,
+                    'EDITABLE'  => $editableClass,
+                    'FUNCTION'  => $functionName,
                     'VIDEO_KEY' => $params['video_key'],
                 ]
             );
@@ -36,7 +36,6 @@ function display_fileRow($params, $field, $value, $class, $id = '')
             'VALUE'             => $value,
             'ALT_CLASS'         => $class,
             'EDITABLE'          => $editable,
-           
         ]
     );
 
@@ -54,8 +53,8 @@ function display_fileInfo($fileInfoArray, $total_files, $template_base = 'fileli
     $row_fullpath                 = $fileInfoArray['fullpath'];
     $row_video_key                = $fileInfoArray['video_key'];
 
-    if (isset($fileInfoArray['result_number'])) {
-        $result_number = $fileInfoArray['result_number'];
+    if (isset($fileInfoArray['rownum'])) {
+        $result_number = $fileInfoArray['rownum'];
     }
 
     $params['FILE_NAME']          = $row_filename;
@@ -67,7 +66,6 @@ function display_fileInfo($fileInfoArray, $total_files, $template_base = 'fileli
         $params['FILE_NAME']     =  process_template($template_base.'/popup_js', ['APP_HOME' => APP_HOME, 'ROW_ID' => $row_id, 'FILE_NAME' => $params['FILE_NAME']]);
 
         $params['VERTICAL_TEXT'] = process_template($template_base.'/file_vertical', ['ROW_ID' => '&nbsp;&nbsp;&nbsp;'.$result_number.' of '.$total_files]);
-        $params['SEARCH_BUTTON'] = process_template($template_base.'/file_search', []);
     }
 
     // $params['DELETE_ID']          = 'delete_'.$row_id;
@@ -77,22 +75,22 @@ function display_fileInfo($fileInfoArray, $total_files, $template_base = 'fileli
     $params['DELETE_ID']          = add_hidden('id', $row_id);
     // krsort($fileInfoArray);
     // dd($fileInfoArray);
-    $params['video_key'] = $row_video_key;
+    $params['video_key']          = $row_video_key;
     foreach ($fileInfoArray as $key => $value) {
-        
         $class       = (0 == $x % 2) ? 'blueTable-tr-even' : '';
         $value_array = [];
 
         switch ($key) {
             // case 'favorite':
+            case 'library':
             case 'title':
                 $value  = str_replace(__PLEX_LIBRARY__.'/', '', $value);
                 $params = display_fileRow($params, ucfirst($key), $value, $class, $key);
                 ++$x;
 
                 break;
-                case 'filename':
-       
+
+            case 'filename':
             case 'fullpath':
                 $value  = str_replace(__PLEX_LIBRARY__.'/', '', $value);
                 $params = display_fileRow($params, ucfirst($key), $value, $class);
@@ -255,9 +253,9 @@ function display_filelist($results, $option = '', $page_array = [], $template_ba
         $row_id     = $row['id'];
         $videoInfo  = [];
 
-         $cols       = ['format', 'bit_rate', 'width', 'height'];
-         $db->where('video_key', $row['video_key']);
-         $videoInfo  = $db->get(Db_TABLE_VIDEO_INFO, null, $cols);
+        $cols       = ['format', 'bit_rate', 'width', 'height'];
+        $db->where('video_key', $row['video_key']);
+        $videoInfo  = $db->get(Db_TABLE_VIDEO_INFO, null, $cols);
 
         if (array_key_exists(0, $videoInfo)) {
             $row['video_info'] = $videoInfo[0];

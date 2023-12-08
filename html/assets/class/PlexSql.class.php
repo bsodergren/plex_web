@@ -3,31 +3,103 @@
  * plex web viewer
  */
 
-/**
- * plex web viewer.
- */
-class PlexSql
+use MysqliDb;
+
+class PlexSql extends MysqliDb
 {
     public $limit   = false;
     public $offset  = false;
     public $where   = '';
     public $groupBy = '';
     public $orderBy = '';
+    public function __construct()
+    {
+       parent::__construct('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
+    }
+
+    public static function getFilterList($field)
+    {
+        global $_SESSION,$db;
+        $tag_array       = ['studio', 'substudio', 'genre', 'artist'];
+        $query           = [];
+        foreach ($tag_array as $tag) {
+            if ($tag == $field) {
+                continue;
+            }
+            if (isset($_REQUEST[$tag])) {
+                $query[]   = $tag.' LIKE "%'.$_REQUEST[$tag].'%" ';
+            }
+        }
+
+        if ('All' != $_SESSION['library']) {
+            $query[] = " library = '".$_SESSION['library']."'  ";
+        }
+        if (count($query) > 0) {
+            $querySQl = ' WHERE ';
+            $partsSQL = implode(' AND ', $query);
+            $querySQl .= $partsSQL;
+        }
+
+        $sql             = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
+    1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
+    ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit  '.$querySQl.'  ORDER BY `val` ASC';
+
+        $res             = $db->query($sql);
+        foreach ($res as $k => $g) {
+            $array[] = $g['val'];
+        }
+
+        return $array;
+    }
+
+    public function getArtists()
+    {
+        global $db;
+        $sql                   = 'select artist from '.Db_TABLE_VIDEO_TAGS;
+        $where                 = $this->pwhere("(artist is not null and artist != 'Missing')");
+
+        return $db->query($sql.$where);
+    }
+
+    public function getQuery($tableName, $numRows = null, $columns = '*')
+    {
+        if (empty($columns)) {
+            $columns = '*';
+        }
+
+        $column       = is_array($columns) ? implode(', ', $columns) : $columns;
+
+        if (!str_contains($tableName, '.')) {
+            $this->_tableName = self::$prefix.$tableName;
+        } else {
+            $this->_tableName = $tableName;
+        }
+
+        $this->_query = 'SELECT '.implode(' ', $this->_queryOptions).' '.
+            $column.' FROM '.$this->_tableName;
+
+        $stmt         = $this->_buildQuery($numRows);
+
+        if ($this->isSubQuery) {
+            return $this;
+        }
+
+        return $this->_lastQuery;
+    }
     // public $fieldList ='id, video_key,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added,filename ,fullpath,library,filesize';
 
-  //  SELECT 
-    // m.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.filename ,f.fullpath,m.library,f.filesize 
-    // FROM metatags_video_file f INNER JOIN metatags_video_metadata m on m.video_key=f.video_key 
+    //  SELECT
+    // m.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.filename ,f.fullpath,m.library,f.filesize
+    // FROM metatags_video_file f INNER JOIN metatags_video_metadata m on m.video_key=f.video_key
     // AND m.studio = 'Brazzers' AND m.library = 'Pornhub' AND m.genre like '%MMF%' ORDER BY m.title ASC LIMIT 0, 5
-    public function select($table, $fields = 'select')
+    public function pselect($table, $fields = 'select')
     {
-      //  $this->sql_table = $table;
-//        $field_list      = ' id, video_key,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added,filename ,fullpath,library,filesize';
+        //  $this->sql_table = $table;
+        //        $field_list      = ' id, video_key,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added,filename ,fullpath,library,filesize';
         $field_list      = 'f.id, f.video_key,f.thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.added,f.filename ,f.fullpath,m.library,f.filesize';
         if ('select' == $fields) {
-                $sql =  'select '.$field_list;
-            
+            $sql =  'select '.$field_list;
         } else {
             if (!str_contains($fields, 'DISTINCT')) {
                 $conditional = true;
@@ -35,7 +107,7 @@ class PlexSql
             $sql = 'SELECT '.$fields;
         }
 
-        $sql = $sql.' FROM '.$table.' ';
+        $sql             = $sql.' FROM '.$table.' ';
         $sql .= $this->where;
         $sql .= $this->groupBy;
         $sql .= $this->orderBy;
@@ -45,44 +117,59 @@ class PlexSql
         }
 
         if (false != $this->limit && false != $this->offset) {
-            $sql = $sql . "  LIMIT " . $this->offset . ", " . $this->limit .'';
+            $sql = $sql.'  LIMIT '.$this->offset.', '.$this->limit.'';
 
             // $sql = $sql.'  LIMIT '.$this->offset.', '.$this->limit.') t1,';
             // $sql = $sql.' (select @row_num:='.$this->offset.') t2';
         }
 
-       
         return $sql;
     }
 
-    public function where($where)
+    public function pwhere($where)
     {
         global $_SESSION;
-        if ('library' == $where) {
-            $sql = " WHERE library = '".$_SESSION['library']."' ";
+
+        $library     = '';
+
+        if ('All' != $_SESSION['library']) {
+            $library = " library = '".$_SESSION['library']."' ";
+        }
+
+        if ('library' != $where) {
+            if ('' != $library) {
+                $library = ' AND '.$library;
+            }
+            $sql = ' WHERE '.$where.$library;
         } else {
-            $sql = " WHERE library = '".$_SESSION['library']."' AND  ".$where;
+            if ('' != $library) {
+                $library = ' WHERE '.$library;
+            }
+
+            $sql = $library;
         }
 
         $this->where = $sql;
+
+        return $sql;
     }
 
-    public function groupBy($fields)
+    public function pgroupBy($fields)
     {
         $this->groupBy =  ' GROUP BY '.$fields;
     }
 
-    public function orderBy($fields)
+    public function porderBy($fields)
     {
         $this->orderBy =  ' ORDER BY '.$fields;
     }
 
-    public function setLimit($limit)
+    public function psetLimit($limit)
     {
         $this->limit  = $limit;
     }
 
-    public function setOffset($offset)
+    public function psetOffset($offset)
     {
         $this->offset = $offset;
     }
@@ -92,22 +179,22 @@ function query_builder($table, $fields = 'select', $where = false, $group = fals
 {
     $query = new PlexSql();
     if (false != $where) {
-        $query->where($where);
+        $query->pwhere($where);
     }
     if (false != $group) {
-        $query->groupBy($group);
+        $query->pgroupBy($group);
     }
     if (false != $order) {
-        $query->orderBy($order);
+        $query->porderBy($order);
     }
     if (false != $limit) {
-        $query->setLimit($limit);
+        $query->psetLimit($limit);
     }
     if (false != $offset) {
-        $query->setOffset($offset);
+        $query->psetOffset($offset);
     }
 
-    $sql = $query->select($table, $fields);
+    $sql   = $query->pselect($table, $fields);
     logger('SQL Builder', $sql);
 
     return $sql;

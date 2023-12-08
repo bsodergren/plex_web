@@ -3,7 +3,7 @@
  * plex web viewer
  */
 
-$db       = new MysqliDb('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+$db       = new PlexSql();//('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 $conn     = mysqli_connect('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
 dbObject::autoload('models');

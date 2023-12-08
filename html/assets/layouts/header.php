@@ -58,6 +58,7 @@ if (! defined('NONAVBAR')) {
         $crumbs['Genre'] = $genre_url;
     }
 
+   
     //    $crumbs['Grid'] = "";
     if (isset($gridview_url)) {
         $crumbs['Grid'] = $gridview_url;

@@ -1,10 +1,11 @@
 <div class="container-fluid justify-content-end">
-  <form action="%%PAGE_UPDATE%%" method="GET">
+  <form action="%%PAGE_UPDATE%%" method="GET" >
     %%HIDDEN%%
     <input type=submit style="display:none;">
+ 
     <ul class="pagination">
-      %%SHOW_PLACEHOLDER%%
-      <select class="page-link page-item" name="itemsPerPage" id="itemsPerPage" onchange="this.form.submit()">
+      <!-- %%SHOW_PLACEHOLDER%% -->
+         <select class="page-link page-item" name="itemsPerPage" id="itemsPerPage" onchange="this.form.submit()">
 
         %%OPTIONS%%
 

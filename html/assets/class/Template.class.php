@@ -104,12 +104,12 @@ class Template
         $html_text     = preg_replace_callback('/(!!(\w+,?\w+)!!)(.*)(!!)/iU', [$this, 'callback_badge'], $html_text);
 
         // '<span $2>$3</span>'
+        $html_text = str_replace("    ", "", $html_text);
+        $html_text     = "<!-- start $template -->".PHP_EOL.$html_text.PHP_EOL."<!-- end $template -->". PHP_EOL;
+        $this->html = $html_text;
+        // $this->html 
 
-    //    $html_text     = "<!-- start $template --> \n".$html_text."\n";
-        $this->html .= $html_text;
-        // $this->html .= "\n <!-- end $template --> \n";
-
-        return $this->html;
+        return $this->html ;
     }
 
     private function callback_badge($matches)

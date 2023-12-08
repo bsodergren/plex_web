@@ -106,10 +106,12 @@ define('__TEMPLATE_CONSTANTS__', [
     '__URL_HOME__',
 ]);
 
+require_once __ROOT_DIRECTORY__.'/src/Config/paths.php';
+
 require_once __PHP_ASSETS_DIR__.'/header.inc.php';
 
 require_once __PHP_ASSETS_DIR__.'/settings.inc.php';
 
 require_once __PHP_ASSETS_DIR__.'/variables.php';
-logger("____________________________________________________________________________________________________________________");
+logger('____________________________________________________________________________________________________________________');
 define('__METADB_HASH', __CACHE_DIR.'/'.$cache_directory.'/metadb.hash');

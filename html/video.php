@@ -25,6 +25,7 @@ if (key_exists('playlist_id', $_REQUEST)) {
 }
 
 $playlist_result                                  = $db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
+dump($playlist_result);
 if (is_array($playlist_result)) {
     if (array_key_exists('playlist_id', $playlist_result)) {
         $playlist_id = $playlist_result['playlist_id'];

@@ -15,7 +15,6 @@ class Playlist extends ProcessForms
     public function __construct($data)
     {
         global $db,$_SESSION;
-
         $this->data    = $data;
         $this->db      = $db;
         $this->library = $_SESSION['library'];

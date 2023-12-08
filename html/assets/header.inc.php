@@ -53,7 +53,10 @@ if (!isset($_SESSION['library'])) {
 if (isset($_REQUEST['library'])) {
     $_SESSION['library'] = $_REQUEST['library'];
 }
+
 $tag_array       = ['genre', 'artist', 'keyword'];
+
+
 if (isset($_REQUEST['submit'])) {
     if ('Search' == $_REQUEST['submit']) {
         $delim                   = ',';
@@ -74,14 +77,14 @@ if (isset($_REQUEST['submit'])) {
         $_REQUEST['field']       = $fields;
     }
 }
-
+/*
 $in_directory    = $_SESSION['library'];
 $cache_directory = $_SESSION['library'];
 
 if ('Studios' == $in_directory) {
     $in_directory = 'Studios';
 }
-
+*/
 /*if ($in_directory == 'Home Videos') {
     $in_directory = 'HomeVideos';
 }
@@ -94,7 +97,6 @@ if (!isset($_SESSION['sort'])) {
 if (isset($_REQUEST['sort'])) {
     $_SESSION['sort'] = $_REQUEST['sort'];
 }
-
 if ('' != $_SERVER['QUERY_STRING']) {
     $query_string            = '&'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
     $request_string_query    = '?'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
@@ -120,12 +122,9 @@ if (isset($_REQUEST['direction'])) {
     }
 }
 
-$url_array       = [
-    'url'          => $_SERVER['SCRIPT_NAME'],
-    'query_string' => $query_string,
-    'current'      => $_SESSION['sort'],
-    'direction'    => $_SESSION['direction'],
-    'sort_types'   => [
+
+$sort_type_map = [
+    'sort_types' => [
         'Studio'       => 'm.studio',
         'Sub Studio'   => 'm.substudio',
         'File size'    => 'f.filesize',
@@ -135,5 +134,35 @@ $url_array       = [
         'Duration'     => 'f.duration',
         'Date Added'   => 'f.added',
         'Genre'        => 'm.genre',
+        ],
+    'map' => [
+        'm.studio'  =>'Studio'       , 
+        'm.substudio'  =>'Sub Studio'   ,
+        'f.filesize'  =>'File size'    ,
+        'm.artist'  =>'Artist'       ,
+        'm.title'  =>'Title'        ,
+        'f.filename'  =>'Filename'     ,
+        'f.duration' => 'Duration'     , 
+        'f.added' => 'Date Added'   ,
+        'm.genre' =>'Genre'        ,
     ],
+];
+
+$url_array       = [
+    'url'          => $_SERVER['SCRIPT_NAME'],
+    'query_string' => $query_string,
+    'current'      => $_SESSION['sort'],
+    'direction'    => $_SESSION['direction'],
+    'sort_types' => $sort_type_map['sort_types'] ,
+    // 'sort_types'   => [
+    //     'Studio'       => 'm.studio',
+    //     'Sub Studio'   => 'm.substudio',
+    //     'File size'    => 'f.filesize',
+    //     'Artist'       => 'm.artist',
+    //     'Title'        => 'm.title',
+    //     'Filename'     => 'f.filename',
+    //     'Duration'     => 'f.duration',
+    //     'Date Added'   => 'f.added',
+    //     'Genre'        => 'm.genre',
+    // ],
 ];

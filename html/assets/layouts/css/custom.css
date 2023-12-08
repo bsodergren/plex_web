@@ -10,7 +10,19 @@
 
 body {
     margin-bottom: 60px;
+    font-family: var(--bs-body-font-family);
+    font-size: var(--bs-body-font-size);
+    font-weight: var(--bs-body-font-weight);
+    line-height: var(--bs-body-line-height);
+    color: var(--bs-body-color);
+    text-align: var(--bs-body-text-align);
+    background-color: var(--bs-body-bg);
+    -text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent
 }
+
+   
+
 
 .blueTable-td,
 .blueTable-th {
@@ -129,3 +141,24 @@ button[type="submit"] {
 button[type="submit"]:hover {
     color: blue;
 }
+
+.filter-select {
+    text-align-last: center;
+    padding: 0px 20px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+     background-position: left 1rem; 
+    background-size: 1.5em;
+  }
+
+   
+.filter-option {
+    text-align: center;
+    padding: 0px 20px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat; 
+    background-position: left 1rem;
+     background-size: 1.5em; 
+  } 

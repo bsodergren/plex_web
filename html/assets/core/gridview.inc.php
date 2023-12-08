@@ -6,10 +6,15 @@
 /**
  * Command like Metatag writer for video files.
  */
-function gridview($results)
+function gridview($results,$totalRecords)
 {
     global $_SESSION,$_REQUEST;
-    global $db;
+    global $db,$sort_type_map;
+
+    $total = count($results);
+    if( $total  == 0){
+        return "No results";
+    }
     $sql = 'select * from '.Db_TABLE_PLAYLIST_DATA.';';
     $playlists = $db->query($sql);
     foreach($playlists as $p){
@@ -26,9 +31,9 @@ function gridview($results)
     $r               = 0;
    
     for ($i = 0; $i < count($results); ++$i) {
-        
         $file_info = [
             'title'     => $results[$i]['title'],
+            'library'    => $results[$i]['library'],
             'studio'    => $results[$i]['studio'],
             'substudio' => $results[$i]['substudio'],
             'artist'    => $results[$i]['artist'],
@@ -64,6 +69,9 @@ function gridview($results)
                 'THUMBNAIL'   => $results[$i]['thumbnail'],
                 'ROW_ID'      => $results[$i]['id'],
                 'VIDEO_DATA'  => $videoInfo,
+                'ROWNUM'     => $results[$i]['rownum'],
+                'ROW_TOTAL' => $totalRecords ,
+
             ]
         );
     }
@@ -73,7 +81,7 @@ function gridview($results)
     $table_body_html = process_template('grid/table', [
         'HIDDEN_STUDIO_NAME' => add_hidden('studio', $studio).add_hidden('substudio', $substudio),
         'ROWS_HTML'          => $row_html,
-        'INFO_NAME'          => $_REQUEST['sort'],
+        'INFO_NAME'          => $sort_type_map['map'][$_REQUEST['sort']],
     ]);
 
     return $table_body_html;

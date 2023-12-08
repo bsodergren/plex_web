@@ -17,7 +17,7 @@ class pageinate extends Paginator
     public $table = Db_TABLE_VIDEO_TAGS;
     public $results;
     public $paginator;
-    public $itemsSelection = [10, 25, 30, 40, 50, 100, 250, 500,1500];
+    public $itemsSelection = [10, 25, 50, 100, 250, 500,1500];
 
     
     public function __construct($query, $currentPage, $urlPattern)
@@ -38,26 +38,33 @@ class pageinate extends Paginator
                     
                     $field = trim($field);
                     $value = trim(str_replace("'","%",$value));
-                    dump([__METHOD__, [$field,$value]]);
                     $db->where($field,$value,'LIKE');                 
         
                 }
             } else {
 
+                if(str_contains($query,"=")) {
+                    [$field,$value] = explode("=",$query);
+                    $field = trim($field);
+                    $value = trim(str_replace("'","%",$value));
+                    //dump([__METHOD__, [$field,$value]]);
+                    $db->where($field,$value,'LIKE');                 
+                }else{
+                    [$field,$value] = explode("IS",$query);
+                    $value = str_replace("NULL",'',$value);
+                    $db->where ($field, NULL, 'IS '.$value);
+                }
 
-            [$field,$value] = explode("=",$query);
-            
-
-            $field = trim($field);
-            $value = trim(str_replace("'","%",$value));
-            dump([__METHOD__, [$field,$value]]);
-            $db->where($field,$value,'LIKE');                 
             }
         }
 
         if($this->library === true){
+            if($_SESSION['library'] != "All"){
                 $db->where("library", $_SESSION['library']);
+            }
         }
+
+
         $this->results       = $db->withTotalCount()->get($this->table);
         $this->totalRecords  = $db->totalCount;
 
