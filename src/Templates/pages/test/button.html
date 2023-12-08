@@ -1,0 +1,10 @@
+<div class="row blueTable-tr-even mt-2">
+    <div class="col-2 blueTable-tbody-td">
+        <span class="text-dark fs-5"> {$tag|ucfirst}</span>
+    </div>
+    <div class="col-9 blueTable-tbody-td fs-5">        
+       {loop="$buttonValue"}
+        <a class="badge fs-6 blueTable-thead" href="search.php?field={$tag}&query={$value}"><input type="checkbox" name="{$tag}[]" value="{$value}" />&nbsp;{$value}</a>
+        {/loop} 
+    </div>
+</div>

@@ -22,3 +22,4 @@ config.ini
 .vscode/*
 html/logs/*
 html/temp/*
+src/var/**

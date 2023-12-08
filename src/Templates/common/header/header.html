@@ -1,33 +1,39 @@
+<!-- start base/header/header -->
 <!DOCTYPE html>
 <html lang="en">
+<head>
+<meta
+http-equiv="Cache-Control"
+content="no-cache, no-store, must-revalidate"
+/>
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<meta charset="utf-8" />
+<meta name="description" content="Plexmedia metadata browser" />
+<meta name="author" content="bjorn" />
+<base href="http://10.0.0.101/plex/" />
 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Home|Plex Media Utility</title>
+<!-- start base/header/header_scripts -->
 
-        <meta name="description" content="{if=" defined('APP_DESCRIPTION')"}{#APP_DESCRIPTION#}{/if}">
-        <meta name="author" content="{if=" defined('APP_OWNER')"}{#APP_OWNER#}{/if}">
-        <link rel="icon" type="image/png" href="{#__URL_HOME__#}/assets/themes/application/images/favicon.png?590900">
+<script src="http://10.0.0.101/plex/assets/layouts/external/js/popper.min.js"></script>
+<script src="http://10.0.0.101/plex/assets/layouts/external/js/bootstrap.min.js"></script>
 
-        <title>{if="defined('APP_NAME')"}{#APP_NAME#}{/if} | {if="defined('TITLE')"}{#TITLE#}{/if}</title>
+<link
+rel="stylesheet"
+href="http://10.0.0.101/plex/assets/layouts/external/css/bootstrap.min.css"
+/>
 
-        {include="bootstrap_5"}
+<script src="http://10.0.0.101/plex/assets/layouts/external/js/jquery.min.js"></script>
+<script src="http://10.0.0.101/plex/assets/layouts/external/js/jquery.editable.min.js"></script>
 
-        {if="!empty($custom_css)"}
-        {include="css"}
-        {/if}
+<script src="http://10.0.0.101/plex/assets/layouts/js/app.js"></script>
+<!-- end base/header/header_scripts -->
+<!-- start base/header/header_filelist -->
+<link rel="stylesheet" href="http://10.0.0.101/plex/assets/layouts/css/custom.css?gfdggggfd" />
 
-        {if="$custom_js"}
-        {include="$custom_js"}
-        {/if}
-    </head>
+<link rel="stylesheet" href="http://10.0.0.101/plex/assets/layouts/css/tags-input.css" />
+</head>
 
-    <body>
-        {if="$UseNavbar"}
-        {include="$navbarTemplate"}
-        {/if}
-        <main role="main" class="container mt-1">
-
-            {if="!empty($return_msg)"}
-            {include="return_msg"}
-            {/if}
+<body >
+    <main class="container-fluid m-5 p-5">

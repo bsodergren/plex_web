@@ -2,6 +2,4 @@
         </main>
 
     </body>
-    <?php require $this->checkTemplate("test/../../common/footer/javascript");?>
-
 </html>

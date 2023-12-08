@@ -9,7 +9,7 @@
 
 .blueTable {
     border: 0px solid #a4401c;
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
     width: 100%;
     margin: 0px;
 
@@ -20,16 +20,12 @@
 
     /*    border-bottom: 2px solid #1C6EA4;*/
     /*	border-collapse: collapse; */
-
 }
-
-
 
 .blueTable-td,
 .blueTable-th {
-    border: 0px solid #AAAAAA;
+    border: 0px solid #aaaaaa;
     padding: 3px 2px;
-
 }
 
 .blueTable-tbody-td {
@@ -54,7 +50,7 @@
 .blueTable-thead-th {
     font-size: 18px;
     font-weight: bold;
-    color: #FFFFFF;
+    color: #ffffff;
     white-space: nowrap;
 
     /* order-left: 2px solid #D0E4F5; */

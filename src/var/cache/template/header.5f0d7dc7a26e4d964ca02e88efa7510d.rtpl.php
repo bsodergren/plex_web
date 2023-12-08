@@ -1,45 +1,39 @@
-<?php if(!class_exists('Rain\Tpl')){exit;}?><!DOCTYPE html>
+<?php if(!class_exists('Rain\Tpl')){exit;}?><!-- start base/header/header -->
+<!DOCTYPE html>
 <html lang="en">
+<head>
+<meta
+http-equiv="Cache-Control"
+content="no-cache, no-store, must-revalidate"
+/>
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<meta charset="utf-8" />
+<meta name="description" content="Plexmedia metadata browser" />
+<meta name="author" content="bjorn" />
+<base href="http://10.0.0.101/plex/" />
 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Home|Plex Media Utility</title>
+<!-- start base/header/header_scripts -->
 
-        <meta name="description" content="<?php if(  defined('APP_DESCRIPTION') ){ ?><?php echo APP_DESCRIPTION; ?><?php } ?>">
-        <meta name="author" content="<?php if(  defined('APP_OWNER') ){ ?><?php echo APP_OWNER; ?><?php } ?>">
-        <link rel="icon" type="image/png" href="<?php echo __URL_HOME__; ?>/assets/themes/application/images/favicon.png?590900">
+<script src="http://10.0.0.101/plex/assets/layouts/external/js/popper.min.js"></script>
+<script src="http://10.0.0.101/plex/assets/layouts/external/js/bootstrap.min.js"></script>
 
-        <title><?php if( defined('APP_NAME') ){ ?><?php echo APP_NAME; ?><?php } ?> | <?php if( defined('TITLE') ){ ?><?php echo TITLE; ?><?php } ?></title>
+<link
+rel="stylesheet"
+href="http://10.0.0.101/plex/assets/layouts/external/css/bootstrap.min.css"
+/>
 
-        <?php require $this->checkTemplate("test/../../common/header/bootstrap_5");?>
+<script src="http://10.0.0.101/plex/assets/layouts/external/js/jquery.min.js"></script>
+<script src="http://10.0.0.101/plex/assets/layouts/external/js/jquery.editable.min.js"></script>
 
+<script src="http://10.0.0.101/plex/assets/layouts/js/app.js"></script>
+<!-- end base/header/header_scripts -->
+<!-- start base/header/header_filelist -->
+<link rel="stylesheet" href="http://10.0.0.101/plex/assets/layouts/css/custom.css?gfdggggfd" />
 
-        <?php if( !empty($custom_css) ){ ?>
+<link rel="stylesheet" href="http://10.0.0.101/plex/assets/layouts/css/tags-input.css" />
+</head>
 
-        <?php require $this->checkTemplate("test/../../common/header/css");?>
-
-        <?php } ?>
-
-
-        <?php if( $custom_js ){ ?>
-
-        <?php require $this->checkTemplate('test/../../common/header/'.$custom_js);?>
-
-        <?php } ?>
-
-    </head>
-
-    <body>
-        <?php if( $UseNavbar ){ ?>
-
-        <?php require $this->checkTemplate('test/../../common/header/'.$navbarTemplate);?>
-
-        <?php } ?>
-
-        <main role="main" class="container mt-1">
-
-            <?php if( !empty($return_msg) ){ ?>
-
-            <?php require $this->checkTemplate("test/../../common/header/return_msg");?>
-
-            <?php } ?>
+<body >
+    <main class="container-fluid m-5 p-5">

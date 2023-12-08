@@ -12,12 +12,32 @@ use Plex\Template\Rain;
 /**
  * plex web viewer.
  */
-
+$_REQUEST['itemsPerPage'] = 25;
+$_REQUEST['current'] = '3';
 require_once '_config.inc.php';
 define('TITLE', 'Test Page');
 
+$fileinfo                = new FileListing($_REQUEST, $currentPage, $urlPattern);
+
+[$results,$pageObj,$uri] = $fileinfo->getVideoArray();
+foreach($results as $k => $videoDetails){
+    foreach($videoDetails as $key => $value){
+        if($key == "artist" ||
+        $key == "genre" ||
+        $key == "keyword" ||
+        $key == "studio"
+        ){
+            $videoArray['videos'][$k][$key] = explode(",",$value);
+        } else {
+            $videoArray['videos'][$k][$key] = $value;
+        }
+    }
+
+}
+
 $t                     = new Rain();
 $tpl                   = $t->init();
+$tpl->assign($videoArray);
 $tpl->draw('body');
 
 exit;
