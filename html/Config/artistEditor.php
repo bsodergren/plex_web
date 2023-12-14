@@ -87,7 +87,7 @@ $artist_main_html .= process_template('config/artist/form_wrapper', [
     'ARTIST_FORM_HTML' => $artist_row_html,
 ]);
 
-echo process_template(
+Template::echo(
     'config/artist/main',
     [
         'ARTIST_MAIN_HTML' => $artist_main_html,

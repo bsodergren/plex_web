@@ -85,7 +85,7 @@ $genre_main_html .= process_template('config/genre/form_wrapper', [
     'GENRE_FORM_HTML' => $genre_row_html,
 ]);
 
-echo process_template(
+Template::echo(
     'config/genre/main',
     [
         'GENRE_MAIN_HTML' => $genre_main_html,

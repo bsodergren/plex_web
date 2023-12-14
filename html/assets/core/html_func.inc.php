@@ -19,7 +19,7 @@ function keyword_list($key, $list)
                 'KEY'      => $key,
                 'QUERY'    => urlencode($keyword),
                 'URL_TEXT' => $keyword,
-                'CLASS'    => ' class="badge fs-6 blueTable-thead" ',
+                //  'CLASS'    => ' class="badge fs-6 blueTable-thead" ',
             ]
         );
     }
@@ -31,15 +31,15 @@ function keyword_cloud($field = 'keyword')
 {
     global $db;
     global $_SESSION;
-    $sql             = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_TAGS." INNER JOIN (SELECT 0 digit UNION ALL SELECT
+    $sql             = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
  1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
- ON LENGTH(REPLACE(".$field.", ',' , '')) <= LENGTH(".$field.")-n.digit WHERE library = '".$_SESSION['library']."' ORDER BY `val` ASC";
- 
+ ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.")-n.digit WHERE library = '".$_SESSION['library']."' ORDER BY `val` ASC";
+
     $list            = $db->query($sql);
     $tag_links       = '';
-if(count($list) == 0){
-    return false;
-}
+    if (0 == count($list)) {
+        return false;
+    }
 
     if (is_array($list)) {
         foreach ($list as $key => $keyword) {
@@ -48,9 +48,7 @@ if(count($list) == 0){
     } else {
         $list_array = explode(',', $list);
     }
-
-    // $search_url = 'search.php?field='.$field.'&query=';
-
+  
     foreach ($list_array as $k => $keyword) {
         $letter       = substr($keyword, 0, 1);
         if (!isset($last_letter)) {
@@ -58,20 +56,56 @@ if(count($list) == 0){
         }
         if ($letter != $last_letter) {
             $last_letter  = $letter;
-            $link_array[] = '</div>    <div class="'.__TAG_CAT_CLASS__.' ">';
-            
-
+            // $link_array[] = '</div>    <div class="'.__TAG_CAT_CLASS__.' ">';
+            // $index=0;
+        }
+        $keyword_array[$last_letter][] = $keyword;
+        // if ($max <= $index) {
+        //     $link_array[] = '</div>    <div class="">';
+        //     $index=0;
+        // }
+        // $index++;
+        // $link_array[] = process_template(
+        //     'cloud/tag',
+        //     [
+        //         'KEY'      => $field,
+        //         'QUERY'    => urlencode($keyword),
+        //         'URL_TEXT' => $keyword,
+        //         // 'CLASS'    => ' badge fs-6 blueTable-thead ',
+        //     ]
+        // );
+    }
+    $max = 10;
+    $keyword_box_class = '<div class="">';
+    foreach ($keyword_array as $letter => $keywordArray) {
+        $index=0;
+        $total = count($keywordArray);
+        if($total >= $max){
+            $link_array[] = $keyword_box_class;
+        }
+        foreach($keywordArray as $k => $keyword)
+        {
+            if ($max <= $index) {
+                $link_array[] = '</div>'.$keyword_box_class;
+                $index=0;
+            }
+            $index++;
+            $link_array[] = process_template(
+                'cloud/tag',
+                [
+                    'KEY'      => $field,
+                    'QUERY'    => urlencode($keyword),
+                    'URL_TEXT' => $keyword,
+                    // 'CLASS'    => ' badge fs-6 blueTable-thead ',
+                ]
+            );
+        }
+        if($total >= $max){
+            $link_array[] = '</div>';
         }
 
-        $link_array[] = process_template(
-            'cloud/tag',
-            [
-                'KEY'      => $field,
-                'QUERY'    => urlencode($keyword),
-                'URL_TEXT' => $keyword,
-                'CLASS'    => ' badge fs-6 blueTable-thead ',
-            ]
-        );
+        $link_array[] = '</div>    <div class="'.__TAG_CAT_CLASS__.' ">';
+
     }
 
     $tag_links       = implode('  ', $link_array);
@@ -87,7 +121,7 @@ function process_template($template, $replacement_array = '')
 
 function process_javascript($template, $replacement_array = '')
 {
-    return template::return($template, $replacement_array,"javascript");
+    return template::return($template, $replacement_array, 'javascript');
 } // end process_template()
 
 function JavaRefresh($url, $timeout = 0)

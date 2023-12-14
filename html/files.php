@@ -7,13 +7,13 @@ require_once '_config.inc.php';
 
 define('TITLE', 'Home');
 define('USE_FILTER',true);
+Template::$Render = true;
 $fileinfo                = new FileListing($_REQUEST, $currentPage, $urlPattern);
 
 [$results,$pageObj,$uri] = $fileinfo->getVideoArray();
 logger('all files', $sql);
 // $results = $db->query($sql);
 
-dump(['uri',$uri]);
 $request_key             = uri_String($uri);
 $redirect_string         = __THIS_FILE__.$request_key;
 
@@ -25,7 +25,7 @@ $gridview_url            = 'gridview.php'.$request_key;
 
 // define('BREADCRUMB', ['home' => "home.php", $_REQUEST[$studio_key] => 'genre.php'.$request_key, $genre => '']);
 
-require __LAYOUT_HEADER__;
+// require __LAYOUT_HEADER__;
 
 $page_array              = [
     'total_files'     => $pageObj->totalRecords,
@@ -36,4 +36,6 @@ $body                    = display_filelist($results, '', $page_array);
 
 template::echo('base/page', ['BODY' => $body]);
 
-require __LAYOUT_FOOTER__;
+// require __LAYOUT_FOOTER__;
+
+Template::render();

@@ -2,7 +2,7 @@
 /**
  * Command like Metatag writer for video files.
  */
-define('__TAG_CAT_CLASS__','border border-1 border-dark mx-2 ');
+define('__TAG_CAT_CLASS__','border border-2 border-dark  mx-2 d-flex');
 
 require_once '_config.inc.php';
 
@@ -31,7 +31,7 @@ $field           = 'genre';
 
 include_once __LAYOUT_HEADER__;
 
-define('__TAG_CAT_CLASS__','border border-1 border-black');
+define('__TAG_CAT_CLASS__','');//border border-1 border-black');
 
 $html = process_template('cloud/main', 
 [

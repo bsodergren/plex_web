@@ -1,6 +1,6 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
 use Nette\Utils\FileSystem;
@@ -29,10 +29,15 @@ class RoboLoader
         $files_array = [];
         if ($all = opendir($directory)) {
             while ($filename = readdir($all)) {
-                if (!is_dir($directory.'/'.$filename)) {
+                if ('.' == $filename) {
+                    continue;
+                }
+                if ('..' == $filename) {
+                    continue;
+                }
+                $file = filesystem::normalizePath($directory.'/'.$filename);
+                if (!is_dir($file)) {
                     if (preg_match('/('.$ext.')$/', $filename)) {
-                        $file = filesystem::normalizePath($directory.'/'.$filename);
-
                         if (1 == $skip_files) {
                             if (!self::skipFile($file)) {
                                 $files_array[] = $file;
@@ -41,7 +46,11 @@ class RoboLoader
                             $files_array[] = $file;
                         }
                     } // end if
-                } // end if
+                } else {
+                    $files_array = array_merge($files_array, self::get_filelist($file, $ext, $skip_files));
+                }
+
+                // end if
             } // end while
             closedir($all);
         } // end if
@@ -72,7 +81,7 @@ class RoboLoader
         $html .= "window.location.href = '".$url."';";
 
         if ($timeout > 0) {
-            $timeout = $timeout * 1000;
+            $timeout *= 1000;
             $html .= '}, '.$timeout.');';
         }
         $html .= "\n".'</script>';

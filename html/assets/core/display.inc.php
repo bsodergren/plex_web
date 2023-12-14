@@ -77,7 +77,7 @@ function display_fileInfo($fileInfoArray, $total_files, $template_base = 'fileli
     // dd($fileInfoArray);
     $params['video_key']          = $row_video_key;
     foreach ($fileInfoArray as $key => $value) {
-        $class       = (0 == $x % 2) ? 'blueTable-tr-even' : '';
+        $class       = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
         $value_array = [];
 
         switch ($key) {
@@ -167,7 +167,7 @@ function display_fileInfo($fileInfoArray, $total_files, $template_base = 'fileli
             case 'video_info':
                 // if (defined('NONAVBAR')) {
                 foreach ($value as $infokey => $fileInfoValue) {
-                    //    $class = ($x % 2 == 0) ? 'blueTable-tr-even' : '';
+                    //    $class = ($x % 2 == 0) ? 'bg-info' : '';
                     //    $value_array = [];
                     switch ($infokey) {
                         case 'bit_rate':

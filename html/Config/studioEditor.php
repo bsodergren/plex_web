@@ -89,7 +89,7 @@ $studio_main_html .= process_template('config/studio/form_wrapper', [
     'STUDIO_FORM_HTML' => $studio_list_html,
 ]);
 
-echo process_template(
+Template::echo(
     'config/studio/main',
     [
         'STUDIO_MAIN_HTML' => $studio_main_html,

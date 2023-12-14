@@ -1,11 +1,11 @@
-.blueTable {
-    border: 0px solid #1c6ea4;
-    background-color: #eeeeee;
-    margin-left: 20px;
+/* .blueTable { */
+    /* border: 0px solid #1c6ea4;
+    background-color: #eeeeee; */
+    /* margin-left: 20px;
     margin-right: 20px;
     text-align: left;
     padding: 20px 20px 10px 0px;
-}
+} */
 
 body {
     margin-bottom: 60px;
@@ -31,9 +31,9 @@ body {
     text-align: left;
 }
 
-.blueTable-tr-even {
+/* .blueTable-tr-even {
     background: #74addf;
-}
+} */
 
 .blueTable-thead {
     background: #1c6ea4;

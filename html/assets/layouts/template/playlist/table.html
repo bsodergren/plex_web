@@ -4,7 +4,7 @@
     <div class="container badge text-bg-primary text-black p-2 fw-semibold" style="--bs-bg-opacity: .5;">
         <div class="row justify-content-center">
             <div class="col-9  fs-3">
-                    %%PLAYLIST_NAME%% %%PLAYLIST_VIDEOS%%
+                %%PLAYLIST_NAME%% %%PLAYLIST_VIDEOS%%
             </div>
         </div>
 
@@ -31,8 +31,10 @@
                 <button type="submit" class="text-black fs-4" name="action" value="save">Save</button>
             </div>
             <div class="col-3 fs-4 ">
-                <span  onclick="popup('%%__URL_HOME__%%/video.php?playlist_id=%%PLAYLIST_ID%%', 'videoplayer')">Watch</span></div>
-            <div class="col-3   fs-4 " >
+                <span
+                    onclick="popup('%%__URL_HOME__%%/video.php?playlist_id=%%PLAYLIST_ID%%', 'videoplayer')">Watch</span>
+            </div>
+            <div class="col-3   fs-4 ">
                 <button type="submit" class="text-black fs-4" name="action" value="delete">Delete</button>
             </div>
         </div>

@@ -115,7 +115,7 @@ foreach ($results as $num => $artistArray) {
     //  dd($artistArray);
 }
 
-echo process_template('artist/cloud', $params);
-// echo process_template("artist/main",$PARAMS);
+Template::echo('artist/cloud', $params);
+// Template::echo("artist/main",$PARAMS);
 
 include __LAYOUT_FOOTER__;

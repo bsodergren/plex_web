@@ -11,7 +11,7 @@
     <div class=" d-flex flex-sm-wrap text-white">
         %%ROWS_HTML%%
     </div>
-    </form>
+</form>
 <script>
     $("#ajaxform").submit(function (e) {
         var postData = $(this).serializeArray();
@@ -24,16 +24,16 @@
                 data: postData,
                 // data: jQuery.param({'submit': 'playlist', 'data': postData}) ,
                 success: function (data) {
-                  
-                  
+
+
                     window.location = data;
-      
+
 
                     //data: return data from server
                 }
 
             });
-       
+
     });
 
     //  $("#ajaxform").submit();

@@ -129,7 +129,7 @@ foreach ($sortedArray as $num => $artistArray) {
 }
 
 $PARAMS['ARTIST_HTML'] = $artist_html;
-echo process_template('cloud/main', ['TAG_CLOUD_HTML' => $artist_html]);
-// echo process_template("test/main",$PARAMS);
+Template::echo('cloud/main', ['TAG_CLOUD_HTML' => $artist_html]);
+// Template::echo("test/main",$PARAMS);
 
 include __LAYOUT_FOOTER__;

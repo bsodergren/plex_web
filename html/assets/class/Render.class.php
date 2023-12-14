@@ -9,6 +9,7 @@ class Render
     public $_SESSION;
     public $_REQUEST;
     public $navigation_link_array;
+    public static $CSS_THEMES = [];
 
     public function __construct($navigation_link_array)
     {
@@ -162,6 +163,18 @@ class Render
 
         return $html.$dropdown_html;
     } // end display_navbar_links()
+
+    
+    public static function display_theme_dropdown(){
+        $theme_options = process_template('base/navbar/theme/option', ['THEME_NAME' => "Default",'THEME_OPTION' => "none"]);
+        foreach(self::$CSS_THEMES as $theme){
+            $theme_options .= process_template('base/navbar/theme/option', ['THEME_NAME' => ucfirst($theme) . " Theme",'THEME_OPTION' => $theme."-theme"]);
+        }
+        return process_template('base/navbar/theme/select', ['THEME_OPTIONS' => $theme_options]);
+    }
+
+
+
 
     public static function display_breadcrumbs()
     {
