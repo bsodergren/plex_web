@@ -25,20 +25,23 @@ $params['TITLE']           = TITLE;
 $params['APP_NAME']        = APP_NAME;
 $params['__LAYOUT_URL__']  = __LAYOUT_URL__;
 
-$css_dir                   = __LAYOUT_PATH__.'/external/css/theme/';
-$files                     = RoboLoader::get_filelist($css_dir, 'bootstrap.min.css', 0);
+// if (!defined('NONAVBAR')) {
+    $css_dir                   = __LAYOUT_PATH__.'/external/css/theme/';
+    $files                     = RoboLoader::get_filelist($css_dir, 'bootstrap.min.css', 0);
 
-foreach ($files as $stylesheet) {
-    $dirArray   = explode('/', $stylesheet);
-    array_pop($dirArray);
-    $theme      = end($dirArray);
-    Render::$CSS_THEMES[] = $theme;
-    $stylesheet =  str_replace(__LAYOUT_PATH__, __LAYOUT_URL__, $stylesheet);
+    foreach ($files as $stylesheet) {
+        $dirArray             = explode('/', $stylesheet);
+        array_pop($dirArray);
+        $theme                = end($dirArray);
+        Render::$CSS_THEMES[] = $theme;
+        $stylesheet           =  str_replace(__LAYOUT_PATH__, __LAYOUT_URL__, $stylesheet);
 
-    // $name =
-    $css_html .= process_template('base/header/header_css_link', ['CSS_NAME' => $theme, 'CSS_URL' => $stylesheet]);
-}
-$params['CSS_HTML']        = $css_html;
+        // $name =
+        $css_html .= process_template('base/header/header_css_link', ['CSS_NAME' => $theme, 'CSS_URL' => $stylesheet]);
+    }
+    $params['CSS_HTML']        = $css_html;
+    $params['JS_CSS_SWITCHER'] = '<script src="'.__LAYOUT_URL__.'js/styleswitch.js" type="text/javascript"></script>' . PHP_EOL;
+// }
 $params['SCRIPTS']         = process_template('base/header/header_scripts', $params);
 
 if (!defined('VIDEOINFO')) {

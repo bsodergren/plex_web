@@ -1,6 +1,6 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
 use JasonGrimes\Paginator;
@@ -8,18 +8,17 @@ use JasonGrimes\Paginator;
 class pageinate extends Paginator
 {
     public $itemsPerPage;
-    private $maxRecordsToShow = __MAX_PAGES_TO_SHOW__;
     public $urlPattern;
     public $totalRecords;
     public $limit_array       = [];
     public $offset;
-    public $library = true;
-    public $table = Db_TABLE_VIDEO_TAGS;
+    public $library           = true;
+    public $table             = Db_TABLE_VIDEO_TAGS;
     public $results;
     public $paginator;
-    public $itemsSelection = [10, 25, 50, 100, 250, 500,1500];
+    public $itemsSelection    = [10, 25, 50, 100, 250, 500, 1500];
+    private $maxRecordsToShow = __MAX_PAGES_TO_SHOW__;
 
-    
     public function __construct($query, $currentPage, $urlPattern)
     {
         global $db;
@@ -31,39 +30,35 @@ class pageinate extends Paginator
         $this->currentPage   = $currentPage;
 
         if (false != $query) {
-            if(str_contains($query,"AND")) {
-                $findArr = explode("AND",$query);
-                foreach($findArr as $q){
-                    [$field,$value] = explode("=",$q);
-                    
-                    $field = trim($field);
-                    $value = trim(str_replace("'","%",$value));
-                    $db->where($field,$value,'LIKE');                 
-        
+            if (str_contains($query, 'AND')) {
+                $findArr = explode('AND', $query);
+                foreach ($findArr as $q) {
+                    [$field,$value] = explode('=', $q);
+
+                    $field          = trim($field);
+                    $value          = trim(str_replace("'", '%', $value));
+                    $db->where($field, $value, 'LIKE');
                 }
             } else {
-
-                if(str_contains($query,"=")) {
-                    [$field,$value] = explode("=",$query);
-                    $field = trim($field);
-                    $value = trim(str_replace("'","%",$value));
-                    //dump([__METHOD__, [$field,$value]]);
-                    $db->where($field,$value,'LIKE');                 
-                }else{
-                    [$field,$value] = explode("IS",$query);
-                    $value = str_replace("NULL",'',$value);
-                    $db->where ($field, NULL, 'IS '.$value);
+                if (str_contains($query, '=')) {
+                    [$field,$value] = explode('=', $query);
+                    $field          = trim($field);
+                    $value          = trim(str_replace("'", '%', $value));
+                    // dump([__METHOD__, [$field,$value]]);
+                    $db->where($field, $value, 'LIKE');
+                } else {
+                    [$field,$value] = explode('IS', $query);
+                    $value          = str_replace('NULL', '', $value);
+                    $db->where($field, null, 'IS '.$value);
                 }
-
             }
         }
 
-        if($this->library === true){
-            if($_SESSION['library'] != "All"){
-                $db->where("library", $_SESSION['library']);
+        if (true === $this->library) {
+            if ('All' != $_SESSION['library']) {
+                $db->where('library', $_SESSION['library']);
             }
         }
-
 
         $this->results       = $db->withTotalCount()->get($this->table);
         $this->totalRecords  = $db->totalCount;
@@ -141,59 +136,56 @@ class pageinate extends Paginator
             if ('itemsPerPage' == $name) {
                 continue;
             }
-            if(is_array($value)){
-                $value = implode(",",$value);
+            if (is_array($value)) {
+                $value = implode(',', $value);
             }
-            $hidden_text .= hidden_Field($name, $value);
+            $hidden_text .= $this->hidden_Field($name, $value);
         }
 
         $option_text =  Render::display_SelectOptions($this->itemsSelection, $this->itemsPerPage);
         $params      = [
-            'HIDDEN'           => $hidden_text,
-            'SHOW_PLACEHOLDER' => $placeholder,
-            'PAGE_UPDATE'      => $current_url,
-        'OPTIONS'              => $option_text,
-        'PREVIOUS_LINK'        => $previous,
-        'LINK_LIST'            => $link_list,
-        'NEXT_LINK'            => $next];
+            'HIDDEN'               => $hidden_text,
+            'SHOW_PLACEHOLDER'     => $placeholder,
+            'PAGE_UPDATE'          => $current_url,
+            'OPTIONS'              => $option_text,
+            'PREVIOUS_LINK'        => $previous,
+            'LINK_LIST'            => $link_list,
+            'NEXT_LINK'            => $next];
         $html        = template::return('base/footer/pages', $params);
+
         return $html;
+    }
+
+    public function hidden_Field($name, $value)
+    {
+        return '<input type="hidden" name="'.$name.'" value="'.$value.'">'."\n";
     }
 }
 
 class ConfigPagenate extends pageinate
 {
-    public $table = Db_TABLE_STUDIO;
+    public $table   = Db_TABLE_STUDIO;
     public $library = false;
-
 }
 
 class GenrePagenate extends pageinate
 {
-    public $table = Db_TABLE_GENRE;
+    public $table   = Db_TABLE_GENRE;
     public $library = false;
 
     public function __construct($currentPage, $urlPattern)
     {
-      
-        parent::__construct(false,$currentPage, $urlPattern);
+        parent::__construct(false, $currentPage, $urlPattern);
     }
-
 }
-
 
 class ArtistPagenate extends pageinate
 {
-  
-    public $table = Db_TABLE_ARTISTS;
+    public $table   = Db_TABLE_ARTISTS;
     public $library = false;
+
     public function __construct($currentPage, $urlPattern)
     {
-
-        parent::__construct(false,$currentPage, $urlPattern);
-      
+        parent::__construct(false, $currentPage, $urlPattern);
     }
-
 }
-
-

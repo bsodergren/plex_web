@@ -28,10 +28,10 @@ $all_url            = 'files.php?allfiles=1';
 require __LAYOUT_HEADER__;
 
 foreach ($result as $r => $row) {
-    if ($row['subLibrary'] === null){
-        $row['subLibrary'] = "Studios";
+    if (null === $row['subLibrary']) {
+        $row['subLibrary'] = 'Studios';
     }
-    $studioArray[$row['subLibrary']][] = ['studio'=>$row['studio'],'cnt'=>$row['cnt']];
+    $studioArray[$row['subLibrary']][] = ['studio' => $row['studio'], 'cnt' => $row['cnt']];
 }
 
 // dd($studioArray);
@@ -41,7 +41,6 @@ foreach ($studioArray as $subLibrary => $studioArr) {
     $index              = 1;
 
     foreach ($studioArr as $row => $sname) {
-
         $name          = ['studio' => $sname['studio']];
         $cnt           = $sname['cnt'];
         if (0 == $index % 4) {
@@ -79,7 +78,7 @@ foreach ($studioArray as $subLibrary => $studioArr) {
         $substudio_sql = query_builder(Db_TABLE_VIDEO_TAGS, 'count(substudio) as cnt, substudio', ' studio  '.$sql_studio, 'substudio', 'substudio ASC ');
         $ss_result     = $db->query($substudio_sql);
 
-        if (count($ss_result) > 1) {
+        if (count($ss_result) >= 1) {
             $iindex       = 1;
             foreach ($ss_result as $ssRow => $ssName) {
                 if (null != $ssName['substudio']) {

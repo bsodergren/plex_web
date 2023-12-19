@@ -13,7 +13,7 @@ $fileinfo                = new FileListing($_REQUEST, $currentPage, $urlPattern)
 [$results,$pageObj,$uri] = $fileinfo->getVideoArray();
 logger('all files', $sql);
 // $results = $db->query($sql);
-
+// dd($results);
 $request_key             = uri_String($uri);
 $redirect_string         = __THIS_FILE__.$request_key;
 
@@ -31,8 +31,8 @@ $page_array              = [
     'total_files'     => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
 ];
-
-$body                    = display_filelist($results, '', $page_array);
+$vidInfo         = new VideoDisplay('filelist');
+$body                    = $vidInfo->filelist($results, '', $page_array);
 
 template::echo('base/page', ['BODY' => $body]);
 

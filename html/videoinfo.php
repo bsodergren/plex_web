@@ -16,7 +16,11 @@ $videoInfo = $fileinfo->getVideoDetails($id);
 
 require __LAYOUT_HEADER__;
 
-$body      = display_filelist($videoInfo,'',[],'videoinfo');
+
+$vidInfo         = new VideoDisplay('videoinfo');
+$vidInfo->showVideoDetails = true;
+$body                    = $vidInfo->filelist($videoInfo);
+
 $delete_html     ='';//    = process_template('videoinfo/delete_form', ['HIDDEN' => add_hidden('id', $id),]);
 
 template::echo('videoinfo/videoinfo', ['BODY' => $body,'DELETE_HTML'=>$delete_html]);
