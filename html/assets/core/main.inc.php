@@ -180,7 +180,7 @@ function urlQuerystring($input_string, $exclude = '')
 
     if ('' != $input_string) {
         parse_str($input_string, $query_parts);
-       
+
         if (array_key_exists($exclude, $query_parts)) {
             unset($query_parts[$exclude]);
         }
@@ -198,10 +198,10 @@ function uri_String($request_array, $start = '?')
             continue;
         }
         if (is_array($value)) {
-            //dd($key);
-            //foreach ($value as $n => $v) {
-                $uri_array[] = $key.'='.urlencode(implode(",",$value));
-            //}
+            // dd($key);
+            // foreach ($value as $n => $v) {
+            $uri_array[] = $key.'='.urlencode(implode(',', $value));
+            // }
         } else {
             $uri_array[] = $key.'='.urlencode($value);
         }
@@ -242,7 +242,7 @@ function uri_String($request_array, $start = '?')
 
 //             exit;
 //         }
-        
+
 //         if (str_starts_with($_POST['submit'], 'Playlist')) {
 //             createPlaylist($_POST, $redirect_url);
 //             myHeader();
@@ -303,7 +303,6 @@ function GenreConfigSave($data_array, $redirect, $timeout = 0)
     }
 }
 
-
 function ArtistConfigSave($data_array, $redirect, $timeout = 0)
 {
     global $db;
@@ -337,7 +336,6 @@ function ArtistConfigSave($data_array, $redirect, $timeout = 0)
         return JavaRefresh($redirect, $timeout);
     }
 }
-
 
 function saveStudioConfig($data_array, $redirect, $timeout = 0)
 {

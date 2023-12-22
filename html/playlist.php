@@ -52,6 +52,8 @@ if (null === $playlist_id) {
         'PLAYLIST_LIBRARY'        => $library,
     ]);
 } else {
+    $VideoDisplay = new VideoDisplay();
+
     $sql             = 'select f.thumbnail,f.id,d.name,d.genre,p.id as playlist_video_id,m.title from  '.Db_TABLE_PLAYLIST_DATA.' as d,
      '.Db_TABLE_VIDEO_FILE.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p, '.Db_TABLE_VIDEO_TAGS.' as m
       where (p.playlist_id = '.$playlist_id.' and p.playlist_video_id = f.id and d.id = p.playlist_id and f.video_key = m.video_key);';
@@ -64,7 +66,7 @@ if (null === $playlist_id) {
             [
                // 'VID_NUMBER' => $i +1,
                 'TITLE'         => $results[$i]['title'],
-                'THUMBNAIL'          => $results[$i]['thumbnail'],
+                'THUMBNAIL'          =>   $VideoDisplay->fileThumbnail($results[$i]['id'],'alt="#" class="img-fluid" '),
                 'VIDEO_ID'           => $results[$i]['id'],
                 'PLAYLIST_VIDEO_ID'  => $results[$i]['playlist_video_id'],
             ]

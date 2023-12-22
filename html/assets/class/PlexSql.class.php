@@ -12,10 +12,10 @@ class PlexSql extends MysqliDb
     public $where   = '';
     public $groupBy = '';
     public $orderBy = '';
+
     public function __construct()
     {
-       parent::__construct('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-
+        parent::__construct('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
     }
 
     public static function getFilterList($field)

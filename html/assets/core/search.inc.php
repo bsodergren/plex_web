@@ -54,10 +54,12 @@ function searchDBVideos($request)
                 $whereArray = [];
                 $qArray     = [];
 
+                // no break
             case 'genre':
                 $whereArray = [];
                 $qArray     = [];
 
+                // no break
             case 'artist':
                 $whereArray = [];
                 $qArray     = [];
@@ -75,8 +77,9 @@ function searchDBVideos($request)
                 break;
         }
     }
-    
+
     $where_clause = ' ( '.implode(' OR ', $where).') ';
+
     return [$where_clause, $words];
 }
 

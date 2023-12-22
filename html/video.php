@@ -48,8 +48,16 @@ $video_js_params['PLAYLIST_HEIGHT']               = 50;
 $video_js_params['PLAYLIST_WIDTH']                = 20;
 
 if (isset($playlist_id)) {
+    $VideoDisplay                       = new VideoDisplay();
+
     $sql                                = 'select 
-        f.thumbnail,f.filename,m.title,p.playlist_video_id from '.Db_TABLE_VIDEO_FILE.' as f,     '.Db_TABLE_PLAYLIST_VIDEOS.' as p, '.Db_TABLE_VIDEO_TAGS.' as m where (p.playlist_id = '.$playlist_id.' and p.playlist_video_id = f.id  and f.video_key = m.video_key);';
+        f.thumbnail,f.filename,m.title,p.playlist_video_id from 
+        '.Db_TABLE_VIDEO_FILE.' as f,
+        '.Db_TABLE_PLAYLIST_VIDEOS.' as p, 
+        '.Db_TABLE_VIDEO_TAGS.' as m where (
+            p.playlist_id = '.$playlist_id.' and 
+            p.playlist_video_id = f.id  and 
+            f.video_key = m.video_key);';
     $results                            = $db->query($sql);
     //    dd($results);
     for ($i = 0; $i < count($results); ++$i) {
@@ -65,7 +73,7 @@ if (isset($playlist_id)) {
         $carousel_item .= process_template(
             'video/carousel_item',
             [
-                'THUMBNAIL'    => $results[$i]['thumbnail'],
+                'THUMBNAIL'    => $VideoDisplay->fileThumbnail($results[$i]['playlist_video_id'], 'alt="#" class="img-fluid" '),
                 'CLASS_ACTIVE' => $class,
                 'VIDEO_ID'     => $results[$i]['playlist_video_id'],
                 'TITLE'        => $title,

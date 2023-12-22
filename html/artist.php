@@ -11,6 +11,7 @@ include __LAYOUT_HEADER__;
 
 $results = (new PlexSql)->getArtists();
 
+$VideoDisplay = new VideoDisplay();
 $AristArray            = [];
 // $sortedArray[0]      = [];
 function compareArtist(&$array, $artist)
@@ -107,7 +108,7 @@ foreach ($results as $num => $artistArray) {
         'artist/artist_thumbnail',
         [
             'MISSING_TITLE_BG' => $titleBg,
-            'THUMBNAIL' => __URL_HOME__.$thumbnail,
+            'THUMBNAIL' =>   $VideoDisplay->fileThumbnail($id),
             'FILE_ID'   => $id,
             'TITLE'     => $title,
         ]

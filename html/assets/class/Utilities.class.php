@@ -1,6 +1,6 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
 use Nette\Utils\Arrays;
@@ -74,9 +74,8 @@ class Colors
     public function getColoredSpan($string, $foreground_color = null, $background_color = null)
     {
         $this->fg_color = $foreground_color;
-        $colored_string = '<span style="'.$this->getClassColor().'">'.$string.'</span>';
 
-        return $colored_string;
+        return '<span style="'.$this->getClassColor().'">'.$string.'</span>';
     } // end getColoredHTML()
 
     public function getColoredString($string, $foreground_color = null, $background_color = null)
@@ -140,7 +139,7 @@ class display
         if (is_array($var)) {
             $var      = var_export($var, 1);
             $var      = $colors->getColoredHTML($var, 'green');
-            $var      = "<pre $pre_style>".$var.'</pre>';
+            $var      = "<pre {$pre_style}>".$var.'</pre>';
             $is_array = true;
         } else {
             $var = $colors->getColoredHTML($var, 'green');
@@ -148,7 +147,7 @@ class display
 
         $text      = $colors->getColoredHTML($text);
 
-        echo "<div $div_style>".$text.' '.$var."</div><br>\n";
+        echo "<div {$div_style}>".$text.' '.$var."</div><br>\n";
     }
 
     public function model($text, $var = '')
@@ -167,7 +166,7 @@ class display
         if (is_array($var)) {
             $var      = var_export($var, 1);
             // $var=$colors->getColoredHTML($var, "green");
-            $var      = "<pre $pre_style>".$var.'</pre>';
+            $var      = "<pre {$pre_style}>".$var.'</pre>';
             $is_array = true;
         }
 
@@ -204,6 +203,11 @@ class ExecutionTime
 
     private $endTime;
 
+    public function __toString()
+    {
+        return 'This process used '.$this->runTime($this->endTime, $this->startTime, 'utime')." ms for its computations\nIt spent ".$this->runTime($this->endTime, $this->startTime, 'stime')." ms in system calls\n";
+    } // end __toString()
+
     public function start()
     {
         $this->startTime = getrusage();
@@ -216,13 +220,8 @@ class ExecutionTime
 
     private function runTime($ru, $rus, $index)
     {
-        return ($ru["ru_$index.tv_sec"] * 1000 + (int) ($ru["ru_$index.tv_usec"] / 1000)) - ($rus["ru_$index.tv_sec"] * 1000 + (int) ($rus["ru_$index.tv_usec"] / 1000));
+        return ($ru["ru_{$index}.tv_sec"] * 1000 + (int) ($ru["ru_{$index}.tv_usec"] / 1000)) - ($rus["ru_{$index}.tv_sec"] * 1000 + (int) ($rus["ru_{$index}.tv_usec"] / 1000));
     } // end runTime()
-
-    public function __toString()
-    {
-        return 'This process used '.$this->runTime($this->endTime, $this->startTime, 'utime')." ms for its computations\nIt spent ".$this->runTime($this->endTime, $this->startTime, 'stime')." ms in system calls\n";
-    } // end __toString()
 } // end class
 
 class escape
@@ -306,63 +305,16 @@ class Logger
         return $err_array;
     }
 
-    private static function get_caller_info()
-    {
-        $trace = debug_backtrace();
-
-        $s     = '';
-        $file  = $trace[2]['file'];
-        foreach ($trace as $row) {
-            $class = '';
-            switch ($row['function']) {
-                case __FUNCTION__:
-                    break;
-                case 'logger':
-                    $lineno = $row['line'];
-                    break;
-                case 'log':
-                    break;
-                case 'require_once':
-                    break;
-                case 'include_once':
-                    break;
-                case 'require':
-                    break;
-                case 'include':
-                    break;
-                case '__construct':
-                    break;
-                case '__directory':
-                    break;
-                case '__filename':
-                    break;
-
-                default:
-                    if ('' != $row['class']) {
-                        $class = $row['class'].$row['type'];
-                    }
-                    $s      =  $class.$row['function'].':'.$s;
-                    $file   = $row['file'];
-                    break;
-            }
-        }
-        $file  = pathinfo($file, \PATHINFO_BASENAME);
-
-        return $file.':'.$lineno.':'.$s;
-    }
-
     public static function log($text, $var = '', $logfile = 'default.log')
     {
-
-         $colors = new Colors();
+        $colors        = new Colors();
 
         //  if (Settings::isTrue('__SHOW_DEBUG_PANEL__')) {
-            if(!file_exists (__ERROR_LOG_DIRECTORY__))
-            {
-                filesystem::createdir(__ERROR_LOG_DIRECTORY__,0755);
-            }
+        if (!file_exists(__ERROR_LOG_DIRECTORY__)) {
+            filesystem::createdir(__ERROR_LOG_DIRECTORY__, 0755);
+        }
 
-            $function_list = self::get_caller_info();
+        $function_list = self::get_caller_info();
         $errorLogFile  = __ERROR_LOG_DIRECTORY__.'/'.$logfile;
         $html_var      = '';
         $html_string   = '';
@@ -384,12 +336,12 @@ class Logger
         //     'MSG_VALUE' => $html_var,
         // ]);
 
-        $html_string   = implode("  ",[
+        $html_string   = implode('  ', [
             DateTime::from(null),
-            $colors->getColoredString($function_list,'red'),
-            $colors->getColoredString($text,'blue'), 
-            $html_var
-         ]);
+            $colors->getColoredString($function_list, 'red'),
+            $colors->getColoredString($text, 'blue'),
+            $html_var,
+        ]);
         $r             = file_put_contents($errorLogFile, $html_string."\n", \FILE_APPEND);
 
         //  }
@@ -430,11 +382,67 @@ class Logger
 
         return $data;
     }
+
+    private static function get_caller_info()
+    {
+        $trace = debug_backtrace();
+
+        $s     = '';
+        $file  = $trace[2]['file'];
+        foreach ($trace as $row) {
+            $class = '';
+
+            switch ($row['function']) {
+                case __FUNCTION__:
+                    break;
+
+                case 'logger':
+                    $lineno = $row['line'];
+
+                    break;
+
+                case 'log':
+                    break;
+
+                case 'require_once':
+                    break;
+
+                case 'include_once':
+                    break;
+
+                case 'require':
+                    break;
+
+                case 'include':
+                    break;
+
+                case '__construct':
+                    break;
+
+                case '__directory':
+                    break;
+
+                case '__filename':
+                    break;
+
+                default:
+                    if ('' != $row['class']) {
+                        $class = $row['class'].$row['type'];
+                    }
+                    $s      =  $class.$row['function'].':'.$s;
+                    $file   = $row['file'];
+
+                    break;
+            }
+        }
+        $file  = pathinfo($file, \PATHINFO_BASENAME);
+
+        return $file.':'.$lineno.':'.$s;
+    }
 }
 
 function logger($text, $var = '', $logfile = 'default.log')
 {
-
     logger::log($text, $var, $logfile);
 }
 

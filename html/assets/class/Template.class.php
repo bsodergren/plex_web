@@ -10,7 +10,7 @@ class Template
 {
     public $html;
 
-    public static $Render = false;
+    public static $Render      = false;
 
     private static $RenderHTML = '';
 
@@ -18,7 +18,7 @@ class Template
     {
         $template_obj = new self();
         $template_obj->template($template, $array);
-        if(self::$Render === true){
+        if (true === self::$Render) {
             self::$RenderHTML .= $template_obj->html;
         } else {
             echo $template_obj->html;
@@ -27,16 +27,18 @@ class Template
 
     public static function render()
     {
-       global $db,$pageObj,$url_array;
-        $output = self::$RenderHTML;
-        
-        self::$RenderHTML = '';
-        require __LAYOUT_HEADER__;
-        $header = self::$RenderHTML;
+        global $db,$pageObj,$url_array;
+        $output           = self::$RenderHTML;
 
         self::$RenderHTML = '';
+
+        require __LAYOUT_HEADER__;
+        $header           = self::$RenderHTML;
+
+        self::$RenderHTML = '';
+
         require __LAYOUT_FOOTER__;
-        $footer = self::$RenderHTML;
+        $footer           = self::$RenderHTML;
 
         echo $header.$output.$footer;
     }
@@ -137,8 +139,9 @@ class Template
         $this->html    = $html_text.\PHP_EOL;
         // $this->html
         if ('' != $js) {
-            $this->html = "<script>".PHP_EOL.$this->html.PHP_EOL."</script>".PHP_EOL;
+            $this->html = '<script>'.\PHP_EOL.$this->html.\PHP_EOL.'</script>'.\PHP_EOL;
         }
+
         return $this->html;
     }
 

@@ -31,12 +31,12 @@ function keyword_cloud($field = 'keyword')
 {
     global $db;
     global $_SESSION;
-    $sql             = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
+    $sql               = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
  1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
  ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.")-n.digit WHERE library = '".$_SESSION['library']."' ORDER BY `val` ASC";
 
-    $list            = $db->query($sql);
-    $tag_links       = '';
+    $list              = $db->query($sql);
+    $tag_links         = '';
     if (0 == count($list)) {
         return false;
     }
@@ -48,9 +48,9 @@ function keyword_cloud($field = 'keyword')
     } else {
         $list_array = explode(',', $list);
     }
-  
+
     foreach ($list_array as $k => $keyword) {
-        $letter       = substr($keyword, 0, 1);
+        $letter                        = substr($keyword, 0, 1);
         if (!isset($last_letter)) {
             $last_letter = $letter;
         }
@@ -75,21 +75,20 @@ function keyword_cloud($field = 'keyword')
         //     ]
         // );
     }
-    $max = 10;
+    $max               = 10;
     $keyword_box_class = '<div class="">';
     foreach ($keyword_array as $letter => $keywordArray) {
-        $index=0;
-        $total = count($keywordArray);
-        if($total >= $max){
+        $index        = 0;
+        $total        = count($keywordArray);
+        if ($total >= $max) {
             $link_array[] = $keyword_box_class;
         }
-        foreach($keywordArray as $k => $keyword)
-        {
+        foreach ($keywordArray as $k => $keyword) {
             if ($max <= $index) {
                 $link_array[] = '</div>'.$keyword_box_class;
-                $index=0;
+                $index        = 0;
             }
-            $index++;
+            ++$index;
             $link_array[] = process_template(
                 'cloud/tag',
                 [
@@ -100,15 +99,14 @@ function keyword_cloud($field = 'keyword')
                 ]
             );
         }
-        if($total >= $max){
+        if ($total >= $max) {
             $link_array[] = '</div>';
         }
 
         $link_array[] = '</div>    <div class="'.__TAG_CAT_CLASS__.' ">';
-
     }
 
-    $tag_links       = implode('  ', $link_array);
+    $tag_links         = implode('  ', $link_array);
     //  return $value;
 
     return $tag_links;

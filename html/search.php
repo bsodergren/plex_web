@@ -62,7 +62,9 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     $msg                          = strtolower(str_replace('_', ' ', $msg));
     $html_msg                     = process_template('search/search_msg', ['MSG' => $msg]);
     //  $html_msg .= process_template("search/search_msg", [   'MSG' => $sql] );
-    $search_results               =  gridview($results, count($results));
+
+    $grid = new GridDisplay();
+    $search_results               =      $grid->gridview($results, count($results));
 
     //   $search_results =     display_filelist($results, '', $page_array);
 }

@@ -15,7 +15,7 @@ class FileListing
 
     public function __construct($request = '', $currentpage = '', $urlPattern = '')
     {
-        //$this->db           = new PlexSql('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+        // $this->db           = new PlexSql('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
         $this->db           = new PlexSql();
         $this->currentpage  = $currentpage;
         $this->request      = $request;
@@ -34,26 +34,17 @@ class FileListing
         return [$results, $pageObj];
     }
 
-    private function loopTags($array)
-    {
-       
-
-
-    }
-
     public function getVideoArray()
     {
         global $_SESSION;
- $tag_array = ['studio','substudio','genre','artist'];
-    
+        $tag_array = ['studio', 'substudio', 'genre', 'artist'];
+
         $where     = '';
         // . ' AND ';
 
         foreach ($tag_array as $tag) {
-            if (isset($this->request[$tag]) && $this->request[$tag] != '')
-            {
-                
-                ${$tag}        = urldecode($this->request[$tag]);               
+            if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
+                ${$tag}        = urldecode($this->request[$tag]);
                 $uri[$tag]     = ${$tag};
                 if ('studio' == $tag || 'substudio' == $tag) {
                     $studio_key       = $tag;
@@ -102,16 +93,15 @@ class FileListing
         $pageObj   = new pageinate($where, $this->currentpage, $this->urlPattern);
 
         foreach ($tag_array as $tag) {
-            if (isset($this->request[$tag]) && $this->request[$tag] != '')
-            {
-                    $value   = '%'.$this->request[$tag].'%';
-                    $comp    = ' like';
-               
+            if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
+                $value   = '%'.$this->request[$tag].'%';
+                $comp    = ' like';
+
                 if ('NULL' == $this->request[$tag]) {
                     $value = null;
                     $comp  = ' IS';
                 }
-                       // dump(['m.'.$tag, $value, $comp]);
+                // dump(['m.'.$tag, $value, $comp]);
 
                 $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$tag, $value, $comp);
             }
@@ -158,6 +148,8 @@ class FileListing
         return $this->db->query($sql);
     }
 
+    private function loopTags($array) {}
+
     private function buildSQL($limit = null)
     {
         // SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( ) AS T1, (SELECT @rownum := 0) AS r
@@ -168,11 +160,11 @@ class FileListing
         $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'f.video_key=i.video_key', 'LEFT OUTER');
         if (null !== $this->getLibrary()) {
             $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', $_SESSION['library']);
-        } else {
-            $fieldArray[] = 'm.library';
         }
+        // $fieldArray[] = 'm.library';
+
         $fieldArray = array_merge($fieldArray, [
-            'i.format', 'i.bit_rate', 'i.width', 'i.height',
+            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'f.library',
             'f.filename', 'f.thumbnail', 'f.fullpath', 'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key']);
 
         $joinQuery  = $this->db->getQuery(

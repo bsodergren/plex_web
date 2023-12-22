@@ -2,10 +2,9 @@
 /**
  * plex web viewer
  */
-
-/**
+/*
  * Command like Metatag writer for video files.
-//  */
+ * //  */
 // function display_videoInfo($row, $template_base = 'filelist')
 // {
 //     global $db;
@@ -37,4 +36,3 @@
 
 //     return $table_html; // .$javascript_html;
 // }
-

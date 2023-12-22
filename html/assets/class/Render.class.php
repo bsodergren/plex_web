@@ -1,8 +1,11 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
+/**
+ * Command like Metatag writer for video files.
+ */
 class Render
 {
     public $_SERVER;
@@ -108,11 +111,11 @@ class Render
         global $navigation_link_array,$login_link_array;
         global $_REQUEST;
 
-        if (!isset($_SESSION['auth']) or 
-        $_SESSION['auth'] != 'verified' ) {
+        if (!isset($_SESSION['auth'])
+        or 'verified' != $_SESSION['auth']) {
             $navigation_link_array = $login_link_array;
         }
-        
+
         foreach ($navigation_link_array as $name => $link_array) {
             if ('dropdown' == $name) {
                 $dropdown_html = '';
@@ -164,17 +167,15 @@ class Render
         return $html.$dropdown_html;
     } // end display_navbar_links()
 
-    
-    public static function display_theme_dropdown(){
-        $theme_options = process_template('base/navbar/theme/option', ['THEME_NAME' => "Default",'THEME_OPTION' => "none"]);
-        foreach(self::$CSS_THEMES as $theme){
-            $theme_options .= process_template('base/navbar/theme/option', ['THEME_NAME' => ucfirst($theme) . " Theme",'THEME_OPTION' => $theme."-theme"]);
+    public static function display_theme_dropdown()
+    {
+        $theme_options = process_template('base/navbar/theme/option', ['THEME_NAME' => 'Default', 'THEME_OPTION' => 'none']);
+        foreach (self::$CSS_THEMES as $theme) {
+            $theme_options .= process_template('base/navbar/theme/option', ['THEME_NAME' => ucfirst($theme).' Theme', 'THEME_OPTION' => $theme.'-theme']);
         }
+
         return process_template('base/navbar/theme/select', ['THEME_OPTIONS' => $theme_options]);
     }
-
-
-
 
     public static function display_breadcrumbs()
     {
@@ -183,13 +184,11 @@ class Render
             if ('' == $text) {
                 continue;
             }
-                 
 
             $class           = 'breadcrumb-item';
             $link            = '<a href="'.$url.'">'.$text.'</a>';
 
             if ('' == $url) {
-             
                 $class .= ' active" aria-current="page';
                 $link = $text;
             }
@@ -199,53 +198,52 @@ class Render
             $crumbs_html .= process_template('base/navbar/crumb', $params);
         }
 
-        if(defined('USE_FILTER')) {
-            $genre_box_html = Render::display_filter('genre');
+        if (defined('USE_FILTER')) {
+            $genre_box_html  = Render::display_filter('genre');
             $artist_box_html = Render::display_filter('artist');
             $studio_box_html = Render::display_filter('studio');
-            foreach($_REQUEST as $name => $value){
-               if($value != ''){
-                $hidden .= add_hidden($name, $value);
-               }
-            }
-
-        }
-        return process_template('base/navbar/breadcrumb', ['CRUMB_LINKS' => $crumbs_html,
-        'GENREFILTERBOX' => $genre_box_html,
-        'ARTISTFILTERBOX' => $artist_box_html,
-                'STUDIOFILTERBOX' => $studio_box_html,
-
-        'HIDDEN' => $hidden]);
-    }
-
-    public static function display_filter($tag)
-    {
-
-        $selected = '';
-        $clear = $tag;
-        foreach($_REQUEST as $name => $value){
-            if($name == $tag){
-                if($value != ''){
-                $selected = $value;
-                $clear = "Clear ".$tag;
-                continue;
+            foreach ($_REQUEST as $name => $value) {
+                if ('' != $value) {
+                    $hidden .= add_hidden($name, $value);
                 }
             }
         }
 
-        $genreArray = PlexSql::getFilterList($tag);
-        $params['NAME'] = $tag;
-        $params['OPTIONS'] = self::display_SelectOptions($genreArray, $selected, $clear);
-        return process_template('base/navbar/select/select_box', $params );
-
-
+        return process_template('base/navbar/breadcrumb', ['CRUMB_LINKS' => $crumbs_html,
+            'GENREFILTERBOX'                                             => $genre_box_html,
+            'ARTISTFILTERBOX'                                            => $artist_box_html,
+            'STUDIOFILTERBOX'                                            => $studio_box_html,
+            'HIDDEN'                                                     => $hidden]);
     }
-    public static function display_SelectOptions($array, $selected = '',$blank=null)
+
+    public static function display_filter($tag)
     {
-        $html = '';
+        $selected          = '';
+        $clear             = $tag;
+        foreach ($_REQUEST as $name => $value) {
+            if ($name == $tag) {
+                if ('' != $value) {
+                    $selected = $value;
+                    $clear    = 'Clear '.$tag;
+
+                    continue;
+                }
+            }
+        }
+
+        $genreArray        = PlexSql::getFilterList($tag);
+        $params['NAME']    = $tag;
+        $params['OPTIONS'] = self::display_SelectOptions($genreArray, $selected, $clear);
+
+        return process_template('base/navbar/select/select_box', $params);
+    }
+
+    public static function display_SelectOptions($array, $selected = '', $blank = null)
+    {
+        $html           = '';
         $default_option = '';
-        $default = '';
-        $checked = '';
+        $default        = '';
+        $checked        = '';
         foreach ($array as $val) {
             $checked = '';
             if ($val == $selected) {
@@ -253,13 +251,13 @@ class Render
             }
             $html .= '<option class="filter-option" value="'.$val.'" '.$checked.'>'.$val.'</option>'."\n";
         }
-        if($blank !== null)
-        {
-            if($checked == '') {
+        if (null !== $blank) {
+            if ('' == $checked) {
                 $default = ' selected';
             }
             $default_option = '<option class="filter-option" value=""  '.$default.'>'.$blank.'</option>'."\n";
         }
+
         return $default_option.$html;
     }
 }

@@ -1,8 +1,11 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
+/**
+ * Command like Metatag writer for video files.
+ */
 class Settings
 {
     public static function isTrue($define_name)

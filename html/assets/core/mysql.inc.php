@@ -2,10 +2,7 @@
 /**
  * plex web viewer
  */
-
-/**
- * Command like Metatag writer for video files.
- */
+// Command like Metatag writer for video files.
 // function query_builder($fields = 'select', $where = false, $group = false, $order = false, $limit = false, $offset = false)
 // {
 //     global $_SESSION;
