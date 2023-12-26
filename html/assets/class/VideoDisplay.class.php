@@ -18,8 +18,11 @@ class VideoDisplay
 
     public function fileThumbnail($row_id, $extra = '')
     {
-        return __URL_HOME__.'/images/thumbnail.php?id='.$row_id;
-        //        return process_template('videoinfo/thumbnail',['FILE_ID' => $row_id, 'THUMB_EXTRA' =>$extra] );
+        global $db;
+        $query              = 'SELECT thumbnail FROM metatags_video_file WHERE id = '.$row_id;
+        $result             = $db->query($query);
+        return __URL_HOME__.$result[0]['thumbnail'];
+        //  return __URL_HOME__.'/images/thumbnail.php?id='.$row_id;
     }
 
     public function fileRow($params, $field, $value, $class, $id = '')
