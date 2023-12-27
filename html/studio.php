@@ -1,24 +1,24 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
 require_once '_config.inc.php';
 
 define('TITLE', 'View Studios');
 
-$lib_where   = $lib_where.'  ';
+$lib_where .= '  ';
 
 $null        = '';
 
 if (isset($_REQUEST['substudio'])) {
     $studio_key   = 'substudio';
-    $studio_field =  'substudio';
+    $studio_field = 'substudio';
 
     $studio_text  = $_REQUEST['substudio'];
 } else {
     $studio_key   = 'studio';
-    $studio_field =  'studio';
+    $studio_field = 'studio';
 
     $studio_text  = $_REQUEST['studio'];
     // $null=' and substudio is null ';

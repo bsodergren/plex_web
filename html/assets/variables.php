@@ -13,7 +13,7 @@ define(
         'reset'    => 'check_logged_out',
     ]
 );
-const __DISPLAY_PAGES__       = [
+const __DISPLAY_PAGES__ = [
     'genre.php'        => [
         'sort'  => 1,
         'pages' => 1,
@@ -50,12 +50,12 @@ const __DISPLAY_PAGES__       = [
         'sort'  => 1,
         'pages' => 1,
     ],
-    'dupes.php'     => [
+    'dupes.php'        => [
         'sort'  => 1,
         'pages' => 0,
     ],
 ];
-$sort_types            = [
+$sort_types             = [
     'studio',
     'substudio',
     'artist',
@@ -67,8 +67,8 @@ $sort_types            = [
     'filesize',
 ];
 
-$login_link_array      = [
-    'login'             => [
+$login_link_array       = [
+    'login' => [
         'url'    => 'login.php',
         'text'   => 'login',
         'secure' => false,
@@ -83,7 +83,7 @@ $login_link_array      = [
     */
 ];
 
-$navigation_link_array = [
+$navigation_link_array  = [
     /*
     'dropdown' => [
         'View'    => [
@@ -105,52 +105,52 @@ $navigation_link_array = [
     ],
 */
 
-    'home'              => [
+    'home'         => [
         'url'    => 'home.php',
         'text'   => 'Home',
         'secure' => false,
         'js'     => false,
     ],
-    'artistEditor'      => [
+    'artistEditor' => [
         'url'    => 'Config/artistEditor.php',
         'text'   => 'Config artists',
         'secure' => false,
         'js'     => false,
     ],
-    'studioEditor'      => [
+    'studioEditor' => [
         'url'    => 'Config/studioEditor.php',
         'text'   => 'Config Studio',
         'secure' => false,
         'js'     => false,
     ],
-    'genreEditor'       => [
+    'genreEditor'  => [
         'url'    => 'Config/genreEditor.php',
         'text'   => 'Config Genre',
         'secure' => false,
         'js'     => false,
     ],
 
-    'search'            => [
+    'search'       => [
         'url'    => 'search.php',
         'text'   => 'Search',
         'secure' => false,
         'js'     => false,
     ],
-    'dups'              => [
+    'dups'         => [
         'url'    => 'dupes.php',
         'text'   => 'Duplicates',
         'secure' => false,
         'js'     => false,
     ],
 
-    'gridview'          => [
+    'gridview'     => [
         'url'    => 'gridview.php',
         'text'   => 'Grid Display',
         'secure' => false,
         'js'     => false,
         'studio' => true,
     ],
-    'playlist'          => [
+    'playlist'     => [
         'url'    => 'playlist.php',
         'text'   => 'Playlist Display',
         'secure' => false,
@@ -170,32 +170,32 @@ $navigation_link_array = [
         'js'     => false,
     ],
     */
-    'tag'               => [
+    'tag'          => [
         'url'    => 'tags.php',
         'text'   => 'Tags',
         'secure' => false,
         'js'     => false,
     ],
-    'artist'            => [
+    'artist'       => [
         'url'    => 'artist.php',
         'text'   => 'Artist Page',
         'secure' => false,
         'js'     => false,
     ],
-    'refresh'          => [
+    'refresh'      => [
         'url'    => 'process.php?action=refresh',
         'text'   => 'Refresh',
         'secure' => false,
         'js'     => false,
     ],
-    
-    'settings'          => [
+
+    'settings'     => [
         'url'    => 'settings.php',
         'text'   => 'Settings',
         'secure' => false,
         'js'     => false,
     ],
-    'logout'            => [
+    'logout'       => [
         'url'    => 'logout.php',
         'text'   => 'Log Out',
         'secure' => true,
@@ -204,12 +204,12 @@ $navigation_link_array = [
     ],
 ];
 
-$artistNameFixArray    = [
+$artistNameFixArray     = [
     'Chloé' => 'Chloe Lacourt',
     'Chloe' => 'Chloe Lacourt',
 ];
 
-$namesArray            = [
+$namesArray             = [
     'Filthy Rich',
     'Chad Rockwell',
     'Ricky Johnson',

@@ -3,9 +3,6 @@
  * plex web viewer
  */
 
-/**
- * plex web viewer.
- */
 function chk_file($value, $command = 'delete', $options = '')
 {
     switch ($command) {
@@ -41,13 +38,13 @@ function deleteFile($array)
     $file      = $videoInfo['fullpath'].\DIRECTORY_SEPARATOR.$videoInfo['filename'];
     $thumbnail = APP_HTML_ROOT.$videoInfo['thumbnail'];
 
-        chk_file($file, 'delete');
+    chk_file($file, 'delete');
 
-        chk_file($thumbnail, 'delete');
+    chk_file($thumbnail, 'delete');
 
     $res       = $db->where('id', $id)->delete(Db_TABLE_VIDEO_FILE);
     //    $res       =  $db->where('video_key', $videoInfo['video_key'])->delete(Db_TABLE_VIDEO_INFO);
-    $res       =  $db->where('playlist_video_id', $id)->delete(Db_TABLE_PLAYLIST_VIDEOS);
+    $res       = $db->where('playlist_video_id', $id)->delete(Db_TABLE_PLAYLIST_VIDEOS);
 
-   // echo '<script type="text/javascript">   window.opener.location.reload(true); window.close(); </script>';
+    // echo '<script type="text/javascript">   window.opener.location.reload(true); window.close(); </script>';
 }

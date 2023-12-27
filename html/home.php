@@ -4,11 +4,11 @@
  */
 
 require_once '_config.inc.php';
-const TITLE         = 'Home';
+const TITLE   = 'Home';
 
-$subLibraries       = [];
-$sql                = query_builder(Db_TABLE_VIDEO_TAGS, 'DISTINCT(subLibrary) as subLibrary ', 'library');
-$result             = $db->query($sql);
+$subLibraries = [];
+$sql          = query_builder(Db_TABLE_VIDEO_TAGS, 'DISTINCT(subLibrary) as subLibrary ', 'library');
+$result       = $db->query($sql);
 // dump($result);
 if (count($result) > 0) {
     foreach ($result as $_ => $value) {
@@ -17,12 +17,12 @@ if (count($result) > 0) {
 }
 
 logger('qyefasd', $sql);
-$result             = $db->query($sql);
-$rar                = $db->rawQueryOne($sql);
-$sql                = query_builder(Db_TABLE_VIDEO_TAGS, 'studio,subLibrary,count(video_key) as cnt', 'library', 'studio,subLibrary', 'studio,subLibrary ASC');
-$result             = $db->query($sql);
+$result       = $db->query($sql);
+$rar          = $db->rawQueryOne($sql);
+$sql          = query_builder(Db_TABLE_VIDEO_TAGS, 'studio,subLibrary,count(video_key) as cnt', 'library', 'studio,subLibrary', 'studio,subLibrary ASC');
+$result       = $db->query($sql);
 
-$all_url            = 'files.php?allfiles=1';
+$all_url      = 'files.php?allfiles=1';
 
 // DEFINE('BREADCRUMB', [$in_directory => "", 'all' => $all_url]);
 require __LAYOUT_HEADER__;
@@ -36,9 +36,9 @@ foreach ($result as $r => $row) {
 
 // dd($studioArray);
 foreach ($studioArray as $subLibrary => $studioArr) {
-    $studio_box         = '';
+    $studio_box = '';
 
-    $index              = 1;
+    $index      = 1;
 
     foreach ($studioArr as $row => $sname) {
         $name          = ['studio' => $sname['studio']];
@@ -128,7 +128,7 @@ foreach ($studioArray as $subLibrary => $studioArr) {
         'LIBRARY_NAME'    => $subLibrary]);
 } // end foreach
 
-$body               = process_template('home/main', ['BODY_HTML' =>  $studio_html]);
+$body         = process_template('home/main', ['BODY_HTML' => $studio_html]);
 template::echo('base/page', ['BODY' => $body]);
 
 require __LAYOUT_FOOTER__;

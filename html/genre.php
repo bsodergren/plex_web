@@ -1,7 +1,7 @@
 <?php
 require_once '_config.inc.php';
 define('TITLE', 'View Genres');
-define('USE_FILTER',true);
+define('USE_FILTER', true);
 $null        = '';
 $null_req    = '&';
 $sql_studio  = 'library';
@@ -75,11 +75,11 @@ asort($genre_array);
 foreach ($genre_array as $k => $v) {
     // $v["cnt"]=1; ".$v["cnt"]."
     if ('' != $v) {
-        if (isset($studio_key) && isset($studio)) {
+        if (isset($studio_key, $studio)) {
             $db->where($studio_key, $studio, 'like');
         }
         $db->where('genre', '%'.$v.'%', 'like');
-        if($_SESSION['library'] != "All"){
+        if ('All' != $_SESSION['library']) {
             $db->where('library', $_SESSION['library'], 'like');
         }
         $count = $db->getOne(Db_TABLE_VIDEO_TAGS, 'count(*) as cnt');

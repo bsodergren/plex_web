@@ -4,7 +4,7 @@
  */
 
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer.
  */
 class Settings
 {

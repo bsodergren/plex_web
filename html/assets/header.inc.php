@@ -7,10 +7,10 @@ use Nette\Utils\Strings;
 
 require_once __PHP_INC_CLASS_DIR__.'/Roboloader.class.php';
 
-$const           = get_defined_constants(true);
-$query_string    = '';
+$const          = get_defined_constants(true);
+$query_string   = '';
 
-$include_array   = [];
+$include_array  = [];
 
 foreach ($const['user'] as $name => $value) {
     if (Strings::contains($name, '_INC_')) {
@@ -24,7 +24,7 @@ foreach ($include_array as $required_file) {
     require_once $required_file;
 }
 
-$template        = new Template();
+$template       = new Template();
 
 if (!isset($_SESSION['itemsPerPage'])) {
     $_SESSION['itemsPerPage'] = 25;
@@ -43,8 +43,8 @@ if (!isset($_REQUEST['current'])) {
     $uri['current'] = $_REQUEST['current'];
 }
 
-$currentPage     = $_REQUEST['current'];
-$uri['current']  = $currentPage;
+$currentPage    = $_REQUEST['current'];
+$uri['current'] = $currentPage;
 if (!isset($_SESSION['library'])) {
     $_SESSION['library'] = 'Pornhub';
 }
@@ -53,8 +53,7 @@ if (isset($_REQUEST['library'])) {
     $_SESSION['library'] = $_REQUEST['library'];
 }
 
-$tag_array       = ['genre', 'artist', 'keyword'];
-
+$tag_array      = ['genre', 'artist', 'keyword'];
 
 if (isset($_REQUEST['submit'])) {
     if ('Search' == $_REQUEST['submit']) {
@@ -89,7 +88,7 @@ if ('Studios' == $in_directory) {
 }
 */
 
-$request_key     = '';
+$request_key    = '';
 if (!isset($_SESSION['sort'])) {
     $_SESSION['sort'] = 'm.title';
 }
@@ -105,7 +104,7 @@ if ('' != $_SERVER['QUERY_STRING']) {
     // dd([$_SERVER['QUERY_STRING'],$query_string_no_current]);
 }
 
-$urlPattern      = $_SERVER['PHP_SELF'].'?current=(:num)'.$query_string_no_current;
+$urlPattern     = $_SERVER['PHP_SELF'].'?current=(:num)'.$query_string_no_current;
 
 if (!isset($_SESSION['direction'])) {
     $_SESSION['direction'] = 'ASC';
@@ -121,38 +120,37 @@ if (isset($_REQUEST['direction'])) {
     }
 }
 
-
-$sort_type_map = [
+$sort_type_map  = [
     'sort_types' => [
-        'Studio'       => 'm.studio',
-        'Sub Studio'   => 'm.substudio',
-        'File size'    => 'f.filesize',
-        'Artist'       => 'm.artist',
-        'Title'        => 'm.title',
-        'Filename'     => 'f.filename',
-        'Duration'     => 'f.duration',
-        'Date Added'   => 'f.added',
-        'Genre'        => 'm.genre',
-        ],
-    'map' => [
-        'm.studio'  =>'Studio'       , 
-        'm.substudio'  =>'Sub Studio'   ,
-        'f.filesize'  =>'File size'    ,
-        'm.artist'  =>'Artist'       ,
-        'm.title'  =>'Title'        ,
-        'f.filename'  =>'Filename'     ,
-        'f.duration' => 'Duration'     , 
-        'f.added' => 'Date Added'   ,
-        'm.genre' =>'Genre'        ,
+        'Studio'     => 'm.studio',
+        'Sub Studio' => 'm.substudio',
+        'File size'  => 'f.filesize',
+        'Artist'     => 'm.artist',
+        'Title'      => 'm.title',
+        'Filename'   => 'f.filename',
+        'Duration'   => 'f.duration',
+        'Date Added' => 'f.added',
+        'Genre'      => 'm.genre',
+    ],
+    'map'        => [
+        'm.studio'    => 'Studio',
+        'm.substudio' => 'Sub Studio',
+        'f.filesize'  => 'File size',
+        'm.artist'    => 'Artist',
+        'm.title'     => 'Title',
+        'f.filename'  => 'Filename',
+        'f.duration'  => 'Duration',
+        'f.added'     => 'Date Added',
+        'm.genre'     => 'Genre',
     ],
 ];
 
-$url_array       = [
+$url_array      = [
     'url'          => $_SERVER['SCRIPT_NAME'],
     'query_string' => $query_string,
     'current'      => $_SESSION['sort'],
     'direction'    => $_SESSION['direction'],
-    'sort_types' => $sort_type_map['sort_types'] ,
+    'sort_types'   => $sort_type_map['sort_types'],
     // 'sort_types'   => [
     //     'Studio'       => 'm.studio',
     //     'Sub Studio'   => 'm.substudio',

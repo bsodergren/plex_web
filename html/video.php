@@ -5,26 +5,22 @@
 
 use Nette\Utils\FileSystem;
 
-/**
- * plex web viewer.
- */
-
 require_once '_config.inc.php';
-$carousel_js                                      = '';
-$video_buttons                                    = '';
-if (key_exists('id', $_REQUEST)) {
-    $id                                 = $_REQUEST['id'];
-    $cols                               = ['playlist_id'];
+$carousel_js                        = '';
+$video_buttons                      = '';
+if (array_key_exists('id', $_REQUEST)) {
+    $id   = $_REQUEST['id'];
+    $cols = ['playlist_id'];
     $db->where('playlist_video_id', $id);
 }
 
-if (key_exists('playlist_id', $_REQUEST)) {
-    $id                                 = $_REQUEST['playlist_id'];
-    $cols                               = ['playlist_id'];
+if (array_key_exists('playlist_id', $_REQUEST)) {
+    $id   = $_REQUEST['playlist_id'];
+    $cols = ['playlist_id'];
     $db->where('playlist_id', $id);
 }
 
-$playlist_result                                  = $db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
+$playlist_result                    = $db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
 // dump($playlist_result);
 if (is_array($playlist_result)) {
     if (array_key_exists('playlist_id', $playlist_result)) {
@@ -33,39 +29,39 @@ if (is_array($playlist_result)) {
     }
 }
 
-$cols                                             = ['filename', 'fullpath'];
+$cols                               = ['filename', 'fullpath'];
 $db->where('id', $id);
-$result                                           = $db->getone(Db_TABLE_VIDEO_FILE, null, $cols);
+$result                             = $db->getone(Db_TABLE_VIDEO_FILE, null, $cols);
 
-$active_title                                     = null; // $result['title'];
+$active_title                       = null; // $result['title'];
 if (null === $active_title) {
     $active_title = $result['filename'];
 }
-$fullpath                                         = str_replace(__PLEX_LIBRARY__, APP_HOME.'/videos', $result['fullpath']);
+$fullpath                           = str_replace(__PLEX_LIBRARY__, APP_HOME.'/videos', $result['fullpath']);
 
-$video_file                                       = $fullpath.'/'.$result['filename'];
-$video_js_params['PLAYLIST_HEIGHT']               = 50;
-$video_js_params['PLAYLIST_WIDTH']                = 20;
+$video_file                         = $fullpath.'/'.$result['filename'];
+$video_js_params['PLAYLIST_HEIGHT'] = 50;
+$video_js_params['PLAYLIST_WIDTH']  = 20;
 
 if (isset($playlist_id)) {
     $VideoDisplay                       = new VideoDisplay();
 
-    $sql                                = 'select 
-        f.thumbnail,f.filename,m.title,p.playlist_video_id from 
+    $sql                                = 'select
+        f.thumbnail,f.filename,m.title,p.playlist_video_id from
         '.Db_TABLE_VIDEO_FILE.' as f,
-        '.Db_TABLE_PLAYLIST_VIDEOS.' as p, 
+        '.Db_TABLE_PLAYLIST_VIDEOS.' as p,
         '.Db_TABLE_VIDEO_TAGS.' as m where (
-            p.playlist_id = '.$playlist_id.' and 
-            p.playlist_video_id = f.id  and 
+            p.playlist_id = '.$playlist_id.' and
+            p.playlist_video_id = f.id  and
             f.video_key = m.video_key);';
     $results                            = $db->query($sql);
     //    dd($results);
     for ($i = 0; $i < count($results); ++$i) {
         $class = '';
 
-        $title =  $results[$i]['title'];
+        $title = $results[$i]['title'];
         if ('' == $results[$i]['title']) {
-            $title =  $results[$i]['filename'];
+            $title = $results[$i]['filename'];
         }
         if ($id == $results[$i]['playlist_video_id']) {
             $class = ' active';
@@ -82,17 +78,17 @@ if (isset($playlist_id)) {
         if (' active' == $class) {
             $active_title = $title;
             $indx         = $i + 1;
-            if (key_exists($indx, $results)) {
-                $next_video_id =  $results[$indx]['playlist_video_id'];
+            if (array_key_exists($indx, $results)) {
+                $next_video_id = $results[$indx]['playlist_video_id'];
             } else {
-                $next_video_id =  $results[0]['playlist_video_id'];
+                $next_video_id = $results[0]['playlist_video_id'];
             }
 
             $pndx         = $i - 1;
-            if (key_exists($pndx, $results)) {
-                $prev_video_id =  $results[$pndx]['playlist_video_id'];
+            if (array_key_exists($pndx, $results)) {
+                $prev_video_id = $results[$pndx]['playlist_video_id'];
             } else {
-                $prev_video_id =  $results[0]['playlist_video_id'];
+                $prev_video_id = $results[0]['playlist_video_id'];
             }
         }
     }
@@ -108,7 +104,7 @@ if (isset($playlist_id)) {
 
 // $video_file                                       = FileSystem::unixSlashes(FileSystem::normalizePath($video_file));
 
-$params                                           = [
+$params                             = [
     'PAGE_TITLE'     => $result['title'],
     'VIDEO_ID'       => $id,
     '__LAYOUT_URL__' => __LAYOUT_URL__,

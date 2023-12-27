@@ -29,9 +29,9 @@ require_once __COMPOSER_LIB__.'/autoload.php';
 // Debugger::$showLocation = false; // Hides additional location information
 // Debugger::$showLocation = true; // Shows all additional location information
 
-$config    = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
+$config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
-$dotenv    = Dotenv::createImmutable($config['path']['mediatag']);
+$dotenv = Dotenv::createImmutable($config['path']['mediatag']);
 $dotenv->load();
 if (function_exists('apache_setenv')) {
     apache_setenv('no-gzip', '1');
@@ -110,15 +110,12 @@ define('__TEMPLATE_CONSTANTS__', [
     '__URL_HOME__',
 ]);
 
-
 require_once __ROOT_DIRECTORY__.'/src/Config/paths.php';
 
 require_once __PHP_ASSETS_DIR__.'/header.inc.php';
 
-
 require_once __PHP_ASSETS_DIR__.'/variables.php';
 require_once __PHP_ASSETS_DIR__.'/settings.inc.php';
-
 
 logger('____________________________________________________________________________________________________________________');
 define('__METADB_HASH', __CACHE_DIR.'/'.$cache_directory.'/metadb.hash');

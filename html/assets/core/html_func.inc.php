@@ -3,9 +3,6 @@
  * plex web viewer
  */
 
-/**
- * Command like Metatag writer for video files.
- */
 function keyword_list($key, $list)
 {
     $link_array = [];
@@ -55,7 +52,7 @@ function keyword_cloud($field = 'keyword')
             $last_letter = $letter;
         }
         if ($letter != $last_letter) {
-            $last_letter  = $letter;
+            $last_letter = $letter;
             // $link_array[] = '</div>    <div class="'.__TAG_CAT_CLASS__.' ">';
             // $index=0;
         }

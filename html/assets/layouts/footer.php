@@ -1,6 +1,6 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
 $sort_html = '';
@@ -13,10 +13,9 @@ if (!defined('NONAVBAR')) {
             $sort_html = template::return('base/footer/sort', ['SORT_HTML' => render::display_sort_options($url_array)]);
         }
 
-       if (__SHOW_PAGES__ == true && isset($pageObj)) {
-            $page_html =  $pageObj->toHtml();
-            
-       }
+        if (__SHOW_PAGES__ == true && isset($pageObj)) {
+            $page_html = $pageObj->toHtml();
+        }
 
         $footer_nav = ['FOOTER_NAV' => $sort_html.$page_html];
         $navbar     = template::return('base/footer/navbar', $footer_nav);

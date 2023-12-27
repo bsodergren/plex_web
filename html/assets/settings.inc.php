@@ -3,7 +3,7 @@
  * plex web viewer
  */
 
-$db       = new PlexSql();//('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+$db       = new PlexSql(); // ('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 $conn     = mysqli_connect('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
 dbObject::autoload('models');
@@ -42,4 +42,3 @@ if ($val) {
 if (!defined('__BOTTOM_NAV__')) {
     define('__BOTTOM_NAV__', 0);
 }
-

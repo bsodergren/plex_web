@@ -176,9 +176,9 @@ class display
         // $text=$colors->getColoredHTML($text);
 
         $random_id             = 'Model_'.substr(md5(rand()), 0, 7);
-        $this->model_popup .= process_template('popup_debug_model', ['MODEL_TITLE' => $text, 'MODEL_BODY' => $var, 'MODEL_ID' =>  $random_id]);
+        $this->model_popup .= process_template('popup_debug_model', ['MODEL_TITLE' => $text, 'MODEL_BODY' => $var, 'MODEL_ID' => $random_id]);
 
-        $button_html           = process_template('popup_debug_button', ['MODEL_TITLE' => $text, 'MODEL_ID' =>  $random_id]);
+        $button_html           = process_template('popup_debug_button', ['MODEL_TITLE' => $text, 'MODEL_ID' => $random_id]);
         $this->model_buttons[] = $button_html;
     }
 
@@ -295,7 +295,7 @@ class Logger
             while ($file = readdir($all)) {
                 if (!is_dir(__ERROR_LOG_DIRECTORY__.'/'.$file)) {
                     if (preg_match('/(log)$/', $file)) {
-                        $err_array[]  = filesystem::normalizePath(__ERROR_LOG_DIRECTORY__.'/'.$file);
+                        $err_array[] = filesystem::normalizePath(__ERROR_LOG_DIRECTORY__.'/'.$file);
                     } // end if
                 } // end if
             } // end while
@@ -429,7 +429,7 @@ class Logger
                     if ('' != $row['class']) {
                         $class = $row['class'].$row['type'];
                     }
-                    $s      =  $class.$row['function'].':'.$s;
+                    $s      = $class.$row['function'].':'.$s;
                     $file   = $row['file'];
 
                     break;

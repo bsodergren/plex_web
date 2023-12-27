@@ -4,7 +4,7 @@
  */
 
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer.
  */
 class Render
 {
@@ -112,7 +112,7 @@ class Render
         global $_REQUEST;
 
         if (!isset($_SESSION['auth'])
-        or 'verified' != $_SESSION['auth']) {
+        || 'verified' != $_SESSION['auth']) {
             $navigation_link_array = $login_link_array;
         }
 
@@ -124,7 +124,7 @@ class Render
                     $dropdown_link_html = '';
 
                     foreach ($dropdown_array as $d_name => $d_values) {
-                        $array               = [
+                        $array = [
                             'DROPDOWN_URL_TEXT' => $d_name,
                             'DROPDOWN_URL'      => $d_values,
                         ];
@@ -199,9 +199,9 @@ class Render
         }
 
         if (defined('USE_FILTER')) {
-            $genre_box_html  = Render::display_filter('genre');
-            $artist_box_html = Render::display_filter('artist');
-            $studio_box_html = Render::display_filter('studio');
+            $genre_box_html  = self::display_filter('genre');
+            $artist_box_html = self::display_filter('artist');
+            $studio_box_html = self::display_filter('studio');
             foreach ($_REQUEST as $name => $value) {
                 if ('' != $value) {
                     $hidden .= add_hidden($name, $value);

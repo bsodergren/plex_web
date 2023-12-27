@@ -2,15 +2,15 @@
 require_once '../_config.inc.php';
 define('TITLE', 'Home');
 
-$url_array          = [
+$url_array           = [
     'url'          => $_SERVER['SCRIPT_NAME'],
     'query_string' => $query_string,
     'current'      => $_SESSION['sort'],
     'direction'    => $_SESSION['direction'],
     'sort_types'   => [
-        'Replacement'         => 'replacement,hide,name',
-        'Artist'              => 'hide,name,replacement',
-        'hide'          => 'hide,replacement,name',
+        'Replacement' => 'replacement,hide,name',
+        'Artist'      => 'hide,name,replacement',
+        'hide'        => 'hide,replacement,name',
     ],
 ];
 
@@ -21,11 +21,8 @@ if (isset($_SESSION['direction'])) {
 if (isset($_SESSION['sort'])) {
     switch ($_SESSION['sort']) {
         case 'Replacement': break;
-
         case 'name': break;
-
         case 'hide': break;
-
         default:
             $_SESSION['sort'] = 'name';
 
@@ -38,11 +35,11 @@ if (isset($_SESSION['sort'])) {
     $sort_query = implode(',', $arr);
 }
 
-$pageObj            = new ArtistPagenate($currentPage, $urlPattern);
+$pageObj             = new ArtistPagenate($currentPage, $urlPattern);
 
-$sql                = 'SELECT * FROM '.Db_TABLE_ARTISTS.' ORDER BY '.$sort_query;
-$limit              = $pageObj->itemsPerPage;
-$offset             = $pageObj->offset;
+$sql                 = 'SELECT * FROM '.Db_TABLE_ARTISTS.' ORDER BY '.$sort_query;
+$limit               = $pageObj->itemsPerPage;
+$offset              = $pageObj->offset;
 
 if (false != $limit && false == $offset) {
     $sql = $sql.' LIMIT '.$limit.'';
@@ -50,10 +47,10 @@ if (false != $limit && false == $offset) {
 if (false != $limit && false != $offset) {
     $sql = $sql.'  LIMIT '.$offset.', '.$limit.'';
 }
-//dump($sql);
-$results            = $db->query($sql);
+// dump($sql);
+$results             = $db->query($sql);
 
-$redirect_string    = 'Config/'.__THIS_FILE__.$request_string_query;
+$redirect_string     = 'Config/'.__THIS_FILE__.$request_string_query;
 
 include __LAYOUT_HEADER__;
 
@@ -80,10 +77,10 @@ foreach ($results as $key => $row) {
     );
 }
 
-$hidden             = add_hidden('submit', 'ArtistConfigSave');
+$hidden              = add_hidden('submit', 'ArtistConfigSave');
 $hidden .= add_hidden('redirect', $redirect_string);
 $artist_main_html .= process_template('config/artist/form_wrapper', [
-    'HIDDEN'          => $hidden,
+    'HIDDEN'           => $hidden,
     'ARTIST_FORM_HTML' => $artist_row_html,
 ]);
 

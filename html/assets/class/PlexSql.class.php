@@ -8,7 +8,7 @@ use MysqliDb;
 class PlexSql extends MysqliDb
 {
     public $limit   = false;
-    public $db ;
+    public $db;
 
     public $offset  = false;
     public $where   = '';
@@ -25,14 +25,14 @@ class PlexSql extends MysqliDb
     public static function getFilterList($field)
     {
         global $_SESSION,$db;
-        $tag_array       = ['studio', 'substudio', 'genre', 'artist'];
-        $query           = [];
+        $tag_array = ['studio', 'substudio', 'genre', 'artist'];
+        $query     = [];
         foreach ($tag_array as $tag) {
             if ($tag == $field) {
                 continue;
             }
             if (isset($_REQUEST[$tag])) {
-                $query[]   = $tag.' LIKE "%'.$_REQUEST[$tag].'%" ';
+                $query[] = $tag.' LIKE "%'.$_REQUEST[$tag].'%" ';
             }
         }
 
@@ -45,11 +45,11 @@ class PlexSql extends MysqliDb
             $querySQl .= $partsSQL;
         }
 
-        $sql             = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
+        $sql       = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
     1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
     ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit  '.$querySQl.'  ORDER BY `val` ASC';
 
-        $res             = $db->query($sql);
+        $res       = $db->query($sql);
         foreach ($res as $k => $g) {
             $array[] = $g['val'];
         }
@@ -66,15 +66,15 @@ class PlexSql extends MysqliDb
         if ('All' != $_SESSION['library']) {
             $library = " WHERE library = '".$_SESSION['library']."' ";
         }
-        $query = "SELECT ".$column.",count(".$column.") FROM `metatags_video_file` ". $library ." group 
-        by ".$column." having COUNT(".$column.") > 1;";
-        return $db->query($query);
+        $query   = 'SELECT '.$column.',count('.$column.') FROM `metatags_video_file` '.$library.' group
+        by '.$column.' having COUNT('.$column.') > 1;';
 
+        return $db->query($query);
     }
 
     // public function showDupes($column,$value)
     // {
- 
+
     //     $library = '';
     //     if ('All' != $_SESSION['library']) {
     //         $library = "  AND library = '".$_SESSION['library']."' ";
@@ -94,19 +94,20 @@ class PlexSql extends MysqliDb
 
         return null;
     }
-    public function showDupes($column,$value)
+
+    public function showDupes($column, $value)
     {
         // SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( ) AS T1, (SELECT @rownum := 0) AS r
 
         $fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
-       // $this->db->joinWhere(Db_TABLE_VIDEO_FILE.' f', 'f.'.$column, $value);
-       $this->db->where('f.'.$column, $value);
+        // $this->db->joinWhere(Db_TABLE_VIDEO_FILE.' f', 'f.'.$column, $value);
+        $this->db->where('f.'.$column, $value);
         $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'f.video_key=m.video_key', 'INNER');
         $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'f.video_key=i.video_key', 'LEFT OUTER');
         if (null !== $this->getLibrary()) {
             $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', $_SESSION['library']);
         }
-//        $this->db->where('f.'.$column, $value);
+        //        $this->db->where('f.'.$column, $value);
         // $fieldArray[] = 'm.library';
 
         $fieldArray = array_merge($fieldArray, [
@@ -119,20 +120,18 @@ class PlexSql extends MysqliDb
             $fieldArray
         );
 
-        //$query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
+        // $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
         $results    = $this->db->rawQuery($joinQuery);
 
-        //return $this->db->getlastquery();
+        // return $this->db->getlastquery();
         return $results;
     }
-
-
 
     public function getArtists()
     {
         global $db;
-        $sql                   = 'select artist from '.Db_TABLE_VIDEO_TAGS;
-        $where                 = $this->pwhere("(artist is not null and artist != 'Missing')");
+        $sql   = 'select artist from '.Db_TABLE_VIDEO_TAGS;
+        $where = $this->pwhere("(artist is not null and artist != 'Missing')");
 
         return $db->query($sql.$where);
     }
@@ -172,9 +171,9 @@ class PlexSql extends MysqliDb
     {
         //  $this->sql_table = $table;
         //        $field_list      = ' id, video_key,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added,filename ,fullpath,library,filesize';
-        $field_list      = 'f.id, f.video_key,f.thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.added,f.filename ,f.fullpath,m.library,f.filesize';
+        $field_list = 'f.id, f.video_key,f.thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.added,f.filename ,f.fullpath,m.library,f.filesize';
         if ('select' == $fields) {
-            $sql =  'select '.$field_list;
+            $sql = 'select '.$field_list;
         } else {
             if (!str_contains($fields, 'DISTINCT')) {
                 $conditional = true;
@@ -182,7 +181,7 @@ class PlexSql extends MysqliDb
             $sql = 'SELECT '.$fields;
         }
 
-        $sql             = $sql.' FROM '.$table.' ';
+        $sql        = $sql.' FROM '.$table.' ';
         $sql .= $this->where;
         $sql .= $this->groupBy;
         $sql .= $this->orderBy;
@@ -231,17 +230,17 @@ class PlexSql extends MysqliDb
 
     public function pgroupBy($fields)
     {
-        $this->groupBy =  ' GROUP BY '.$fields;
+        $this->groupBy = ' GROUP BY '.$fields;
     }
 
     public function porderBy($fields)
     {
-        $this->orderBy =  ' ORDER BY '.$fields;
+        $this->orderBy = ' ORDER BY '.$fields;
     }
 
     public function psetLimit($limit)
     {
-        $this->limit  = $limit;
+        $this->limit = $limit;
     }
 
     public function psetOffset($offset)

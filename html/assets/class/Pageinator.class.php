@@ -24,10 +24,10 @@ class pageinate extends Paginator
         global $db;
         global $_SESSION;
 
-        $this->itemsPerPage  = $_SESSION['itemsPerPage'];
-        $this->urlPattern    = $urlPattern;
+        $this->itemsPerPage = $_SESSION['itemsPerPage'];
+        $this->urlPattern   = $urlPattern;
 
-        $this->currentPage   = $currentPage;
+        $this->currentPage  = $currentPage;
 
         if (false != $query) {
             if (str_contains($query, 'AND')) {
@@ -60,14 +60,14 @@ class pageinate extends Paginator
             }
         }
 
-        $this->results       = $db->withTotalCount()->get($this->table);
-        $this->totalRecords  = $db->totalCount;
+        $this->results      = $db->withTotalCount()->get($this->table);
+        $this->totalRecords = $db->totalCount;
 
-        $this->limit_array   = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];
+        $this->limit_array  = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];
 
-        $this->offset        = ($this->currentPage - 1) * $this->itemsPerPage;
+        $this->offset       = ($this->currentPage - 1) * $this->itemsPerPage;
 
-        $this->paginator     = new Paginator(
+        $this->paginator    = new Paginator(
             $this->totalRecords,
             $this->itemsPerPage,
             $this->currentPage,
@@ -97,7 +97,7 @@ class pageinate extends Paginator
                 'A_HREF'   => htmlspecialchars($this->paginator->getPrevUrl()),
                 'A_TExT'   => '&laquo; '.$this->paginator->previousText,
             ];
-            $previous =    template::return('base/footer/page_item', $params);
+            $previous = template::return('base/footer/page_item', $params);
         }
 
         foreach ($this->paginator->getPages() as $page) {
@@ -127,7 +127,7 @@ class pageinate extends Paginator
                 'A_HREF'   => htmlspecialchars($this->paginator->getNextUrl()),
                 'A_TExT'   => $this->paginator->nextText.' &raquo;',
             ];
-            $next   =    template::return('base/footer/page_item', $params);
+            $next   = template::return('base/footer/page_item', $params);
         }
 
         parse_str($_SERVER['QUERY_STRING'], $query_array);
@@ -142,15 +142,15 @@ class pageinate extends Paginator
             $hidden_text .= $this->hidden_Field($name, $value);
         }
 
-        $option_text =  Render::display_SelectOptions($this->itemsSelection, $this->itemsPerPage);
+        $option_text = Render::display_SelectOptions($this->itemsSelection, $this->itemsPerPage);
         $params      = [
-            'HIDDEN'               => $hidden_text,
-            'SHOW_PLACEHOLDER'     => $placeholder,
-            'PAGE_UPDATE'          => $current_url,
-            'OPTIONS'              => $option_text,
-            'PREVIOUS_LINK'        => $previous,
-            'LINK_LIST'            => $link_list,
-            'NEXT_LINK'            => $next];
+            'HIDDEN'           => $hidden_text,
+            'SHOW_PLACEHOLDER' => $placeholder,
+            'PAGE_UPDATE'      => $current_url,
+            'OPTIONS'          => $option_text,
+            'PREVIOUS_LINK'    => $previous,
+            'LINK_LIST'        => $link_list,
+            'NEXT_LINK'        => $next];
         $html        = template::return('base/footer/pages', $params);
 
         return $html;

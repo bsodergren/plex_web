@@ -52,7 +52,7 @@ class Template
 
     public static function pushhtml($template, $params = [])
     {
-        $contents = Template::GetHTML($template, $params);
+        $contents = self::GetHTML($template, $params);
         self::push($contents);
     }
 

@@ -6,8 +6,8 @@
 require_once '_config.inc.php';
 
 define('TITLE', 'Home');
-define('USE_FILTER',true);
-Template::$Render = true;
+define('USE_FILTER', true);
+Template::$Render        = true;
 $fileinfo                = new FileListing($_REQUEST, $currentPage, $urlPattern);
 
 [$results,$pageObj,$uri] = $fileinfo->getVideoArray();
@@ -31,7 +31,7 @@ $page_array              = [
     'total_files'     => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
 ];
-$vidInfo         = new VideoDisplay('filelist');
+$vidInfo                 = new VideoDisplay('filelist');
 $body                    = $vidInfo->filelist($results, '', $page_array);
 
 template::echo('base/page', ['BODY' => $body]);

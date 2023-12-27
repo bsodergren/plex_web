@@ -9,9 +9,9 @@ define('TITLE', 'artist Page');
 // define('BREADCRUMB', ['home' => "home.php"]);
 include __LAYOUT_HEADER__;
 
-$results = (new PlexSql)->getArtists();
+$results               = (new PlexSql())->getArtists();
 
-$VideoDisplay = new VideoDisplay();
+$VideoDisplay          = new VideoDisplay();
 $AristArray            = [];
 // $sortedArray[0]      = [];
 function compareArtist(&$array, $artist)
@@ -92,25 +92,25 @@ foreach ($sortedArray as $num => $artistArray) {
 }
 $params['ARTIST_HTML'] = $artist_html;
 
-$sql                   = 'select m.title,f.id,f.thumbnail,f.filename from '.Db_TABLE_VIDEO_TAGS .' as m, '.Db_TABLE_VIDEO_FILE.' as f';
+$sql                   = 'select m.title,f.id,f.thumbnail,f.filename from '.Db_TABLE_VIDEO_TAGS.' as m, '.Db_TABLE_VIDEO_FILE.' as f';
 $sql                   = $sql." WHERE m.library = '".$_SESSION['library']."' and (m.artist is  null or m.artist = 'Missing' ) and (f.video_key = m.video_key)";
 $results               = $db->query($sql);
 foreach ($results as $num => $artistArray) {
     $title     = $artistArray['title'];
     $id        = $artistArray['id'];
     $thumbnail = $artistArray['thumbnail'];
-    $titleBg = '';
+    $titleBg   = '';
     if ('' == $artistArray['title']) {
-        $title = str_replace("_"," ",$artistArray['filename']);
+        $title   = str_replace('_', ' ', $artistArray['filename']);
         $titleBg = ' bg-info ';
     }
     $params['THUMBNAIL_HTML'] .= process_template(
         'artist/artist_thumbnail',
         [
             'MISSING_TITLE_BG' => $titleBg,
-            'THUMBNAIL' =>   $VideoDisplay->fileThumbnail($id),
-            'FILE_ID'   => $id,
-            'TITLE'     => $title,
+            'THUMBNAIL'        => $VideoDisplay->fileThumbnail($id),
+            'FILE_ID'          => $id,
+            'TITLE'            => $title,
         ]
     );
     //  dd($artistArray);

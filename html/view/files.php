@@ -39,7 +39,7 @@ logger('all files', $where);
 
 $pageObj                    = new pageinate($where, $currentPage, $urlPattern);
 
-$sql                        = query_builder(Db_TABLE_VIDEO_FILE,'select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
+$sql                        = query_builder(Db_TABLE_VIDEO_FILE, 'select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
 
 $results                    = $db->query($sql);
 $request_key                = uri_String($uri);
@@ -55,8 +55,8 @@ include __LAYOUT_HEADER__;
                   <?php
 
                 $page_array = [
-                    'total_files'            => $total_results,
-                    'redirect_string'        => $redirect_string,
+                    'total_files'     => $total_results,
+                    'redirect_string' => $redirect_string,
                 ];
 
 include __PHP_TEMPLATE__.'main_form.php'; ?>

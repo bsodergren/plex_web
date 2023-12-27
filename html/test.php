@@ -5,38 +5,30 @@
 
 use Plex\Template\Rain;
 
-/**
- * plex web viewer.
- */
-
-/**
- * plex web viewer.
- */
 $_REQUEST['itemsPerPage'] = 25;
-$_REQUEST['current'] = '3';
+$_REQUEST['current']      = '3';
 require_once '_config.inc.php';
 define('TITLE', 'Test Page');
 
-$fileinfo                = new FileListing($_REQUEST, $currentPage, $urlPattern);
+$fileinfo                 = new FileListing($_REQUEST, $currentPage, $urlPattern);
 
-[$results,$pageObj,$uri] = $fileinfo->getVideoArray();
-foreach($results as $k => $videoDetails){
-    foreach($videoDetails as $key => $value){
-        if($key == "artist" ||
-        $key == "genre" ||
-        $key == "keyword" ||
-        $key == "studio"
-        ){
-            $videoArray['videos'][$k][$key] = explode(",",$value);
+[$results,$pageObj,$uri]  = $fileinfo->getVideoArray();
+foreach ($results as $k => $videoDetails) {
+    foreach ($videoDetails as $key => $value) {
+        if ('artist' == $key
+        || 'genre' == $key
+        || 'keyword' == $key
+        || 'studio' == $key
+        ) {
+            $videoArray['videos'][$k][$key] = explode(',', $value);
         } else {
             $videoArray['videos'][$k][$key] = $value;
         }
     }
-
 }
 
-$t                     = new Rain();
-$tpl                   = $t->init();
+$t                        = new Rain();
+$tpl                      = $t->init();
 $tpl->assign($videoArray);
 $tpl->draw('body');
 
@@ -50,16 +42,16 @@ $db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.studio', 'Brazzers');
 $db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', 'Pornhub');
 $db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.genre', '%MMF%', 'like');
 $db->orderBy('m.title', 'asc');
-$products              = $db->get(Db_TABLE_VIDEO_FILE.' f', [0, 5], 'm.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.filename ,f.fullpath,m.library,f.filesize');
+$products                 = $db->get(Db_TABLE_VIDEO_FILE.' f', [0, 5], 'm.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.filename ,f.fullpath,m.library,f.filesize');
 echo $db->getlastquery();
 
 print_r2($products);
 
 exit;
-$sql                   = 'select artist from '.Db_TABLE_VIDEO_FILE;
-$sql                   = $sql." WHERE library = '".$_SESSION['library']."' and artist is not null";
-$results               = $db->query($sql);
-$AristArray            = [];
+$sql                      = 'select artist from '.Db_TABLE_VIDEO_FILE;
+$sql                      = $sql." WHERE library = '".$_SESSION['library']."' and artist is not null";
+$results                  = $db->query($sql);
+$AristArray               = [];
 
 function compareArtist(&$array, $artist)
 {
@@ -88,8 +80,8 @@ foreach ($AristArray as $artist => $num) {
     $sortedArray[$num][] = $artist;
 }
 
-$array                 = asort($sortedArray);
-$artist_html           = '';
+$array                    = asort($sortedArray);
+$artist_html              = '';
 foreach ($sortedArray as $num => $artistArray) {
     $artist_box                 = [];
     $link_array                 = [];
@@ -128,7 +120,7 @@ foreach ($sortedArray as $num => $artistArray) {
     $artist_html .= process_template('test/artist_box', $artist_box);
 }
 
-$PARAMS['ARTIST_HTML'] = $artist_html;
+$PARAMS['ARTIST_HTML']    = $artist_html;
 Template::echo('cloud/main', ['TAG_CLOUD_HTML' => $artist_html]);
 // Template::echo("test/main",$PARAMS);
 

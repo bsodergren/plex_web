@@ -1,6 +1,6 @@
 <?php
 /**
- * Command like Metatag writer for video files.
+ * plex web viewer
  */
 
 define('TITLE', 'Home');
@@ -9,19 +9,18 @@ define('VIDEOINFO', true);
 
 require_once '_config.inc.php';
 
-$id        = $_REQUEST['id'];
+$id                        = $_REQUEST['id'];
 
-$fileinfo = new FileListing();
-$videoInfo = $fileinfo->getVideoDetails($id);
+$fileinfo                  = new FileListing();
+$videoInfo                 = $fileinfo->getVideoDetails($id);
 
 require __LAYOUT_HEADER__;
 
-
-$vidInfo         = new VideoDisplay('videoinfo');
+$vidInfo                   = new VideoDisplay('videoinfo');
 $vidInfo->showVideoDetails = true;
-$body                    = $vidInfo->filelist($videoInfo);
+$body                      = $vidInfo->filelist($videoInfo);
 
-$delete_html     ='';//    = process_template('videoinfo/delete_form', ['HIDDEN' => add_hidden('id', $id),]);
+$delete_html               = ''; //    = process_template('videoinfo/delete_form', ['HIDDEN' => add_hidden('id', $id),]);
 
-template::echo('videoinfo/videoinfo', ['BODY' => $body,'DELETE_HTML'=>$delete_html]);
+template::echo('videoinfo/videoinfo', ['BODY' => $body, 'DELETE_HTML' => $delete_html]);
 require __LAYOUT_FOOTER__;

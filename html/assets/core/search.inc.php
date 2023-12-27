@@ -3,9 +3,6 @@
  * plex web viewer
  */
 
-/**
- * Command like Metatag writer for video files.
- */
 function searchDBVideos($request)
 {
     $group        = 'OR';

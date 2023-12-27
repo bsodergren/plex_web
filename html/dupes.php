@@ -10,16 +10,12 @@ define('TITLE', 'Home');
 include __LAYOUT_HEADER__;
 $column                         = 'duration';
 $url_array['sort_types']['Key'] = 'f.video_key';
-unset($url_array['sort_types']['Genre']);
-unset($url_array['sort_types']['Title']);
-unset($url_array['sort_types']['Studio']);
-unset($url_array['sort_types']['Sub Studio']);
-unset($url_array['sort_types']['Artist']);
+unset($url_array['sort_types']['Genre'], $url_array['sort_types']['Title'], $url_array['sort_types']['Studio'], $url_array['sort_types']['Sub Studio'], $url_array['sort_types']['Artist']);
 
 if (isset($_GET['sort'])) {
     [$p,$field] = explode('.', $_GET['sort']);
     if ('f' == $p) {
-        $column  = $field;
+        $column = $field;
     }
 }
 
@@ -34,9 +30,9 @@ if (count($results) > 0) {
             $fileresults[] = $row;
         }
     }
-    //define('NONAVBAR',true);
+    // define('NONAVBAR',true);
     $vidInfo = new VideoDisplay('videoinfo');
-    //$vidInfo->showVideoDetails = true;
+    // $vidInfo->showVideoDetails = true;
 
     $body    = $vidInfo->filelist($fileresults);
 } else {

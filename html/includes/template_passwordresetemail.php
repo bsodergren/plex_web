@@ -172,7 +172,7 @@
 
 
                                     <div style="line-height: 24px">
-                                        You recently requested for a password reset on {{ APP_NAME }} with the email [{{ email }}]. Please use below button 
+                                        You recently requested for a password reset on {{ APP_NAME }} with the email [{{ email }}]. Please use below button
                                         to reset your account password.
                                     </div>
                                 </td>
@@ -239,7 +239,7 @@
                             <tr>
                                 <td align="center" style="color: #888888; font-size: 16px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;">
                                     <div style="line-height: 24px">
-                                        <a href="{{ url }}">{{ url }}</a> 
+                                        <a href="{{ url }}">{{ url }}</a>
                                     </div>
                                 </td>
                             </tr>

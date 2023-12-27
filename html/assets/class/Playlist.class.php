@@ -36,19 +36,19 @@ class Playlist extends ProcessForms
         $name        = 'User Playlist';
         $studio      = [];
 
-        if (key_exists('substudio', $this->data)) {
-            $name      = '';
-            $studio[]  = $this->data['substudio'];
+        if (array_key_exists('substudio', $this->data)) {
+            $name     = '';
+            $studio[] = $this->data['substudio'];
         }
-        if (key_exists('studio', $this->data)) {
-            $name      = '';
-            $studio[]  = $this->data['studio'];
+        if (array_key_exists('studio', $this->data)) {
+            $name     = '';
+            $studio[] = $this->data['studio'];
         }
 
         $data        = [
-            'name'            => $name.implode(' ', $studio),
-            'genre'           => 'mmf,mff',
-            'library'         => $this->library,
+            'name'    => $name.implode(' ', $studio),
+            'genre'   => 'mmf,mff',
+            'library' => $this->library,
         ];
 
         $playlist_id = $this->db->insert(Db_TABLE_PLAYLIST_DATA, $data);

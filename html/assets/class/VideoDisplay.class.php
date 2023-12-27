@@ -19,8 +19,9 @@ class VideoDisplay
     public function fileThumbnail($row_id, $extra = '')
     {
         global $db;
-        $query              = 'SELECT thumbnail FROM metatags_video_file WHERE id = '.$row_id;
-        $result             = $db->query($query);
+        $query  = 'SELECT thumbnail FROM metatags_video_file WHERE id = '.$row_id;
+        $result = $db->query($query);
+
         return __URL_HOME__.$result[0]['thumbnail'];
         //  return __URL_HOME__.'/images/thumbnail.php?id='.$row_id;
     }
@@ -51,10 +52,10 @@ class VideoDisplay
         $params['FIELD_ROW_HTML'] .= process_template(
             'videoinfo/file_row',
             [
-                'FIELD'             => $field,
-                'VALUE'             => $value,
-                'ALT_CLASS'         => $class,
-                'EDITABLE'          => $editable,
+                'FIELD'     => $field,
+                'VALUE'     => $value,
+                'ALT_CLASS' => $class,
+                'EDITABLE'  => $editable,
             ]
         );
 
@@ -82,7 +83,7 @@ class VideoDisplay
         }
         $params['ROW_ID']             = '';
         if (!defined('NONAVBAR')) {
-            $params['FILE_NAME']     =  process_template(
+            $params['FILE_NAME']     = process_template(
                 $this->template_base.'/popup_js',
                 ['APP_HOME'     => APP_HOME,
                     'ROW_ID'    => $row_id,
@@ -198,7 +199,7 @@ class VideoDisplay
                     //         //    $value_array = [];
                     //         switch ($infokey) {
                 case 'bit_rate':
-                    $infoParams[strtoupper($key)] =  byte_convert($value);
+                    $infoParams[strtoupper($key)] = byte_convert($value);
 
                     break;
 
@@ -258,7 +259,7 @@ class VideoDisplay
             //     $row['video_info'] = $videoInfo[0];
             // }
 
-            $table_body =  $this->fileInfo($row, $total_files);
+            $table_body = $this->fileInfo($row, $total_files);
 
             $js_html .= $table_body['js'];
             $table_html .= process_template($this->template_base.'/file_form_wrapper', [

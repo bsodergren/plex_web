@@ -39,8 +39,8 @@ $hidden .= add_hidden('redirect', $redirect_string);
 $lib_name         = 'Add Amateur entry';
 
 $studio_add_entry = process_template('config/studio/studio_row', ['STUDIO_ID' => 'studio', 'PATH_ID' => 'path', 'STUDIO_NAME' => '<input type="text" name="name">']);
-$studio_add_entry =  process_template('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' =>  $studio_add_entry]);
-$studio_main_html =  process_template('config/studio/form_wrapper', ['HIDDEN' => $hidden, 'STUDIO_FORM_HTML' => $studio_add_entry]);
+$studio_add_entry = process_template('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' => $studio_add_entry]);
+$studio_main_html = process_template('config/studio/form_wrapper', ['HIDDEN' => $hidden, 'STUDIO_FORM_HTML' => $studio_add_entry]);
 
 $hidden           = add_hidden('library', 'Studios');
 $hidden .= add_hidden('submit', 'addNewEntry');
@@ -48,7 +48,7 @@ $hidden .= add_hidden('redirect', $redirect_string);
 $lib_name         = 'Add Studios entry';
 
 $studio_add_entry = process_template('config/studio/studio_row', ['STUDIO_ID' => 'studio', 'PATH_ID' => 'path', 'STUDIO_NAME' => '<input type="text" name="name">']);
-$studio_add_entry =  process_template('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' =>  $studio_add_entry]);
+$studio_add_entry = process_template('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' => $studio_add_entry]);
 $studio_main_html .= process_template('config/studio/form_wrapper', ['HIDDEN' => $hidden, 'STUDIO_FORM_HTML' => $studio_add_entry]);
 
 foreach ($results as $key => $row) {

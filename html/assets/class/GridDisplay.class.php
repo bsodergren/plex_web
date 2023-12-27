@@ -3,9 +3,6 @@
  * plex web viewer
  */
 
-/**
- * Command like Metatag writer for video files.
- */
 require_once 'VideoDisplay.class.php';
 class GridDisplay extends VideoDisplay
 {
@@ -29,9 +26,9 @@ class GridDisplay extends VideoDisplay
             $playlist_html .= process_template(
                 'grid/playlist_link',
                 [
-                    'PL_NAME'     => $p['name'],
-                    'PL_ID'       => $p['id'],
-                    'VIDEO_DATA'  => 'VIDEO_ID',
+                    'PL_NAME'    => $p['name'],
+                    'PL_ID'      => $p['id'],
+                    'VIDEO_DATA' => 'VIDEO_ID',
                 ]
             );
         }
@@ -39,14 +36,14 @@ class GridDisplay extends VideoDisplay
 
         for ($i = 0; $i < count($results); ++$i) {
             $file_info = [
-                'title'      => $results[$i]['title'],
-                'library'    => $results[$i]['library'],
-                'studio'     => $results[$i]['studio'],
-                'substudio'  => $results[$i]['substudio'],
-                'artist'     => $results[$i]['artist'],
-                'genre'      => $results[$i]['genre'],
+                'title'     => $results[$i]['title'],
+                'library'   => $results[$i]['library'],
+                'studio'    => $results[$i]['studio'],
+                'substudio' => $results[$i]['substudio'],
+                'artist'    => $results[$i]['artist'],
+                'genre'     => $results[$i]['genre'],
                 // 'filename'  => $results[$i]['filename'],
-                'duration'   => videoDuration($results[$i]['duration']),
+                'duration'  => videoDuration($results[$i]['duration']),
 
                 // 'Duration' => videoDuration($results[$i]['duration']),
             ];

@@ -6,7 +6,7 @@ define('TITLE', 'Home');
 
 include __LAYOUT_HEADER__;
 
-$sql            = query_builder(Db_TABLE_VIDEO_FILE,'count(genre) as cnt, genre',
+$sql            = query_builder(Db_TABLE_VIDEO_FILE, 'count(genre) as cnt, genre',
     "library = '".$in_directory."'",
     'genre', 'genre asc');
 $result         = $db->query($sql);

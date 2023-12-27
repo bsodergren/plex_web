@@ -8,9 +8,9 @@ $url_array          = [
     'current'      => $_SESSION['sort'],
     'direction'    => $_SESSION['direction'],
     'sort_types'   => [
-        'Replacement'   => 'replacement,keep,genre',
-        'Genre'         => 'keep,genre,replacement',
-        'Keep'          => 'keep,replacement,genre',
+        'Replacement' => 'replacement,keep,genre',
+        'Genre'       => 'keep,genre,replacement',
+        'Keep'        => 'keep,replacement,genre',
     ],
 ];
 
@@ -21,11 +21,8 @@ if (isset($_SESSION['direction'])) {
 if (isset($_SESSION['sort'])) {
     switch ($_SESSION['sort']) {
         case 'Replacement': break;
-
         case 'Genre': break;
-
         case 'Keep': break;
-
         default:
             $_SESSION['sort'] = 'Keep';
 

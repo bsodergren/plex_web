@@ -16,10 +16,10 @@ class FileListing
     public function __construct($request = '', $currentpage = '', $urlPattern = '')
     {
         // $this->db           = new PlexSql('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $this->db           = new PlexSql();
-        $this->currentpage  = $currentpage;
-        $this->request      = $request;
-        $this->urlPattern   = $urlPattern;
+        $this->db          = new PlexSql();
+        $this->currentpage = $currentpage;
+        $this->request     = $request;
+        $this->urlPattern  = $urlPattern;
     }
 
     public function getSearchResults($field, $value)
@@ -29,7 +29,7 @@ class FileListing
         $pageObj = new pageinate($where, $this->currentpage, $this->urlPattern);
 
         $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$field, '%'.$value.'%', 'like');
-        $results =  $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
+        $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
 
         return [$results, $pageObj];
     }
@@ -44,10 +44,10 @@ class FileListing
 
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
-                ${$tag}        = urldecode($this->request[$tag]);
-                $uri[$tag]     = ${$tag};
+                ${$tag}    = urldecode($this->request[$tag]);
+                $uri[$tag] = ${$tag};
                 if ('studio' == $tag || 'substudio' == $tag) {
-                    $studio_key       = $tag;
+                    $studio_key = $tag;
                 }
             }
         }
@@ -94,8 +94,8 @@ class FileListing
 
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
-                $value   = '%'.$this->request[$tag].'%';
-                $comp    = ' like';
+                $value = '%'.$this->request[$tag].'%';
+                $comp  = ' like';
 
                 if ('NULL' == $this->request[$tag]) {
                     $value = null;
@@ -111,7 +111,7 @@ class FileListing
             $this->db->orderBy($this->request['sort'], $this->request['direction']);
         }
 
-        $results   =  $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
+        $results   = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
 
         return [$results, $pageObj, $uri];
     }

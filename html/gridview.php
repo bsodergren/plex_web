@@ -33,7 +33,7 @@ $page_array              = [
 
 //    echo display_filelist($results, '', $page_array);
 $grid                    = new GridDisplay();
-$table_body_html         =  $grid->gridview($results, $pageObj->totalRecords);
+$table_body_html         = $grid->gridview($results, $pageObj->totalRecords);
 
 template::echo('base/page', ['BODY' => $table_body_html]);
 

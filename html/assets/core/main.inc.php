@@ -3,9 +3,6 @@
  * plex web viewer
  */
 
-/**
- * Command like Metatag writer for video files.
- */
 function videoDuration($duration)
 {
     $seconds = round($duration / 1000);

@@ -1,9 +1,9 @@
 <?php
-exit();
+exit;
 
 require_once '_config.inc.php';
 
-define('TITLE', "Verify Email");
+define('TITLE', 'Verify Email');
 
 require __LAYOUT_HEADER__;
 
@@ -13,13 +13,13 @@ require __LAYOUT_HEADER__;
 <main role="main" class="container">
 
     <div class="row">
-        
+
         <div class="shadow-lg box-shadow col-sm-7 px-5 m-5 bg-light rounded align-self-center verify-message">
 
             <form action="includes/sendverificationemail.inc.php" method="post">
 
                 <?php echo insert_csrf_token(); ?>
-            
+
                 <h5 class="text-center mb-5 text-primary">Verify Your Email Address</h5>
 
                 <p>
@@ -30,10 +30,11 @@ require __LAYOUT_HEADER__;
                 <div class="text-center mt-5">
                     <h6 class="text-success">
                         <?php
-                            if (isset($_SESSION['STATUS']['verify']))
+                            if (isset($_SESSION['STATUS']['verify'])) {
                                 echo $_SESSION['STATUS']['verify'];
+                            }
 
-                        ?>
+?>
                     </h6>
                 </div>
 
