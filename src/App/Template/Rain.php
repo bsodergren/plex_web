@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * plex web viewer
+ */
 
 namespace Plex\Template;
 
@@ -45,7 +47,7 @@ class Rain extends Tpl
 
     public function init()
     {
-        $TplTemplate         = new Tpl();
+        $TplTemplate = new Tpl();
 
         $TplTemplate->assign('headerTemplate', '../../common/header/header');
         $TplTemplate->assign('footerTemplate', '../../common/footer/footer');
@@ -58,14 +60,14 @@ class Rain extends Tpl
     {
         $Tpl = new Tpl();
 
-        if (!is_array($varName)) {
+        if (!\is_array($varName)) {
             $varName = [$varName];
-            if (is_array($varValue)) {
+            if (\is_array($varValue)) {
                 $varValue[] = $varValue;
             }
         }
 
-        if (!is_array($varValue)) {
+        if (!\is_array($varValue)) {
             $varValue = [$varValue];
         }
 
