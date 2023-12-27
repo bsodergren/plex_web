@@ -18,4 +18,13 @@ if (true == $_GET['q']) {
 
     exit;
 }
-$forms = new ProcessForms($_POST);
+$t = new Template();
+ if (array_key_exists('action', $_REQUEST)) {
+    if($_REQUEST['action'] == 'refresh'){
+        define('TITLE', 'Home');
+
+        include __LAYOUT_HEADER__;
+    }
+ }
+
+$forms = new ProcessForms($_REQUEST);

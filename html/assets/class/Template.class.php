@@ -11,8 +11,71 @@ class Template
     public $html;
 
     public static $Render      = false;
+    public static $flushdummy;
+    public static $BarStarted  = false;
+    public static $BarHeight   = 30;
 
     private static $RenderHTML = '';
+
+    public function __construct()
+    {
+        ob_implicit_flush(true);
+        @ob_end_flush();
+
+        $flushdummy       = '';
+        for ($i = 0; $i < 1200; ++$i) {
+            $flushdummy .= '      ';
+        }
+        self::$flushdummy = $flushdummy;
+    }
+
+    public static function ProgressBar($timeout = 5, $name = 'theBar')
+    {
+        if ('start' == strtolower($timeout)) {
+            self::$BarStarted = true;
+            self::pushhtml('progress_bar', ['NAME' => $name, 'BAR_HEIGHT' => self::$BarHeight]);
+
+            return;
+        }
+
+        if ($timeout > 0) {
+            $timeout *= 1000;
+            $update_inv = $timeout / 100;
+            if (false == self::$BarStarted) {
+                self::pushhtml('progress_bar', ['NAME' => $name, 'BAR_HEIGHT' => self::$BarHeight]);
+                self::$BarStarted = false;
+            }
+
+            self::pushhtml('progressbar_js', ['SPEED' => $update_inv, 'NAME' => $name]);
+        }
+    }
+
+    public static function pushhtml($template, $params = [])
+    {
+        $contents = Template::GetHTML($template, $params);
+        self::push($contents);
+    }
+
+    public static function put($contents, $color = null, $break = true)
+    {
+        $nlbr = '';
+        if (null !== $color) {
+            $colorObj = new Colors();
+            //    $contents = $colorObj->getColoredSpan($contents, $color);
+        }
+        if (true == $break) {
+            $nlbr = '<br>';
+        }
+        // echo $contents;
+        self::push($contents.'  '.$nlbr);
+    }
+
+    public static function push($contents)
+    {
+        echo $contents; // , self::$flushdummy;
+        flush();
+        @ob_flush();
+    }
 
     public static function echo($template = '', $array = '')
     {
@@ -23,6 +86,14 @@ class Template
         } else {
             echo $template_obj->html;
         }
+    }
+
+    public static function GetHTML($template = '', $array = [])
+    {
+        $template_obj = new self();
+        $template_obj->template($template, $array);
+
+        return $template_obj->html;
     }
 
     public static function render()

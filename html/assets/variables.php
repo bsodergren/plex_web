@@ -13,7 +13,48 @@ define(
         'reset'    => 'check_logged_out',
     ]
 );
-
+const __DISPLAY_PAGES__       = [
+    'genre.php'        => [
+        'sort'  => 1,
+        'pages' => 1,
+    ],
+    'files.php'        => [
+        'sort'  => 1,
+        'pages' => 1,
+    ],
+    'grid.php'         => [
+        'sort'  => 1,
+        'pages' => 1,
+    ],
+    'test.php'         => [
+        'sort'  => 0,
+        'pages' => 0,
+    ],
+    'search.php'       => [
+        'sort'  => 1,
+        'pages' => 1,
+    ],
+    'studioEditor.php' => [
+        'sort'  => 1,
+        'pages' => 1,
+    ],
+    'genreEditor.php'  => [
+        'sort'  => 1,
+        'pages' => 1,
+    ],
+    'artistEditor.php' => [
+        'sort'  => 1,
+        'pages' => 1,
+    ],
+    'gridview.php'     => [
+        'sort'  => 1,
+        'pages' => 1,
+    ],
+    'dupes.php'     => [
+        'sort'  => 1,
+        'pages' => 0,
+    ],
+];
 $sort_types            = [
     'studio',
     'substudio',
@@ -95,13 +136,13 @@ $navigation_link_array = [
         'secure' => false,
         'js'     => false,
     ],
-    /*    'grid'      => [
-        'url'    => 'grid.php',
-        'text'   => 'Grid Display',
+    'dups'              => [
+        'url'    => 'dupes.php',
+        'text'   => 'Duplicates',
         'secure' => false,
         'js'     => false,
     ],
-    */
+
     'gridview'          => [
         'url'    => 'gridview.php',
         'text'   => 'Grid Display',
@@ -141,6 +182,13 @@ $navigation_link_array = [
         'secure' => false,
         'js'     => false,
     ],
+    'refresh'          => [
+        'url'    => 'process.php?action=refresh',
+        'text'   => 'Refresh',
+        'secure' => false,
+        'js'     => false,
+    ],
+    
     'settings'          => [
         'url'    => 'settings.php',
         'text'   => 'Settings',

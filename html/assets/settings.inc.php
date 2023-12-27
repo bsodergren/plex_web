@@ -42,3 +42,4 @@ if ($val) {
 if (!defined('__BOTTOM_NAV__')) {
     define('__BOTTOM_NAV__', 0);
 }
+

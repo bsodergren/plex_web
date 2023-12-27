@@ -33,6 +33,10 @@ $config    = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
 $dotenv    = Dotenv::createImmutable($config['path']['mediatag']);
 $dotenv->load();
+if (function_exists('apache_setenv')) {
+    apache_setenv('no-gzip', '1');
+    apache_setenv('dont-vary', '1');
+}
 
 if (!defined('APP_AUTHENTICATION')) {
     define('APP_AUTHENTICATION', false);
@@ -106,12 +110,15 @@ define('__TEMPLATE_CONSTANTS__', [
     '__URL_HOME__',
 ]);
 
+
 require_once __ROOT_DIRECTORY__.'/src/Config/paths.php';
 
 require_once __PHP_ASSETS_DIR__.'/header.inc.php';
 
-require_once __PHP_ASSETS_DIR__.'/settings.inc.php';
 
 require_once __PHP_ASSETS_DIR__.'/variables.php';
+require_once __PHP_ASSETS_DIR__.'/settings.inc.php';
+
+
 logger('____________________________________________________________________________________________________________________');
 define('__METADB_HASH', __CACHE_DIR.'/'.$cache_directory.'/metadb.hash');

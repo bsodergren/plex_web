@@ -8,6 +8,8 @@ use MysqliDb;
 class PlexSql extends MysqliDb
 {
     public $limit   = false;
+    public $db ;
+
     public $offset  = false;
     public $where   = '';
     public $groupBy = '';
@@ -15,7 +17,9 @@ class PlexSql extends MysqliDb
 
     public function __construct()
     {
+        global $_SESSION,$db;
         parent::__construct('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+        $this->db = $db;
     }
 
     public static function getFilterList($field)
@@ -52,6 +56,77 @@ class PlexSql extends MysqliDb
 
         return $array;
     }
+
+    public function getDuplicates($column)
+    {
+        global $db;
+        global $_SESSION;
+
+        $library = '';
+        if ('All' != $_SESSION['library']) {
+            $library = " WHERE library = '".$_SESSION['library']."' ";
+        }
+        $query = "SELECT ".$column.",count(".$column.") FROM `metatags_video_file` ". $library ." group 
+        by ".$column." having COUNT(".$column.") > 1;";
+        return $db->query($query);
+
+    }
+
+    // public function showDupes($column,$value)
+    // {
+ 
+    //     $library = '';
+    //     if ('All' != $_SESSION['library']) {
+    //         $library = "  AND library = '".$_SESSION['library']."' ";
+    //     }
+
+    //     $query = query_builder('metatags_video_file','select', "`f.".$column."` = '".$value."' ");
+    //     //$query = "SELECT * FROM `metatags_video_file` WHERE `".$column."` = '".$value."' ".  $library;
+    //     dd($query);
+    //     return $db->query($query);
+    // }
+    public function getLibrary()
+    {
+        global $_SESSION;
+        if ('All' != $_SESSION['library']) {
+            return " AND m.library = '".$_SESSION['library']."'  ";
+        }
+
+        return null;
+    }
+    public function showDupes($column,$value)
+    {
+        // SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( ) AS T1, (SELECT @rownum := 0) AS r
+
+        $fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
+       // $this->db->joinWhere(Db_TABLE_VIDEO_FILE.' f', 'f.'.$column, $value);
+       $this->db->where('f.'.$column, $value);
+        $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'f.video_key=m.video_key', 'INNER');
+        $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'f.video_key=i.video_key', 'LEFT OUTER');
+        if (null !== $this->getLibrary()) {
+            $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', $_SESSION['library']);
+        }
+//        $this->db->where('f.'.$column, $value);
+        // $fieldArray[] = 'm.library';
+
+        $fieldArray = array_merge($fieldArray, [
+            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'f.library',
+            'f.filename', 'f.thumbnail', 'f.fullpath', 'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key']);
+
+        $joinQuery  = $this->db->getQuery(
+            Db_TABLE_VIDEO_FILE.' f',
+            null,
+            $fieldArray
+        );
+
+        //$query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
+        $results    = $this->db->rawQuery($joinQuery);
+
+        //return $this->db->getlastquery();
+        return $results;
+    }
+
+
 
     public function getArtists()
     {
