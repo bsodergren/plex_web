@@ -154,10 +154,20 @@ class FileListing
     {
         // SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( ) AS T1, (SELECT @rownum := 0) AS r
 
-        $fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
+        //$fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
+        //$fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
+
+        $fieldArray = [ 'COALESCE (c.title,m.title) as title ',
+         'COALESCE (c.artist,m.artist) as artist ',
+         'COALESCE (c.genre,m.genre) as genre ',
+         'COALESCE (c.studio,m.studio) as studio ',
+         'COALESCE (c.substudio,m.substudio) as substudio ',
+         'COALESCE (c.keyword,m.keyword) as keyword '];
 
         $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'f.video_key=m.video_key', 'INNER');
         $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'f.video_key=i.video_key', 'LEFT OUTER');
+
+        $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'f.video_key=c.video_key', 'LEFT');
         if (null !== $this->getLibrary()) {
             $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', $_SESSION['library']);
         }
@@ -172,7 +182,7 @@ class FileListing
             $limit,
             $fieldArray
         );
-
+//dd($joinQuery);
         $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
         $results    = $this->db->rawQuery($query);
 

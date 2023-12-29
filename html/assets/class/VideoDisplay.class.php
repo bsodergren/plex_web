@@ -153,7 +153,7 @@ class VideoDisplay
 
                 case 'studio':
                 case 'substudio':
-                    if ('' != $value) {
+                    if ('' != $value || defined('NONAVBAR')) {
                         if (!defined('NONAVBAR')) {
                             $value = keyword_list($key, $value);
 
@@ -176,7 +176,7 @@ class VideoDisplay
                 case 'artist':
                 case 'genre':
                 case 'keyword':
-                    if ('' != $value) {
+                    if ('' != $value || defined('NONAVBAR')) {
                         if (!defined('NONAVBAR')) {
                             $value = keyword_list($key, $value);
                         }
