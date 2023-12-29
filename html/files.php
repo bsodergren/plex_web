@@ -1,4 +1,8 @@
 <?php
+
+use Plex\Template\Template;
+use Plex\Database\FileListing;
+use Plex\Template\VideoDisplay;
 /**
  * plex web viewer
  */
@@ -34,8 +38,9 @@ $page_array              = [
 $vidInfo                 = new VideoDisplay('filelist');
 $body                    = $vidInfo->filelist($results, '', $page_array);
 
-template::echo('base/page', ['BODY' => $body]);
+Template::echo('base/page', ['BODY' => $body]);
 
-// require __LAYOUT_FOOTER__;
+
 
 Template::render();
+// require __LAYOUT_FOOTER__;

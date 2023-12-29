@@ -66,20 +66,20 @@ include __LAYOUT_HEADER__;
     $artist_row_html = '';
 
 foreach ($results as $key => $row) {
-    $artist_row_html .= process_template(
+    $artist_row_html .= Template::GetHTML(
         'config/artist/artist_row',
         [
             'ARTIST_ID'       => 'replacement_'.$row['id'],
             'ARTIST_NAME'     => $row['name'],
             'ARTIST_REP'      => $row['replacement'],
-            'ARTIST_CHECKBOX' => draw_checkbox('hide_'.$row['id'], $row['hide'], ''),
+            'ARTIST_CHECKBOX' => Render::draw_checkbox('hide_'.$row['id'], $row['hide'], ''),
         ]
     );
 }
 
-$hidden              = add_hidden('submit', 'ArtistConfigSave');
-$hidden .= add_hidden('redirect', $redirect_string);
-$artist_main_html .= process_template('config/artist/form_wrapper', [
+$hidden              = Render::add_hidden('submit', 'ArtistConfigSave');
+$hidden .= Render::add_hidden('redirect', $redirect_string);
+$artist_main_html .= Template::GetHTML('config/artist/form_wrapper', [
     'HIDDEN'           => $hidden,
     'ARTIST_FORM_HTML' => $artist_row_html,
 ]);

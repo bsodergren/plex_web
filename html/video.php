@@ -66,7 +66,7 @@ if (isset($playlist_id)) {
         if ($id == $results[$i]['playlist_video_id']) {
             $class = ' active';
         }
-        $carousel_item .= process_template(
+        $carousel_item .= Template::GetHTML(
             'video/carousel_item',
             [
                 'THUMBNAIL'    => $VideoDisplay->fileThumbnail($results[$i]['playlist_video_id'], 'alt="#" class="img-fluid" '),
@@ -93,13 +93,13 @@ if (isset($playlist_id)) {
         }
     }
 
-    $carousel_js                        = process_template('video/carousel_js', []);
-    $carousel                           = process_template('video/carousel', ['CAROUSEL_INNER_HTML' => $carousel_item]);
+    $carousel_js                        = Template::GetHTML('video/carousel_js', []);
+    $carousel                           = Template::GetHTML('video/carousel', ['CAROUSEL_INNER_HTML' => $carousel_item]);
     $video_js_params['PLAYLIST_HEIGHT'] = 145;
     $video_js_params['PLAYLIST_WIDTH']  = 50;
     $video_js_params['NEXT_VIDEO_ID']   = $next_video_id;
     $video_js_params['PREV_VIDEO_ID']   = $prev_video_id;
-    $video_buttons                      = process_template('video/video_buttons', []);
+    $video_buttons                      = Template::GetHTML('video/video_buttons', []);
 }
 
 // $video_file                                       = FileSystem::unixSlashes(FileSystem::normalizePath($video_file));
@@ -113,6 +113,6 @@ $params                             = [
     'CAROUSEL_HTML'  => $carousel,
     'CAROUSEL_JS'    => $carousel_js,
     'VIDEO_BUTTONS'  => $video_buttons,
-    'VIDEO_JS'       => process_template('video/video_js', $video_js_params),
+    'VIDEO_JS'       => Template::GetHTML('video/video_js', $video_js_params),
 ];
 Template::echo('video/main', $params);

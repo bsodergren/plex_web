@@ -86,14 +86,14 @@ foreach ($sortedArray as $num => $artistArray) {
     $artist_box                 = [];
     $link_array                 = [];
 
-    $artist_box['COUNT_HTML']   = process_template('test/artist_count', ['ARTIST_COUNT' => $num]);
+    $artist_box['COUNT_HTML']   = Template::GetHTML('test/artist_count', ['ARTIST_COUNT' => $num]);
     $artist_links               = '';
 
     // foreach($artistArray as $artist)
     // {
 
-    //    //$artist_links .= process_template("test/artist_link",['ARTIST'=>$artist,'ARTIST_NAME'=>$name]);
-    //    //$artist_links .= keyword_cloud($name,'artist');
+    //    //$artist_links .= Template::GetHTML("test/artist_link",['ARTIST'=>$artist,'ARTIST_NAME'=>$name]);
+    //    //$artist_links .= HTMLDisplay::keyword_cloud($name,'artist');
     //  //dump( [ $num ,$artist]);
     // }
     $field                      = 'artist';
@@ -102,7 +102,7 @@ foreach ($sortedArray as $num => $artistArray) {
     foreach ($artistArray as $k => $artist) {
         $name         = strtolower(str_replace('-', '.', $artist));
         $name         = strtolower(str_replace('_', ' ', $name));
-        $link_array[] = process_template(
+        $link_array[] = Template::GetHTML(
             'filelist/search_link',
             [
                 'KEY'      => $field,
@@ -117,7 +117,7 @@ foreach ($sortedArray as $num => $artistArray) {
     // dd($link_array);
     $artist_box['ARTIST_LINKS'] = $artist_links;
 
-    $artist_html .= process_template('test/artist_box', $artist_box);
+    $artist_html .= Template::GetHTML('test/artist_box', $artist_box);
 }
 
 $PARAMS['ARTIST_HTML']    = $artist_html;

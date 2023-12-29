@@ -11,4 +11,6 @@ $query  = 'SELECT thumbnail FROM metatags_video_file WHERE id = '.$id;
 
 $result = $db->query($query);
 // header('Content-Type: image/jpeg');
-echo __URL_HOME__.$result[0]['thumbnail'];
+$url =  __URL_HOME__.$result[0]['thumbnail'];
+$url = str_replace('plex2','plex',$url);
+echo $url;

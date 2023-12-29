@@ -60,8 +60,8 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     $msg                = 'Showing '.count($results).' results for for '.$_REQUEST['query'];
     $msg                = strtolower(str_replace('-', '.', $msg));
     $msg                = strtolower(str_replace('_', ' ', $msg));
-    $html_msg           = process_template('search/search_msg', ['MSG' => $msg]);
-    //  $html_msg .= process_template("search/search_msg", [   'MSG' => $sql] );
+    $html_msg           = Template::GetHTML('search/search_msg', ['MSG' => $msg]);
+    //  $html_msg .= Template::GetHTML("search/search_msg", [   'MSG' => $sql] );
 
     $grid               = new GridDisplay();
     $search_results     = $grid->gridview($results, count($results));
@@ -78,13 +78,13 @@ $search_types    = [
 ];
 
 foreach ($search_types as $key) {
-    // $checkbox = draw_checkbox("searchField[]", $key, $key);
-    $checkboxes .= process_template('search/checkboxes', ['NAME' => $key]);
+    // $checkbox = Render::draw_checkbox("searchField[]", $key, $key);
+    $checkboxes .= Template::GetHTML('search/checkboxes', ['NAME' => $key]);
 }
 
-$body            = process_template('search/search', [
-    'HIDDEN_IDS'     => add_hidden('playlist', $playlist_ids_str),
-    'HIDDEN_STUDIO'  => add_hidden('studio', $_REQUEST['query'].' Search'),
+$body            = Template::GetHTML('search/search', [
+    'HIDDEN_IDS'     => Render::add_hidden('playlist', $playlist_ids_str),
+    'HIDDEN_STUDIO'  => Render::add_hidden('studio', $_REQUEST['query'].' Search'),
     'SEARCH_RESULTS' => $search_results,
     'CHECKBOXES'     => $checkboxes,
     'HTML_MSG'       => $html_msg,

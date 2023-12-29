@@ -10,7 +10,7 @@ check_logged_out();
 
 require __LAYOUT_HEADER__;
 
-$body = process_template('auth/register', [
+$body = Template::GetHTML('auth/register', [
     'CSRF_TOKEN'        => insert_csrf_token(),
     'SESSION_STATUS'    => $_SESSION['STATUS']['signupstatus'],
     'STATUS_NOUSER'     => $_SESSION['ERRORS']['usernameerror'],

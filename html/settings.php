@@ -5,7 +5,7 @@ require_once '_config.inc.php';
 $form = new Formr\Formr('bootstrap4');
 
 if ($form->submitted()) {
-    echo proccess_settings('home.php');
+//
 }
 
 define('TITLE', 'Test Page');

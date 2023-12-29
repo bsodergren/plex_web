@@ -64,20 +64,20 @@ include __LAYOUT_HEADER__;
     $genre_row_html = '';
 
 foreach ($results as $key => $row) {
-    $genre_row_html .= process_template(
+    $genre_row_html .= Template::GetHTML(
         'config/genre/genre_row',
         [
             'GENRE_ID'       => 'replacement_'.$row['id'],
             'GENRE_NAME'     => $row['genre'],
             'GENRE_REP'      => $row['replacement'],
-            'GENRE_CHECKBOX' => draw_checkbox('keep_'.$row['id'], $row['keep'], ''),
+            'GENRE_CHECKBOX' => Render::draw_checkbox('keep_'.$row['id'], $row['keep'], ''),
         ]
     );
 }
 
-$hidden             = add_hidden('submit', 'GenreConfigSave');
-$hidden .= add_hidden('redirect', $redirect_string);
-$genre_main_html .= process_template('config/genre/form_wrapper', [
+$hidden             = Render::add_hidden('submit', 'GenreConfigSave');
+$hidden .= Render::add_hidden('redirect', $redirect_string);
+$genre_main_html .= Template::GetHTML('config/genre/form_wrapper', [
     'HIDDEN'          => $hidden,
     'GENRE_FORM_HTML' => $genre_row_html,
 ]);

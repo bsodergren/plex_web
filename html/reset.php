@@ -8,7 +8,7 @@ require __LAYOUT_HEADER__;
 $selector  = $_GET['selector'];
 $validator = $_GET['validator'];
 if (isset($validator, $selector)) {
-    $body = process_template('auth/reset', [
+    $body = Template::GetHTML('auth/reset', [
         'CSRF_TOKEN'         => insert_csrf_token(),
         'SELECTOR'           => $selector,
         'VALIDATOR'          => $validator,
@@ -16,7 +16,7 @@ if (isset($validator, $selector)) {
         'STATUS_PASSWDERROR' => $_SESSION['ERRORS']['passworderror'],
     ]);
 } else {
-    $body = process_template('auth/reset_send', [
+    $body = Template::GetHTML('auth/reset_send', [
         'CSRF_TOKEN'         => insert_csrf_token(),
         'STATUS_RESETSUBMIT' => $_SESSION['STATUS']['resetsubmit'],
         'STATUS_PASSWDERROR' => $_SESSION['ERRORS']['passworderror'],

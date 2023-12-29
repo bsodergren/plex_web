@@ -3,9 +3,14 @@
  * plex web viewer
  */
 
-use Camoo\Config\Config;
 use Dotenv\Dotenv;
 use Tracy\Debugger;
+use Camoo\Config\Config;
+use Plex\Core\PlexLoader;
+use Plex\Database\PlexSql;
+use Plex\Database\dbObject;
+use Plex\Template\Template;
+use Plex\Database\Loader\MetaSettings;
 
 session_start();
 
@@ -31,8 +36,16 @@ require_once __COMPOSER_LIB__.'/autoload.php';
 
 $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
-$dotenv = Dotenv::createImmutable($config['path']['mediatag']);
+$dotenv = Dotenv::createImmutable($config['path']['HOME']);
 $dotenv->load();
+
+define('DB_DATABASE', $_ENV['DB_DATABASE']);
+define('DB_HOST', $_ENV['DB_HOST']);
+define('DB_USERNAME', $_ENV['DB_USER']);
+define('DB_PASSWORD', $_ENV['DB_PASS']);
+
+$PlexLoader = new PlexLoader($config);
+
 if (function_exists('apache_setenv')) {
     apache_setenv('no-gzip', '1');
     apache_setenv('dont-vary', '1');
@@ -41,6 +54,7 @@ if (function_exists('apache_setenv')) {
 if (!defined('APP_AUTHENTICATION')) {
     define('APP_AUTHENTICATION', false);
 }
+
 define('APP_HOME', $config['path']['APP_HOME']);
 define('APP_HTML_ROOT', rtrim($_SERVER['CONTEXT_DOCUMENT_ROOT'], '/'));
 define('APP_PATH', APP_HTML_ROOT.APP_HOME);
@@ -48,52 +62,16 @@ define('APP_PATH', APP_HTML_ROOT.APP_HOME);
 define('__THIS_FILE__', basename($_SERVER['SCRIPT_FILENAME']));
 define('__THIS_PAGE__', basename($_SERVER['SCRIPT_FILENAME'], '.php'));
 
-define('DB_DATABASE', $_ENV['DB_DATABASE']);
 
-define('DB_HOST', $_ENV['DB_HOST']);
 
-define('DB_USERNAME', $_ENV['DB_USER']);
-
-define('DB_PASSWORD', $_ENV['DB_PASS']);
-
-define('Db_TABLE_PREFIX', 'metatags_');
 define('__PHP_ASSETS_DIR__', $_ENV['WEB_HOME'].'/assets');
-define('__PHP_INC_CLASS_DIR__', __PHP_ASSETS_DIR__.'/class');
-define('__PHP_INC_CORE_DIR__', __PHP_ASSETS_DIR__.'/core');
-define('__PHP_INC_INCLUDE_DIR__', __PHP_ASSETS_DIR__.'/includes');
-
+define('__CONFIG_DIRECTORY__',__ROOT_DIRECTORY__.'/src/Config');
 define('__PLEX_LIBRARY__', $_ENV['PLEX_HOME']);
+
 define('__CACHE_DIR', __PLEX_LIBRARY__.'/.cache');
-
 define('__ERROR_LOG_DIRECTORY__', APP_HTML_ROOT.'/logs');
-
-define('Db_TABLE_VIDEO_FILE', Db_TABLE_PREFIX.'video_file');
-define('Db_TABLE_VIDEO_INFO', Db_TABLE_PREFIX.'video_info');
-define('Db_TABLE_VIDEO_CUSTOM', Db_TABLE_PREFIX.'video_custom');
-define('Db_TABLE_VIDEO_TAGS', Db_TABLE_PREFIX.'video_metadata');
-
-define('Db_TABLE_STUDIO', Db_TABLE_PREFIX.'studios');
-define('Db_TABLE_GENRE', Db_TABLE_PREFIX.'genre');
-
-define('Db_TABLE_ARTISTS', Db_TABLE_PREFIX.'artists');
-
-define('Db_TABLE_SETTINGS', Db_TABLE_PREFIX.'settings');
-
-define('Db_TABLE_PLAYLIST_VIDEOS', 'playlist_videos');
-
-define('Db_TABLE_PLAYLIST_DATA', 'playlist_data');
-
 define('__LAYOUT_PATH__', __PHP_ASSETS_DIR__.'/layouts');
-
 define('__HTML_TEMPLATE__', __LAYOUT_PATH__.'/template/');
-
-define('__PHP_TEMPLATE__', __LAYOUT_PATH__.'/php_template/');
-
-define('__LAYOUT_HEADER__', __LAYOUT_PATH__.'/header.php');
-
-define('__LAYOUT_NAVBAR__', __LAYOUT_PATH__.'/navbar.php');
-
-define('__LAYOUT_FOOTER__', __LAYOUT_PATH__.'/footer.php');
 
 define('__URL_PATH__', APP_HOME);
 
@@ -110,12 +88,58 @@ define('__TEMPLATE_CONSTANTS__', [
     '__URL_HOME__',
 ]);
 
-require_once __ROOT_DIRECTORY__.'/src/Config/paths.php';
 
-require_once __PHP_ASSETS_DIR__.'/header.inc.php';
 
-require_once __PHP_ASSETS_DIR__.'/variables.php';
-require_once __PHP_ASSETS_DIR__.'/settings.inc.php';
+$template       = new Template();
+
+require_once __CONFIG_DIRECTORY__.'/paths.php';
+require_once __CONFIG_DIRECTORY__.'/functions.php';
+require_once __CONFIG_DIRECTORY__.'/enviroment.php';
+
+$db       = new PlexSql(); // ('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+$conn     = mysqli_connect('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+
+$settings = new MetaSettings();
+
+$val      = $settings->orderBy('type')->get();
+if ($val) {
+    foreach ($val as $u) {
+        $setting[$u->name] = $u->type.';'.$u->value;
+
+        if ('array' == $u->type) {
+            define($u->name, json_decode($u->value, 1));
+
+            if (defined('__DISPLAY_PAGES__') && array_key_exists(__THIS_FILE__, __DISPLAY_PAGES__)) {
+                define('__SHOW_PAGES__', __DISPLAY_PAGES__[__THIS_FILE__]['pages']);
+                define('__SHOW_SORT__', __DISPLAY_PAGES__[__THIS_FILE__]['sort']);
+
+                if (__SHOW_PAGES__ == 0 && __SHOW_SORT__ == 0) {
+                    define('__BOTTOM_NAV__', 0);
+                } else {
+                    define('__BOTTOM_NAV__', 1);
+                }
+            }
+        } else {
+            if (!defined($u->name)) {
+                define($u->name, $u->value);
+            }
+        }
+    }// end foreach
+
+    define('__SETTINGS__', $setting);
+}// end if
+
+if (!defined('__BOTTOM_NAV__')) {
+    define('__BOTTOM_NAV__', 0);
+}
+
+require_once __CONFIG_DIRECTORY__.'/variables.php';
+
+define('__LAYOUT_HEADER__', __PHP_ASSETS_DIR__.'/Header.php');
+
+define('__LAYOUT_NAVBAR__', __PHP_ASSETS_DIR__.'/Navbar.php');
+
+define('__LAYOUT_FOOTER__', __PHP_ASSETS_DIR__.'/Footer.php');
 
 logger('____________________________________________________________________________________________________________________');
 define('__METADB_HASH', __CACHE_DIR.'/'.$cache_directory.'/metadb.hash');

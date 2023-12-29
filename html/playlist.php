@@ -33,19 +33,19 @@ if (null === $playlist_id) {
             'PLAYLIST_COUNT' => $results[$i]['count'],
         ];
         if ($library == $prev) {
-            $playlist_links .= process_template('playlist/playlist_link', $params);
+            $playlist_links .= Template::GetHTML('playlist/playlist_link', $params);
         } else {
-            $table_body_html .= process_template('playlist/main', [
+            $table_body_html .= Template::GetHTML('playlist/main', [
                 'PLAYLIST_LIST'    => $playlist_links,
                 'PLAYLIST_LIBRARY' => $prev,
             ]);
-            $playlist_links = process_template('playlist/playlist_link', $params);
+            $playlist_links = Template::GetHTML('playlist/playlist_link', $params);
 
             $prev           = $library;
         }
     }
 
-    $table_body_html .= process_template('playlist/main', [
+    $table_body_html .= Template::GetHTML('playlist/main', [
         'PLAYLIST_LIST'    => $playlist_links,
         'PLAYLIST_LIBRARY' => $library,
     ]);
@@ -59,7 +59,7 @@ if (null === $playlist_id) {
     $total           = count($results);
 
     for ($i = 0; $i < count($results); ++$i) {
-        $cell_html .= process_template(
+        $cell_html .= Template::GetHTML(
             'playlist/cell',
             [
                 // 'VID_NUMBER' => $i +1,
@@ -72,9 +72,9 @@ if (null === $playlist_id) {
     }
 
     $form_url        = __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
-    $form_action     = add_hidden('playlist_id', $playlist_id);
+    $form_action     = Render::add_hidden('playlist_id', $playlist_id);
 
-    $table_body_html = process_template('playlist/table', [
+    $table_body_html = Template::GetHTML('playlist/table', [
         'FORM_URL'        => $form_url,
         'HIDDEN'          => $form_action,
         'PLAYLIST_ID'     => $playlist_id,
