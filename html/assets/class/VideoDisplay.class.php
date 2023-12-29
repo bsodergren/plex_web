@@ -47,6 +47,7 @@ class VideoDisplay
                 );
 
                 $editable      = $editableClass;
+
             }
         }
         $params['FIELD_ROW_HTML'] .= process_template(
@@ -224,11 +225,13 @@ class VideoDisplay
                 $infoParams
             ), $class);
         }
-
+      
         $table_body_html['filecards'] = process_template($this->template_base.'/file', $params);
 
         return $table_body_html;
     }
+
+    
 
     public function fileList($results, $option = '', $page_array = [])
     {

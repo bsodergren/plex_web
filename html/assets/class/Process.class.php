@@ -37,6 +37,7 @@ class ProcessForms
             } else {
                 dd('No Method for '.$method.' Found');
             }
+            $this->myHeader();
         }
         if (isset($this->postArray['action'])) {
             $method = $this->postArray['action'];
@@ -53,9 +54,10 @@ class ProcessForms
                     dd('No Method for '.$method.' Found in this');
                 }
             }
+            $this->myHeader();
         }
         // dd($_SERVER);
-        $this->myHeader();
+        
     }
 
     // public function playliststuff()

@@ -79,9 +79,9 @@ define('Db_TABLE_ARTISTS', Db_TABLE_PREFIX.'artists');
 
 define('Db_TABLE_SETTINGS', Db_TABLE_PREFIX.'settings');
 
-define('Db_TABLE_PLAYLIST_VIDEOS', 'playlist_videos');
+define('Db_TABLE_PLAYLIST_VIDEOS', Db_TABLE_PREFIX.'playlist_videos');
 
-define('Db_TABLE_PLAYLIST_DATA', 'playlist_data');
+define('Db_TABLE_PLAYLIST_DATA', Db_TABLE_PREFIX.'playlist_data');
 
 define('__LAYOUT_PATH__', __PHP_ASSETS_DIR__.'/layouts');
 

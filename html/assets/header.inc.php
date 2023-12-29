@@ -27,7 +27,7 @@ foreach ($include_array as $required_file) {
 $template       = new Template();
 
 if (!isset($_SESSION['itemsPerPage'])) {
-    $_SESSION['itemsPerPage'] = 25;
+    $_SESSION['itemsPerPage'] = 50;
 }
 
 if (isset($_REQUEST['itemsPerPage'])) {

@@ -22,7 +22,7 @@ function V__FUNCTION__V () {
 }
 
 // Listen on when elements getting edited
-$V__EDITABLE__V.on('edit', function ($textArea) {
+$V__EDITABLE__V.on('edit', function () {
     console.log('Started editing element ' + this.nodeName)
 })
 

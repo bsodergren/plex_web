@@ -126,7 +126,26 @@ class PlexSql extends MysqliDb
         // return $this->db->getlastquery();
         return $results;
     }
+    public function getArtistsList()
+    {
+        $res = $this->getArtists();
+        foreach($res as $k => $v)
+        {
+            $array[] = $v['artist'];
+            
+        }
+        $namesStr = implode(",",$array);
+        $namesArray = explode(",",$namesStr);
+        $namesArray =array_unique($namesArray);
+        sort($namesArray);
+        $namesStr = implode(",",$namesArray);
+        $namesStr = '"'. implode('","', $namesArray) .'"';
 
+        return trim(str_replace('" ','"',$namesStr));
+        
+
+
+    }
     public function getArtists()
     {
         global $db;
