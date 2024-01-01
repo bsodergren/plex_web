@@ -109,6 +109,7 @@ define('__TEMPLATE_CONSTANTS__', [
     '__LAYOUT_URL__',
     '__URL_HOME__',
 ]);
+// define('NOTHUMBNAIL', true);
 
 require_once __ROOT_DIRECTORY__.'/src/Config/paths.php';
 

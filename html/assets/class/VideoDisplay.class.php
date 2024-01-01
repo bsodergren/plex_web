@@ -21,7 +21,9 @@ class VideoDisplay
         global $db;
         $query  = 'SELECT thumbnail FROM metatags_video_file WHERE id = '.$row_id;
         $result = $db->query($query);
-
+        if (defined('NOTHUMBNAIL')) {
+            return null;
+        }
         return __URL_HOME__.$result[0]['thumbnail'];
         //  return __URL_HOME__.'/images/thumbnail.php?id='.$row_id;
     }
@@ -101,7 +103,7 @@ class VideoDisplay
         $params['FILE_NAME_ID']       = $row_id.'_filename';
         $params['FULL_PATH']          = $row_fullpath;
         $params['FILE_ID']            = $row_id;
-        $params['DELETE_ID']          = add_hidden('id', $row_id);
+        $params['DELETE_ID']          = add_hidden('id', $row_id, 'id="DorRvideoId"');
         // krsort($fileInfoArray);
         // dd($fileInfoArray);
         $params['video_key']          = $row_video_key;

@@ -170,6 +170,7 @@ class FileListing
         $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'f.video_key=c.video_key', 'LEFT');
         if (null !== $this->getLibrary()) {
             $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', $_SESSION['library']);
+           
         }
         // $fieldArray[] = 'm.library';
 

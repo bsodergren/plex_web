@@ -47,7 +47,8 @@ $params['SCRIPTS']         = process_template('base/header/header_scripts', $par
 if (!defined('VIDEOINFO')) {
     $params['SCRIPTS'] .= process_template('base/header/header_filelist', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
 } else {
-    $params['SCRIPTS'] .= process_template('base/header/header_videoinfo', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
+    $params['SCRIPTS']  .= process_template('base/header/header_videoinfo', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
+ //     $params['ONLOAD'] = 'onbeforeunload="refreshAndClose();"';
 }
 
 if (defined('GRID_VIEW')) {

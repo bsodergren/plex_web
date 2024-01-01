@@ -2,6 +2,7 @@
 /**
  * plex web viewer
  */
+use Nette\Utils\FileSystem;
 
 function chk_file($value, $command = 'delete', $options = '')
 {
@@ -38,8 +39,8 @@ function deleteFile($array)
     $file      = $videoInfo['fullpath'].\DIRECTORY_SEPARATOR.$videoInfo['filename'];
     $thumbnail = APP_HTML_ROOT.$videoInfo['thumbnail'];
 
-    chk_file($file, 'delete');
-
+    //chk_file($file, 'delete');
+    rename_file($file);
     chk_file($thumbnail, 'delete');
 
     $res       = $db->where('id', $id)->delete(Db_TABLE_VIDEO_FILE);
@@ -48,3 +49,12 @@ function deleteFile($array)
 
     // echo '<script type="text/javascript">   window.opener.location.reload(true); window.close(); </script>';
 }
+
+function rename_file($file)
+{
+
+    $newFile = str_replace("XXX".DIRECTORY_SEPARATOR,"XXX".DIRECTORY_SEPARATOR."Backup".DIRECTORY_SEPARATOR,$file);
+    FileSystem::rename($file, $newFile,true);
+
+}
+

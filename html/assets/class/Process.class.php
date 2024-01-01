@@ -150,7 +150,16 @@ class ProcessForms
 
     public function delete_file()
     {
-        return deleteFile($this->postArray);
+        // define('TITLE', 'Home');
+        // define('NONAVBAR', true);
+        // define('VIDEOINFO', true);
+        // include __LAYOUT_HEADER__;
+        // Template::echo('stream/start_page', ['PAGE_LOAD' => template::GetHTML('/stream/page_load', [])]);
+         deleteFile($this->postArray);
+        //  Template::echo('stream/end_page', ['PAGE_CLOSE' => template::GetHTML('/stream/page_close', [])]);
+
+        //  dd("Fdsfds");
+
     }
 
     public function playlist()

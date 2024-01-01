@@ -1,13 +1,18 @@
 <div class="blueTable">
     <div class="row">
         <div class="col bg-primary bg-gradient fs-5 fw-bold text-left" style="max-width: 65px;"></div>
-        <div class="col bg-primary bg-gradient fs-5 fw-bold text-nowrap  text-left">%%FILE_NAME%%</div>
-        <div class="col bg-primary bg-gradient fs-5 fw-bold text-end ">
-            <form action="process.php" method="post" id="formId">
+        <div class="col bg-primary bg-gradient fs-5 fw-bold text-nowrap text-bg-primary  text-left">
+            <p id="retOp"></p>
+            %%FILE_NAME%%</div>
+        <div class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary text-end ">
+            <!-- <form action="process.php" id="videoRefreshOrDelete" onsubmit="clickButton(this);"> -->
+                <!-- <form id="videoRefreshOrDelete" onsubmit="return false;"> -->
+                    <form id="videoRefreshOrDelete" onsubmit="return false;">
+
                 %%DELETE_ID%%
 
-                <button class="btn btn-outline-primary btn-lg px-3 text-bg-primary" id='Closebtn' type="submit" name="submit" value="update_file">Refresh</button>
-                <button class="btn btn-outline-danger btn-lg px-3 text-bg-danger " id='Closebtn' type="submit" name="submit" value="delete_file">Delete</button>
+                <button class="btn btn-outline-primary btn-lg px-3 text-bg-primary" id='RefreshBtn' onclick="clickButton(this);" type="submit" name="submit" value="update_file">Refresh</button>
+                <button class="btn btn-outline-danger btn-lg px-3 text-bg-danger " id='Closebtn' onclick="clickButton(this);" type="submit" name="submit" value="delete_file">Delete</button>
             </form>
         </div>
     </div>
@@ -20,5 +25,33 @@
     </div>
 
 </div>
+<script>
 
+var retOp = document.getElementById("retOp");
+
+function clickButton(e) {
+        
+    let video_id = document.getElementById("DorRvideoId");
+       
+        console.log(e.value + ', ' + video_id.value);
+        $.ajax({
+            type: "post",
+            url: "process.php",
+            data:
+            {
+                'submit': e.value,
+                'id': video_id.value
+            },
+            cache: false,
+            success: function () {
+                window.opener.location.reload(true);
+                window.close();
+            }
+        });
+
+
+        return false;
+    }
+
+</script>
 %%VIDEOINFO_EDIT_JS%%
