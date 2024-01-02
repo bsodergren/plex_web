@@ -211,60 +211,7 @@ function uri_String($request_array, $start = '?')
     }
 
     return $request_array;
-} // end uri_String()
-
-// function process_form($redirect_url = '')
-// {
-//     global $_POST,$_REQUEST;
-
-//     if (isset($_POST['submit'])) {
-//         if ('GenreConfigSave' == $_POST['submit']) {
-//             return GenreConfigSave($_POST, $redirect_url);
-
-//             exit;
-//         }
-//         if ('ArtistConfigSave' == $_POST['submit']) {
-//             return ArtistConfigSave($_POST, $redirect_url);
-
-//             exit;
-//         }
-
-//         if ('StudioConfigSave' == $_POST['submit']) {
-//             return saveStudioConfig($_POST, $redirect_url);
-
-//             exit;
-//         }
-//         if ('delete_file' == $_POST['submit']) {
-//             return deleteFile($_POST);
-
-//             exit;
-//         }
-
-//         if (str_starts_with($_POST['submit'], 'Playlist')) {
-//             createPlaylist($_POST, $redirect_url);
-//             myHeader();
-
-//             exit;
-//         }
-//         if (str_starts_with($_POST['submit'], 'All Files')) {
-//             createPlaylist($_POST, $redirect_url);
-//             myHeader();
-
-//             exit;
-//         }
-//         if (str_starts_with($_POST['submit'], 'Move')) {
-//             $playlist_id = createPlaylist($_POST, $redirect_url);
-//             moveFiles($_POST, $playlist_id);
-
-//             exit;
-//         }
-//     } // end if
-
-//     if ('' != $redirect_url) {
-//         return myHeader($redirect_url, 0);
-//     }
-// } // end process_form()
-
+}
 function GenreConfigSave($data_array, $redirect, $timeout = 0)
 {
     global $db;

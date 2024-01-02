@@ -1,38 +1,38 @@
 <main class="container-fluid">
     <form method="post" id="ajaxform">
-        <div style="position: fixed; z-index: 10000;    top: 75px;     left: 5px;">
+        <div>
             <input type="hidden" name="submit" value="playlist">
             %%HIDDEN_STUDIO%%
-            
-            <input type="submit" style="left: 120px;" name="submit" value="Playlist">
+
+            <button class="btn rounded-pill btn-primary  border border-2 border-dark" style="position: fixed; z-index: 10000;    top: 51px;     left: 5px;" type="button" name="submit" value="Playlist">Add to Playlist</button>
         </div>
-    %%BODY%%
+        %%BODY%%
     </form>
-    
-<script>
-    $("#ajaxform").submit(function (e) {
-        var postData = $(this).serializeArray();
-        var formURL = $(this).attr("action");
-        var curLoc = location;
-        $.ajax(
-            {
-                url: 'process.php',
-                type: "POST",
-                data: postData,
-                // data: jQuery.param({'submit': 'playlist', 'data': postData}) ,
-                success: function (data) {
+
+    <script>
+        $("#ajaxform").submit(function (e) {
+            var postData = $(this).serializeArray();
+            var formURL = $(this).attr("action");
+            var curLoc = location;
+            $.ajax(
+                {
+                    url: 'process.php',
+                    type: "POST",
+                    data: postData,
+                    // data: jQuery.param({'submit': 'playlist', 'data': postData}) ,
+                    success: function (data) {
 
 
-                    window.location = data;
+                        window.location = data;
 
 
-                    //data: return data from server
-                }
+                        //data: return data from server
+                    }
 
-            });
+                });
 
-    });
+        });
 
-    //  $("#ajaxform").submit();
-</script>
+        //  $("#ajaxform").submit();
+    </script>
 </main>
