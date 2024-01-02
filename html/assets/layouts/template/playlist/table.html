@@ -1,41 +1,42 @@
 <form action="%%FORM_URL%%" method="post">
 
     %%HIDDEN%%
-    <div class="container badge text-bg-primary text-black p-2 fw-semibold" style="--bs-bg-opacity: .5;">
+    <div class="container  text-bg-primary " style="--bs-bg-opacity: .5;">
         <div class="row justify-content-center">
-            <div class="col-9  fs-3">
+            <div class="col-9  text-center fs-3">
                 %%PLAYLIST_NAME%% %%PLAYLIST_VIDEOS%%
             </div>
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-3   fs-4 ">
-                <div class="input-group mb-3">
+            <div class="col-3   ">
+                <div class="input-group input-group-sm">
                     <span class="input-group-text" id="basic-addon1">Genre</span>
-                    <input type="text" name="playlist_genre" class="form-control" placeholder="%%PLAYLIST_GENRE%%"
-                        aria-label="playlist_genre" aria-describedby="basic-addon1">
+                    <input type="text" name="playlist_genre" class="form-control" value="%%PLAYLIST_GENRE%%" aria-label="playlist_genre" aria-describedby="basic-addon1">
                 </div>
             </div>
             <div class="col-3"></div>
-            <div class="col-3   fs-4 ">
-                <div class="input-group mb-3">
+            <div class="col-3   ">
+                <div class="input-group input-group-sm">
                     <span class="input-group-text" id="basic-addon2">Name</span>
-                    <input type="text" name="playlist_name" class="form-control" placeholder="%%PLAYLIST_NAME%%"
-                        aria-label="playlist_name" aria-describedby="basic-addon2">
+                    <input type="text" name="playlist_name" class="form-control"
+                    aria-label="playlist_name" aria-describedby="basic-addon2" value="%%PLAYLIST_NAME%%" >
                 </div>
             </div>
         </div>
 
         <div class="row text-left justify-content-center">
             <div class="col-3  fs-4 ">
-                <button type="submit" class="text-black fs-4" name="action" value="savePlaylist">Save</button>
+                <button type="submit" name="action" value="savePlaylist">
+                    <span class="btn btn-primary btn-lg rounded-pill text-bg-primary  mx-3">
+
+                        Save </span></button>
             </div>
             <div class="col-3 fs-4 ">
-                <span
-                    onclick="popup('%%__URL_HOME__%%/video.php?playlist_id=%%PLAYLIST_ID%%', 'videoplayer')">Watch</span>
+                <button class="btn btn-primary btn-lg rounded-pill text-bg-primary  mx-3" onclick="popup('%%__URL_HOME__%%/video.php?playlist_id=%%PLAYLIST_ID%%', 'videoplayer')">Watch</button>
             </div>
             <div class="col-3   fs-4 ">
-                <button type="submit" class="text-black fs-4" name="action" value="deletePlaylist">Delete</button>
+                <button type="submit" name="action" value="deletePlaylist"><span class="btn btn-primary btn-lg rounded-pill text-bg-primary  mx-3">Delete</span></button>
             </div>
         </div>
     </div>

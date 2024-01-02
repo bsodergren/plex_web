@@ -42,8 +42,9 @@ $fullpath                           = str_replace(__PLEX_LIBRARY__, APP_HOME.'/v
 $video_file                         = $fullpath.'/'.$result['filename'];
 $video_js_params['PLAYLIST_HEIGHT'] = 50;
 $video_js_params['PLAYLIST_WIDTH']  = 20;
-
+$comments = '//';
 if (isset($playlist_id)) {
+    $comments = '';
     $VideoDisplay                       = new VideoDisplay();
 
     $sql                                = 'select
@@ -99,9 +100,11 @@ if (isset($playlist_id)) {
     $video_js_params['PLAYLIST_WIDTH']  = 50;
     $video_js_params['NEXT_VIDEO_ID']   = $next_video_id;
     $video_js_params['PREV_VIDEO_ID']   = $prev_video_id;
+   
+    
     $video_buttons                      = process_template('video/video_buttons', []);
 }
-
+$video_js_params['COMMENT']   = $comments;
 // $video_file                                       = FileSystem::unixSlashes(FileSystem::normalizePath($video_file));
 
 $params                             = [
@@ -113,6 +116,6 @@ $params                             = [
     'CAROUSEL_HTML'  => $carousel,
     'CAROUSEL_JS'    => $carousel_js,
     'VIDEO_BUTTONS'  => $video_buttons,
-    'VIDEO_JS'       => process_template('video/video_js', $video_js_params),
+    'VIDEO_JS'       => process_javascript('video/video_js', $video_js_params),
 ];
 Template::echo('video/main', $params);

@@ -89,30 +89,54 @@ class pageinate extends Paginator
 
             //     return '';
         }
-
+        $pill_start_class ='';
+        $pill_end_class = '';
         if ($this->paginator->getPrevUrl()) {
             $params   = [
-                'LI_CLASS' => ' class="page-item" ',
-                'A_CLASS'  => ' class="page-link" ',
+                'LI_CLASS' => ' class="page-item " ',
+                'A_CLASS'  => ' class="page-link  rounded-start-pill" ',
                 'A_HREF'   => htmlspecialchars($this->paginator->getPrevUrl()),
                 'A_TExT'   => '&laquo; '.$this->paginator->previousText,
             ];
             $previous = template::return('base/footer/page_item', $params);
+        } else {
+            $pill_start_class = 'rounded-start-pill';
         }
+        if ($this->paginator->getNextUrl()) {
+            $next_page = true;
+            $params = [
+                'LI_CLASS' => ' class="page-item rounded-end-pill"',
+                'A_CLASS'  => ' class="page-link  rounded-end-pill"',
+                'A_HREF'   => htmlspecialchars($this->paginator->getNextUrl()),
+                'A_TExT'   => $this->paginator->nextText.' &raquo;',
+            ];
+            $next   = template::return('base/footer/page_item', $params);
+        } else {
+            $next_page = false;
+            $pill_end_class = 'rounded-end-pill';
+        }
+        $pages = $this->paginator->getPages();
+if(count($pages) == 0 ){
+    $pill_start_class = 'rounded-pill';
 
-        foreach ($this->paginator->getPages() as $page) {
+}
+        foreach ($pages as $page) {
             // $params = [];
+
+                  if ($page['isCurrent'] && $next_page === false) {
+                    $pill_end_class = 'rounded-end-pill';
+                }  else {
+                    $pill_end_class = '';
+                }
             if ($page['url']) {
                 $params = [
-                    'LI_CLASS' => $page['isCurrent'] ? ' class="page-item  active"' : ' class="page-item" ',
-                    'A_CLASS'  => ' class="page-link" ',
+                    'LI_CLASS' => $page['isCurrent'] ? ' class="page-item  active '.$pill_end_class.'"' : ' class="page-item '.$pill_end_class.'" ' ,
+                    'A_CLASS'  => ' class="page-link '.$pill_end_class.'" ',
                     'A_HREF'   => htmlspecialchars($page['url']),
                     'A_TExT'   => htmlspecialchars($page['num']),
                 ];
 
-                if ($page['isCurrent']) {
-                    $current_url = htmlspecialchars($page['url']);
-                }
+          
 
                 $link_list .= template::return('base/footer/page_item', $params);
             } else {
@@ -120,15 +144,7 @@ class pageinate extends Paginator
             }
         }
 
-        if ($this->paginator->getNextUrl()) {
-            $params = [
-                'LI_CLASS' => ' class="page-item"',
-                'A_CLASS'  => ' class="page-link"',
-                'A_HREF'   => htmlspecialchars($this->paginator->getNextUrl()),
-                'A_TExT'   => $this->paginator->nextText.' &raquo;',
-            ];
-            $next   = template::return('base/footer/page_item', $params);
-        }
+    
 
         parse_str($_SERVER['QUERY_STRING'], $query_array);
 
@@ -149,6 +165,8 @@ class pageinate extends Paginator
             'PAGE_UPDATE'      => $current_url,
             'OPTIONS'          => $option_text,
             'PREVIOUS_LINK'    => $previous,
+            'PILL_CLASS' =>  $pill_start_class,
+            'PILL_NEXT_CLASS' =>  $pill_end_class,
             'LINK_LIST'        => $link_list,
             'NEXT_LINK'        => $next];
         $html        = template::return('base/footer/pages', $params);

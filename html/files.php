@@ -33,6 +33,7 @@ $page_array              = [
 ];
 $vidInfo                 = new VideoDisplay('filelist');
 $body                    = $vidInfo->filelist($results, '', $page_array);
+$body['PLAYLIST_ADD_BUTTON'] = Render::displayPlaylistButton();
 
 template::echo('filelist/page', $body);
 // template::echo('filelist/page', ['BODY' => $body]);

@@ -164,8 +164,8 @@ class Template
         $e_delim       = '%%';
         if ('' != $js) {
             $extension = '.js';
-            $s_delim   = 'V__';
-            $e_delim   = '__V';
+            $s_delim   = '!!';
+            $e_delim   = '!!';
         }
 
         $template_file = __HTML_TEMPLATE__.'/'.$template.$extension;
@@ -201,6 +201,7 @@ class Template
         }
 
         $html_text     = preg_replace_callback('|(%%\w+%%)|', [$this, 'callback_replace'], $html_text);
+        $html_text     = preg_replace_callback('|(\!\!\w+\!\!)|', [$this, 'callback_replace'], $html_text);
 
         $html_text     = preg_replace_callback('/(##(\w+,?\w+)##)(.*)(##)/iU', [$this, 'callback_color'], $html_text);
         $html_text     = preg_replace_callback('/(!!(\w+,?\w+)!!)(.*)(!!)/iU', [$this, 'callback_badge'], $html_text);

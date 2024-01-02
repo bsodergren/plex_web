@@ -1,7 +1,7 @@
-var $V__EDITABLE__V = $('.V__EDITABLE__V')
+var $!!EDITABLE!! = $('.!!EDITABLE!!')
 
-function V__FUNCTION__V () {
-    $V__EDITABLE__V.editable({
+function !!FUNCTION!!() {
+    $!!EDITABLE!!.editable({
         emptyMessage: 'Please write something...',
         callback: function (data) {
             console.log('Stopped editing ' + data.$el[0].nodeName)
@@ -11,20 +11,20 @@ function V__FUNCTION__V () {
                     url: 'process.php',
                     data: jQuery.param({
                         submit: 'update',
-                        V__ID_NAME__V: data.content,
-                        video_key: 'V__VIDEO_KEY__V'
+                        !!ID_NAME!!: data.content,
+                        video_key: 'V!!IDEO_KEY!!'
                     })
-                })
-                console.log('   * The text was changed -> ' + data.content)
-            }
+            })
+    console.log('   * The text was changed -> ' + data.content)
+}
         }
     })
 }
 
 // Listen on when elements getting edited
-$V__EDITABLE__V.on('edit', function () {
+$!!EDITABLE!!.on('edit', function () {
     console.log('Started editing element ' + this.nodeName)
 })
 
-V__FUNCTION__V()
+!!FUNCTION!!()
 

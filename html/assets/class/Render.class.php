@@ -50,14 +50,23 @@ class Render
             $request_uri = '?'.http_build_query($query_parts);
             $sep         = '&';
         }
-
+        $i=0;
+        $max= count($url_array['sort_types']);
         foreach ($url_array['sort_types'] as $key => $value) {
             $bg             = '';
+            $pill = '';
+            if($i == 0){
+                $pill = " rounded-start-pill";
+            }
+            $i++;
+            if($i ==    $max){
+                $pill = " rounded-end-pill";
+            }
 
             if ($current == $value) {
                 $bg = ' active';
             }
-            $class          = 'btn btn-primary btn-m'.$bg;
+            $class          = 'btn btn-primary btn-m'.$bg . $pill;
             $request_string = $request_uri.$sep.'sort='.$value;
 
             $html .= self::display_directory_navlinks($url_array['url'], $key, $request_string, $class, 'role="button" aria-pressed="true"')."\n";
@@ -249,15 +258,21 @@ class Render
             if ($val == $selected) {
                 $checked = ' selected';
             }
-            $html .= '<option class="filter-option" value="'.$val.'" '.$checked.'>'.$val.'</option>'."\n";
+            $html .= '<option class="filter-option text-bg-primary" value="'.$val.'" '.$checked.'>'.$val.'</option>'."\n";
         }
         if (null !== $blank) {
             if ('' == $checked) {
                 $default = ' selected';
             }
-            $default_option = '<option class="filter-option" value=""  '.$default.'>'.$blank.'</option>'."\n";
+            $default_option = '<option class="filter-option text-bg-primary" value=""  '.$default.'>'.$blank.'</option>'."\n";
         }
 
         return $default_option.$html;
+    }
+
+
+    public static function displayPlaylistButton()
+    {
+        return process_template('elements/playlist_button',[]);
     }
 }
