@@ -1,0 +1,38 @@
+<main class="container-fluid">
+    <form method="post" id="ajaxform">
+        <div style="position: fixed; z-index: 10000;    top: 75px;     left: 5px;">
+            <input type="hidden" name="submit" value="playlist">
+            %%HIDDEN_STUDIO%%
+            
+            <input type="submit" style="left: 120px;" name="submit" value="Playlist">
+        </div>
+    %%BODY%%
+    </form>
+    
+<script>
+    $("#ajaxform").submit(function (e) {
+        var postData = $(this).serializeArray();
+        var formURL = $(this).attr("action");
+        var curLoc = location;
+        $.ajax(
+            {
+                url: 'process.php',
+                type: "POST",
+                data: postData,
+                // data: jQuery.param({'submit': 'playlist', 'data': postData}) ,
+                success: function (data) {
+
+
+                    window.location = data;
+
+
+                    //data: return data from server
+                }
+
+            });
+
+    });
+
+    //  $("#ajaxform").submit();
+</script>
+</main>

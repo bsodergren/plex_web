@@ -168,3 +168,9 @@ button[type="submit"]:hover {
     background-position: left 1rem;
     background-size: 1.5em;
 }
+.playlist[type=checkbox] {
+    margin: 4px 0 0;
+    line-height: normal;
+    width: 20px;
+    height: 20px;
+}

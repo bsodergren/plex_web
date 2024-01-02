@@ -1,4 +1,15 @@
-<div class="col" style="max-width:340px;">
-    <img src="%%THUMBNAIL%%" onclick="popup('%%__URL_HOME__%%/video.php?id=%%FILE_ID%%', 'videoplayer')"
-        onerror="this.onerror=null;this.src='%%__URL_HOME__%%/images/default.jpg'" class="position-relative">
+<div class="col  categories-wrapper" style="max-width:340px;">
+    <div class="custom-control custom-checkbox image-checkbox">
+        <input type="checkbox" class="category-input custom-control-input" id="ck1a_%%FILE_ID%%" name="playlist[]" value="%%FILE_ID%%">
+        <label class="custom-control-label position-relative " for="ck1a_%%FILE_ID%%">
+            <img src="%%THUMBNAIL%%" alt="#" class="img-fluid" onerror="this.onerror=null;this.src='%%__URL_HOME__%%/images/default.jpg'">
+
+        </label>
+    </div>
+
+    <div class="d-grid gap-2">
+        <button onclick="popup('%%__URL_HOME__%%/video.php?id=%%FILE_ID%%', 'videoplayer')" class="btn btn-primary" type="button">Play Video</button>
+        <button onclick="popup('%%__URL_HOME__%%/videoinfo.php?id=%%FILE_ID%%', 'videoplayer')" class="btn btn-primary" type="button">Video Info</button>
+    </div>
+
 </div>

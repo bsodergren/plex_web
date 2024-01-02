@@ -20,7 +20,7 @@ $vidInfo                   = new VideoDisplay('videoinfo');
 $vidInfo->showVideoDetails = true;
 $body                      = $vidInfo->filelist($videoInfo);
 
-$delete_html               = ''; //    = process_template('videoinfo/delete_form', ['HIDDEN' => add_hidden('id', $id),]);
 
-template::echo('videoinfo/videoinfo', ['BODY' => $body, 'DELETE_HTML' => $delete_html]);
+// template::echo('videoinfo/videoinfo', ['BODY' => $body, 'DELETE_HTML' => $delete_html]);
+template::echo('videoinfo/videoinfo', $body);
 require __LAYOUT_FOOTER__;

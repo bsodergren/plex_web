@@ -24,6 +24,7 @@ class VideoDisplay
         if (defined('NOTHUMBNAIL')) {
             return null;
         }
+
         return __URL_HOME__.$result[0]['thumbnail'];
         //  return __URL_HOME__.'/images/thumbnail.php?id='.$row_id;
     }
@@ -49,7 +50,6 @@ class VideoDisplay
                 );
 
                 $editable      = $editableClass;
-
             }
         }
         $params['FIELD_ROW_HTML'] .= process_template(
@@ -57,6 +57,27 @@ class VideoDisplay
             [
                 'FIELD'     => $field,
                 'VALUE'     => $value,
+                'ALT_CLASS' => $class,
+                'EDITABLE'  => $editable,
+            ]
+        );
+
+        return $params;
+    }
+
+    // $this->fileRowfs($params, ucfirst($key), display_size($value),$duration, $class);
+    public function fileRowfs($params, $field, $value, $duration, $class, $id = '')
+    {
+        $videoinfo_js = '';
+        $editable     = '';
+
+        $params['FIELD_ROW_HTML'] .= process_template(
+            'videoinfo/file_dur_fs',
+            [
+                'DUR_FIELD' => 'Duration',
+                'DUR_VALUE' => $duration,
+                'FS_FIELD'  => $field,
+                'FS_VALUE'  => $value,
                 'ALT_CLASS' => $class,
                 'EDITABLE'  => $editable,
             ]
@@ -75,7 +96,7 @@ class VideoDisplay
         $row_filename                 = $fileInfoArray['filename'];
         $row_fullpath                 = $fileInfoArray['fullpath'];
         $row_video_key                = $fileInfoArray['video_key'];
-
+        $infoParams                   = null;
         if (isset($fileInfoArray['rownum'])) {
             $result_number = $fileInfoArray['rownum'];
         }
@@ -115,22 +136,24 @@ class VideoDisplay
                 // case 'favorite':
                 case 'library':
                 case 'title':
-                    $value                        = str_replace(__PLEX_LIBRARY__.'/', '', $value);
-                    $params                       = $this->fileRow($params, ucfirst($key), $value, $class, $key);
+                    $value    = str_replace(__PLEX_LIBRARY__.'/', '', $value);
+                    $params   = $this->fileRow($params, ucfirst($key), $value, $class, $key);
                     ++$x;
 
                     break;
 
                 case 'filename':
+                    $filename = $value;
+                    break;
                 case 'fullpath':
-                    $value                        = str_replace(__PLEX_LIBRARY__.'/', '', $value);
-                    $params                       = $this->fileRow($params, ucfirst($key), $value, $class);
+                    $value    = str_replace(__PLEX_LIBRARY__.'/', '', $value).\DIRECTORY_SEPARATOR.$filename;
+                    $params   = $this->fileRow($params, ucfirst($key), $value, $class);
                     ++$x;
 
                     break;
 
                 case 'added':
-                    $params                       = $this->fileRow($params, ucfirst($key), $value, $class);
+                    $params   = $this->fileRow($params, ucfirst($key), $value, $class);
                     ++$x;
 
                     break;
@@ -148,16 +171,14 @@ class VideoDisplay
 
                     break;
 
-                case 'duration':
-                    $params                       = $this->fileRow($params, 'Duration', videoDuration($value), $class);
-                    ++$x;
-
-                    break;
-
                 case 'studio':
                 case 'substudio':
+
                     if ('' != $value || defined('NONAVBAR')) {
+
                         if (!defined('NONAVBAR')) {
+                            $table_body_html['HIDDEN_STUDIO'] .= add_hidden(strtolower($key), $value);
+
                             $value = keyword_list($key, $value);
 
                             // $value = process_template(
@@ -169,15 +190,15 @@ class VideoDisplay
                             //     ]
                             // );
                         }
-
                         $params = $this->fileRow($params, ucfirst($key), $value, $class, $key);
                         ++$x;
                     }
 
                     break;
+                case 'genre':
+                    //  $params['HIDDEN_STUDIO_NAME']          .= add_hidden(strtolower($key), $value);
 
                 case 'artist':
-                case 'genre':
                 case 'keyword':
                     if ('' != $value || defined('NONAVBAR')) {
                         if (!defined('NONAVBAR')) {
@@ -188,28 +209,28 @@ class VideoDisplay
                     }
 
                     break;
+                case 'duration':
+                    $duration = videoDuration($value);
+                    break;
 
                 case 'filesize':
-                    $params                       = $this->fileRow($params, ucfirst($key), display_size($value), $class);
+                    $params   = $this->fileRowfs($params, ucfirst($key), display_size($value), $duration, $class);
                     ++$x;
 
                     break;
 
-                    // case 'video_info':
-                    //     // if (defined('NONAVBAR')) {
-                    //     foreach ($value as $infokey => $fileInfoValue) {
-                    //         //    $class = ($x % 2 == 0) ? 'bg-info' : '';
-                    //         //    $value_array = [];
-                    //         switch ($infokey) {
                 case 'bit_rate':
-                    $infoParams[strtoupper($key)] = byte_convert($value);
-
+                    if ('' != $value) {
+                        $infoParams[strtoupper($key)] = byte_convert($value);
+                    }
                     break;
 
                 case 'width':
                 case 'height':
                 case 'format':
-                    $infoParams[strtoupper($key)] = $value;
+                    if ('' != $value) {
+                        $infoParams[strtoupper($key)] = $value;
+                    }
 
                     break;
                     //     }
@@ -222,24 +243,24 @@ class VideoDisplay
             // ++$x;
         } // end foreach
         if (true == $this->showVideoDetails) {
-            $params = $this->fileRow($params, '', process_template(
-                $this->template_base.'/file_videoinfo',
-                $infoParams
-            ), $class);
+            if (is_array($infoParams)) {
+                $params = $this->fileRow($params, '', process_template(
+                    $this->template_base.'/file_videoinfo',
+                    $infoParams
+                ), $class);
+            }
         }
-      
+// dd($params['HIDDEN_STUDIO']);
         $table_body_html['filecards'] = process_template($this->template_base.'/file', $params);
 
         return $table_body_html;
     }
 
-    
-
     public function fileList($results, $option = '', $page_array = [])
     {
         global $db;
         global $hidden_fields;
-        $table_html      = '';
+        $table_html      = [];
         $redirect_string = '';
         $total_files     = '';
         $js_html         = '';
@@ -267,7 +288,8 @@ class VideoDisplay
             $table_body = $this->fileInfo($row, $total_files);
 
             $js_html .= $table_body['js'];
-            $table_html .= process_template($this->template_base.'/file_form_wrapper', [
+            $table_html['HIDDEN_STUDIO'] =$table_body['HIDDEN_STUDIO'];
+            $table_html['BODY'] .= process_template($this->template_base.'/file_form_wrapper', [
                 'FILE_ID'         => $row_id,
                 'FILE_TABLE'      => $table_body['filecards'],
                 'REDIRECT_STRING' => $redirect_string,

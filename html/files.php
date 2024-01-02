@@ -34,7 +34,8 @@ $page_array              = [
 $vidInfo                 = new VideoDisplay('filelist');
 $body                    = $vidInfo->filelist($results, '', $page_array);
 
-template::echo('base/page', ['BODY' => $body]);
+template::echo('filelist/page', $body);
+// template::echo('filelist/page', ['BODY' => $body]);
 
 // require __LAYOUT_FOOTER__;
 

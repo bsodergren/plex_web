@@ -189,7 +189,9 @@ class Template
         }
 
         if (is_array($replacement_array)) {
+            
             foreach ($replacement_array as $key => $value) {
+
                 // $value = "<!-- $key --> \n".$value;
                 $key = $s_delim.strtoupper($key).$e_delim;
                 if (null != $value) {
