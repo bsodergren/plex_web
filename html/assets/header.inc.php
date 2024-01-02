@@ -26,16 +26,25 @@ foreach ($include_array as $required_file) {
 
 $template       = new Template();
 
-if (!isset($_SESSION['itemsPerPage'])) {
-    $_SESSION['itemsPerPage'] = 50;
-}
+foreach (SESSION_VARS as $key => $default) {
+    if (!isset($_SESSION[$key])) {
+        $_SESSION[$key] = $default;
+    }
+    if (isset($_REQUEST[$key])) {
+        $_SESSION[$key] = $_REQUEST[$key];
+        if ('direction' == $key) {
+            if ('ASC' == $_REQUEST['direction']) {
+                $_SESSION['direction'] = 'DESC';
+            }
 
-if (isset($_REQUEST['itemsPerPage'])) {
-    $_SESSION['itemsPerPage'] = $_REQUEST['itemsPerPage'];
-}
-unset($_REQUEST['itemsPerPage']);
+            if ('DESC' == $_REQUEST['direction']) {
+                $_SESSION['direction'] = 'ASC';
+            }
+        }
+    }
+ }
 
-// $uri['itemsPerPage'] = $_SESSION['itemsPerPage'];
+ unset($_REQUEST['itemsPerPage']);
 
 if (!isset($_REQUEST['current'])) {
     $_REQUEST['current'] = '1';
@@ -45,13 +54,6 @@ if (!isset($_REQUEST['current'])) {
 
 $currentPage    = $_REQUEST['current'];
 $uri['current'] = $currentPage;
-if (!isset($_SESSION['library'])) {
-    $_SESSION['library'] = 'Pornhub';
-}
-
-if (isset($_REQUEST['library'])) {
-    $_SESSION['library'] = $_REQUEST['library'];
-}
 
 $tag_array      = ['genre', 'artist', 'keyword'];
 
@@ -89,12 +91,7 @@ if ('Studios' == $in_directory) {
 */
 
 $request_key    = '';
-if (!isset($_SESSION['sort'])) {
-    $_SESSION['sort'] = 'm.title';
-}
-if (isset($_REQUEST['sort'])) {
-    $_SESSION['sort'] = $_REQUEST['sort'];
-}
+
 if ('' != $_SERVER['QUERY_STRING']) {
     $query_string            = '&'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
     $request_string_query    = '?'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
@@ -105,20 +102,6 @@ if ('' != $_SERVER['QUERY_STRING']) {
 }
 
 $urlPattern     = $_SERVER['PHP_SELF'].'?current=(:num)'.$query_string_no_current;
-
-if (!isset($_SESSION['direction'])) {
-    $_SESSION['direction'] = 'ASC';
-}
-
-if (isset($_REQUEST['direction'])) {
-    if ('ASC' == $_REQUEST['direction']) {
-        $_SESSION['direction'] = 'DESC';
-    }
-
-    if ('DESC' == $_REQUEST['direction']) {
-        $_SESSION['direction'] = 'ASC';
-    }
-}
 
 $sort_type_map  = [
     'sort_types' => [

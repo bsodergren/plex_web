@@ -1,27 +1,24 @@
 <div style="width:320px" class="border p-2 categories-wrapper ">
     <div class="flex-shrink-0">
         <div class="custom-control custom-checkbox image-checkbox">
-            <input type="checkbox" class="category-input custom-control-input" id="ck1a_%%ROW_ID%%" name="playlist[]"
-                value="%%ROW_ID%%">
+            <input type="checkbox" class="category-input custom-control-input" id="ck1a_%%ROW_ID%%" name="playlist[]" value="%%ROW_ID%%">
             <label class="custom-control-label position-relative " for="ck1a_%%ROW_ID%%">
-                <img src="%%THUMBNAIL%%" alt="#" class="img-fluid"
-                    onerror="this.onerror=null;this.src='%%__URL_HOME__%%/images/default.jpg'">
+                <img src="%%THUMBNAIL%%" alt="#" class="img-fluid" onerror="this.onerror=null;this.src='%%__URL_HOME__%%/images/default.jpg'">
                 <div class="dropup">
-                    <span
-                        class=" top-0 start-100 translate-middle dropdown-toggle p-2 bg-danger border border-light rounded-circle"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class=" top-0 start-100 translate-middle dropdown-toggle p-2 bg-danger border border-light rounded-circle" data-bs-toggle="dropdown" aria-expanded="false">
                         <!-- <span class="visually-hidden">New alerts</span> -->
                     </span>
                     <ul class="dropdown-menu">
                         %%PLAYLIST_LINKS%%
                     </ul>
                 </div>
-                <span
-                    class=" position-absolute  top-0 start-0  p-2 bg-dark border border-light rounded-circle">%%ROWNUM%%
+                <span class=" position-absolute  top-0 start-0  p-2 bg-dark border border-light rounded-circle">%%ROWNUM%%
                     of %%ROW_TOTAL%%</span>
+                <!-- <button
+                    class=" position-absolute  top-0 end-0  p-2 bg-info border border-light rounded-circle" name="delete_%%ROW_ID%%" value="%%ROW_ID%%">Delete</button> -->
+
             </label>
-            <div onclick="popup('%%__URL_HOME__%%/video.php?id=%%ROW_ID%%', 'videoplayer')"
-                class="videoLink videoBadge badge">Video</div>
+            <div onclick="popup('%%__URL_HOME__%%/video.php?id=%%ROW_ID%%', 'videoplayer')" class="videoLink videoBadge badge">Video</div>
         </div>
         <div class="container text-start" onclick="popup('%%__URL_HOME__%%/videoinfo.php?id=%%ROW_ID%%', 'videoinfo')">
             %%VIDEO_DATA%%

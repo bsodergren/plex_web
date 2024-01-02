@@ -109,6 +109,15 @@ define('__TEMPLATE_CONSTANTS__', [
     '__LAYOUT_URL__',
     '__URL_HOME__',
 ]);
+
+define('SESSION_VARS',
+    [
+        'itemsPerPage' => '100',
+        'library'      => 'Studios',
+        'sort'         => 'm.title',
+        'direction'    => 'ASC',
+    ]);
+
 // define('NOTHUMBNAIL', true);
 
 require_once __ROOT_DIRECTORY__.'/src/Config/paths.php';
