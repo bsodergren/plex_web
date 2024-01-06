@@ -3,14 +3,13 @@
  * plex web viewer
  */
 
-use Camoo\Config\Config;
 use Dotenv\Dotenv;
+use Plex\EnvLoader;
 use Tracy\Debugger;
+use Camoo\Config\Config;
 
 session_start();
 
-// HOME=D:\\development\\plex_web
-// APP_PATH D:\\development\\plex_web
 define('__ROOT_DIRECTORY__', dirname(realpath($_SERVER['CONTEXT_DOCUMENT_ROOT']), 1));
 
 define('__COMPOSER_LIB__', __ROOT_DIRECTORY__.'/vendor');
@@ -31,12 +30,8 @@ require_once __COMPOSER_LIB__.'/autoload.php';
 
 $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
-$dotenv = Dotenv::createImmutable($config['path']['mediatag']);
-$dotenv->load();
-if (function_exists('apache_setenv')) {
-    apache_setenv('no-gzip', '1');
-    apache_setenv('dont-vary', '1');
-}
+EnvLoader::LoadEnv($config['path']['mediatag'])->load();
+
 
 if (!defined('APP_AUTHENTICATION')) {
     define('APP_AUTHENTICATION', false);
@@ -120,7 +115,7 @@ define('SESSION_VARS',
     ]);
 
 // define('__SHOW_THUMBNAILS__', false);
-
+dump($_ENV);
 require_once __ROOT_DIRECTORY__.'/src/Config/paths.php';
 
 require_once __PHP_ASSETS_DIR__.'/header.inc.php';
