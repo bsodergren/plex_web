@@ -12,7 +12,7 @@ function !!FUNCTION!!() {
                     data: jQuery.param({
                         submit: 'update',
                         !!ID_NAME!!: data.content,
-                        video_key: 'V!!IDEO_KEY!!'
+                        video_key: '!!VIDEO_KEY!!'
                     })
             })
     console.log('   * The text was changed -> ' + data.content)

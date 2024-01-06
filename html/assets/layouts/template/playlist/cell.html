@@ -1,15 +1,10 @@
 <div style="width:320px" class="border p-2 categories-wrapper ">
     <div class="flex-shrink-0">
         <div class="custom-control custom-checkbox image-checkbox">
-            <input type="checkbox" class="category-input custom-control-input" id="prune_playlist%%PLAYLIST_VIDEO_ID%%"
-                name="prune_playlist[]" value="%%PLAYLIST_VIDEO_ID%%">
-            <label class="custom-control-label" for="prune_playlist%%PLAYLIST_VIDEO_ID%%">
-                <img src="%%THUMBNAIL%%" alt="#" class="img-fluid"
-                    onerror="this.onerror=null;this.src='%%__URL_HOME__%%/images/default.jpg'">
-            </label>
+            <input type="checkbox" class="category-input custom-control-input" id="prune_playlist%%PLAYLIST_VIDEO_ID%%" name="prune_playlist[]" value="%%PLAYLIST_VIDEO_ID%%">
+            %%THUMBNAIL%%
         </div>
-        <div class="container text-bg-primary text-start text-wrap "
-            onclick="popup('%%__URL_HOME__%%/videoinfo.php?id=%%VIDEO_ID%%', 'videoinfo')">
+        <div class="container text-bg-primary text-start text-wrap " onclick="popup('%%__URL_HOME__%%/videoinfo.php?id=%%VIDEO_ID%%', 'videoinfo')">
             %%VID_NUMBER%%
             %%TITLE%%
         </div>

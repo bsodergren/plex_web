@@ -4,12 +4,15 @@
             <input type="hidden" name="submit" value="playlist">
             %%HIDDEN_STUDIO%%
 
-      %%PLAYLIST_ADD_BUTTON%%
+            %%PLAYLIST_ADD_BUTTON%%
+            %%PLAYLIST_ADD_ALL_BUTTON%%
+
         </div>
         %%BODY%%
     </form>
 
     <script>
+       
         $("#ajaxform").submit(function (e) {
             var postData = $(this).serializeArray();
             var formURL = $(this).attr("action");

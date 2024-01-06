@@ -65,14 +65,32 @@ class FileListing
             $uri['direction']           = $_SESSION['direction'];
             $this->request['direction'] = $_SESSION['direction'];
         }
+        if (isset($this->request['alpha'])) {
+            $key   = $this->request['alpha'];
+            $field = $this->request['sort'];
+            $query = PlexSql::getAlphaKey($field, $key);
+            if (null === $query) {
+                unset($this->request['alpha']);
+            } else {
+                if (is_array($query)) {
+                    $this->db->Where($query[0], $query[1], $query[2]);
+                } else {
+                    $this->db->Where($query);
+                }
+            }
+
+            if (isset($this->request['alpha'])) {
+                $uri['alpha'] = $this->request['alpha'];
+            }
+        }
 
         if (isset($uri)) {
             $sql_studio = '';
             $res_array  = uri_SQLQuery($uri);
-
             if (array_key_exists('sort', $res_array)) {
                 $order_sort = $res_array['sort'];
             }
+
             if (array_key_exists('sql', $res_array)) {
                 $sql_studio = $res_array['sql'];
             }
@@ -90,7 +108,7 @@ class FileListing
             }
         }
 
-        $pageObj   = new pageinate($where, $this->currentpage, $this->urlPattern);
+        $pageObj   = new pageinate(false, $this->currentpage, $this->urlPattern);
 
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
@@ -101,9 +119,10 @@ class FileListing
                     $value = null;
                     $comp  = ' IS';
                 }
-                // dump(['m.'.$tag, $value, $comp]);
+                //  dump(['m.'.$tag, $value, $comp]);
 
-                $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$tag, $value, $comp);
+                $this->db->where('m.'.$tag, $value, $comp);
+                $this->db->orwhere('c.'.$tag, $value, $comp);
             }
         }
 
@@ -116,16 +135,7 @@ class FileListing
         return [$results, $pageObj, $uri];
     }
 
-    public function getLibrary()
-    {
-        global $_SESSION;
-        if ('All' != $_SESSION['library']) {
-            return " AND m.library = '".$_SESSION['library']."'  ";
-        }
-
-        return null;
-    }
-
+ 
     public function getVideoDetails($id)
     {
         $sql = 'SELECT ';
@@ -135,14 +145,15 @@ class FileListing
         $sql .= 'COALESCE (c.studio,m.studio) as studio, ';
         $sql .= 'COALESCE (c.substudio,m.substudio) as substudio, ';
         $sql .= 'COALESCE (c.keyword,m.keyword) as keyword, ';
-        if (null === $this->getLibrary()) {
+        if (null === PlexSql::getLibrary()) {
             $sql .= 'm.library as library, ';
         }
         $sql .= 'i.format, i.bit_rate, i.width, i.height, ';
         $sql .= 'f.filename, f.thumbnail, f.fullpath, f.duration, ';
         $sql .= 'f.filesize, f.added, f.id, f.video_key FROM metatags_video_file f ';
-        $sql .= 'INNER JOIN metatags_video_metadata m on f.video_key=m.video_key '.$this->getLibrary();
-        $sql .= 'LEFT OUTER JOIN metatags_video_info i on f.video_key=i.video_key LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
+        $sql .= 'INNER JOIN metatags_video_metadata m on f.video_key=m.video_key '.PlexSql::getLibrary();
+        $sql .= 'LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
+        $sql .= 'LEFT OUTER JOIN metatags_video_info i on f.video_key=i.video_key ';
         $sql .= "WHERE   f.id = '".$id."'";
 
         return $this->db->query($sql);
@@ -154,24 +165,26 @@ class FileListing
     {
         // SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( ) AS T1, (SELECT @rownum := 0) AS r
 
-        //$fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
-        //$fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
+        // $fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
+        // $fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
 
-        $fieldArray = [ 'COALESCE (c.title,m.title) as title ',
-         'COALESCE (c.artist,m.artist) as artist ',
-         'COALESCE (c.genre,m.genre) as genre ',
-         'COALESCE (c.studio,m.studio) as studio ',
-         'COALESCE (c.substudio,m.substudio) as substudio ',
-         'COALESCE (c.keyword,m.keyword) as keyword '];
+        $fieldArray = ['COALESCE (c.title,m.title) as title ',
+            'COALESCE (c.artist,m.artist) as artist ',
+            'COALESCE (c.genre,m.genre) as genre ',
+            'COALESCE (c.studio,m.studio) as studio ',
+            'COALESCE (c.substudio,m.substudio) as substudio ',
+            'COALESCE (c.keyword,m.keyword) as keyword '];
 
         $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'f.video_key=m.video_key', 'INNER');
-        $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'f.video_key=i.video_key', 'LEFT OUTER');
 
         $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'f.video_key=c.video_key', 'LEFT');
-        if (null !== $this->getLibrary()) {
+        $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'f.video_key=i.video_key', 'LEFT OUTER');
+
+        if (null !== PlexSql::getLibrary()) {
             $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', $_SESSION['library']);
-           
         }
+
+        // if()
         // $fieldArray[] = 'm.library';
 
         $fieldArray = array_merge($fieldArray, [
@@ -183,11 +196,11 @@ class FileListing
             $limit,
             $fieldArray
         );
-//dd($joinQuery);
+        //   dd($joinQuery);
         $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
         $results    = $this->db->rawQuery($query);
 
-        // dd($this->db->getlastquery());
+        //  dump($this->db->getlastquery());
         return $results;
     }
 }

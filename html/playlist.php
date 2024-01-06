@@ -10,7 +10,6 @@ $process         = new ProcessForms($_REQUEST);
 if (isset($_REQUEST['playlist_id'])) {
     $playlist_id = $_REQUEST['playlist_id'];
 }
-
 $table_body_html = '';
 $main_links      = '';
 
@@ -59,12 +58,24 @@ if (null === $playlist_id) {
     $total           = count($results);
 
     for ($i = 0; $i < count($results); ++$i) {
+        $thumbnail = '';
+        if (__SHOW_THUMBNAILS__ == true) {
+            $thumbnail = process_template(
+               'playlist/thumbnail',
+                [
+                    'THUMBNAIL'         => $VideoDisplay->fileThumbnail($results[$i]['id'], 'alt="#" class="img-fluid" '),
+                    'VIDEO_ID'          => $results[$i]['id'],
+                    'PLAYLIST_VIDEO_ID' => $results[$i]['playlist_video_id'],
+                ]
+            );
+        }
+
         $cell_html .= process_template(
             'playlist/cell',
             [
                 // 'VID_NUMBER' => $i +1,
                 'TITLE'             => $results[$i]['title'],
-                'THUMBNAIL'         => $VideoDisplay->fileThumbnail($results[$i]['id'], 'alt="#" class="img-fluid" '),
+                'THUMBNAIL'         => $thumbnail,
                 'VIDEO_ID'          => $results[$i]['id'],
                 'PLAYLIST_VIDEO_ID' => $results[$i]['playlist_video_id'],
             ]

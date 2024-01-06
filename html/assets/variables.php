@@ -55,6 +55,14 @@ const __DISPLAY_PAGES__ = [
         'pages' => 0,
     ],
 ];
+$tag_types             = [
+    'studio',
+    'substudio',
+    'artist',
+    'title',
+    'genre',
+    
+];
 $sort_types             = [
     'studio',
     'substudio',
@@ -111,24 +119,24 @@ $navigation_link_array  = [
         'secure' => false,
         'js'     => false,
     ],
-    'artistEditor' => [
-        'url'    => 'Config/artistEditor.php',
-        'text'   => 'Config artists',
-        'secure' => false,
-        'js'     => false,
-    ],
-    'studioEditor' => [
-        'url'    => 'Config/studioEditor.php',
-        'text'   => 'Config Studio',
-        'secure' => false,
-        'js'     => false,
-    ],
-    'genreEditor'  => [
-        'url'    => 'Config/genreEditor.php',
-        'text'   => 'Config Genre',
-        'secure' => false,
-        'js'     => false,
-    ],
+    // 'artistEditor' => [
+    //     'url'    => 'Config/artistEditor.php',
+    //     'text'   => 'Config artists',
+    //     'secure' => false,
+    //     'js'     => false,
+    // ],
+    // 'studioEditor' => [
+    //     'url'    => 'Config/studioEditor.php',
+    //     'text'   => 'Config Studio',
+    //     'secure' => false,
+    //     'js'     => false,
+    // ],
+    // 'genreEditor'  => [
+    //     'url'    => 'Config/genreEditor.php',
+    //     'text'   => 'Config Genre',
+    //     'secure' => false,
+    //     'js'     => false,
+    // ],
 
     'search'       => [
         'url'    => 'search.php',

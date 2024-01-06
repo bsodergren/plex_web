@@ -116,9 +116,10 @@ define('SESSION_VARS',
         'library'      => 'Studios',
         'sort'         => 'm.title',
         'direction'    => 'ASC',
+        // 'alpha' => '',
     ]);
 
-// define('NOTHUMBNAIL', true);
+// define('__SHOW_THUMBNAILS__', false);
 
 require_once __ROOT_DIRECTORY__.'/src/Config/paths.php';
 

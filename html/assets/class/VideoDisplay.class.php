@@ -272,7 +272,6 @@ class VideoDisplay
         if (isset($page_array['redirect_string'])) {
             $redirect_string = $page_array['redirect_string'];
         }
-
         foreach ($results as $id => $row) {
             $row_id     = $row['id'];
             $videoInfo  = [];

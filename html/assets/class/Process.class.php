@@ -165,6 +165,7 @@ class ProcessForms
     public function playlist()
     {
         echo $this->playlist->createPlaylist();
+        exit;
     }
 
     public function myHeader($redirect = '', $timeout = 0)

@@ -36,9 +36,9 @@ if (count($results) > 0) {
 
     $body    = $vidInfo->filelist($fileresults);
 } else {
-    $body = 'No duplicates Found';
+    $body ['BODY'] = 'No duplicates Found';
 }
-template::echo('dupe/main', ['BODY' => $body]);
+template::echo('dupe/main', $body);
 // Template::echo("artist/main",$PARAMS);
 $pageObj                        = true;
 

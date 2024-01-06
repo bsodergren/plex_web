@@ -50,7 +50,6 @@ $genre_array = [];
 logger('qyefasd', $sql);
 $result      = $db->query($sql);
 
-$all_url     = 'files.php?'.$request_key.'allfiles=1';
 
 $rows        = count($result);
 

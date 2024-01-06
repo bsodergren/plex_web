@@ -98,7 +98,7 @@ class Template
 
     public static function render()
     {
-        global $db,$pageObj,$url_array;
+        global $db,$pageObj,$url_array,$studio_url;
         $output           = self::$RenderHTML;
 
         self::$RenderHTML = '';

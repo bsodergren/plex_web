@@ -21,8 +21,13 @@ if ('home.php' != basename($_SERVER['HTTP_REFERER'])) {
     $referer_url = $_SERVER['HTTP_REFERER'];
 }
 
-$filelist_url            = 'files.php'.$request_key;
-// define('BREADCRUMB', ['home' => "home.php", 'genre' => 'genre.php?allfiles=1', $genre => '',"file list"=>$filelist_url]);
+Render::$CrubURL['list']            = 'files.php';//.$request_key;
+$res = count($results);
+if($res == 0){
+    $redirect_string = urlQuerystring($redirect_string, 'alpha');
+    echo JavaRefresh($redirect_string, 0);
+    exit;
+}
 
 require __LAYOUT_HEADER__;
 

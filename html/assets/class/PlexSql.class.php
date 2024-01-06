@@ -22,6 +22,30 @@ class PlexSql extends MysqliDb
         $this->db = $db;
     }
 
+    public static function getAlphaKey($field, $key)
+    {
+        global $tag_types;
+        if($field === null){
+            $field = 'm.title';
+        }
+        $tag_string = implode(',', $tag_types);
+        $f          = explode('.', $field);
+        if (str_contains($tag_string, $f[1])) {
+            if ('All' == $key) {
+                return null;
+            }
+            if ('#' == $key) {
+                return $field." REGEXP '^[0-9]'";
+            }
+            if ('None' == $key) {
+                return $field.' IS NULL';
+            }
+            return $field." LIKE '".$key."%' ";
+        }
+
+        return null;
+    }
+
     public static function getFilterList($field)
     {
         global $_SESSION,$db;
@@ -85,7 +109,7 @@ class PlexSql extends MysqliDb
     //     dd($query);
     //     return $db->query($query);
     // }
-    public function getLibrary()
+    public static function getLibrary()
     {
         global $_SESSION;
         if ('All' != $_SESSION['library']) {
@@ -104,7 +128,7 @@ class PlexSql extends MysqliDb
         $this->db->where('f.'.$column, $value);
         $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'f.video_key=m.video_key', 'INNER');
         $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'f.video_key=i.video_key', 'LEFT OUTER');
-        if (null !== $this->getLibrary()) {
+        if (null !== self::getLibrary()) {
             $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', $_SESSION['library']);
         }
         //        $this->db->where('f.'.$column, $value);
@@ -126,26 +150,23 @@ class PlexSql extends MysqliDb
         // return $this->db->getlastquery();
         return $results;
     }
+
     public function getArtistsList()
     {
-        $res = $this->getArtists();
-        foreach($res as $k => $v)
-        {
+        $res        = $this->getArtists();
+        foreach ($res as $k => $v) {
             $array[] = $v['artist'];
-            
         }
-        $namesStr = implode(",",$array);
-        $namesArray = explode(",",$namesStr);
-        $namesArray =array_unique($namesArray);
+        $namesStr   = implode(',', $array);
+        $namesArray = explode(',', $namesStr);
+        $namesArray = array_unique($namesArray);
         sort($namesArray);
-        $namesStr = implode(",",$namesArray);
-        $namesStr = '"'. implode('","', $namesArray) .'"';
+        $namesStr   = implode(',', $namesArray);
+        $namesStr   = '"'.implode('","', $namesArray).'"';
 
-        return trim(str_replace('" ','"',$namesStr));
-        
-
-
+        return trim(str_replace('" ', '"', $namesStr));
     }
+
     public function getArtists()
     {
         global $db;
@@ -171,7 +192,6 @@ class PlexSql extends MysqliDb
 
         $this->_query = 'SELECT '.implode(' ', $this->_queryOptions).' '.
             $column.' FROM '.$this->_tableName;
-
         $stmt         = $this->_buildQuery($numRows);
 
         if ($this->isSubQuery) {

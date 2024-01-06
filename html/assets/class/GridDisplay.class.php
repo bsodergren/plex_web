@@ -65,13 +65,25 @@ class GridDisplay extends VideoDisplay
                 );
                 // }
             }
+            $thumbnail = '';
+            if (__SHOW_THUMBNAILS__ == true) {
+             
 
+                $thumbnail = process_template(
+                'grid/thumbnail',
+                [ 'PLAYLIST_LINKS' => str_replace('VIDEO_ID', $results[$i]['id'], $playlist_html),
+                'THUMBNAIL'      => $this->fileThumbnail($results[$i]['id']) ,
+                'ROW_ID'         => $results[$i]['id'],
+                'VIDEO_DATA'     => $videoInfo,
+                'ROWNUM'         => $results[$i]['rownum'],
+                'ROW_TOTAL'      => $totalRecords,]);
+            }
             // THUMB_EXTRA = ' alt="#" class="img-fluid" '
             $cell_html .= process_template(
                 'grid/cell',
                 [
                     'PLAYLIST_LINKS' => str_replace('VIDEO_ID', $results[$i]['id'], $playlist_html),
-                    'THUMBNAIL'      => $this->fileThumbnail($results[$i]['id']),
+                    'THUMBNAIL'      =>$thumbnail ,
                     'ROW_ID'         => $results[$i]['id'],
                     'VIDEO_DATA'     => $videoInfo,
                     'ROWNUM'         => $results[$i]['rownum'],
@@ -87,6 +99,7 @@ class GridDisplay extends VideoDisplay
             'ROWS_HTML'          => $row_html,
             'INFO_NAME'          => $sort_type_map['map'][$_REQUEST['sort']],
             'PLAYLIST_ADD_BUTTON' => Render::displayPlaylistButton(),
+            'PLAYLIST_ADD_ALL_BUTTON'=> Render::displayPlaylistAddAllButton(),
         ]);
 
         return $table_body_html;

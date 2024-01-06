@@ -3,6 +3,9 @@
  * plex web viewer
  */
 
+/**
+ * plex web viewer.
+ */
 function videoDuration($duration)
 {
     $seconds = round($duration / 1000);
@@ -74,10 +77,8 @@ function proccess_settings($redirect_url = '')
         }
     }
 
-    $form->printr($db->getLastError());
-    // show a success message if no errors
-    if ($form->ok()) {
-        return $form->redirect($redirect_url);
+    if ($form->ok() === true) {
+         $form->redirect($redirect_url);
     }
 } // end proccess_settings()
 
@@ -132,17 +133,40 @@ function uri_SQLQuery($request_array)
     $uri_query = [];
     foreach ($request_array as $key => $value) {
         if ('sort' == $key) {
+            $where_field = $value;
             continue;
         }
 
         if ('direction' == $key) {
             continue;
         }
+        if ('genre' == $key ||
+        'keyword' == $key ||
+        'artist' == $key  ) {
+            $uri_array[] = $key." like '%{$value}%'";
+//            dd($key,$value);
+            continue;
+        }
 
         if ('current' == $key) {
             continue;
         }
+        if ('alpha' == $key) {
+            $query = PlexSql::getAlphaKey($request_array['sort'], $value);
+            if (null === $query) {
+                unset($request_array['alpha']);
+            } else {
+                $uri_array[] = $query;
+            }
 
+            //            if (isset($this->request['alpha'])) {
+            //      $uri['alpha'] = $this->request['alpha'];
+            //   }
+            // if ('' != $value) {
+            //     $uri_array[] = $where_field." like '%{$value}'";
+            // }
+            continue;
+        }
         $string_value = $value;
         if (is_array($value)) {
             $string_value = $value[0];
@@ -171,20 +195,42 @@ function uri_SQLQuery($request_array)
     return $uri_query;
 } // end uri_SQLQuery()
 
-function urlQuerystring($input_string, $exclude = '')
+function urlQuerystring($input_string, $exclude = '', $query = false)
 {
     $query_string = '';
 
     if ('' != $input_string) {
         parse_str($input_string, $query_parts);
-
-        if (array_key_exists($exclude, $query_parts)) {
-            unset($query_parts[$exclude]);
+        foreach ($query_parts as $field => $value) {
+            if ('' != $value) {
+                $parts[$field] = $value;
+            }
         }
-        $query_string = uri_String($query_parts, '');
+        if (is_array($exclude)) {
+            foreach ($exclude as $x) {
+                if (array_key_exists($x, $parts)) {
+                    unset($parts[$x]);
+                }
+            }
+        } else {
+            if (array_key_exists($exclude, $parts)) {
+                unset($parts[$exclude]);
+            }
+        }
+        if (false === $query) {
+            $query_string = uri_String($parts, '');
+        } else {
+            $parts        = array_reverse($parts);
+            array_pop($parts);
+            //   dd($query_parts);
+
+            $query_string = uri_SQLQuery($parts);
+            // dd($query_string);
+
+        }
     }
 
-    return $query_string;
+    return str_replace('_php', '.php', $query_string);
 }
 
 function uri_String($request_array, $start = '?')

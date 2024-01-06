@@ -85,6 +85,7 @@ class RoboLoader
             $html .= '}, '.$timeout.');';
         }
         $html .= "\n".'</script>';
+        logger("Looking for redirect", $html);
 
         echo $html;
     }

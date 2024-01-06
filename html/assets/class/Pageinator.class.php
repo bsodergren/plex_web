@@ -28,7 +28,6 @@ class pageinate extends Paginator
         $this->urlPattern   = $urlPattern;
 
         $this->currentPage  = $currentPage;
-
         if (false != $query) {
             if (str_contains($query, 'AND')) {
                 $findArr = explode('AND', $query);
@@ -51,6 +50,13 @@ class pageinate extends Paginator
                     $value          = str_replace('NULL', '', $value);
                     $db->where($field, null, 'IS '.$value);
                 }
+            }
+        } else {
+            $query              = urlQuerystring($urlPattern, ['current', 'allfiles'], true);
+            if (count($query) > 0) {
+                $q = trim(str_replace('m.', '', $query['sql']));
+                $db->where($q);
+    
             }
         }
 

@@ -59,38 +59,8 @@ if (defined('GRID_VIEW')) {
 Template::echo('base/header/header', $params);
 
 if (!defined('NONAVBAR')) {
-    $crumbs['Home']        = 'home.php';
-    $crumbs[$in_directory] = '';
-
-    if (array_key_exists('studio', $_REQUEST)) {
-        $crumbs[$_REQUEST['studio']] = '';
-    }
-    if (array_key_exists('substudio', $_REQUEST)) {
-        $crumbs[$_REQUEST['substudio']] = '';
-    }
-    if (array_key_exists('prev', $_REQUEST)) {
-        $crumbs[$_REQUEST['prev']] = $studio_url;
-    }
-
-    if (isset($genre_url)) {
-        $crumbs['Genre'] = $genre_url;
-    }
-
-    //    $crumbs['Grid'] = "";
-    if (isset($gridview_url)) {
-        $crumbs['Grid'] = $gridview_url;
-    }
-
-    // $crumbs['List'] = "";
-    if (isset($filelist_url)) {
-        $crumbs['List'] = $filelist_url;
-    }
-
-    // $crumbs['All'] = "";
-    if (isset($all_url)) {
-        $crumbs['All'] = $all_url;
-    }
-
+   
+    $crumbs = Render::createBreadcrumbs();
     define('BREADCRUMB', $crumbs);
 
     require __LAYOUT_NAVBAR__;

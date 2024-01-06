@@ -45,6 +45,11 @@ foreach (SESSION_VARS as $key => $default) {
  }
 
  unset($_REQUEST['itemsPerPage']);
+ if (isset($_REQUEST['alpha'])) {
+   // $_REQUEST['alpha'] = '1';
+// } else {
+    $uri['alpha'] = $_REQUEST['alpha'];
+}
 
 if (!isset($_REQUEST['current'])) {
     $_REQUEST['current'] = '1';

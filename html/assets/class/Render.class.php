@@ -13,6 +13,7 @@ class Render
     public $_REQUEST;
     public $navigation_link_array;
     public static $CSS_THEMES = [];
+    public static $CrubURL    = [];
 
     public function __construct($navigation_link_array)
     {
@@ -26,6 +27,93 @@ class Render
         $this->_SERVER               = $_SERVER;
     }
 
+    public static function display_alphaSort($offset = 0, $len = 13)
+    {
+        global $url_array;
+        global $tag_types;
+        if ('' != $url_array['query_string']) {
+            parse_str($url_array['query_string'], $query_parts);
+
+            $current     = 'studio';
+
+            if (isset($url_array['direction'])) {
+                $query_parts['direction'] = $url_array['direction'];
+            }
+
+            if (!isset($query_parts['sort'])) {
+                $query_parts['sort'] = 'm.title';
+            }
+
+            $sort        = $query_parts['sort'];
+
+            $tag_string  = implode(',', $tag_types);
+            $f           = explode('.', $sort);
+            if (!str_contains($tag_string, $f[1])) {
+                $sort = 'm.title';
+            }
+
+            // unset($query_parts['sort']);
+            if (isset($query_parts['alpha'])) {
+                $current = $query_parts['alpha'];
+                unset($query_parts['alpha']);
+            }
+            $request_uri = http_build_query($query_parts);
+            $sep         = '&';
+        }
+
+        $request_string = $request_uri.$sep.'sort='.$sort;
+        $i              = 0;
+
+        $chars          = range('A', 'Z');
+        $charrange      = array_merge(['#'], $chars, ['None', 'All']);
+
+        $range          = array_slice($charrange, $offset, $len);
+        $max            = count($range);
+
+        // $params['NAME']    = 'alpha';
+
+        // $params['OPTIONS'] = self::display_SelectOptions($range, $current);
+
+        // return process_template('base/navbar/select/select_box', $params);
+
+        foreach ($range as $char) {
+            $bg    = 'btn-primary ';
+            $pill  = '';
+            if (0 == $i) {
+                $pill = ' rounded-start-pill';
+            }
+            ++$i;
+            if ($i == $max) {
+                $pill = ' rounded-end-pill';
+            }
+
+            if ($current == $char) {
+                $bg = ' btn-secondary ';
+            }
+            $class = 'btn btn-sm '.$bg.$pill;
+            $url   = $url_array['url'].'?alpha='.urlencode($char).$sep;
+            $html .=
+            self::display_directory_navlinks($url, $char, $request_string, $class, 'role="button" aria-pressed="true"  ');
+        }
+
+        return $html;
+    }
+
+    public static function display_AlphaBlock()
+    {
+        if (__THIS_FILE__ == 'files.php' ||
+        __THIS_FILE__ == 'gridview.php' 
+        ) {
+
+        $alpha_sort  = self::display_alphaSort(0, 15);
+        $alpha_end   = self::display_alphaSort(15, 20);
+        return process_template('elements/AlphaSort/block', [
+            'ALPHA_BLOCK_START'                                          => $alpha_sort,
+            'ALPHA_BLOCK_END'                                            => $alpha_end]);
+        }
+
+        return '';
+    }
     public static function display_sort_options($url_array)
     {
         $html        = '';
@@ -50,25 +138,24 @@ class Render
             $request_uri = '?'.http_build_query($query_parts);
             $sep         = '&';
         }
-        $i=0;
-        $max= count($url_array['sort_types']);
+        $i           = 0;
+        $max         = count($url_array['sort_types']);
         foreach ($url_array['sort_types'] as $key => $value) {
             $bg             = '';
-            $pill = '';
-            if($i == 0){
-                $pill = " rounded-start-pill";
+            $pill           = '';
+            if (0 == $i) {
+                $pill = ' rounded-start-pill';
             }
-            $i++;
-            if($i ==    $max){
-                $pill = " rounded-end-pill";
+            ++$i;
+            if ($i == $max) {
+                $pill = ' rounded-end-pill';
             }
 
             if ($current == $value) {
                 $bg = ' active';
             }
-            $class          = 'btn btn-primary btn-m'.$bg . $pill;
+            $class          = 'btn btn-primary btn-m'.$bg.$pill;
             $request_string = $request_uri.$sep.'sort='.$value;
-
             $html .= self::display_directory_navlinks($url_array['url'], $key, $request_string, $class, 'role="button" aria-pressed="true"')."\n";
         }
 
@@ -208,9 +295,10 @@ class Render
         }
 
         if (defined('USE_FILTER')) {
-            $genre_box_html  = self::display_filter('genre');
-            $artist_box_html = self::display_filter('artist');
-            $studio_box_html = self::display_filter('studio');
+            $genre_box_html     = self::display_filter('genre');
+            $artist_box_html    = self::display_filter('artist');
+            $studio_box_html    = self::display_filter('studio');
+            $substudio_box_html = self::display_filter('substudio');
             foreach ($_REQUEST as $name => $value) {
                 if ('' != $value) {
                     $hidden .= add_hidden($name, $value);
@@ -222,6 +310,10 @@ class Render
             'GENREFILTERBOX'                                             => $genre_box_html,
             'ARTISTFILTERBOX'                                            => $artist_box_html,
             'STUDIOFILTERBOX'                                            => $studio_box_html,
+            'SUBSTUDIOFILTERBOX'                                         => $substudio_box_html,
+
+            'ALPHA_BLOCK'                                          => self::display_AlphaBlock(),
+            
             'HIDDEN'                                                     => $hidden]);
     }
 
@@ -270,9 +362,92 @@ class Render
         return $default_option.$html;
     }
 
-
     public static function displayPlaylistButton()
     {
-        return process_template('elements/playlist_button',[]);
+        return process_template('elements/playlist_button', []);
+    }
+
+    public static function displayPlaylistAddAllButton()
+    {
+        return process_template('elements/playlist_AddAll_button', []);
+    }
+
+    public static function createBreadcrumbs()
+    {
+        global $tag_types;
+        $request_string        = [];
+        $parts                 = [];
+
+        $request_tag           = [];
+        $crumbs['Home']        = 'home.php';
+        $url                   = 'files.php';
+
+        // if (isset(self::$CrubURL['grid'])) {
+        //     $url = 'files.php';
+        // }
+
+        if (isset(self::$CrubURL['list'])) {
+            $url = 'gridview.php';
+        }
+
+        $crumbs[$in_directory] = '';
+        parse_str($_SERVER['QUERY_STRING'], $query_parts);
+
+        if (count($query_parts) > 0) {
+            foreach ($query_parts as $key => $value) {
+                if (in_array($key, $tag_types)) {
+                    if ('' != $value) {
+                        $request_tag[$key] = $value;
+                    }
+                } else {
+                    if ('alpha' == $key) {
+                        continue;
+                    }
+                    $request_string[$key] = $value;
+                }
+            }
+
+            //   dd($request_string,$request_tag);
+            $sep       = '?';
+            if (count($request_string) > 0) {
+                $re_string = $sep.http_build_query($request_string);
+                $sep       = '&';
+            }
+
+            $crumb_url = $url.$re_string;
+
+            if (count($request_tag) > 0) {
+                $crumbs[$_SESSION['library']] = $crumb_url.$sep.http_build_query(['library' => $_SESSION['library']]);
+
+                foreach ($request_tag as $key => $value) {
+                    $parts[$key]    = $value;
+                    $crumbs[$value] = $crumb_url.$sep.http_build_query($parts);
+                    $last           = $value;
+                }
+                $crumbs[$last]                = '';
+            }
+        }
+        $req                   = '';
+        if (__THIS_FILE__ == 'genre.php') {
+            $req = '&'.http_build_query($parts);
+        }
+        $crumbs['All']         = $url.'?allfiles=1'.$req;
+
+        if (isset(self::$CrubURL['grid'])) {
+            $crumbs['Grid'] = self::$CrubURL['grid'].$re_string.$sep.http_build_query($parts);
+            unset($crumbs['All']);
+        }
+
+        // $crumbs['List'] = "";
+        if (isset(self::$CrubURL['list'])) {
+            $crumbs['List'] = self::$CrubURL['list'].$re_string.$sep.http_build_query($parts);
+            unset($crumbs['All']);
+        }
+
+        // $crumbs['All'] = "";
+        //        if (isset( self::$CrubURL['all'] )) {
+        //      }
+        // dd($crumbs);
+        return $crumbs;
     }
 }
