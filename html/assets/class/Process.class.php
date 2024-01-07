@@ -76,6 +76,7 @@ class ProcessForms
 
     public function update()
     {
+        dump($this->postArray);
         $keys      = array_keys($this->postArray);
         $method    = $keys[0];
         $tagValue  = $this->postArray[$method];
@@ -150,6 +151,8 @@ class ProcessForms
 
     public function delete_file()
     {
+        dump($this->postArray);
+
         // define('TITLE', 'Home');
         // define('NONAVBAR', true);
         // define('VIDEOINFO', true);

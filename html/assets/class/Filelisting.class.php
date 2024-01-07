@@ -20,6 +20,7 @@ class FileListing
         $this->currentpage = $currentpage;
         $this->request     = $request;
         $this->urlPattern  = $urlPattern;
+
     }
 
     public function getSearchResults($field, $value)
@@ -120,9 +121,10 @@ class FileListing
                     $comp  = ' IS';
                 }
                 //  dump(['m.'.$tag, $value, $comp]);
-
-                $this->db->where('m.'.$tag, $value, $comp);
-                $this->db->orwhere('c.'.$tag, $value, $comp);
+                $tag_query = '(' .'m.'.$tag  .' '.$comp .' \''.$value.'\' OR c.'.$tag  .' '.$comp .' \''.$value.'\')';
+                dump($tag_query);
+                $this->db->where($tag_query);
+                //$this->db->orwhere('c.'.$tag, $value, $comp);
             }
         }
 
@@ -196,7 +198,7 @@ class FileListing
             $limit,
             $fieldArray
         );
-        //   dd($joinQuery);
+           dump($joinQuery);
         $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
         $results    = $this->db->rawQuery($query);
 

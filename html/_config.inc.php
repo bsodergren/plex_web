@@ -32,7 +32,6 @@ $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
 EnvLoader::LoadEnv($config['path']['mediatag'])->load();
 
-
 if (!defined('APP_AUTHENTICATION')) {
     define('APP_AUTHENTICATION', false);
 }
@@ -115,7 +114,6 @@ define('SESSION_VARS',
     ]);
 
 // define('__SHOW_THUMBNAILS__', false);
-dump($_ENV);
 require_once __ROOT_DIRECTORY__.'/src/Config/paths.php';
 
 require_once __PHP_ASSETS_DIR__.'/header.inc.php';

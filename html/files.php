@@ -27,8 +27,8 @@ if(array_key_exists('genre',$_REQUEST))
 $res = count($results);
 if($res == 0){
     $redirect_string = urlQuerystring($redirect_string, 'alpha');
-    echo JavaRefresh($redirect_string, 0);
-    exit;
+  //  echo JavaRefresh($redirect_string, 0);
+ //   exit;
 }
 
 $referer_url             = '';
