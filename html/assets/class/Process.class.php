@@ -98,6 +98,8 @@ class ProcessForms
 
     public function refresh()
     {
+        $this->myHeader('home.php', 0);
+        return 0;
         $callback    = Callback::check([$this, 'ProcessProgressBar']);
 
         $mediaupdate = '/home/bjorn/scripts/Mediatag/bin/mediaupdate';
