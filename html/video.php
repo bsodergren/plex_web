@@ -94,7 +94,7 @@ if (isset($playlist_id)) {
         }
     }
 
-    $carousel_js                        = process_template('video/carousel_js', []);
+    $carousel_js                        = process_template('video/carousel_js', ['PLAYLIST_ID' => $playlist_id]);
     $carousel                           = process_template('video/carousel', ['CAROUSEL_INNER_HTML' => $carousel_item]);
     $video_js_params['PLAYLIST_HEIGHT'] = 145;
     $video_js_params['PLAYLIST_WIDTH']  = 50;

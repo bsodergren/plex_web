@@ -65,6 +65,7 @@ if (null === $playlist_id) {
                 [
                     'THUMBNAIL'         => $VideoDisplay->fileThumbnail($results[$i]['id'], 'alt="#" class="img-fluid" '),
                     'VIDEO_ID'          => $results[$i]['id'],
+                 
                     'PLAYLIST_VIDEO_ID' => $results[$i]['playlist_video_id'],
                 ]
             );
@@ -77,6 +78,7 @@ if (null === $playlist_id) {
                 'TITLE'             => $results[$i]['title'],
                 'THUMBNAIL'         => $thumbnail,
                 'VIDEO_ID'          => $results[$i]['id'],
+                'PLAYLIST_ID' =>  $playlist_id ,
                 'PLAYLIST_VIDEO_ID' => $results[$i]['playlist_video_id'],
             ]
         );

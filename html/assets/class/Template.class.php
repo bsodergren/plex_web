@@ -171,7 +171,7 @@ class Template
         $template_file = __HTML_TEMPLATE__.'/'.$template.$extension;
        // dump($template_file);
         if (!file_exists($template_file)) {
-            //    dump($template_file);
+             dump($template_file);
 
             // use default template directory
             $html_text = '<h1>NO TEMPLATE FOUND<br>';

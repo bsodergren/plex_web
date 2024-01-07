@@ -57,7 +57,6 @@ class ProcessForms
             $this->myHeader();
         }
         // dd($_SERVER);
-        
     }
 
     // public function playliststuff()
@@ -106,6 +105,7 @@ class ProcessForms
         $path        = __PLEX_LIBRARY__.\DIRECTORY_SEPARATOR.$_SESSION['library'];
 
         $process     = new Process([$mediaupdate, '--path', $path, '-q']);
+        dump( $process->getCommandLine());
         $process->setTimeout(60000);
         $process->start();
         $process->wait($callback);
@@ -114,17 +114,20 @@ class ProcessForms
 
         $process     = new Process([$mediadb, '--path', $path]);
         $process->setTimeout(60000);
+        dump( $process->getCommandLine());
         $process->start();
         $process->wait($callback);
         unset($process);
         $process     = new Process([$mediadb, '--path', $path, '-tDi']);
         $process->setTimeout(60000);
+        dump( $process->getCommandLine());
         $process->start();
         $process->wait($callback);
         unset($process);
 
         $process     = new Process([$mediadb, '--path', $path, '-u']);
         $process->setTimeout(60000);
+        dump( $process->getCommandLine());
         $process->start();
         $process->wait($callback);
         Template::ProgressBar(5);
@@ -153,16 +156,7 @@ class ProcessForms
     {
         dump($this->postArray);
 
-        // define('TITLE', 'Home');
-        // define('NONAVBAR', true);
-        // define('VIDEOINFO', true);
-        // include __LAYOUT_HEADER__;
-        // Template::echo('stream/start_page', ['PAGE_LOAD' => template::GetHTML('/stream/page_load', [])]);
-         deleteFile($this->postArray);
-        //  Template::echo('stream/end_page', ['PAGE_CLOSE' => template::GetHTML('/stream/page_close', [])]);
-
-        //  dd("Fdsfds");
-
+        deleteFile($this->postArray);
     }
 
     public function playlist()

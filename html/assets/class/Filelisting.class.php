@@ -20,7 +20,6 @@ class FileListing
         $this->currentpage = $currentpage;
         $this->request     = $request;
         $this->urlPattern  = $urlPattern;
-
     }
 
     public function getSearchResults($field, $value)
@@ -113,18 +112,18 @@ class FileListing
 
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
-                $value = '%'.$this->request[$tag].'%';
-                $comp  = ' like';
+                $value     = '%'.$this->request[$tag].'%';
+                $comp      = ' like';
 
                 if ('NULL' == $this->request[$tag]) {
                     $value = null;
                     $comp  = ' IS';
                 }
                 //  dump(['m.'.$tag, $value, $comp]);
-                $tag_query = '(' .'m.'.$tag  .' '.$comp .' \''.$value.'\' OR c.'.$tag  .' '.$comp .' \''.$value.'\')';
+                $tag_query = '(m.'.$tag.' '.$comp.' \''.$value.'\' OR c.'.$tag.' '.$comp.' \''.$value.'\')';
                 dump($tag_query);
                 $this->db->where($tag_query);
-                //$this->db->orwhere('c.'.$tag, $value, $comp);
+                // $this->db->orwhere('c.'.$tag, $value, $comp);
             }
         }
 
@@ -137,7 +136,6 @@ class FileListing
         return [$results, $pageObj, $uri];
     }
 
- 
     public function getVideoDetails($id)
     {
         $sql = 'SELECT ';
@@ -165,11 +163,6 @@ class FileListing
 
     private function buildSQL($limit = null)
     {
-        // SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( ) AS T1, (SELECT @rownum := 0) AS r
-
-        // $fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
-        // $fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
-
         $fieldArray = ['COALESCE (c.title,m.title) as title ',
             'COALESCE (c.artist,m.artist) as artist ',
             'COALESCE (c.genre,m.genre) as genre ',
@@ -198,11 +191,10 @@ class FileListing
             $limit,
             $fieldArray
         );
-           dump($joinQuery);
+        dump($joinQuery);
         $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
         $results    = $this->db->rawQuery($query);
 
-        //  dump($this->db->getlastquery());
         return $results;
     }
 }
