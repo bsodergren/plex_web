@@ -16,6 +16,7 @@ class Template
     public static $BarHeight   = 30;
 
     private static $RenderHTML = '';
+    public const FUNCTION_CALLBACK     = '|{{function=([a-zA-Z_]+)\|?(.*)?}}|i';
 
     public function __construct()
     {
@@ -169,7 +170,6 @@ class Template
         }
 
         $template_file = __HTML_TEMPLATE__.'/'.$template.$extension;
-       // dump($template_file);
         if (!file_exists($template_file)) {
              dump($template_file);
 
@@ -203,6 +203,10 @@ class Template
         $html_text     = preg_replace_callback('|(%%\w+%%)|', [$this, 'callback_replace'], $html_text);
         $html_text     = preg_replace_callback('|(\!\!\w+\!\!)|', [$this, 'callback_replace'], $html_text);
 
+
+
+        $html_text         = preg_replace_callback(self::FUNCTION_CALLBACK, [$this, 'callback_parse_function'], $html_text);
+
         $html_text     = preg_replace_callback('/(##(\w+,?\w+)##)(.*)(##)/iU', [$this, 'callback_color'], $html_text);
         $html_text     = preg_replace_callback('/(!!(\w+,?\w+)!!)(.*)(!!)/iU', [$this, 'callback_badge'], $html_text);
 
@@ -219,7 +223,18 @@ class Template
         return $this->html;
     }
 
-    private function callback_badge($matches)
+    public function callback_parse_function($matches)
+    {
+         $helper = new HTML_Func;
+        $method = $matches[1];
+        dump(__METHOD__,$helper);
+        // $value = Helper::$method();
+       // if(method_exists($helper,$method)){
+           return  $helper->$method($matches);
+       // }
+
+    }
+        private function callback_badge($matches)
     {
         $text  = $matches[3];
         $font  = '';

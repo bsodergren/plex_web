@@ -42,6 +42,10 @@ function togglePlay() {
     }
 }
 
+function skip(value) {
+    video.currentTime += value;
+}      
+
 // updatePlayButton updates the playback icon and tooltip
 // depending on the playback state
 function updatePlayButton() {
@@ -303,7 +307,7 @@ video.addEventListener('loadedmetadata', (e) => {
     let player = e.target;
     player.width = player.clientWidth;
     player.height = player.clientHeight;
-    console.log(player.height);
+    console.log("player height  " , player.height,player.width  );
 });
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -18,11 +18,11 @@ if (isset($_SESSION['auth'])
     $library_links .= Render::display_theme_dropdown();
 
     $params['NAV_BAR_LEFT_LINKS'] = process_template('base/navbar/library_menu', ['LIBRARY_SELECT_LINKS' => $library_links]);
-    if (defined('BREADCRUMB')) {
-        $params['BREADCRUMB'] = Render::display_breadcrumbs();
+    // if (defined('BREADCRUMB')) {
+    //     $params['BREADCRUMB'] = Render::display_breadcrumbs();
 
-        // $params['BREADCRUMB']  .=
-    }
+    //     // $params['BREADCRUMB']  .=
+    // }
 }
 $params['NAV_BAR_RIGHT_LINKS'] = Render::display_navbar_links();
 

@@ -42,6 +42,7 @@ $fullpath                           = str_replace(__PLEX_LIBRARY__, APP_HOME.'/v
 $video_file                         = $fullpath.'/'.$result['filename'];
 $video_js_params['PLAYLIST_HEIGHT'] = 50;
 $video_js_params['PLAYLIST_WIDTH']  = 20;
+$playlist_height = '0';
 $comments = '//';
 if (isset($playlist_id)) {
     $comments = '';
@@ -96,13 +97,15 @@ if (isset($playlist_id)) {
 
     $carousel_js                        = process_template('video/carousel_js', ['PLAYLIST_ID' => $playlist_id]);
     $carousel                           = process_template('video/carousel', ['CAROUSEL_INNER_HTML' => $carousel_item]);
-    $video_js_params['PLAYLIST_HEIGHT'] = 145;
+    $video_js_params['PLAYLIST_HEIGHT'] = 180;
     $video_js_params['PLAYLIST_WIDTH']  = 50;
     $video_js_params['NEXT_VIDEO_ID']   = $next_video_id;
     $video_js_params['PREV_VIDEO_ID']   = $prev_video_id;
    
     
-    $video_buttons                      = process_template('video/video_buttons', []);
+    $playlist_height = $video_js_params['PLAYLIST_HEIGHT'];
+
+
 }
 $video_js_params['COMMENT']   = $comments;
 // $video_file                                       = FileSystem::unixSlashes(FileSystem::normalizePath($video_file));
@@ -110,12 +113,13 @@ $video_js_params['COMMENT']   = $comments;
 $params                             = [
     'PAGE_TITLE'     => $result['title'],
     'VIDEO_ID'       => $id,
+    'PLAYLIST_ID' => $playlist_id,
     '__LAYOUT_URL__' => __LAYOUT_URL__,
+    'PLAYLIST_HEIGHT' => $playlist_height,
     'VIDEO_URL'      => $video_file,
     'VIDEO_TITLE'    => $active_title,
     'CAROUSEL_HTML'  => $carousel,
     'CAROUSEL_JS'    => $carousel_js,
-    'VIDEO_BUTTONS'  => $video_buttons,
     'VIDEO_JS'       => process_javascript('video/video_js', $video_js_params),
 ];
 Template::echo('video/main', $params);

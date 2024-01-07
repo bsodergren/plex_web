@@ -7,8 +7,9 @@
     </div>
 
     <div class="d-grid gap-2">
-        <button onclick="popup('%%__URL_HOME__%%/video.php?id=%%FILE_ID%%', 'videoplayer')" class="btn btn-primary" type="button">Play Video</button>
-        <button onclick="popup('%%__URL_HOME__%%/videoinfo.php?id=%%FILE_ID%%', 'videoplayer')" class="btn btn-primary" type="button">Video Info</button>
+        <button  {{function=videoPlayer|query?id=%%FILE_ID%%,href=video.php}}  class="btn btn-primary" type="button">Play Video</button>
+        <button  {{function=videoPlayer|query?id=%%FILE_ID%%,href=videoinfo.php}}   class="btn btn-primary" type="button">Video Info</button>
+
     </div>
 
 </div>

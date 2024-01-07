@@ -102,7 +102,8 @@ class Render
     public static function display_AlphaBlock()
     {
         if (__THIS_FILE__ == 'files.php' ||
-        __THIS_FILE__ == 'gridview.php' 
+        __THIS_FILE__ == 'gridview.php' ||
+        __THIS_FILE__ == 'search.php' 
         ) {
 
         $alpha_sort  = self::display_alphaSort(0, 15);
@@ -449,5 +450,11 @@ class Render
         //      }
         // dd($crumbs);
         return $crumbs;
+    }
+
+    public static function displayVideoLink($id,$text,$extra='')
+    {
+
+        
     }
 }

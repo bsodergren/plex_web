@@ -56,7 +56,10 @@ function setNull (id) {
     document.getElementById(f_id).style = 'background:black'
 }
 
-function popup (mylink, windowname, width = 900, height = 600) {
+function popup (mylink, windowname, width = 900, height = 900) {
+
+    //console.log(width + ' ' + height);
+
     if (!window.focus) return true
     var href
     if (typeof mylink == 'string') href = mylink

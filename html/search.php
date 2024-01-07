@@ -7,6 +7,7 @@ require_once '_config.inc.php';
 define('GRID_VIEW', true);
 $playlist_ids    = [];
 define('TITLE', 'search');
+define('USE_FILTER', true);
 
 foreach ($tag_array as $tag) {
     if (isset($_REQUEST[$tag])) {
