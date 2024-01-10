@@ -60,8 +60,8 @@ Template::echo('base/header/header', $params);
 
 if (!defined('NONAVBAR')) {
    
-    $crumbs = Render::createBreadcrumbs();
-    define('BREADCRUMB', $crumbs);
+   $crumbs = Render::createBreadcrumbs();
+   define('BREADCRUMB', $crumbs);
 
     require __LAYOUT_NAVBAR__;
 }

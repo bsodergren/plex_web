@@ -171,7 +171,6 @@ class Template
 
         $template_file = __HTML_TEMPLATE__.'/'.$template.$extension;
         if (!file_exists($template_file)) {
-             dump($template_file);
 
             // use default template directory
             $html_text = '<h1>NO TEMPLATE FOUND<br>';
@@ -227,7 +226,6 @@ class Template
     {
          $helper = new HTML_Func;
         $method = $matches[1];
-        dump(__METHOD__,$helper);
         // $value = Helper::$method();
        // if(method_exists($helper,$method)){
            return  $helper->$method($matches);

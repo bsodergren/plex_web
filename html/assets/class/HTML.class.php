@@ -33,6 +33,10 @@ class HTML_Func
         return Render::display_breadcrumbs();
     }
 
+    public function AlphaBlock($match)
+    {
+        return AlphaSort::display_AlphaBlock();
+    }
     public function videoPlayer($matches)
     {
         $var = $this->parseVars($matches);

@@ -8,7 +8,9 @@ require_once '_config.inc.php';
 define('TITLE', 'Home');
 define('USE_FILTER', true);
 define('GRID_VIEW', true);
+define('__SHOW_SORT__',true);
 
+define('ALPHA_SORT', true);
 $fileinfo                = new FileListing($_REQUEST, $currentPage, $urlPattern);
 [$results,$pageObj,$uri] = $fileinfo->getVideoArray();
 
@@ -21,9 +23,9 @@ if ('home.php' != basename($_SERVER['HTTP_REFERER'])) {
     $referer_url = $_SERVER['HTTP_REFERER'];
 }
 
-Render::$CrubURL['list']            = 'files.php';//.$request_key;
-$res = count($results);
-if($res == 0){
+Render::$CrubURL['list'] = 'files.php'; // .$request_key;
+$res                     = count($results);
+if (0 == $res) {
     $redirect_string = urlQuerystring($redirect_string, 'alpha');
     echo JavaRefresh($redirect_string, 0);
     exit;

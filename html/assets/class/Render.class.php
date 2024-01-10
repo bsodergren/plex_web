@@ -27,94 +27,7 @@ class Render
         $this->_SERVER               = $_SERVER;
     }
 
-    public static function display_alphaSort($offset = 0, $len = 13)
-    {
-        global $url_array;
-        global $tag_types;
-        if ('' != $url_array['query_string']) {
-            parse_str($url_array['query_string'], $query_parts);
 
-            $current     = 'studio';
-
-            if (isset($url_array['direction'])) {
-                $query_parts['direction'] = $url_array['direction'];
-            }
-
-            if (!isset($query_parts['sort'])) {
-                $query_parts['sort'] = 'm.title';
-            }
-
-            $sort        = $query_parts['sort'];
-
-            $tag_string  = implode(',', $tag_types);
-            $f           = explode('.', $sort);
-            if (!str_contains($tag_string, $f[1])) {
-                $sort = 'm.title';
-            }
-
-            // unset($query_parts['sort']);
-            if (isset($query_parts['alpha'])) {
-                $current = $query_parts['alpha'];
-                unset($query_parts['alpha']);
-            }
-            $request_uri = http_build_query($query_parts);
-            $sep         = '&';
-        }
-
-        $request_string = $request_uri.$sep.'sort='.$sort;
-        $i              = 0;
-
-        $chars          = range('A', 'Z');
-        $charrange      = array_merge(['#'], $chars, ['None', 'All']);
-
-        $range          = array_slice($charrange, $offset, $len);
-        $max            = count($range);
-
-        // $params['NAME']    = 'alpha';
-
-        // $params['OPTIONS'] = self::display_SelectOptions($range, $current);
-
-        // return process_template('base/navbar/select/select_box', $params);
-
-        foreach ($range as $char) {
-            $bg    = 'btn-primary ';
-            $pill  = '';
-            if (0 == $i) {
-                $pill = ' rounded-start-pill';
-            }
-            ++$i;
-            if ($i == $max) {
-                $pill = ' rounded-end-pill';
-            }
-
-            if ($current == $char) {
-                $bg = ' btn-secondary ';
-            }
-            $class = 'btn btn-sm '.$bg.$pill;
-            $url   = $url_array['url'].'?alpha='.urlencode($char).$sep;
-            $html .=
-            self::display_directory_navlinks($url, $char, $request_string, $class, 'role="button" aria-pressed="true"  ');
-        }
-
-        return $html;
-    }
-
-    public static function display_AlphaBlock()
-    {
-        if (__THIS_FILE__ == 'files.php' ||
-        __THIS_FILE__ == 'gridview.php' ||
-        __THIS_FILE__ == 'search.php' 
-        ) {
-
-        $alpha_sort  = self::display_alphaSort(0, 15);
-        $alpha_end   = self::display_alphaSort(15, 20);
-        return process_template('elements/AlphaSort/block', [
-            'ALPHA_BLOCK_START'                                          => $alpha_sort,
-            'ALPHA_BLOCK_END'                                            => $alpha_end]);
-        }
-
-        return '';
-    }
     public static function display_sort_options($url_array)
     {
         $html        = '';
@@ -311,10 +224,7 @@ class Render
             'GENREFILTERBOX'                                             => $genre_box_html,
             'ARTISTFILTERBOX'                                            => $artist_box_html,
             'STUDIOFILTERBOX'                                            => $studio_box_html,
-            'SUBSTUDIOFILTERBOX'                                         => $substudio_box_html,
-
-            'ALPHA_BLOCK'                                          => self::display_AlphaBlock(),
-            
+            'SUBSTUDIOFILTERBOX'                                         => $substudio_box_html,            
             'HIDDEN'                                                     => $hidden]);
     }
 

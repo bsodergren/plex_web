@@ -7,6 +7,15 @@ $sort_html = '';
 $page_html = '';
 $navbar    = '';
 $js_html   = '';
+if(!defined('__BOTTOM_NAV__')){
+    define('__BOTTOM_NAV__',true);
+}
+if(!defined('__SHOW_SORT__')){
+    define('__SHOW_SORT__',true);
+}
+if(!defined('__SHOW_PAGES__')){
+    define('__SHOW_PAGES__',true);
+}
 if (!defined('NONAVBAR')) {
     if (__BOTTOM_NAV__ == 1) {
         if (__SHOW_SORT__ == true && isset($pageObj)) {

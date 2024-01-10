@@ -60,11 +60,13 @@ class FileListing
             $uri['sort']           = $_SESSION['sort'];
             $this->request['sort'] = $_SESSION['sort'];
         }
-
+dump($_SESSION['direction'],$_SESSION['direction'],$_SESSION['direction']);
         if (isset($_SESSION['direction'])) {
             $uri['direction']           = $_SESSION['direction'];
             $this->request['direction'] = $_SESSION['direction'];
         }
+
+
         if (isset($this->request['alpha'])) {
             $key   = $this->request['alpha'];
             $field = $this->request['sort'];
@@ -127,6 +129,7 @@ class FileListing
             }
         }
 
+        dump($this->request);
         if (isset($this->request['sort'], $this->request['direction'])) {
             $this->db->orderBy($this->request['sort'], $this->request['direction']);
         }

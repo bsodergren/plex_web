@@ -25,29 +25,32 @@ foreach ($include_array as $required_file) {
 }
 
 $template       = new Template();
-
 foreach (SESSION_VARS as $key => $default) {
     if (!isset($_SESSION[$key])) {
         $_SESSION[$key] = $default;
     }
+    if ('direction' == $key && '' == $_SESSION[$key]) {
+        $_SESSION['direction'] = 'ASC';
+    }
+
     if (isset($_REQUEST[$key])) {
         $_SESSION[$key] = $_REQUEST[$key];
         if ('direction' == $key) {
             if ('ASC' == $_REQUEST['direction']) {
                 $_SESSION['direction'] = 'DESC';
-            }
-
-            if ('DESC' == $_REQUEST['direction']) {
+            } elseif ('DESC' == $_REQUEST['direction']) {
+                $_SESSION['direction'] = 'ASC';
+            } else {
                 $_SESSION['direction'] = 'ASC';
             }
         }
     }
- }
+}
 
- unset($_REQUEST['itemsPerPage']);
- if (isset($_REQUEST['alpha'])) {
-   // $_REQUEST['alpha'] = '1';
-// } else {
+unset($_REQUEST['itemsPerPage']);
+if (isset($_REQUEST['alpha'])) {
+    // $_REQUEST['alpha'] = '1';
+    // } else {
     $uri['alpha'] = $_REQUEST['alpha'];
 }
 

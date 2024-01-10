@@ -1,18 +1,9 @@
 <?php
 require_once '../_config.inc.php';
 define('TITLE', 'Home');
+define('ALPHA_SORT', true);
+define('__SHOW_SORT__',false);
 
-$url_array           = [
-    'url'          => $_SERVER['SCRIPT_NAME'],
-    'query_string' => $query_string,
-    'current'      => $_SESSION['sort'],
-    'direction'    => $_SESSION['direction'],
-    'sort_types'   => [
-        'Replacement' => 'replacement,hide,name',
-        'Artist'      => 'hide,name,replacement',
-        'hide'        => 'hide,replacement,name',
-    ],
-];
 
 if (isset($_SESSION['direction'])) {
     $direction = $_SESSION['direction'];
@@ -34,10 +25,25 @@ if (isset($_SESSION['sort'])) {
     $arr[0]     = $arr[0].' '.$direction;
     $sort_query = implode(',', $arr);
 }
-
+$url_array           = [
+    'url'          => $_SERVER['SCRIPT_NAME'],
+    'query_string' => $query_string,
+    'current'      => $_SESSION['sort'],
+    'direction'    => $_SESSION['direction'],
+    'sort_types'   => [
+        'Artist'      => 'name',
+    ],
+];
 $pageObj             = new ArtistPagenate($currentPage, $urlPattern);
+$where              = '';
+$query              = urlQuerystring($urlPattern, ['current', 'allfiles'], true);
+if (count($query) > 0) {
+    $where = ' WHERE '.$query['sql'];
+}
 
-$sql                 = 'SELECT * FROM '.Db_TABLE_ARTISTS.' ORDER BY '.$sort_query;
+$sql                = 'SELECT * FROM '.Db_TABLE_ARTISTS.$where.' ORDER BY '.$sort_query;
+dump($sql);
+
 $limit               = $pageObj->itemsPerPage;
 $offset              = $pageObj->offset;
 
@@ -47,11 +53,11 @@ if (false != $limit && false == $offset) {
 if (false != $limit && false != $offset) {
     $sql = $sql.'  LIMIT '.$offset.', '.$limit.'';
 }
-// dump($sql);
+dump($sql);
 $results             = $db->query($sql);
 
 $redirect_string     = 'Config/'.__THIS_FILE__.$request_string_query;
-
+dump(__SHOW_SORT__);
 include __LAYOUT_HEADER__;
 
 ?>

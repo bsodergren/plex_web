@@ -6,7 +6,10 @@
 require_once '_config.inc.php';
 
 define('TITLE', 'Home');
+define('__SHOW_SORT__',true);
+
 define('USE_FILTER', true);
+define('ALPHA_SORT', true);
 Template::$Render                = true;
 
 $fileinfo                        = new FileListing($_REQUEST, $currentPage, $urlPattern);

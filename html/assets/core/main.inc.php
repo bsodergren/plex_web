@@ -132,6 +132,7 @@ function uri_SQLQuery($request_array)
     $uri_array = [];
     $uri_query = [];
     foreach ($request_array as $key => $value) {
+      
         if ('sort' == $key) {
             $where_field = $value;
             continue;

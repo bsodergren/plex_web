@@ -1,6 +1,33 @@
 <?php
+
 require_once '../_config.inc.php';
 define('TITLE', 'Home');
+define('ALPHA_SORT', true);
+// define('__SHOW_SORT__',false);
+
+if (isset($_SESSION['direction'])) {
+    $direction = $_SESSION['direction'];
+}
+if (isset($_REQUEST['alpha'])) {
+    // $_REQUEST['alpha'] = '1';
+    // } else {
+    $uri['alpha'] = $_REQUEST['alpha'];
+}
+
+
+if (isset($_SESSION['sort'])) {
+    switch ($_SESSION['sort']) {
+        case 'Replacement': break;
+            // case 'Genre': break;
+        case 'Keep': break;
+        default:
+            $_SESSION['sort'] = 'Genre';
+            break;
+    }
+    $sort       = $_SESSION['sort'];
+
+    $sort_query = $sort.' '.$direction;
+}
 
 $url_array          = [
     'url'          => $_SERVER['SCRIPT_NAME'],
@@ -8,36 +35,20 @@ $url_array          = [
     'current'      => $_SESSION['sort'],
     'direction'    => $_SESSION['direction'],
     'sort_types'   => [
-        'Replacement' => 'replacement,keep,genre',
-        'Genre'       => 'keep,genre,replacement',
-        'Keep'        => 'keep,replacement,genre',
+        'Genre' => 'Genre',
     ],
 ];
 
-if (isset($_SESSION['direction'])) {
-    $direction = $_SESSION['direction'];
-}
-
-if (isset($_SESSION['sort'])) {
-    switch ($_SESSION['sort']) {
-        case 'Replacement': break;
-        case 'Genre': break;
-        case 'Keep': break;
-        default:
-            $_SESSION['sort'] = 'Keep';
-
-            break;
-    }
-
-    $sort       = $_SESSION['sort'];
-    $arr        = explode(',', $sort);
-    $arr[0]     = $arr[0].' '.$direction;
-    $sort_query = implode(',', $arr);
-}
-
 $pageObj            = new GenrePagenate($currentPage, $urlPattern);
+$where              = '';
+$query              = urlQuerystring($urlPattern, ['current', 'allfiles', 'sec'], true);
 
-$sql                = 'SELECT * FROM '.Db_TABLE_GENRE.' ORDER BY '.$sort_query;
+if (count($query) > 0) {
+    $where = ' WHERE '.$query['sql'];
+}
+
+$sql                = 'SELECT * FROM '.Db_TABLE_GENRE.$where.' ORDER BY '.$sort_query;
+
 $limit              = $pageObj->itemsPerPage;
 $offset             = $pageObj->offset;
 
@@ -96,3 +107,4 @@ Template::echo(
 define('__SHOW_PAGES__', 1);
 
 require __LAYOUT_FOOTER__;
+?>
