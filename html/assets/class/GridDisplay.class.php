@@ -88,6 +88,7 @@ class GridDisplay extends VideoDisplay
                     'VIDEO_DATA'     => $videoInfo,
                     'ROWNUM'         => $results[$i]['rownum'],
                     'ROW_TOTAL'      => $totalRecords,
+                    'STAR_RATING' => $results[$i]['rating'],
                 ]
             );
         }

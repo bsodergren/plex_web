@@ -60,7 +60,6 @@ class FileListing
             $uri['sort']           = $_SESSION['sort'];
             $this->request['sort'] = $_SESSION['sort'];
         }
-dump($_SESSION['direction'],$_SESSION['direction'],$_SESSION['direction']);
         if (isset($_SESSION['direction'])) {
             $uri['direction']           = $_SESSION['direction'];
             $this->request['direction'] = $_SESSION['direction'];
@@ -123,13 +122,11 @@ dump($_SESSION['direction'],$_SESSION['direction'],$_SESSION['direction']);
                 }
                 //  dump(['m.'.$tag, $value, $comp]);
                 $tag_query = '(m.'.$tag.' '.$comp.' \''.$value.'\' OR c.'.$tag.' '.$comp.' \''.$value.'\')';
-                dump($tag_query);
                 $this->db->where($tag_query);
                 // $this->db->orwhere('c.'.$tag, $value, $comp);
             }
         }
 
-        dump($this->request);
         if (isset($this->request['sort'], $this->request['direction'])) {
             $this->db->orderBy($this->request['sort'], $this->request['direction']);
         }
@@ -152,7 +149,7 @@ dump($_SESSION['direction'],$_SESSION['direction'],$_SESSION['direction']);
             $sql .= 'm.library as library, ';
         }
         $sql .= 'i.format, i.bit_rate, i.width, i.height, ';
-        $sql .= 'f.filename, f.thumbnail, f.fullpath, f.duration, ';
+        $sql .= 'f.filename, f.thumbnail, f.fullpath, f.duration, f.rating, ';
         $sql .= 'f.filesize, f.added, f.id, f.video_key FROM metatags_video_file f ';
         $sql .= 'INNER JOIN metatags_video_metadata m on f.video_key=m.video_key '.PlexSql::getLibrary();
         $sql .= 'LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
@@ -186,7 +183,7 @@ dump($_SESSION['direction'],$_SESSION['direction'],$_SESSION['direction']);
         // $fieldArray[] = 'm.library';
 
         $fieldArray = array_merge($fieldArray, [
-            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'f.library',
+            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'f.library', 'f.rating',
             'f.filename', 'f.thumbnail', 'f.fullpath', 'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key']);
 
         $joinQuery  = $this->db->getQuery(
@@ -194,7 +191,6 @@ dump($_SESSION['direction'],$_SESSION['direction'],$_SESSION['direction']);
             $limit,
             $fieldArray
         );
-        dump($joinQuery);
         $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
         $results    = $this->db->rawQuery($query);
 

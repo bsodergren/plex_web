@@ -42,7 +42,6 @@ if (count($query) > 0) {
 }
 
 $sql                = 'SELECT * FROM '.Db_TABLE_ARTISTS.$where.' ORDER BY '.$sort_query;
-dump($sql);
 
 $limit               = $pageObj->itemsPerPage;
 $offset              = $pageObj->offset;
@@ -53,11 +52,9 @@ if (false != $limit && false == $offset) {
 if (false != $limit && false != $offset) {
     $sql = $sql.'  LIMIT '.$offset.', '.$limit.'';
 }
-dump($sql);
 $results             = $db->query($sql);
 
 $redirect_string     = 'Config/'.__THIS_FILE__.$request_string_query;
-dump(__SHOW_SORT__);
 include __LAYOUT_HEADER__;
 
 ?>

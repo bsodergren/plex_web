@@ -8,5 +8,6 @@
         <div class="container text-start" {{function=videoPlayer|query?id=%%ROW_ID%%,href=videoinfo.php}}>
             %%VIDEO_DATA%%
         </div>
+        {{function=videoRating|id=%%ROW_ID%%,rating=%%STAR_RATING%%}}
     </div>
 </div>

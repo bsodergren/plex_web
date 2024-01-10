@@ -1,11 +1,14 @@
 <div class="blueTable">
     <div class="row">
+        <div class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary text-start" style="padding-left: 10px;max-width:175px;">
+            {{function=videoRating|id=%%FILE_ID%%,rating=%%STAR_RATING%%}}
+        </div>
         <div class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary text-start" style="padding-left: 340px;">%%FILE_NAME%%</div>
 
         <div class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary text-end ">
             <!-- <form action="process.php" id="videoRefreshOrDelete" onsubmit="clickButton(this);"> -->
-                <!-- <form id="videoRefreshOrDelete" onsubmit="return false;"> -->
-                    <form id="videoRefreshOrDelete" onsubmit="return false;">
+            <!-- <form id="videoRefreshOrDelete" onsubmit="return false;"> -->
+            <form id="videoRefreshOrDelete" onsubmit="return false;">
 
                 %%DELETE_ID%%
 
@@ -26,10 +29,10 @@
 <script>
 
 
-function clickButton(e) {
-        
-    let video_id = document.getElementById("DorRvideoId");
-       
+    function clickButton(e) {
+
+        let video_id = document.getElementById("DorRvideoId");
+
         console.log(e.value + ', ' + video_id.value);
         $.ajax({
             type: "post",

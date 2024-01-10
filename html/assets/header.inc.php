@@ -113,6 +113,7 @@ $urlPattern     = $_SERVER['PHP_SELF'].'?current=(:num)'.$query_string_no_curren
 
 $sort_type_map  = [
     'sort_types' => [
+        'Rating' => 'f.rating',
         'Studio'     => 'm.studio',
         'Sub Studio' => 'm.substudio',
         'File size'  => 'f.filesize',
@@ -124,6 +125,7 @@ $sort_type_map  = [
         'Genre'      => 'm.genre',
     ],
     'map'        => [
+        'f.rating' => 'Rating',
         'm.studio'    => 'Studio',
         'm.substudio' => 'Sub Studio',
         'f.filesize'  => 'File size',

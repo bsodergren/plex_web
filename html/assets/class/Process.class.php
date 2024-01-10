@@ -68,6 +68,13 @@ class ProcessForms
 
     // }
 
+    public function rating()
+    {
+        [$_,$videoId] = explode("_",$this->postArray['id']);
+        $rating = $this->postArray['rating'];
+        $this->VideoInfo->updateRating($videoId,$rating);
+//        dd($this->postArray);
+    }
     public function update_file()
     {
         dd($this->postArray);
@@ -75,7 +82,6 @@ class ProcessForms
 
     public function update()
     {
-        dump($this->postArray);
         $keys      = array_keys($this->postArray);
         $method    = $keys[0];
         $tagValue  = $this->postArray[$method];
@@ -107,7 +113,7 @@ class ProcessForms
         $path        = __PLEX_LIBRARY__.\DIRECTORY_SEPARATOR.$_SESSION['library'];
 
         $process     = new Process([$mediaupdate, '--path', $path, '-q']);
-        dump( $process->getCommandLine());
+        // dump( $process->getCommandLine());
         $process->setTimeout(60000);
         $process->start();
         $process->wait($callback);
@@ -116,20 +122,20 @@ class ProcessForms
 
         $process     = new Process([$mediadb, '--path', $path]);
         $process->setTimeout(60000);
-        dump( $process->getCommandLine());
+        // dump( $process->getCommandLine());
         $process->start();
         $process->wait($callback);
         unset($process);
         $process     = new Process([$mediadb, '--path', $path, '-tDi']);
         $process->setTimeout(60000);
-        dump( $process->getCommandLine());
+        // dump( $process->getCommandLine());
         $process->start();
         $process->wait($callback);
         unset($process);
 
         $process     = new Process([$mediadb, '--path', $path, '-u']);
         $process->setTimeout(60000);
-        dump( $process->getCommandLine());
+        // dump( $process->getCommandLine());
         $process->start();
         $process->wait($callback);
         Template::ProgressBar(5);
@@ -156,7 +162,6 @@ class ProcessForms
 
     public function delete_file()
     {
-        dump($this->postArray);
 
         deleteFile($this->postArray);
     }

@@ -42,4 +42,21 @@ class VideoInfo
     {
         // dump($tag, $data);
     }
+
+    public function updateRating($video_id,$rating)
+    {
+        global $db;
+
+        
+        if($rating == ''){
+            $rating = 0;
+        }
+        $data = Array (
+            'rating' => $rating
+        );
+
+        $db->where ('id', $video_id);
+        $db->update (Db_TABLE_VIDEO_FILE, $data);
+//        dd(["Fdsa",$video_id,$rating]);
+    }
 }

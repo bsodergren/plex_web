@@ -134,6 +134,10 @@ class VideoDisplay
 
             switch ($key) {
                 // case 'favorite':
+                    case 'rating':
+                        $params['STAR_RATING'] = $value;
+                        break;
+
                 case 'library':
                 case 'title':
                     $value    = str_replace(__PLEX_LIBRARY__.'/', '', $value);
@@ -294,6 +298,7 @@ class VideoDisplay
                 'REDIRECT_STRING' => $redirect_string,
                 'SUBMIT_ID'       => 'hiddenSubmit_'.$row_id,
                 'HIDDEN_INPUT'    => $hidden_fields,
+
             ]);
         } // end foreach
 

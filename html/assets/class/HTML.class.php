@@ -24,7 +24,6 @@ class HTML_Func
             $values['var'][] = $value;
         }
 
-        dump($values);
         return $values;
     }
 
@@ -32,6 +31,17 @@ class HTML_Func
     {
         return Render::display_breadcrumbs();
     }
+
+
+    public function videoRating($matches)
+    {
+        $var = $this->parseVars($matches);
+        return process_template('elements/Rating/rating',['ROW_ID' => $var['id'],'STAR_RATING'=>$var['rating']]);
+    }
+
+public function ratingInclude($matches){
+    return process_template('elements/Rating/header',[]);
+}
 
     public function AlphaBlock($match)
     {

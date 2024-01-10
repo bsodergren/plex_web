@@ -13,29 +13,3 @@
         %%ROWS_HTML%%
     </div>
 </form>
-<script>
-    $("#ajaxform").submit(function (e) {
-        var postData = $(this).serializeArray();
-        var formURL = $(this).attr("action");
-        var curLoc = location;
-        $.ajax(
-            {
-                url: 'process.php',
-                type: "POST",
-                data: postData,
-                // data: jQuery.param({'submit': 'playlist', 'data': postData}) ,
-                success: function (data) {
-
-console.log(data);
-                    window.location = data;
-
-
-                    //data: return data from server
-                }
-
-            });
-
-    });
-
-    //  $("#ajaxform").submit();
-</script>
