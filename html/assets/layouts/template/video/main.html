@@ -166,15 +166,23 @@
     <script>
         function resizeVideoPage() {
 
-            const width = window.innerWidth || document.documentElement.clientWidth ||
-                document.body.clientWidth;
-            const height = window.innerHeight || document.documentElement.clientHeight ||
-                document.body.clientHeight;
+            var fs = document.fullscreenElement
+            console.info("is fullscreen " + fs);
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
 
-            console.log(width, height, %% PLAYLIST_HEIGHT %%);
-            var nHeight = height + %% PLAYLIST_HEIGHT %% + 20;
-            window.resizeTo(width, nHeight);
-            console.log("new width,nheight", width, nHeight);
+            if (urlParams.has('r') == false) {
+                const width = window.innerWidth || document.documentElement.clientWidth ||
+                    document.body.clientWidth;
+                const height = window.innerHeight || document.documentElement.clientHeight ||
+                    document.body.clientHeight;
+
+
+                console.log(width, height, %%PLAYLIST_HEIGHT%%);
+                var nHeight = height + %%PLAYLIST_HEIGHT%% + 20;
+                window.resizeTo(width, nHeight);
+                console.log("new width,nheight", width, nHeight);
+            }
         }
     </script>
 

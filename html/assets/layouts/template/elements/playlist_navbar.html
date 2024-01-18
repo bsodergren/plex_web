@@ -1,0 +1,29 @@
+<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Toggle top offcanvas</button>
+
+<div class="offcanvas offcanvas-top " style="height: 150px;" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasTopLabel">Offcanvas top</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+
+    <button type="submit" name="submit" value="Playlist"><span class="btn rounded-pill btn-primary  border border-2 border-dark" 
+      >Add to Playlist</span></button>
+    <span class="btn rounded-pill btn-primary playlist_selector border border-2 border-dark"
+ 
+  onclick="addAll($(this));">Add all Playlist</span>
+
+<script>
+
+    function addAll(e) {
+        console.log(e.hasClass('playlist_selector'));
+
+        if (e.hasClass('playlist_selector')) {
+            $('.playlist_selector').attr('checked', 'checked');
+
+        }
+    }
+</script>
+    
+  </div>
+</div>

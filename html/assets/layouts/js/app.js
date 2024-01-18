@@ -56,18 +56,38 @@ function setNull (id) {
     document.getElementById(f_id).style = 'background:black'
 }
 
+
+
+function openOnce(url, target){
+    // open a blank "target" window
+    // or get the reference to the existing "target" window
+    var winref = window.open('', target, '');
+
+    // if the "target" window was just opened, change its url
+    if(winref.location.href === 'about:blank'){
+        winref.location.href = url;
+    }
+    return winref;
+}
+
+
 function popup (mylink, windowname, width = 900, height = 900) {
 
     //console.log(width + ' ' + height);
 
-    if (!window.focus) return true
     var href
     if (typeof mylink == 'string') href = mylink
     else href = mylink.href
-    window.open(
+
+    var winref =  window.open(
         href,
-        windowname,
-        'width=' + width + ',height=' + height + ',scrollbars=yes'
+        windowname,'scrollbars=yes'
     )
-    return false
+
+    if(winref.location.href != 'about:blank'){
+        winref.location.href = href + "&r=true";
+    }
+
+    return winref;
+
 }

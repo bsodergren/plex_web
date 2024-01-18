@@ -99,8 +99,10 @@ class GridDisplay extends VideoDisplay
             'HIDDEN_STUDIO_NAME' => add_hidden('studio', $studio).add_hidden('substudio', $substudio),
             'ROWS_HTML'          => $row_html,
             'INFO_NAME'          => $sort_type_map['map'][$_REQUEST['sort']],
-            'PLAYLIST_ADD_BUTTON' => Render::displayPlaylistButton(),
-            'PLAYLIST_ADD_ALL_BUTTON'=> Render::displayPlaylistAddAllButton(),
+            // 'PLAYLIST_ADD_BUTTON' => Render::displayPlaylistButton(),
+            // 'PLAYLIST_ADD_ALL_BUTTON'=> Render::displayPlaylistAddAllButton(),
+            'PLAYLIST_ADD_ALL_BUTTON' => Render::displayPlaylistCanvas(),
+
         ]);
 
         return $table_body_html;

@@ -55,9 +55,10 @@ public function ratingInclude($matches){
             $req = '?'.http_build_query($var['query']);
         }
 
+        $window = basename($var['href'],".php")."_popup";
         $url = __URL_HOME__.'/'.$var['href'].$req;
 
-        return " onclick=\"popup('".$url."', 'videoplayer',1100,725)\"";
+        return " onclick=\"popup('".$url."', '".$window."')\"";
     }
 
 

@@ -92,6 +92,7 @@ class VideoDisplay
         $table_body_html              = [];
         $x                            = 0;
         $row_id                       = $fileInfoArray['id'];
+        $next_id                    = $fileInfoArray['next'];
         // $row_filename = $row_id.":".$row['filename'];
         $row_filename                 = $fileInfoArray['filename'];
         $row_fullpath                 = $fileInfoArray['fullpath'];
@@ -163,15 +164,20 @@ class VideoDisplay
                     break;
 
                 case 'thumbnail':
+                    $thumbnail = '';
                     if (__SHOW_THUMBNAILS__ == true) {
+                        $thumbnail = $this->fileThumbnail($row_id);
+                    }
                         $params['THUMBNAIL_HTML'] .= process_template(
                             $this->template_base.'/file_thumbnail',
                             [
-                                'THUMBNAIL' => $this->fileThumbnail($row_id),
+                                'THUMBNAIL' => $thumbnail,
                                 'FILE_ID'   => $row_id,
+                                'NEXT_ID'   => $next_id,
+
                             ]
                         );
-                    }
+                    
 
                     break;
 
@@ -278,6 +284,10 @@ class VideoDisplay
         }
         foreach ($results as $id => $row) {
             $row_id     = $row['id'];
+            $row['next'] = 0;
+            if(array_key_exists($id+1,$results)){
+                $row['next'] = $results[$id+1]['id'];
+            }
             $videoInfo  = [];
 
             // $cols       = ['format', 'bit_rate', 'width', 'height'];

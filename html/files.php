@@ -6,7 +6,7 @@
 require_once '_config.inc.php';
 
 define('TITLE', 'Home');
-define('__SHOW_SORT__',true);
+define('__SHOW_SORT__', true);
 
 define('USE_FILTER', true);
 define('ALPHA_SORT', true);
@@ -43,8 +43,9 @@ $page_array                      = [
 
 $vidInfo                         = new VideoDisplay('filelist');
 $body                            = $vidInfo->filelist($results, '', $page_array);
-$body['PLAYLIST_ADD_BUTTON']     = Render::displayPlaylistButton();
-$body['PLAYLIST_ADD_ALL_BUTTON'] = Render::displayPlaylistAddAllButton();
+// $body['PLAYLIST_ADD_BUTTON']     = Render::displayPlaylistButton();
+// $body['PLAYLIST_ADD_ALL_BUTTON'] = Render::displayPlaylistAddAllButton();
+$body['PLAYLIST_ADD_ALL_BUTTON'] = Render::displayPlaylistCanvas();
 
 template::echo('filelist/page', $body);
 

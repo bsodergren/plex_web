@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
-    function updateVideoPlayer(video_id) {
-        setTimeout(function () { window.location.href = '%%__URL_HOME__%%/video.php?id=' + video_id + '&playlist_id=%%PLAYLIST_ID%%'; }, 0);
+    function updateVideoPlayer(video_id,pl_id) {
+        setTimeout(function () { window.location.href = '%%__URL_HOME__%%/video.php?id=' + video_id +  '&playlist_id=' + pl_id + '&r=true'; }, 0);
     }
 
     var myCarousel = document.querySelector('#myCarousel')
@@ -10,7 +10,7 @@
     })
 
     $('.carousel .carousel-item').each(function () {
-        var minPerSlide = 4;
+        var minPerSlide = 2;
         var next = $(this).next();
         if (!next.length) {
             next = $(this).siblings(':first');

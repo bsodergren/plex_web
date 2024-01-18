@@ -283,6 +283,11 @@ class Render
         return process_template('elements/playlist_AddAll_button', []);
     }
 
+    public static function displayPlaylistCanvas()
+    {
+        return process_template('elements/playlist_navbar', []);
+    }
+
     public static function createBreadcrumbs()
     {
         global $tag_types;

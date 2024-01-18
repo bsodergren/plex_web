@@ -78,7 +78,6 @@ function initializeVideo() {
     const time = formatTime(videoDuration);
     duration.innerText = `${time.minutes}:${time.seconds}`;
     duration.setAttribute("datetime", `${time.minutes}m ${time.seconds}s`);
-    resize();
 }
 
 // updateTimeElapsed indicates how far through the video
@@ -190,14 +189,18 @@ function animatePlayback() {
 // then it should exit and vice versa.
 function toggleFullScreen() {
     if (document.fullscreenElement) {
+        console.info("Fullscreen 1");
         document.exitFullscreen();
     } else if (document.webkitFullscreenElement) {
+        console.info("Fullscreen 2");
         // Need this to support Safari
         document.webkitExitFullscreen();
     } else if (videoContainer.webkitRequestFullscreen) {
+        console.info("Fullscreen 3");
         // Need this to support Safari
         videoContainer.webkitRequestFullscreen();
     } else {
+        console.info("Fullscreen 4");
         videoContainer.requestFullscreen();
     }
 }
@@ -206,19 +209,21 @@ function toggleFullScreen() {
 // and tooltip to reflect the current full screen state of the video
 function updateFullscreenButton() {
     fullscreenIcons.forEach((icon) => icon.classList.toggle("hidden"));
-
+    console.info("Fullscreen 5");
     if (document.fullscreenElement) {
+        console.info("Fullscreen 6");
         fullscreenButton.setAttribute("data-title", "Exit full screen (f)");
     } else {
+        console.info("Fullscreen 7");
         fullscreenButton.setAttribute("data-title", "Full screen (f)");
     }
 }
 function nextVideo() {
-    setTimeout(function () { window.location.href = '!!__URL_HOME__!!/video.php?id=!!NEXT_VIDEO_ID!!'; }, 0);
+    setTimeout(function () { window.location.href = '!!__URL_HOME__!!/video.php?id=!!NEXT_VIDEO_ID!!&playlist_id=!!PLAYLIST_ID!!&r=true'; }, 0);
 }
 
 function prevVideo() {
-    setTimeout(function () { window.location.href = '!!__URL_HOME__!!/video.php?id=!!PREV_VIDEO_ID!!'; }, 0);
+    setTimeout(function () { window.location.href = '!!__URL_HOME__!!/video.php?id=!!PREV_VIDEO_ID!!&playlist_id=!!PLAYLIST_ID!!'+ '&r=true'; }, 0);
 }
 
 // togglePip toggles Picture-in-Picture mode on the video
@@ -303,6 +308,7 @@ videoContainer.addEventListener("fullscreenchange", updateFullscreenButton);
 pipButton.addEventListener("click", togglePip);
 !!COMMENT!! nextButton.addEventListener("click", nextVideo);
 !!COMMENT!! prevButton.addEventListener("click", prevVideo);
+
 video.addEventListener('loadedmetadata', (e) => {
     let player = e.target;
     player.width = player.clientWidth;
