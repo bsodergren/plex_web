@@ -183,7 +183,6 @@ class Render
         foreach (self::$CSS_THEMES as $theme) {
             $theme_options .= process_template('base/navbar/theme/option', ['THEME_NAME' => ucfirst($theme).' Theme', 'THEME_OPTION' => $theme.'-theme']);
         }
-
         return process_template('base/navbar/theme/select', ['THEME_OPTIONS' => $theme_options]);
     }
 

@@ -40,17 +40,17 @@ foreach ($files as $stylesheet) {
     $css_html .= process_template('base/header/header_css_link', ['CSS_NAME' => $theme, 'CSS_URL' => $stylesheet]);
 }
 $params['CSS_HTML']        = $css_html;
-$params['JS_CSS_SWITCHER'] = '<script src="'.__LAYOUT_URL__.'js/styleswitch.js" type="text/javascript"></script>'.\PHP_EOL;
+$params['JS_CSS_SWITCHER'] = '<script src="'.__LAYOUT_URL__.'js/styleswitch.js?fsdsfd" type="text/javascript"></script>'.\PHP_EOL;
 // }
 $params['SCRIPTS']         = process_template('base/header/header_scripts', $params);
 
-if (!defined('VIDEOINFO')) {
+// if (!defined('VIDEOINFO')) {
     $params['SCRIPTS']  .= process_template('base/header/header_filelist', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
     $params['THEME_JS'] = process_template('base/header/header_themejs', []);
-} else {
-    $params['SCRIPTS']  .= process_template('base/header/header_videoinfo', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
- //     $params['ONLOAD'] = 'onbeforeunload="refreshAndClose();"';
-}
+// } else {
+//     $params['SCRIPTS']  .= process_template('base/header/header_videoinfo', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
+//  //     $params['ONLOAD'] = 'onbeforeunload="refreshAndClose();"';
+// }
 
 if (defined('GRID_VIEW')) {
     $params['SCRIPTS'] .= process_template('base/header/header_grid', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
@@ -64,4 +64,7 @@ if (!defined('NONAVBAR')) {
    define('BREADCRUMB', $crumbs);
 
     require __LAYOUT_NAVBAR__;
+} else {
+    $crumbs = Render::display_theme_dropdown();
+    define('THEME_SWITCHER', $crumbs);
 }

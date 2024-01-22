@@ -3,9 +3,9 @@
  * plex web viewer
  */
 
-require_once '_config.inc.php';
-
 define('TITLE', 'Home');
+define('__SHOW_SORT__', true);
+require_once '_config.inc.php';
 
 include __LAYOUT_HEADER__;
 $column                         = 'duration';
@@ -36,7 +36,7 @@ if (count($results) > 0) {
 
     $body    = $vidInfo->filelist($fileresults);
 } else {
-    $body ['BODY'] = 'No duplicates Found';
+    $body['BODY'] = 'No duplicates Found';
 }
 template::echo('dupe/main', $body);
 // Template::echo("artist/main",$PARAMS);

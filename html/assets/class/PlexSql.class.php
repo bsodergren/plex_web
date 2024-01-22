@@ -92,7 +92,7 @@ class PlexSql extends MysqliDb
         }
         $query   = 'SELECT '.$column.',count('.$column.') FROM `metatags_video_file` '.$library.' group
         by '.$column.' having COUNT('.$column.') > 1;';
-
+echo $query;
         return $db->query($query);
     }
 

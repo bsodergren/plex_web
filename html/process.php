@@ -4,6 +4,9 @@
  */
 
 require_once '_config.inc.php';
+
+dd($_REQUEST);
+
 if (true == $_GET['q']) {
     $q    = $_GET['q'];
 
@@ -26,5 +29,7 @@ if (array_key_exists('action', $_REQUEST)) {
         include __LAYOUT_HEADER__;
     }
 }
+logger('_REQUEST', $_REQUEST);
+
 
 $forms = new ProcessForms($_REQUEST);

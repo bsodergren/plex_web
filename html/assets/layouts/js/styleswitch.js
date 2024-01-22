@@ -5,8 +5,21 @@
 var manual_or_random = 'manual' //"manual" or "random"
 var randomsetting = '3 days' //"eachtime", "sessiononly", or "x days (replace x with desired integer)". Only applicable if mode is random.
 
-//////No need to edit beyond here//////////////
 
+//////No need to edit beyond here//////////////
+function getCookieName(suffix = '') {
+    var url = window.location.pathname;
+    var index = url.lastIndexOf("/") + 1;
+    var filenameWithExtension = url.substr(index);
+    var filename = filenameWithExtension.split(".")[0]; // <-- added this line
+    if(filename == 'videoinfo'){
+        return "videoInfo_cook" + suffix;
+    } else {
+        return "StyleCookie" + suffix;
+    }
+
+    
+}
 
 function getCookie (Name) {
     var re = new RegExp(Name + '=[^;]+', 'i') //construct RE to search for target name/value pair
@@ -71,7 +84,7 @@ function chooseStyle (styletitle, days) {
         console.log(styletitle, days);
 
         setStylesheet(styletitle)
-        setCookie('mysheet', styletitle, days)
+        setCookie(getCookieName(), styletitle, days)
 
     }
     console.log(document.location);
@@ -104,7 +117,7 @@ function indicateSelected (element) {
 
 if (manual_or_random == 'manual') {
     //IF MANUAL MODE
-    var selectedtitle = getCookie('mysheet')
+    var selectedtitle = getCookie(getCookieName())
     if (document.getElementById && selectedtitle != null)
         //load user chosen style sheet from cookie if there is one stored
         setStylesheet(selectedtitle)
@@ -113,26 +126,26 @@ if (manual_or_random == 'manual') {
     if (randomsetting == 'eachtime') setStylesheet('', 'random')
     else if (randomsetting == 'sessiononly') {
         //if "sessiononly" setting
-        if (getCookie('mysheet_s') == null)
+        if (getCookie(getCookieName('s')) == null)
             //if "mysheet_s" session cookie is empty
             document.cookie =
-                'mysheet_s=' +
+            getCookieName('s') + '=' +
                 setStylesheet('', 'random') +
                 '; path=/' //activate random alt stylesheet while remembering its "title" value
-        else setStylesheet(getCookie('mysheet_s')) //just activate random alt stylesheet stored in cookie
+        else setStylesheet(getCookie(getCookieName('s'))) //just activate random alt stylesheet stored in cookie
     } else if (randomsetting.search(/^[1-9]+ days/i) != -1) {
         //if "x days" setting
         if (
-            getCookie('mysheet_r') == null ||
-            parseInt(getCookie('mysheet_r_days')) != parseInt(randomsetting)
+            getCookie(getCookieName('r')) == null ||
+            parseInt(getCookie(getCookieName('r_dats'))) != parseInt(randomsetting)
         ) {
             //if "mysheet_r" cookie is empty or admin has changed number of days to persist in "x days" variable
             setCookie(
-                'mysheet_r',
+                getCookieName('r'),
                 setStylesheet('', 'random'),
                 parseInt(randomsetting)
             ) //activate random alt stylesheet while remembering its "title" value
-            setCookie('mysheet_r_days', randomsetting, parseInt(randomsetting)) //Also remember the number of days to persist per the "x days" variable
-        } else setStylesheet(getCookie('mysheet_r')) //just activate random alt stylesheet stored in cookie
+            setCookie(getCookieName('r_dats'), randomsetting, parseInt(randomsetting)) //Also remember the number of days to persist per the "x days" variable
+        } else setStylesheet(getCookieName('r')) //just activate random alt stylesheet stored in cookie
     }
 }

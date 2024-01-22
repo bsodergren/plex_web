@@ -1,6 +1,58 @@
 <main class="container-fluid">
+
+    <script src="https://jsuites.net/v4/jsuites.js"></script>
+    <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+
     %%BODY%%
+
+
 </main>
+%%THEME_SWITCHER%%
+
 <script>
+
+    var array = [{ "text": "Alberto Bergnaum", "value": "hermiston.magdalena@hotmail.com" }, { "text": "Mrs. Christy Von Jr.", "value": "leland.terry@yahoo.com" }, { "text": "Mr. Ethan Herman", "value": "katharina75@gmail.com" }, { "text": "Milan Bayer DVM", "value": "creola.padberg@johnson.com" }, { "text": "Anderson Spencer III", "value": "alehner@dibbert.biz" }, { "text": "Millie McDermott DVM", "value": "david00@little.com" }, { "text": "Annamarie Yundt", "value": "camille25@yahoo.com" }, { "text": "Prof. Heather Beer MD", "value": "nkohler@hauck.com" }, { "text": "Adell Kuphal", "value": "euna.terry@gmail.com" }, { "text": "Celine Ullrich I", "value": "ucrona@greenholt.biz" }, { "text": "Aliyah Ward", "value": "antwan46@hotmail.com" }, { "text": "Micheal Walter MD", "value": "timothy22@hotmail.com" }, { "text": "Edyth Pollich", "value": "carli52@hotmail.com" }, { "text": "Mr. Mavis Hahn II", "value": "brooks68@gmail.com" }, { "text": "Prof. Lula Herzog", "value": "hansen.jennie@gmail.com" }, { "text": "Adah Schoen", "value": "rjerde@toy.info" }, { "text": "Chance Pollich", "value": "hank11@reynolds.net" }, { "text": "Eugene Streich", "value": "janet32@doyle.com" }, { "text": "Elisabeth Kessler", "value": "jessica.weissnat@rolfson.com" }, { "text": "Candida Mueller Jr.", "value": "vfahey@nolan.biz" }, { "text": "Delilah Pollich", "value": "ronaldo25@watsica.com" }, { "text": "Andres Satterfield DDS", "value": "franz.emmerich@gmail.com" }, { "text": "Alverta Kulas", "value": "cwatsica@zboncak.com" }, { "text": "Mandy Weissnat DVM", "value": "bud.mayert@hotmail.com" }, { "text": "Prof. Colleen Pfannerstill", "value": "rschinner@gmail" }];
+
+
+    function add(id) {
+
+
+        var txtNewInputBox = document.createElement('div');
+
+
+        // Then add the content (a new input box) of the element.
+        txtNewInputBox.innerHTML = "<div id='new_" + id + "'></div";
+
+        // Finally put it where it is supposed to appear.
+        var loc = document.getElementById('' + id + '');
+        loc.appendChild(txtNewInputBox);
+
+
+        jSuites.dropdown(document.getElementById('new_'+id), {
+            url: '/plex/jsArtists.php',
+            autocomplete: true,
+            lazyLoading: true,
+            multiple: false,
+            onchange: function (instance, item) {
+
+                console.log(item)
+                $.ajax({
+                    type: 'post',
+                    url: 'process.php?id=4',
+                    data: {
+                        submit: 'update_' + id,
+                        add: item.value,
+                        video_key: '%%VIDEO_KEY%%'
+                    }
+
+                });
+                loc.removeChild(txtNewInputBox);
+
+            },
+            width: '280px',
+        });
+    }
+
     window.resizeTo(1200, 450);
+
 </script>

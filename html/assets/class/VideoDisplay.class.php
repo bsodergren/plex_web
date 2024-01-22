@@ -33,6 +33,7 @@ class VideoDisplay
     {
         $videoinfo_js = '';
         $editable     = '';
+        $add_button = '';
         if (defined('NONAVBAR')) {
             if ('' != $id) {
                 $id            = ucfirst($id);
@@ -50,11 +51,21 @@ class VideoDisplay
                 );
 
                 $editable      = $editableClass;
+
+                $add_button = process_template(
+                    'videoinfo/add_button',
+                    [
+                        'EDITABLE'  => $editable,
+                    ]
+                );
+
+
             }
         }
         $params['FIELD_ROW_HTML'] .= process_template(
             'videoinfo/file_row',
             [
+                'ADD_BUTTON'  => $add_button,
                 'FIELD'     => $field,
                 'VALUE'     => $value,
                 'ALT_CLASS' => $class,
@@ -262,6 +273,7 @@ class VideoDisplay
         }
 // dd($params['HIDDEN_STUDIO']);
         $table_body_html['filecards'] = process_template($this->template_base.'/file', $params);
+$table_body_html['VIDEO_KEY'] =$row_video_key;
 
         return $table_body_html;
     }
@@ -319,7 +331,8 @@ class VideoDisplay
         //         'JS_TAG_HTML'    => $js_html,
         //     ]
         // );
-
+        dump($table_body['VIDEO_KEY'] );
+        $table_html['VIDEO_KEY']  = $table_body['VIDEO_KEY'];
         return $table_html; // .$javascript_html;
     } // end display_filelist()
 }
