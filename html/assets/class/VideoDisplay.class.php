@@ -65,7 +65,7 @@ class VideoDisplay
         $params['FIELD_ROW_HTML'] .= process_template(
             'videoinfo/file_row',
             [
-                'ADD_BUTTON'  => $add_button,
+               // 'ADD_BUTTON'  => $add_button,
                 'FIELD'     => $field,
                 'VALUE'     => $value,
                 'ALT_CLASS' => $class,

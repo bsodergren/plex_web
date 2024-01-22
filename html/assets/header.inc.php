@@ -23,7 +23,7 @@ global $_SESSION;
 foreach ($include_array as $required_file) {
     require_once $required_file;
 }
-
+Display::Random();
 $template       = new Template();
 foreach (SESSION_VARS as $key => $default) {
     if (!isset($_SESSION[$key])) {

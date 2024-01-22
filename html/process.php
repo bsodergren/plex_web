@@ -5,7 +5,7 @@
 
 require_once '_config.inc.php';
 
-dd($_REQUEST);
+// dd($_REQUEST);
 
 if (true == $_GET['q']) {
     $q    = $_GET['q'];

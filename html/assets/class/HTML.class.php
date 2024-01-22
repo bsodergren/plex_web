@@ -55,7 +55,7 @@ public function ratingInclude($matches){
             $req = '?'.http_build_query($var['query']);
         }
 
-        $window = basename($var['href'],".php")."_popup";
+        $window = basename($var['href'],".php")."_popup_".Display::$Random;
         $url = __URL_HOME__.'/'.$var['href'].$req;
 
         return " onclick=\"popup('".$url."', '".$window."')\"";

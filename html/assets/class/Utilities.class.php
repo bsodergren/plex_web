@@ -115,6 +115,7 @@ class display
 {
     private $model_popup   = '';
     private $model_buttons = [];
+    public static $Random;
 
     public static function echo($text, $var = '')
     {
@@ -194,6 +195,9 @@ class display
 
             echo '</div>';
         }
+    }
+   public static function Random($length = 10) {
+        self::$Random= substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
     }
 }
 

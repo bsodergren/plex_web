@@ -33,22 +33,22 @@
             autocomplete: true,
             lazyLoading: true,
             multiple: false,
-            onchange: function (instance, item) {
+            // onchange: function (instance, item) {
 
-                console.log(item)
-                $.ajax({
-                    type: 'post',
-                    url: 'process.php?id=4',
-                    data: {
-                        submit: 'update_' + id,
-                        add: item.value,
-                        video_key: '%%VIDEO_KEY%%'
-                    }
+            //     console.log(item)
+            //     $.ajax({
+            //         type: 'post',
+            //         url: 'process.php?id=4',
+            //         data: {
+            //             submit: 'update_' + id,
+            //             add: item.value,
+            //             video_key: '%%VIDEO_KEY%%'
+            //         }
 
-                });
-                loc.removeChild(txtNewInputBox);
+            //     });
+            //     loc.removeChild(txtNewInputBox);
 
-            },
+            // },
             width: '280px',
         });
     }
