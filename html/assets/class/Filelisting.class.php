@@ -192,6 +192,7 @@ class FileListing
             $fieldArray
         );
         $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
+
         $results    = $this->db->rawQuery($query);
 
         return $results;

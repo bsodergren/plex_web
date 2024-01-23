@@ -57,7 +57,6 @@ if (isset($playlist_id)) {
             p.playlist_video_id = f.id  and
             f.video_key = m.video_key);';
     $results                            = $db->query($sql);
-    //    dd($results);
     for ($i = 0; $i < count($results); ++$i) {
         $class = '';
 
@@ -99,7 +98,7 @@ if (isset($playlist_id)) {
 
     $carousel_js                        = process_template('video/carousel_js', ['PLAYLIST_ID' => $playlist_id]);
     $carousel                           = process_template('video/carousel', ['CAROUSEL_INNER_HTML' => $carousel_item]);
-    $video_js_params['PLAYLIST_HEIGHT'] = 50;
+    $video_js_params['PLAYLIST_HEIGHT'] = 120;
     $video_js_params['PLAYLIST_WIDTH']  = 50;
     $video_js_params['PLAYLIST_ID']     = $playlist_id;
 

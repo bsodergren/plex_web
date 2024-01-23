@@ -1,8 +1,10 @@
-<?php 
+<?php
+/**
+ * plex web viewer
+ */
 
-
-include_once __PHP_INC_CLASS_DIR__."/Render.class.php";
-include_once __PHP_INC_CLASS_DIR__."/Template.class.php";
+include_once __PHP_INC_CLASS_DIR__.'/Render.class.php';
+include_once __PHP_INC_CLASS_DIR__.'/Template.class.php';
 
 class AlphaSort extends Render
 {
@@ -10,9 +12,10 @@ class AlphaSort extends Render
     {
         global $url_array;
         global $tag_types;
-        $sep         = '&';
+        $sep            = '&';
         if ('' != $url_array['query_string']) {
             parse_str($url_array['query_string'], $query_parts);
+            
 
             $current     = 'studio';
 
@@ -25,7 +28,6 @@ class AlphaSort extends Render
             }
 
             $sort        = $query_parts['sort'];
-
             $tag_string  = implode(',', $tag_types);
             $f           = explode('.', $sort);
             if (!str_contains($tag_string, $f[1])) {
@@ -38,17 +40,13 @@ class AlphaSort extends Render
                 unset($query_parts['alpha']);
             }
             $request_uri = http_build_query($query_parts);
-          
         }
 
-
-        if($sort == ''){
+        if ('' == $sort) {
             $sort = $url_array['current'];
-
         }
-        
-        $request_string = $request_uri.'sort='.$sort;
 
+        $request_string = $request_uri;//.'sort='.$sort;
 
         $i              = 0;
 
@@ -80,6 +78,7 @@ class AlphaSort extends Render
             }
             $class = 'btn btn-sm '.$bg.$pill;
             $url   = $url_array['url'].'?alpha='.urlencode($char).$sep;
+            //  dump($request_string);
             $html .=
             parent::display_directory_navlinks($url, $char, $request_string, $class, 'role="button" aria-pressed="true"  ');
         }
@@ -89,23 +88,21 @@ class AlphaSort extends Render
 
     public static function display_AlphaRow()
     {
-     
+        $alpha_sort = self::display_alphaSort(0, 30);
 
-        $alpha_sort  = self::display_alphaSort(0, 15);
-        $alpha_end   = self::display_alphaSort(15, 20);
+        //  $alpha_end   = self::display_alphaSort(15, 20);
         return process_template('elements/AlphaSort/row', [
-            'ALPHA_BLOCK_START'                                          => $alpha_sort,
-            'ALPHA_BLOCK_END'                                            => $alpha_end]);
-       
+            'ALPHA_BLOCK_START' => $alpha_sort,
+            //  'ALPHA_BLOCK_END'                                            => $alpha_end
+        ]);
     }
 
     public static function display_AlphaBlock()
     {
-            if (defined("ALPHA_SORT") == true) {
-
-            return  process_template('elements/AlphaSort/block',['ALPHA_BLOCK' => self::display_AlphaRow()]);
+        if (true == defined('ALPHA_SORT')) {
+            return process_template('elements/AlphaSort/block', ['ALPHA_BLOCK' => self::display_AlphaRow()]);
         }
+
         return '';
     }
-
 }

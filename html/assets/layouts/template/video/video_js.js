@@ -313,7 +313,7 @@ video.addEventListener('loadedmetadata', (e) => {
     let player = e.target;
     player.width = player.clientWidth;
     player.height = player.clientHeight;
-    console.log("player height  " , player.height,player.width  );
+    console.log("player width, height  " ,player.width, player.height  );
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -324,23 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("keyup", keyboardShortcuts);
 
 function resize() {
-    var img = document.getElementsByTagName("video");
-
-    // console.log(video.clientHeight);
-
-    // var vh = img[0].clientHeight;
-    // var vw = img[0].clientWidth;
-    // console.log("Image W" + vw + " H" + vh);
-    // console.log("added W" + !!PLAYLIST_WIDTH!! + " H" +!!PLAYLIST_HEIGHT!! );
-
-    // vw = vw + !!PLAYLIST_WIDTH!!;
-    // vh = vh + !!PLAYLIST_HEIGHT!!;
-    // vw = vw + 150;
-    // vh = vh + 150;
-    // console.log("New Size W" + vw + " H" + vh);
-
-    // window.resizeTo(vw, vh);
-    // console.log("Window W" + window.innerWidth + " H" + window.innerHeight);
+   
 
 }
 

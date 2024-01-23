@@ -71,7 +71,7 @@ function openOnce(url, target){
 }
 
 
-function popup (mylink, windowname, width = 900, height = 900) {
+function popup (mylink, windowname, width = 1028, height = 800) {
 
     //console.log(width + ' ' + height);
 
@@ -81,7 +81,7 @@ function popup (mylink, windowname, width = 900, height = 900) {
 
     var winref =  window.open(
         href,
-        windowname,'scrollbars=yes'
+        windowname,'scrollbars=yes,width='+width+',height='+height+''
     )
 
     if(winref.location.href != 'about:blank'){

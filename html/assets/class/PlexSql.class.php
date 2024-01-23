@@ -40,6 +40,9 @@ class PlexSql extends MysqliDb
             if ('None' == $key) {
                 return $field.' IS NULL';
             }
+            if( $f[1] == 'artist'){
+                return "(".$field." LIKE '".$key."%' OR ".$field." LIKE '%,".$key."%')";
+            }
             return $field." LIKE '".$key."%' ";
         }
 
@@ -92,7 +95,7 @@ class PlexSql extends MysqliDb
         }
         $query   = 'SELECT '.$column.',count('.$column.') FROM `metatags_video_file` '.$library.' group
         by '.$column.' having COUNT('.$column.') > 1;';
-echo $query;
+// echo $query;
         return $db->query($query);
     }
 

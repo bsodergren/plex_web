@@ -331,7 +331,6 @@ $table_body_html['VIDEO_KEY'] =$row_video_key;
         //         'JS_TAG_HTML'    => $js_html,
         //     ]
         // );
-        dump($table_body['VIDEO_KEY'] );
         $table_html['VIDEO_KEY']  = $table_body['VIDEO_KEY'];
         return $table_html; // .$javascript_html;
     } // end display_filelist()
