@@ -15,7 +15,7 @@ $include_array  = [];
 foreach ($const['user'] as $name => $value) {
     if (Strings::contains($name, '_INC_')) {
         $include_array = array_merge($include_array, RoboLoader::get_filelist($value, 'php', 1));
-    } // end if
+    } 
 } // end foreach
 
 global $_SESSION;
@@ -23,7 +23,15 @@ global $_SESSION;
 foreach ($include_array as $required_file) {
     require_once $required_file;
 }
+
 Display::Random();
+define('__RANDOM__',Display::$Random);
+
+
+
+
+
+
 $template       = new Template();
 foreach (SESSION_VARS as $key => $default) {
     if (!isset($_SESSION[$key])) {

@@ -6,7 +6,11 @@
         <label class="custom-control-label position-relative  " for="ck1a_%%FILE_ID%%">
 
 
-            <img src="%%THUMBNAIL%%" alt="#" class="img-fluid" onerror="this.onerror=null;this.src='%%__URL_HOME__%%/images/default.jpg'">
+            <img src="%%THUMBNAIL%%" alt="#" class="img-fluid"
+            id="ck1a_%%FILE_ID%%_img"
+            onmouseover="previewHover(this,'%%THUMBNAIL%%','%%PREVIEW%%')"
+             onerror="this.onerror=null;this.src='%%__URL_HOME__%%/images/default.jpg'"
+             >
         </label>
 
 

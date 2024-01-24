@@ -29,6 +29,22 @@ class VideoDisplay
         //  return __URL_HOME__.'/images/thumbnail.php?id='.$row_id;
     }
 
+    public function filePreview($row_id, $extra = '')
+    {
+        global $db;
+        $query  = 'SELECT preview FROM metatags_video_file WHERE id = '.$row_id;
+        $result = $db->query($query);
+
+        if (defined('NOTHUMBNAIL')) {
+            return null;
+        }
+        if($result[0]['preview'] === null){
+            return null;
+        }
+
+        return __URL_HOME__.$result[0]['preview'];
+        //  return __URL_HOME__.'/images/thumbnail.php?id='.$row_id;
+    }
     public function fileRow($params, $field, $value, $class, $id = '')
     {
         $videoinfo_js = '';
@@ -109,6 +125,7 @@ class VideoDisplay
         $row_fullpath                 = $fileInfoArray['fullpath'];
         $row_video_key                = $fileInfoArray['video_key'];
         $infoParams                   = null;
+
         if (isset($fileInfoArray['rownum'])) {
             $result_number = $fileInfoArray['rownum'];
         }
@@ -178,10 +195,13 @@ class VideoDisplay
                     $thumbnail = '';
                     if (__SHOW_THUMBNAILS__ == true) {
                         $thumbnail = $this->fileThumbnail($row_id);
+                        $row_preview_image = $this->filePreview($row_id);
+                        
                     }
                         $params['THUMBNAIL_HTML'] .= process_template(
                             $this->template_base.'/file_thumbnail',
                             [
+                                'PREVIEW' => $row_preview_image,
                                 'THUMBNAIL' => $thumbnail,
                                 'FILE_ID'   => $row_id,
                                 'NEXT_ID'   => $next_id,

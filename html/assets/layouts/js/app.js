@@ -91,3 +91,28 @@ function popup (mylink, windowname, width = 1028, height = 800) {
     return winref;
 
 }
+
+
+
+function previewHover(e, thumb, prev) {
+
+    console.log(e.id);
+
+    if (prev == '') {
+        return false;
+    } else {
+        var element = document.getElementById(e.id);
+
+        element.addEventListener('mouseenter', event => {
+            element.src = prev
+        });
+
+        element.addEventListener('mouseleave', event => {
+            element.src = thumb;
+        });
+
+    }
+
+
+
+}

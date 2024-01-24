@@ -45,8 +45,10 @@ $params['JS_CSS_SWITCHER'] = '<script src="'.__LAYOUT_URL__.'js/styleswitch.js?f
 $params['SCRIPTS']         = process_template('base/header/header_scripts', $params);
 
 // if (!defined('VIDEOINFO')) {
-    $params['SCRIPTS']  .= process_template('base/header/header_filelist', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
-    $params['THEME_JS'] = process_template('base/header/header_themejs', []);
+$params['SCRIPTS'] .= process_template('base/header/header_filelist', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
+
+
+$params['THEME_JS']        = process_template('base/header/header_themejs', []);
 // } else {
 //     $params['SCRIPTS']  .= process_template('base/header/header_videoinfo', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
 //  //     $params['ONLOAD'] = 'onbeforeunload="refreshAndClose();"';
@@ -59,9 +61,8 @@ if (defined('GRID_VIEW')) {
 Template::echo('base/header/header', $params);
 
 if (!defined('NONAVBAR')) {
-   
-   $crumbs = Render::createBreadcrumbs();
-   define('BREADCRUMB', $crumbs);
+    $crumbs = Render::createBreadcrumbs();
+    define('BREADCRUMB', $crumbs);
 
     require __LAYOUT_NAVBAR__;
 } else {

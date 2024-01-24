@@ -128,35 +128,6 @@ class Template
         return '';
     }
 
-    /*
-
-        public function clear()
-        {
-            $this->html = '';
-        }
-
-        public function return($template='', $array='')
-        {
-            if ($template) {
-                $this->template($template, $array);
-            }
-
-            $html = $this->html;
-            $this->clear();
-            return $html;
-        }
-
-        public function render($template='', $array='')
-        {
-            if ($template) {
-                $this->template($template, $array);
-            }
-
-            $html = $this->html;
-            $this->clear();
-            echo $html;
-        }
-    */
 
     public function template($template = '', $replacement_array = '', $js = '')
     {
@@ -179,10 +150,17 @@ class Template
             $this->html .= $html_text;
         }
         $html_text     = file_get_contents($template_file);
-        foreach (__TEMPLATE_CONSTANTS__ as $key) {
+        foreach (__TEMPLATE_CONSTANTS__ as $_ => $key) {
+            
             $value = constant($key);
+          
+            if(is_array($value)){
+                continue;
+            }
+
             $key   = $s_delim.strtoupper($key).$e_delim;
             if (null != $value) {
+                //   dump([$key,$value]);
                 $html_text = str_replace($key, $value, $html_text);
             }
         }

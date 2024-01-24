@@ -149,7 +149,7 @@ class FileListing
             $sql .= 'm.library as library, ';
         }
         $sql .= 'i.format, i.bit_rate, i.width, i.height, ';
-        $sql .= 'f.filename, f.thumbnail, f.fullpath, f.duration, f.rating, ';
+        $sql .= 'f.filename, f.thumbnail, f.fullpath, f.duration, f.rating, f.preview,';
         $sql .= 'f.filesize, f.added, f.id, f.video_key FROM metatags_video_file f ';
         $sql .= 'INNER JOIN metatags_video_metadata m on f.video_key=m.video_key '.PlexSql::getLibrary();
         $sql .= 'LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
@@ -184,7 +184,8 @@ class FileListing
 
         $fieldArray = array_merge($fieldArray, [
             'i.format', 'i.bit_rate', 'i.width', 'i.height', 'f.library', 'f.rating',
-            'f.filename', 'f.thumbnail', 'f.fullpath', 'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key']);
+            'f.filename', 'f.thumbnail', 'f.fullpath', 'f.preview',
+            'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key']);
 
         $joinQuery  = $this->db->getQuery(
             Db_TABLE_VIDEO_FILE.' f',

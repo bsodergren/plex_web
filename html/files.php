@@ -45,7 +45,7 @@ $vidInfo                         = new VideoDisplay('filelist');
 $body                            = $vidInfo->filelist($results, '', $page_array);
 // $body['PLAYLIST_ADD_BUTTON']     = Render::displayPlaylistButton();
 // $body['PLAYLIST_ADD_ALL_BUTTON'] = Render::displayPlaylistAddAllButton();
-$body['PLAYLIST_ADD_ALL_BUTTON'] = Render::displayPlaylistCanvas();
+//$body['PLAYLIST_ADD_ALL_BUTTON'] = Render::displayPlaylistCanvas();
 
 template::echo('filelist/page', $body);
 

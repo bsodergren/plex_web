@@ -24,3 +24,7 @@ html/logs/*
 html/temp/*
 src/var/**
 html/assets/layouts/template - Copy
+html/node_modules/*
+
+html/package.json
+html/package-lock.json

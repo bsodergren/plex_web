@@ -138,7 +138,7 @@ class PlexSql extends MysqliDb
         // $fieldArray[] = 'm.library';
 
         $fieldArray = array_merge($fieldArray, [
-            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'f.library',
+            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'f.library','f.preview',
             'f.filename', 'f.thumbnail', 'f.fullpath', 'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key']);
 
         $joinQuery  = $this->db->getQuery(
@@ -213,7 +213,7 @@ class PlexSql extends MysqliDb
     {
         //  $this->sql_table = $table;
         //        $field_list      = ' id, video_key,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added,filename ,fullpath,library,filesize';
-        $field_list = 'f.id, f.video_key,f.thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.added,f.filename ,f.fullpath,m.library,f.filesize';
+        $field_list = 'f.id, f.video_key,f.preview,f.thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.added,f.filename ,f.fullpath,m.library,f.filesize';
         if ('select' == $fields) {
             $sql = 'select '.$field_list;
         } else {

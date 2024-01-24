@@ -99,11 +99,6 @@ define('__MAX_PAGES_TO_SHOW__', 8);
 
 define('ALLOWED_INACTIVITY_TIME', time() + 1 * 60);
 
-define('__TEMPLATE_CONSTANTS__', [
-    '__LAYOUT_URL__',
-    '__URL_HOME__',
-]);
-
 define('SESSION_VARS',
     [
         'itemsPerPage' => '100',
@@ -120,6 +115,9 @@ require_once __PHP_ASSETS_DIR__.'/header.inc.php';
 
 require_once __PHP_ASSETS_DIR__.'/variables.php';
 require_once __PHP_ASSETS_DIR__.'/settings.inc.php';
+
+$const_keys = array_keys(get_defined_constants(true)['user']);
+define('__TEMPLATE_CONSTANTS__', $const_keys );
 
 logger('____________________________________________________________________________________________________________________');
 define('__METADB_HASH', __CACHE_DIR.'/'.$cache_directory.'/metadb.hash');

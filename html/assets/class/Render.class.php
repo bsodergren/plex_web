@@ -15,7 +15,7 @@ class Render
     public static $CSS_THEMES = [];
     public static $CrubURL    = [];
 
-    public function __construct($navigation_link_array)
+    public function __construct($navigation_link_array = '')
     {
         global $_SESSION;
         global $_REQUEST;
@@ -26,7 +26,6 @@ class Render
         $this->_REQUEST              = $_REQUEST;
         $this->_SERVER               = $_SERVER;
     }
-
 
     public static function display_sort_options($url_array)
     {
@@ -127,6 +126,7 @@ class Render
         }
 
         foreach ($navigation_link_array as $name => $link_array) {
+            $is_active = '';
             if ('dropdown' == $name) {
                 $dropdown_html = '';
 
@@ -151,17 +151,21 @@ class Render
             } else {
                 if (true == $link_array['studio']) {
                     if ($_REQUEST['studio']) {
-                        $link_array['url'] = $link_array['url'].'?studio='.$_REQUEST['studio'];
+                        $url = $link_array['url'].'?studio='.$_REQUEST['studio'];
                     }
                     if ($_REQUEST['substudio']) {
-                        $link_array['url'] = $link_array['url'].'?substudio='.$_REQUEST['substudio'];
+                        $url = $link_array['url'].'?substudio='.$_REQUEST['substudio'];
                     }
                 }
 
+                if (__THIS_PAGE__ == basename($link_array['url'], '.php')) {
+                    $is_active = ' active';
+                }
                 $array    = [
                     'MENULINK_URL'  => $link_array['url'],
                     'MENULINK_JS'   => $link_array['js'],
                     'MENULINK_TEXT' => $link_array['text'],
+                    'ACTIVE'        => $is_active,
                 ];
 
                 $url_text = process_template('base/navbar/menu_link', $array);
@@ -183,6 +187,7 @@ class Render
         foreach (self::$CSS_THEMES as $theme) {
             $theme_options .= process_template('base/navbar/theme/option', ['THEME_NAME' => ucfirst($theme).' Theme', 'THEME_OPTION' => $theme.'-theme']);
         }
+
         return process_template('base/navbar/theme/select', ['THEME_OPTIONS' => $theme_options]);
     }
 
@@ -223,7 +228,7 @@ class Render
             'GENREFILTERBOX'                                             => $genre_box_html,
             'ARTISTFILTERBOX'                                            => $artist_box_html,
             'STUDIOFILTERBOX'                                            => $studio_box_html,
-            'SUBSTUDIOFILTERBOX'                                         => $substudio_box_html,            
+            'SUBSTUDIOFILTERBOX'                                         => $substudio_box_html,
             'HIDDEN'                                                     => $hidden]);
     }
 
@@ -285,6 +290,11 @@ class Render
     public static function displayPlaylistCanvas()
     {
         return process_template('elements/playlist_navbar', []);
+    }
+
+    public function playListButton()
+    {
+        return self::displayPlaylistCanvas();
     }
 
     public static function createBreadcrumbs()
@@ -366,9 +376,5 @@ class Render
         return $crumbs;
     }
 
-    public static function displayVideoLink($id,$text,$extra='')
-    {
-
-        
-    }
+    public static function displayVideoLink($id, $text, $extra = '') {}
 }

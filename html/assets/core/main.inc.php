@@ -207,6 +207,7 @@ function urlQuerystring($input_string, $exclude = '', $query = false)
                 $parts[$field] = $value;
             }
         }
+        if (is_array($parts)) {
         if (is_array($exclude)) {
             foreach ($exclude as $x) {
                 if (array_key_exists($x, $parts)) {
@@ -218,6 +219,7 @@ function urlQuerystring($input_string, $exclude = '', $query = false)
                 unset($parts[$exclude]);
             }
         }
+    }
         if (false === $query) {
             $query_string = uri_String($parts, '');
         } else {
