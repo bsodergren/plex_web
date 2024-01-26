@@ -328,11 +328,24 @@ class Render
                     if ('alpha' == $key) {
                         continue;
                     }
+                    // if ('allfiles' == $key) {
+                    //     continue;
+                    // }
                     $request_string[$key] = $value;
                 }
             }
 
-            //   dd($request_string,$request_tag);
+            // dump([$request_string,$request_tag]);
+
+            if(array_key_exists("genre",$request_tag)) {
+                $url = 'genre.php';
+            }
+            if(array_key_exists("studio",$request_tag)) {
+                // $url = 'studio.php';
+                $studio_key = $request_tag['studio'];
+              //  unset($request_tag['studio']);
+            }
+           
             $sep       = '?';
             if (count($request_string) > 0) {
                 $re_string = $sep.http_build_query($request_string);
@@ -342,16 +355,24 @@ class Render
             $crumb_url = $url.$re_string;
 
             if (count($request_tag) > 0) {
-                $crumbs[$_SESSION['library']] = $crumb_url.$sep.http_build_query(['library' => $_SESSION['library']]);
+                $crumbs[$_SESSION['library']] = $crumb_url.$sep.http_build_query(['studio' =>  $studio_key]);
 
                 foreach ($request_tag as $key => $value) {
                     $parts[$key]    = $value;
                     $crumbs[$value] = $crumb_url.$sep.http_build_query($parts);
                     $last           = $value;
+                    // dump($key);
                 }
-                $crumbs[$last]                = '';
+                
+                if($key == "genre"){
+                    $crumbs[$last]                =  '';                    
+                } else {
+                    $crumbs[$last]                =  'genre.php?'.http_build_query($parts);
+                }
+
             }
         }
+        //  dump($crumbs);
         $req                   = '';
         if (__THIS_FILE__ == 'genre.php') {
             $req = '&'.http_build_query($parts);

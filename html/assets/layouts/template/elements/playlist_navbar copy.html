@@ -1,0 +1,65 @@
+
+
+    <div class=" rounded-pill playlistData btn-group w-50 btn-primary border border-2 border-dark">
+        {{function=hiddenSearch}}
+        <span class="btn PlaylistButton" id="PlayAll">Play All</span>
+        <span class="btn PlaylistButton" id="AddPlaylist">Add selected to Playlist</span>
+        <span class="btn PlaylistButton" id="AddAll">Add all Playlist</span>
+        <span class="btn PlaylistButton" id="Clear">Clear</span>
+    </div>
+<script>
+
+
+    $(document).ready(function () {
+        $(".playlistData span").click(function () {
+
+            var text = $(this).attr('id');
+
+            if (text == 'AddAll') {
+                $('.playlist_selector').attr('checked', 'checked');
+            }
+
+            if (text == 'PlayAll') {
+                playlistSubmit(text);
+            }
+
+            if (text == 'AddPlaylist') {
+                playlistSubmit(text);
+            }
+
+            if (text == 'Clear') {
+                $('.playlist_selector').attr('checked', false);
+            }
+
+
+        });
+    });
+
+
+    function playlistSubmit(action) {
+
+        console.log(action);
+
+        var form = $("#ajaxform");
+
+        var hiddenAction = document.createElement("input");
+        hiddenAction.value = "true";
+        hiddenAction.name = action;
+        hiddenAction.type = "hidden";
+
+        var playlist = document.createElement("input");
+        playlist.value = "playlist";
+        playlist.name = "submit";
+        playlist.type = "submit";
+
+        form.append(hiddenAction);
+        form.append(playlist);
+        form.target='';
+        form.action='process.php';
+        form.submit();
+
+
+    }
+
+
+</script>

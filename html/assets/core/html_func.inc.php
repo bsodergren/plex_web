@@ -125,7 +125,7 @@ function process_javascript($template, $replacement_array = '')
 
 function JavaRefresh($url, $timeout = 0)
 {
-    roboloader::javaRefresh($url, $timeout);
+        roboloader::javaRefresh($url, $timeout);
 }// end JavaRefresh()
 
 function add_hidden($name, $value, $attributes = '')

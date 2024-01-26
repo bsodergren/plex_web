@@ -13,10 +13,10 @@ function !!FUNCTION!!() {
                         submit: 'update',
                         !!ID_NAME!!: data.content,
                         video_key: '!!VIDEO_KEY!!'
-                    })
-            })
-    console.log('   * The text was changed -> ' + data.content)
-}
+                        })
+                })
+                console.log('   * The text was changed -> ' + data.content)
+            } 
         }
     })
 }

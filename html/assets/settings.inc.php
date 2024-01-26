@@ -6,6 +6,8 @@
 $db       = new PlexSql(); // ('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 $conn     = mysqli_connect('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
+$sql = "DELETE FROM metatags_search_data WHERE updatedAt < NOW() - INTERVAL 2 HOUR";
+$db->rawQuery($sql);
 dbObject::autoload('models');
 
 $settings = new MetaSettings();

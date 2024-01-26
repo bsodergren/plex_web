@@ -27,14 +27,15 @@ class Playlist extends ProcessForms
     {
         $url = $this->createPlaylist();
         echo $this->myHeader($url);
-    }
+           }
 
-    public function createPlaylist()
+    private function addPlaylistData()
     {
-        // dump([__METHOD__,$this->data]);
+        $hide   = 0;
+        $search_id              = null;
 
-        $name        = 'User Playlist';
-        $studio      = [];
+        $name   = 'User Playlist';
+        $studio = [];
 
         if (array_key_exists('substudio', $this->data)) {
             $name     = '';
@@ -45,27 +46,68 @@ class Playlist extends ProcessForms
             $studio[] = $this->data['studio'];
         }
 
-        $data        = [
-            'name'    => $name.implode(' ', $studio),
-            'genre'   => 'mmf,mff',
-            'library' => $this->library,
-        ];
+        if (array_key_exists('PlayAll', $this->data)) {
+            if (array_key_exists('search_id', $this->data)) {
+                $search_id = $this->data['search_id'];
+                $this->db->where('search_id', $search_id);
+                $pl_search = $this->db->getOne(Db_TABLE_PLAYLIST_DATA);
+        
+        
+                if (null === $pl_search) {
+                    $hide = true;
+                    $this->db->where('id', $search_id);
+                    $search_data            = $this->db->getOne('metatags_search_data');
 
-        $playlist_id = $this->db->insert(Db_TABLE_PLAYLIST_DATA, $data);
+                    $this->data['playlist'] = $search_data['video_list'];
+                } else {
+                    $playlist_id            = $pl_search['id'];
+          
+                  //  $search_id              = null;
+                    return __URL_HOME__.'/video.php?playlist_id='.$playlist_id.'';
+                }
+            }
+        }
+
+        if (null === $pl_search) {
+            $data        = [
+                'name'      => $name.implode(' ', $studio),
+                'genre'     => 'mmf,mff',
+                'library'   => $this->library,
+                'search_id' => $search_id,
+                'hide'      => $hide,
+            ];
+
+            $playlist_id = $this->db->insert(Db_TABLE_PLAYLIST_DATA, $data);
+        }
+        return $playlist_id;
+    }
+
+    public function createPlaylist()
+    {
+        $playlist_id = $this->addPlaylistData();
+
+
+        if (!array_key_exists('playlist', $this->data)) {
+            return $playlist_id;
+        }
+
 
         if (!is_array($this->data['playlist'])) {
             $this->data['playlist'] = explode(',', $this->data['playlist']);
         }
 
         foreach ($this->data['playlist'] as $_ => $id) {
-            $data = [
+            $data  = [
                 'playlist_id'       => $playlist_id,
                 'playlist_video_id' => $id,
                 'library'           => $this->library,
             ];
-            $this->db->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
+            $ids[] = $this->db->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
         }
+        if (array_key_exists('PlayAll', $this->data)) {
+            return __URL_HOME__.'/video.php?playlist_id='.$playlist_id.'';
 
+        }
         return __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
     }
 

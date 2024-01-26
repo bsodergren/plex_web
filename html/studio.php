@@ -42,9 +42,9 @@ $sql         = query_builder(Db_TABLE_VIDEO_TAGS,
 $result      = $db->query($sql);
 
 $rows        = count($result);
-if ($rows <= 1) {
-    JavaRefresh('genre.php?'.$request_key, 0);
-}
+// if ($rows <= 1) {
+//     JavaRefresh('genre.php?'.$request_key, 0);
+// }
 
 $all_url     = 'files.php?'.$request_key.'&allfiles=1';
 

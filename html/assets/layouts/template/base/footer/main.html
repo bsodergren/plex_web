@@ -1,113 +1,85 @@
 <!-- </main> -->
 
 %%FOOT_NAVBAR%%
+<button onclick="topFunction()" id="myBtn" class="icon-chevron-up" title="Go to top">Top</button>
 
 </body>
 <script type="text/javascript">
+
+    let mybutton = document.getElementById("myBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () { scrollFunction() };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+
     const writeLog = function (msg) {
         let date = new Date();
         window.console.log(date.toISOString() + ' ' + msg);
     };
 
     jQuery(document).ready(function () {
-            $('.rating').on(
-                'change', function (e) {
-                    console.log('Rating selected: ' + e.target.id);
-                    console.log('Rating selected: ' + $(this).val());
-                    $.ajax({
-                        type: "post",
-                        url: "process.php",
-                        data:
-                        {
-                            'submit': 'rating',
-                            'id': e.target.id,
-                            'rating': $(this).val(),
-                        },
-                        cache: false,
-                        success: function () {
-                            // window.opener.location.reload(true);
-                            // window.close();
-                        }
-                    });
-                });
-        });
-
-        $("#ajaxform").submit(function (e) {
-            var postData = $(this).serializeArray();
-            var formURL = $(this).attr("action");
-            var curLoc = location;
-            $.ajax(
-                {
-                    url: 'process.php',
-                    type: "POST",
-                    data: postData,
-                    // data: jQuery.param({'submit': 'playlist', 'data': postData}) ,
-                    success: function (data) {
-
-
-                        window.location = data;
-
-
-                        //data: return data from server
+        $('.rating').on(
+            'change', function (e) {
+                console.log('Rating selected: ' + e.target.id);
+                console.log('Rating selected: ' + $(this).val());
+                $.ajax({
+                    type: "post",
+                    url: "process.php",
+                    data:
+                    {
+                        'submit': 'rating',
+                        'id': e.target.id,
+                        'rating': $(this).val(),
+                    },
+                    cache: false,
+                    success: function () {
+                        // window.opener.location.reload(true);
+                        // window.close();
                     }
-
                 });
-
-        });
-
-
-
-
-    /*
-        jQuery(function($) {
-            let f = $('#formId');
-    
-            let xhrOptions = {
-                url: f.attr('action'),
-                type: f.attr('method'),
-                data: {},
-                cache: false,
-                xhr: function() {
-                    let xhr = $.ajaxSettings.xhr();
-                    if ('undefined' === typeof xhr.upload.onload || null === xhr.upload.onload) {
-                        //override the upload.onload event, only if it has not already been
-                        xhr.upload.onload = function() {
-                            //onload is triggered immediately after the POST headers are sent to the recipient
-                            writeLog('Upload Completed - Ending Request');
-                            xhr.abort();
-                        };
-                    }
-                    return xhr;
-                },
-            };
-    
-            f.on('submit', function(e) {
-                e.preventDefault();
-    
-                let formData = f.serialize();
-    
-                let redirect_url = document.getElementById(f[0][0].id).value;
-                writeLog(redirect_url);
-    
-          
-                $.ajax($.extend(true, xhrOptions, {
-                    data: formData
-                })).done(function(responseText) {
-                    //this is never triggered since the request is aborted
-                    writeLog('Success');
-                    writeLog(responseText);
-                }).fail(function(jqxhr) {
-                    writeLog('Request ' + (jqxhr.readyState !== 4 ? 'Aborted' : 'Failed'));
-    
-                    location.href = redirect_url;
-                });
-    
-    
-    
-                return false;
             });
-        });
-        */
+    });
+
+    $("#ajaxform").submit(function (e) {
+        var postData = $(this).serializeArray();
+        var formURL = $(this).attr("action");
+    console.log(postData);
+
+        var curLoc = location;
+        $.ajax(
+            {
+                url: 'process.php',
+                type: "POST",
+                data: postData,
+                // data: jQuery.param({'submit': 'playlist', 'data': postData}) ,
+                success: function (data) {
+
+                    // console.log(data);
+                    // return false;
+                     window.location = data;
+
+
+                    //data: return data from server
+                }
+
+            });
+
+    });
+
+
 </script>
 
 

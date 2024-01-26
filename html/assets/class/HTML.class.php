@@ -10,6 +10,15 @@ class HTML_Func extends Render
 {
     public function __construct() {}
 
+    public function hiddenSearch()
+    {
+        if(FileListing::$searchId === null){
+            return '';
+        }
+
+        return add_hidden("search_id", FileListing::$searchId );
+    }
+
     private function parseVars($matches)
     {
         $parts = explode(',', $matches[2]);

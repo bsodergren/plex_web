@@ -31,6 +31,7 @@ class ProcessForms
 
         if (isset($postArray['submit'])) {
             $method = $this->postArray['submit'];
+
             unset($this->postArray['submit']);
             if (method_exists($this, $method)) {
                 $this->{$method}();
@@ -168,8 +169,11 @@ class ProcessForms
 
     public function playlist()
     {
-        echo $this->playlist->createPlaylist();
-        exit;
+      $url= $this->playlist->createPlaylist();
+echo $url;
+       //  echo $this->myHeader($url);
+         exit;
+
     }
 
     public function myHeader($redirect = '', $timeout = 0)
@@ -179,6 +183,6 @@ class ProcessForms
         }
         echo JavaRefresh($this->redirect, $timeout);
 
-        exit;
+exit;
     } // end myHeader()
 }

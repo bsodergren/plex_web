@@ -12,6 +12,7 @@ class FileListing
     public $currentpage;
     public $request;
     public $urlPattern;
+    public static $searchId = null;
 
     public function __construct($request = '', $currentpage = '', $urlPattern = '')
     {
@@ -20,6 +21,35 @@ class FileListing
         $this->currentpage = $currentpage;
         $this->request     = $request;
         $this->urlPattern  = $urlPattern;
+    }
+
+    public function saveSearch($query)
+    {
+        $db             = new PlexSql();
+        $res            = $db->rawQuery($query);
+        foreach ($res as $k => $row) {
+            $vids[] = $row['id'];
+        }
+
+        $vidsStr        = implode(',', $vids);
+
+        $db->where('video_list', $vidsStr);
+        $user           = $db->getOne('metatags_search_data');
+        if (null !== $user['id']) {
+            self::$searchId = $user['id'];
+
+            return $user['id'];
+        }
+        $data           = [
+            'video_list' => $vidsStr,
+            // "updatedAt" => $db->now()
+        ];
+
+        $id             = $db->insert('metatags_search_data', $data);
+     //   dump("new index " . $id);
+     self::$searchId = $id;
+
+        return $id;
     }
 
     public function getSearchResults($field, $value)
@@ -64,7 +94,6 @@ class FileListing
             $uri['direction']           = $_SESSION['direction'];
             $this->request['direction'] = $_SESSION['direction'];
         }
-
 
         if (isset($this->request['alpha'])) {
             $key   = $this->request['alpha'];
@@ -186,14 +215,29 @@ class FileListing
             'i.format', 'i.bit_rate', 'i.width', 'i.height', 'f.library', 'f.rating',
             'f.filename', 'f.thumbnail', 'f.fullpath', 'f.preview',
             'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key']);
+        //  $dbcount = $this->db;
+
+        // $resultQuery  = $this->db->getQuery(
+        //     Db_TABLE_VIDEO_FILE.' f'
+        // );
+
+        // dump($resultQuery);
+
+        $num_rows   = ' f.id ';
 
         $joinQuery  = $this->db->getQuery(
             Db_TABLE_VIDEO_FILE.' f',
-            $limit,
-            $fieldArray
+            null,
+            $num_rows
         );
-        $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
+        $this->saveSearch($joinQuery);
+        $joinQuery  = str_replace($num_rows, implode(',', $fieldArray), $joinQuery);
 
+        if (null !== $limit) {
+            $joinQuery .= ' LIMIT '.$limit[0].','.$limit[1].'';
+        }
+
+        $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
         $results    = $this->db->rawQuery($query);
 
         return $results;

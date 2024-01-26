@@ -20,6 +20,9 @@ class PlexSql extends MysqliDb
         global $_SESSION,$db;
         parent::__construct('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
         $this->db = $db;
+  
+        
+
     }
 
     public static function getAlphaKey($field, $key)
