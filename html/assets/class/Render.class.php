@@ -212,24 +212,9 @@ class Render
             $crumbs_html .= process_template('base/navbar/crumb', $params);
         }
 
-        if (defined('USE_FILTER')) {
-            $genre_box_html     = self::display_filter('genre');
-            $artist_box_html    = self::display_filter('artist');
-            $studio_box_html    = self::display_filter('studio');
-            $substudio_box_html = self::display_filter('substudio');
-            foreach ($_REQUEST as $name => $value) {
-                if ('' != $value) {
-                    $hidden .= add_hidden($name, $value);
-                }
-            }
-        }
+        
 
-        return process_template('base/navbar/breadcrumb', ['CRUMB_LINKS' => $crumbs_html,
-            'GENREFILTERBOX'                                             => $genre_box_html,
-            'ARTISTFILTERBOX'                                            => $artist_box_html,
-            'STUDIOFILTERBOX'                                            => $studio_box_html,
-            'SUBSTUDIOFILTERBOX'                                         => $substudio_box_html,
-            'HIDDEN'                                                     => $hidden]);
+        return process_template('base/navbar/breadcrumb', ['CRUMB_LINKS' => $crumbs_html]);
     }
 
     public static function display_filter($tag)
@@ -277,24 +262,16 @@ class Render
         return $default_option.$html;
     }
 
-    public static function displayPlaylistButton()
-    {
-        return process_template('elements/playlist_button', []);
-    }
-
-    public static function displayPlaylistAddAllButton()
-    {
-        return process_template('elements/playlist_AddAll_button', []);
-    }
-
-    public static function displayPlaylistCanvas()
-    {
-        return process_template('elements/playlist_navbar', []);
-    }
-
+ 
     public function playListButton()
     {
-        return self::displayPlaylistCanvas();
+        $params['CANVAS_HEADER'] = process_template('elements/Playlist/canvas_header', []);
+        $params['CANVAS_BODY'] = process_template('elements/Playlist/canvas_body', []);
+        
+        $html= process_template('elements/Playlist/canvas', $params);
+        // dump($html);
+        return $html;
+        
     }
 
     public static function createBreadcrumbs()

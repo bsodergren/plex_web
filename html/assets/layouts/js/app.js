@@ -8,14 +8,6 @@ function editPlaceholder (id) {
 }
 
 function hideSubmit (id, text) {
-    /*
-    if( text == 'save'){
-      let redirect_value = document.getElementById('redirect_'+id).value;
-      redirect_value += "#video_" + id;
-      console.log(redirect_value);
-      document.getElementById('redirect_'+id).value = redirect_value ; 
-    }
-  */
     document.getElementById('hiddenSubmit_' + id).value = text
 }
 
@@ -32,9 +24,6 @@ function checkValue (id) {
     var n = document.getElementById(id).value
 
     const t_arr = id.split('_')
-
-    console.log(t_arr[1])
-
     if (t_arr[1] == 'studio') {
         var ph = '___'
     }
@@ -56,63 +45,52 @@ function setNull (id) {
     document.getElementById(f_id).style = 'background:black'
 }
 
-
-
-function openOnce(url, target){
+function openOnce (url, target) {
     // open a blank "target" window
     // or get the reference to the existing "target" window
-    var winref = window.open('', target, '');
+    var winref = window.open('', target, '')
 
     // if the "target" window was just opened, change its url
-    if(winref.location.href === 'about:blank'){
-        winref.location.href = url;
+    if (winref.location.href === 'about:blank') {
+        winref.location.href = url
     }
-    return winref;
+    return winref
 }
 
-
 function popup (mylink, windowname, width = 1028, height = 800) {
-
     //console.log(width + ' ' + height);
 
     var href
     if (typeof mylink == 'string') href = mylink
     else href = mylink.href
 
-    var winref =  window.open(
+    var winref = window.open(
         href,
-        windowname,'scrollbars=yes,width='+width+',height='+height+''
+        windowname,
+        'scrollbars=yes,width=' + width + ',height=' + height + ''
     )
 
-    if(winref.location.href != 'about:blank'){
-        winref.location.href = href + "&r=true";
+    if (winref.location.href != 'about:blank') {
+        winref.location.href = href + '&r=true'
     }
 
-    return winref;
-
+    return winref
 }
 
-
-
-function previewHover(e, thumb, prev) {
-
-    console.log(e.id);
+function previewHover (e, thumb, prev) {
+    console.log(e.id)
 
     if (prev == '') {
-        return false;
+        return false
     } else {
-        var element = document.getElementById(e.id);
+        var element = document.getElementById(e.id)
 
         element.addEventListener('mouseenter', event => {
             element.src = prev
-        });
+        })
 
         element.addEventListener('mouseleave', event => {
-            element.src = thumb;
-        });
-
+            element.src = thumb
+        })
     }
-
-
-
 }

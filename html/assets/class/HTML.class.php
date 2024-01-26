@@ -62,6 +62,13 @@ class HTML_Func extends Render
         return AlphaSort::display_AlphaBlock();
     }
 
+    public function metaFilters($match)
+    {
+        $method = $match[2];
+        return (new metaFilters)->$method();
+        
+    }
+
     public function videoPlayer($matches)
     {
         $var    = $this->parseVars($matches);

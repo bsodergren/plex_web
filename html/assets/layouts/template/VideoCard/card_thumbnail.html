@@ -1,0 +1,7 @@
+<div class="col-md-4" style="max-width: 340px;">
+
+    <img src="%%THUMBNAIL%%" {{function=videoPlayer|query?id=%%FILE_ID%%,href=video.php}} 
+    id="videoInfo"
+    onmouseover="previewHover(this,'%%THUMBNAIL%%','%%PREVIEW%%')"
+    onerror="this.onerror=null;this.src='%%__URL_HOME__%%/images/default.jpg'">
+</div>

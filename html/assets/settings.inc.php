@@ -6,8 +6,8 @@
 $db       = new PlexSql(); // ('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 $conn     = mysqli_connect('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
-$sql = "DELETE FROM metatags_search_data WHERE updatedAt < NOW() - INTERVAL 2 HOUR";
-$db->rawQuery($sql);
+$sql      = 'DELETE FROM metatags_search_data WHERE updatedAt < NOW() - INTERVAL 2 HOUR';
+$res      = $db->rawQuery($sql);
 dbObject::autoload('models');
 
 $settings = new MetaSettings();
@@ -23,7 +23,7 @@ if ($val) {
 
             if (defined('__DISPLAY_PAGES__') && array_key_exists(__THIS_FILE__, __DISPLAY_PAGES__)) {
                 define('__SHOW_PAGES__', __DISPLAY_PAGES__[__THIS_FILE__]['pages']);
-               // define('__SHOW_SORT__', __DISPLAY_PAGES__[__THIS_FILE__]['sort']);
+                // define('__SHOW_SORT__', __DISPLAY_PAGES__[__THIS_FILE__]['sort']);
 
                 if (__SHOW_PAGES__ == 0 && __SHOW_SORT__ == 0) {
                     define('__BOTTOM_NAV__', 0);

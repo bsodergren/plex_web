@@ -1,12 +1,12 @@
 <main class="container-fluid">
     <form method="post" id="ajaxform">
+        {{function=playListButton}}
         <div>
             <input type="hidden" name="submit" value="playlist">
             %%HIDDEN_STUDIO%%
-
-            {{function=playListButton}}
-
         </div>
+        <div class="fileList">
         %%BODY%%
+        </div>
     </form>
 </main>

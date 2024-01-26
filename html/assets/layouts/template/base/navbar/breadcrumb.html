@@ -14,24 +14,15 @@
 
         <!-- <div class="navbar-nav col justify-content-end me-1">
             <div class="navbar-nav flex-column">
-                <form action="%%PAGE_UPDATE%%" method="GET">
-                    %%HIDDEN%%
-                    %%GENREFILTERBOX%%
-                </form>
-                <form action="%%PAGE_UPDATE%%" method="GET">
-                    %%HIDDEN%%
-                    %%ARTISTFILTERBOX%%
-                </form>
-                <form action="%%PAGE_UPDATE%%" method="GET">
-                    %%HIDDEN%%
-                    %%STUDIOFILTERBOX%%
-                </form>
-                <form action="%%PAGE_UPDATE%%" method="GET">
-                    %%HIDDEN%%
-                    %%SUBSTUDIOFILTERBOX%%
-                </form>
+                {{function=metaFilters|genre}}
+                {{function=metaFilters|artist}}
+                </div>
+                <div class="navbar-nav flex-column">
+                {{function=metaFilters|studio}}
+                {{function=metaFilters|substudio}}
             </div>
-
         </div> -->
+
+
     </div>
 </nav>
