@@ -213,3 +213,8 @@ button[type="submit"]:hover {
 #myBtn:hover {
     background: rgba(149, 0, 0, 0.9);
 }
+
+
+.offcanvas.offcanvas-top-list {
+    height: 290px;
+}

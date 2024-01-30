@@ -179,8 +179,15 @@ class VideoDisplay
                     $filename = $value;
                     break;
                 case 'fullpath':
-                    $value    = str_replace(__PLEX_LIBRARY__.'/', '', $value).\DIRECTORY_SEPARATOR.$filename;
+                    $full_filename = $value.\DIRECTORY_SEPARATOR.$filename;
+                    $class_missing = '';
+                    if(!file_exists($full_filename))
+                    {
+                        $class_missing = 'bg-danger';
+                    }
+                    $value    = str_replace(__PLEX_LIBRARY__.'/', '', $full_filename);
                     $params   = $this->fileRow($params, ucfirst($key), $value, $class);
+                    $params['FILE_MISSING'] = $class_missing;
                     ++$x;
 
                     break;

@@ -35,6 +35,14 @@ class GridDisplay extends VideoDisplay
         $r               = 0;
 
         for ($i = 0; $i < count($results); ++$i) {
+            $full_filename = $results[$i]['fullpath'].\DIRECTORY_SEPARATOR.$results[$i]['filename'];
+
+            // %%FILE_MISSING%%
+            $class_missing = '';
+            if(!file_exists($full_filename))
+            {
+                $class_missing = 'bg-danger';
+            }
             $file_info = [
                 'title'     => $results[$i]['title'],
                 'library'   => $results[$i]['library'],
@@ -61,34 +69,35 @@ class GridDisplay extends VideoDisplay
                     [
                         'FILE_FIELD' => ucfirst($field),
                         'FILE_INFO'  => $value,
+                        'FILE_MISSING' => $class_missing,
                     ]
                 );
                 // }
             }
             $thumbnail = '';
             if (__SHOW_THUMBNAILS__ == true) {
-             
-
                 $thumbnail = process_template(
-                'grid/thumbnail',
-                [ 'PLAYLIST_LINKS' => str_replace('VIDEO_ID', $results[$i]['id'], $playlist_html),
-                'THUMBNAIL'      => $this->fileThumbnail($results[$i]['id']) ,
-                'ROW_ID'         => $results[$i]['id'],
-                'VIDEO_DATA'     => $videoInfo,
-                'ROWNUM'         => $results[$i]['rownum'],
-                'ROW_TOTAL'      => $totalRecords,]);
+                    'grid/thumbnail',
+                    ['PLAYLIST_LINKS' => str_replace('VIDEO_ID', $results[$i]['id'], $playlist_html),
+                        'THUMBNAIL'   => $this->fileThumbnail($results[$i]['id']),
+                        'ROW_ID'      => $results[$i]['id'],
+                        'VIDEO_DATA'  => $videoInfo,
+                        'ROWNUM'      => $results[$i]['rownum'],
+                        'ROW_TOTAL'   => $totalRecords, ]);
             }
             // THUMB_EXTRA = ' alt="#" class="img-fluid" '
             $cell_html .= process_template(
                 'grid/cell',
                 [
+                    'FILE_MISSING' => $class_missing,
+
                     'PLAYLIST_LINKS' => str_replace('VIDEO_ID', $results[$i]['id'], $playlist_html),
-                    'THUMBNAIL'      =>$thumbnail ,
+                    'THUMBNAIL'      => $thumbnail,
                     'ROW_ID'         => $results[$i]['id'],
                     'VIDEO_DATA'     => $videoInfo,
                     'ROWNUM'         => $results[$i]['rownum'],
                     'ROW_TOTAL'      => $totalRecords,
-                    'STAR_RATING' => $results[$i]['rating'],
+                    'STAR_RATING'    => $results[$i]['rating'],
                 ]
             );
         }
@@ -101,8 +110,7 @@ class GridDisplay extends VideoDisplay
             'INFO_NAME'          => $sort_type_map['map'][$_REQUEST['sort']],
             // 'PLAYLIST_ADD_BUTTON' => Render::displayPlaylistButton(),
             // 'PLAYLIST_ADD_ALL_BUTTON'=> Render::displayPlaylistAddAllButton(),
-            'PLAYLIST_ADD_ALL_BUTTON' => Render::displayPlaylistCanvas(),
-
+            // 'PLAYLIST_ADD_ALL_BUTTON' => Render::displayPlaylistCanvas(),
         ]);
 
         return $table_body_html;
