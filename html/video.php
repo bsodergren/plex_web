@@ -43,7 +43,7 @@ if (array_key_exists('playlist_id', $_REQUEST)) {
 // }
 
 
-$cols                               = ['filename', 'fullpath'];
+$cols                               = ['filename', 'fullpath','rating'];
 $db->where('id', $id);
 $result                             = $db->getone(Db_TABLE_VIDEO_FILE, null, $cols);
 
@@ -131,6 +131,7 @@ $video_js_params['COMMENT']         = $comments;
 
 $params                             = [
     'PAGE_TITLE'      => $result['title'],
+    'STAR_RATING'     => $result['rating'],
     'VIDEO_ID'        => $id,
     'PLAYLIST_ID'     => $playlist_id,
     '__LAYOUT_URL__'  => __LAYOUT_URL__,

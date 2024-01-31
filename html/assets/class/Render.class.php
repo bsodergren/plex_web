@@ -36,7 +36,7 @@ class Render
 
         if ('' != $url_array['query_string']) {
             parse_str($url_array['query_string'], $query_parts);
-
+            unset($query_parts['alpha']);
             $current     = 'studio';
 
             if (isset($url_array['direction'])) {
@@ -67,7 +67,7 @@ class Render
             if ($current == $value) {
                 $bg = ' active';
             }
-            $class          = 'btn btn-primary btn-m'.$bg.$pill;
+            $class          = 'nav-link text-light'.$bg;//.$pill;
             $request_string = $request_uri.$sep.'sort='.$value;
             $html .= self::display_directory_navlinks($url_array['url'], $key, $request_string, $class, 'role="button" aria-pressed="true"')."\n";
         }
@@ -90,7 +90,7 @@ class Render
         }
 
         // $link_url = $url . "?" . $request_key ."&genre=".$_REQUEST["genre"]."&". ;
-        $html           = "<a href='".$url.$request_string."' ".$class.' '.$additional.'>'.$text.'</a>';
+        $html           = "<li class='nav-item'><a href='".$url.$request_string."' ".$class.' '.$additional.'>'.$text.'</a></li>';
 
         return $html;
     } // end display_directory_navlinks()

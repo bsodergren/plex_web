@@ -107,13 +107,17 @@ height: 50px;
 .navbar.pagenate-navbar {
     margin-top: 80px;
     height: 50px;
-
     z-index: 1;
 }
+.nav-tabs-sort {
+    flex-wrap: nowrap;
+    text-wrap: nowrap;
 
+}
 .nav-tabs .nav-link:not([disabled]):not(.disabled).active, .nav-tabs .nav-link:not([disabled]):not(.disabled):active, .nav-tabs .nav-link:not([disabled]):not(.disabled):focus, .nav-tabs .nav-link:not([disabled]):not(.disabled):hover {
     background-image: linear-gradient(#44494d,#3a3f44 20%,#215794);
     filter: none;
+
 }
 
 textarea {
@@ -216,5 +220,10 @@ button[type="submit"]:hover {
 
 
 .offcanvas.offcanvas-top-list {
-    height: 290px;
+    height: 150px;
+}
+
+
+.accordion-body {
+     padding: 0;
 }

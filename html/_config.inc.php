@@ -3,10 +3,9 @@
  * plex web viewer
  */
 
-use Dotenv\Dotenv;
+use Camoo\Config\Config;
 use Plex\EnvLoader;
 use Tracy\Debugger;
-use Camoo\Config\Config;
 
 session_start();
 
@@ -28,7 +27,7 @@ require_once __COMPOSER_LIB__.'/autoload.php';
 // Debugger::$showLocation = false; // Hides additional location information
 // Debugger::$showLocation = true; // Shows all additional location information
 
-$config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
+$config     = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
 EnvLoader::LoadEnv($config['path']['mediatag'])->load();
 
@@ -103,8 +102,8 @@ define('SESSION_VARS',
     [
         'itemsPerPage' => '100',
         'library'      => 'Studios',
-        'sort'         => 'm.title',
-        'direction'    => 'ASC',
+        'sort'         => 'f.added',
+        'direction'    => 'DESC',
         // 'alpha' => '',
     ]);
 
@@ -117,7 +116,7 @@ require_once __PHP_ASSETS_DIR__.'/variables.php';
 require_once __PHP_ASSETS_DIR__.'/settings.inc.php';
 
 $const_keys = array_keys(get_defined_constants(true)['user']);
-define('__TEMPLATE_CONSTANTS__', $const_keys );
+define('__TEMPLATE_CONSTANTS__', $const_keys);
 
 logger('____________________________________________________________________________________________________________________');
 define('__METADB_HASH', __CACHE_DIR.'/'.$cache_directory.'/metadb.hash');

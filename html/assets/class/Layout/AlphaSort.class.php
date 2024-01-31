@@ -8,6 +8,12 @@ include_once __PHP_INC_CLASS_DIR__.'/Template.class.php';
 
 class AlphaSort extends Render
 {
+    private static $ShowAlpha = false;
+
+    private static $alpha_sort_map = [
+        'm.studio', 'm.substudio','m.artist','m.title','f.filename', 'm.genre'
+   ];
+
     public static function display_alphaSort($offset = 0, $len = 13)
     {
         global $url_array;
@@ -16,7 +22,6 @@ class AlphaSort extends Render
         if ('' != $url_array['query_string']) {
             parse_str($url_array['query_string'], $query_parts);
             
-
             $current     = 'studio';
 
             if (isset($url_array['direction'])) {
@@ -27,13 +32,12 @@ class AlphaSort extends Render
                 $query_parts['sort'] = 'm.title';
             }
 
-            $sort        = $query_parts['sort'];
-            $tag_string  = implode(',', $tag_types);
-            $f           = explode('.', $sort);
-            if (!str_contains($tag_string, $f[1])) {
-                $sort = 'm.title';
-            }
 
+            $sort        = $query_parts['sort'];
+            
+            if(!matcharray(self::$alpha_sort_map,$sort)){
+               return '';
+            }
             // unset($query_parts['sort']);
             if (isset($query_parts['alpha'])) {
                 $current = $query_parts['alpha'];
@@ -99,8 +103,13 @@ class AlphaSort extends Render
 
     public static function display_AlphaBlock()
     {
+
         if (true == defined('ALPHA_SORT')) {
+
+
+
             return process_template('elements/AlphaSort/block', ['ALPHA_BLOCK' => self::display_AlphaRow()]);
+
         }
 
         return '';

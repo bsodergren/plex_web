@@ -34,6 +34,7 @@ foreach ($result as $r => $row) {
     $studioArray[$row['subLibrary']][] = ['studio' => $row['studio'], 'cnt' => $row['cnt']];
 }
 
+// dd($studioArray);
 foreach ($studioArray as $subLibrary => $studioArr) {
     $studio_box = '';
 
@@ -42,7 +43,15 @@ foreach ($studioArray as $subLibrary => $studioArr) {
     foreach ($studioArr as $row => $sname) {
         $name          = ['studio' => $sname['studio']];
         $cnt           = $sname['cnt'];
-             
+        if (0 == $index % 4) {
+            if ('' != $studio_links) {
+                $studio_box .= process_template('home/studio_box', [
+                    'STUDIO_LINKS' => $studio_links,
+                    'CLASS'        => '',
+                ]);
+            }
+            $studio_links = '';
+        }
 
         if ('' == $name['studio']) {
             $name['studio'] = 'NULL';
@@ -59,78 +68,67 @@ foreach ($studioArray as $subLibrary => $studioArr) {
             $cnt = ' ('.$cnt.') ';
         }
 
+        $studio_links .= process_template('home/studio_link', [
+            'GET_REQUEST' => 'studio='.$studio,
+            'NAME'        => $name['studio'],
+            'COUNT'       => $cnt,
+            'CLASS'       => 'btn btn-primary',
+        ]);
+
         $substudio_sql = query_builder(Db_TABLE_VIDEO_TAGS, 'count(substudio) as cnt, substudio', ' studio  '.$sql_studio, 'substudio', 'substudio ASC ');
         $ss_result     = $db->query($substudio_sql);
-//dump(count($ss_result));
-        if (count($ss_result) >= 2) {
-            $accordian                     = [];
-            $accordian['ACCORDIAN_ID']     = Display::RandomId('accordian_');
-            $accordian['ACCORDIAN_HEADER'] = $name['studio'];
-            
-            $accordian['STUDIO_LINK']= process_template('accordian/studio_link', [
-                'GET_REQUEST' => 'studio='.$studio,
-                'NAME'        => $name['studio'],
-                'COUNT'       => $cnt,
-                'CLASS'       => 'btn btn-secondary',
-            ]);
-          
+
+        if (count($ss_result) >= 1) {
+            $iindex       = 1;
             foreach ($ss_result as $ssRow => $ssName) {
-               
-                if (null === $ssName['substudio']) {
-                    continue;
-                }
+                if (null != $ssName['substudio']) {
+                    ++$iindex;
                     $ssCnt     = ' ('.$ssName['cnt'].')';
+
                     $substudio = urlencode($ssName['substudio']);
-                    $accordian['STUDIO_LINK'] .= process_template('accordian/studio_link', [
+                    $studio_links .= process_template('home/studio_link', [
                         'GET_REQUEST' => 'substudio='.$substudio,
                         'NAME'        => $ssName['substudio'],
                         'COUNT'       => $ssCnt,
                         'CLASS'       => 'btn btn-secondary',
                     ]);
-                    // if (0 == $iindex % 8) {
-                    //     $studio_box .= process_template('accordian/studio_box', [
-                    //         'STUDIO_LINKS' => $studio_links,
-                    //         'CLASS'        => '',
-                    //     ]);
-                    //     $studio_links = '';
-                    // }
-                
+                    if (0 == $iindex % 8) {
+                        $studio_box .= process_template('home/studio_box', [
+                            'STUDIO_LINKS' => $studio_links,
+                            'CLASS'        => '',
+                        ]);
+                        $studio_links = '';
+                    }
+                }
             }
-            $accordian['ACCORDIAN_LINKS'] = process_template('accordian/studio_group',$accordian);
-            //  if ('' != $studio_links) {
-            $studio_links .= process_template('accordian/studio_header', $accordian);
-            // }
-            // $studio_links                  = '';
-        } else {
-            $studio_links .= process_template('accordian/studio_group', [
-
-                'STUDIO_LINK' => process_template('accordian/studio_link', [
-                    'GET_REQUEST' => 'studio='.$studio,
-                    'NAME'        => $name['studio'],
-                    'COUNT'       => $cnt,
-                    'CLASS'       => 'btn btn-secondary',
-                ]),
-            ]);
-          
-        } // end if
-        if ('' != $studio_links) {
-            $studio_box .= process_template('accordian/studio_box', [
-                'STUDIO_LINKS' => $studio_links,
-                'CLASS'        => '',
-            ]);
+            if ('' != $studio_links) {
+                $studio_box .= process_template('home/studio_box', [
+                    'STUDIO_LINKS' => $studio_links,
+                    'CLASS'        => '',
+                ]);
+            }
             $studio_links = '';
-        }
+        } else {
+            if ('' != $studio_links) {
+                $studio_box .= process_template('home/studio_box', [
+                    'STUDIO_LINKS' => $studio_links,
+                    'CLASS'        => '',
+                ]);
+                $studio_links = '';
+            }
+        } // end if
+
         // echo "</ul>";
         ++$index;
         // }
     }
 
-    $studio_html .= process_template('accordian/studio_lib', [
+    $studio_html .= process_template('home/studio_lib', [
         'STUDIO_BOX_HTML' => $studio_box,
         'LIBRARY_NAME'    => $subLibrary]);
 } // end foreach
 
-$body         = process_template('accordian/main', ['BODY_HTML' => $studio_html]);
+$body         = process_template('home/main', ['BODY_HTML' => $studio_html]);
 template::echo('base/page', ['BODY' => $body]);
 
 require __LAYOUT_FOOTER__;

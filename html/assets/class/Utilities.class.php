@@ -196,8 +196,13 @@ class display
             echo '</div>';
         }
     }
+public static function RandomId($prefix='', $length = 10)
+{
+    return $prefix.substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+}
+
    public static function Random($length = 10) {
-        self::$Random= substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+        self::$Random= self::RandomId('',$length);
     }
 }
 

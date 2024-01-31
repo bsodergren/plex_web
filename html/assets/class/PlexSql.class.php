@@ -176,9 +176,15 @@ class PlexSql extends MysqliDb
     public function getArtists()
     {
         global $db;
-        $sql   = 'select artist from '.Db_TABLE_VIDEO_TAGS;
-        $where = $this->pwhere("(artist is not null and artist != 'Missing')");
 
+
+        $sql = 'SELECT ';
+
+        $sql .= 'COALESCE (c.artist,m.artist) as artist, ';
+        $sql .= 'f.video_key FROM metatags_video_file f ';
+        $sql .= 'INNER JOIN metatags_video_metadata m on f.video_key=m.video_key '.PlexSql::getLibrary();
+        $sql .= 'LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
+        //$where = $this->pwhere("(artist is not null and artist != 'Missing')");
         return $db->query($sql.$where);
     }
 

@@ -33,7 +33,7 @@ class GridDisplay extends VideoDisplay
             );
         }
         $r               = 0;
-
+dump($results[0]);
         for ($i = 0; $i < count($results); ++$i) {
             $full_filename = $results[$i]['fullpath'].\DIRECTORY_SEPARATOR.$results[$i]['filename'];
 
@@ -50,6 +50,7 @@ class GridDisplay extends VideoDisplay
                 'substudio' => $results[$i]['substudio'],
                 'artist'    => $results[$i]['artist'],
                 'genre'     => $results[$i]['genre'],
+                'added'     => $results[$i]['added'],
                 // 'filename'  => $results[$i]['filename'],
                 'duration'  => videoDuration($results[$i]['duration']),
 

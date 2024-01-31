@@ -15,7 +15,7 @@ $include_array  = [];
 foreach ($const['user'] as $name => $value) {
     if (Strings::contains($name, '_INC_')) {
         $include_array = array_merge($include_array, RoboLoader::get_filelist($value, 'php', 1));
-    } 
+    }
 } // end foreach
 
 global $_SESSION;
@@ -25,12 +25,7 @@ foreach ($include_array as $required_file) {
 }
 
 Display::Random();
-define('__RANDOM__',Display::$Random);
-
-
-
-
-
+define('__RANDOM__', Display::$Random);
 
 $template       = new Template();
 foreach (SESSION_VARS as $key => $default) {
@@ -38,18 +33,18 @@ foreach (SESSION_VARS as $key => $default) {
         $_SESSION[$key] = $default;
     }
     if ('direction' == $key && '' == $_SESSION[$key]) {
-        $_SESSION['direction'] = 'ASC';
+        $_SESSION['direction'] = 'DESC';
     }
 
     if (isset($_REQUEST[$key])) {
         $_SESSION[$key] = $_REQUEST[$key];
         if ('direction' == $key) {
-            if ('ASC' == $_REQUEST['direction']) {
+            if ('DESC' == $_REQUEST['direction']) {
+                $_SESSION['direction'] = 'ASC';
+            } elseif ('ASC' == $_REQUEST['direction']) {
                 $_SESSION['direction'] = 'DESC';
-            } elseif ('DESC' == $_REQUEST['direction']) {
-                $_SESSION['direction'] = 'ASC';
             } else {
-                $_SESSION['direction'] = 'ASC';
+                $_SESSION['direction'] = 'DESC';
             }
         }
     }
@@ -121,19 +116,21 @@ $urlPattern     = $_SERVER['PHP_SELF'].'?current=(:num)'.$query_string_no_curren
 
 $sort_type_map  = [
     'sort_types' => [
-        'Rating' => 'f.rating',
         'Studio'     => 'm.studio',
         'Sub Studio' => 'm.substudio',
-        'File size'  => 'f.filesize',
-        'Artist'     => 'm.artist',
         'Title'      => 'm.title',
+        'Genre'      => 'm.genre',
+
+        'Artist'     => 'm.artist',
         'Filename'   => 'f.filename',
+
+        'File size'  => 'f.filesize',
         'Duration'   => 'f.duration',
         'Date Added' => 'f.added',
-        'Genre'      => 'm.genre',
+        'Rating'     => 'f.rating',
     ],
     'map'        => [
-        'f.rating' => 'Rating',
+        'f.rating'    => 'Rating',
         'm.studio'    => 'Studio',
         'm.substudio' => 'Sub Studio',
         'f.filesize'  => 'File size',

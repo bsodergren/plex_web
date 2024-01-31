@@ -38,6 +38,12 @@ foreach ($results as $k => $value) {
 }
 
 foreach ($AristArray as $artist => $num) {
+    if($artist == "") {
+        continue;
+    }
+    if($artist == "missing") {
+        continue;
+    }
     $sortedArray[$num][] = $artist;
 }
 
@@ -102,7 +108,7 @@ foreach ($results as $num => $artistArray) {
     $titleBg   = '';
     if ('' == $artistArray['title']) {
         $title   = str_replace('_', ' ', $artistArray['filename']);
-        $titleBg = ' bg-info ';
+       // $titleBg = ' bg-info ';
     }
     $params['THUMBNAIL_HTML'] .= process_template(
         'artist/artist_thumbnail',
