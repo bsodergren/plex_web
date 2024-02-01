@@ -384,9 +384,9 @@ svg {
 
     .title-text {
         color: #fff;
-        font-size: 14px;
+        font-size: 24px;
         cursor: pointer;
-        display: flex;
-        justify-content: center;
+        /* display: flex; */
+        /* justify-content: center; */
     }
 }

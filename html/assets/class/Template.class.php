@@ -6,17 +6,19 @@
 /**
  * plex web viewer.
  */
+use Nette\Utils\FileSystem;
+
 class Template
 {
     public $html;
 
-    public static $Render      = false;
+    public static $Render          = false;
     public static $flushdummy;
-    public static $BarStarted  = false;
-    public static $BarHeight   = 30;
+    public static $BarStarted      = false;
+    public static $BarHeight       = 30;
 
-    private static $RenderHTML = '';
-    public const FUNCTION_CALLBACK     = '|{{function=([a-zA-Z_]+)\|?(.*)?}}|i';
+    private static $RenderHTML     = '';
+    public const FUNCTION_CALLBACK = '|{{function=([a-zA-Z_]+)\|?(.*)?}}|i';
 
     public function __construct()
     {
@@ -129,6 +131,22 @@ class Template
     }
 
 
+    public function getTemplate($file)
+    {
+        $file_copy = str_replace("template", "template_files", $file);
+        if (file_exists($file_copy)) {
+            $file_dir = dirname($file);
+            
+            FileSystem::createDir($file_dir);
+            FileSystem::rename($file_copy,  $file);
+            FileSystem::delete($file_copy);
+            return true;
+        }
+        return false;
+        
+    }
+
+
     public function template($template = '', $replacement_array = '', $js = '')
     {
         $extension     = '.html';
@@ -143,18 +161,20 @@ class Template
         $template_file = __HTML_TEMPLATE__.'/'.$template.$extension;
         if (!file_exists($template_file)) {
 
-            // use default template directory
-            $html_text = '<h1>NO TEMPLATE FOUND<br>';
-            $html_text .= 'FOR <pre>'.$template_file.'</pre></h1> <br>';
+           if(!$this->getTemplate($template_file) ) {
+                // use default template directory
+                $html_text = '<h1>NO TEMPLATE FOUND<br>';
+                $html_text .= 'FOR <pre>'.$template_file.'</pre></h1> <br>';
 
-            $this->html .= $html_text;
+                $this->html .= $html_text;
+           }
         }
+
         $html_text     = file_get_contents($template_file);
         foreach (__TEMPLATE_CONSTANTS__ as $_ => $key) {
-            
             $value = constant($key);
-          
-            if(is_array($value)){
+
+            if (is_array($value)) {
                 continue;
             }
 
@@ -166,12 +186,13 @@ class Template
         }
 
         if (is_array($replacement_array)) {
-            
-            foreach ($replacement_array as $key => $value) {
-
+            foreach ($replacement_array as $varkey => $value) {
                 // $value = "<!-- $key --> \n".$value;
-                $key = $s_delim.strtoupper($key).$e_delim;
                 if (null != $value) {
+                    $key       = '%%'.strtoupper($varkey).'%%';
+                    $html_text = str_replace($key, $value, $html_text);
+
+                    $key       = '!!'.strtoupper($varkey).'!!';
                     $html_text = str_replace($key, $value, $html_text);
                 }
             }
@@ -180,9 +201,7 @@ class Template
         $html_text     = preg_replace_callback('|(%%\w+%%)|', [$this, 'callback_replace'], $html_text);
         $html_text     = preg_replace_callback('|(\!\!\w+\!\!)|', [$this, 'callback_replace'], $html_text);
 
-
-
-        $html_text         = preg_replace_callback(self::FUNCTION_CALLBACK, [$this, 'callback_parse_function'], $html_text);
+        $html_text     = preg_replace_callback(self::FUNCTION_CALLBACK, [$this, 'callback_parse_function'], $html_text);
 
         $html_text     = preg_replace_callback('/(##(\w+,?\w+)##)(.*)(##)/iU', [$this, 'callback_color'], $html_text);
         $html_text     = preg_replace_callback('/(!!(\w+,?\w+)!!)(.*)(!!)/iU', [$this, 'callback_badge'], $html_text);
@@ -202,15 +221,16 @@ class Template
 
     public function callback_parse_function($matches)
     {
-         $helper = new HTML_Func;
+        $helper = new HTML_Func();
         $method = $matches[1];
-        // $value = Helper::$method();
-       // if(method_exists($helper,$method)){
-           return  $helper->$method($matches);
-       // }
 
+        // $value = Helper::$method();
+        // if(method_exists($helper,$method)){
+        return $helper->{$method}($matches);
+        // }
     }
-        private function callback_badge($matches)
+
+    private function callback_badge($matches)
     {
         $text  = $matches[3];
         $font  = '';

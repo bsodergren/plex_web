@@ -17,9 +17,9 @@
 
         <script src="%%__LAYOUT_URL__%%external/js/jquery.min.js"></script>
 
-        <script src="%%__LAYOUT_URL__%%js/app.js"></script>
+        <script src="%%__LAYOUT_URL__%%js/app.js?%%__RANDOM__%%"></script>
 
-        <link rel="stylesheet" href="%%__LAYOUT_URL__%%css/video.css?ggffsdd">
+        <link rel="stylesheet" href="%%__LAYOUT_URL__%%css/video.css?%%__RANDOM__%%">
         {{function=ratingInclude}}
     </head>
 
@@ -101,10 +101,16 @@
                 </div>
 
             </div>
-            <div class="title-text">
-                <span onclick="popup('%%__URL_HOME__%%/videoinfo.php?id=%%VIDEO_ID%%', 'videoinfo')">%%VIDEO_TITLE%%</span>
-                {{function=videoRating|id=%%VIDEO_ID%%,rating=%%STAR_RATING%%}}
+
+            <div class="d-flex mb-3">
+                <div class="me-auto p-2">
+                    <span class="title-text" onclick="popup('%%__URL_HOME__%%/videoinfo.php?id=%%VIDEO_ID%%', 'videoinfo')">%%VIDEO_TITLE%%</span>
+                </div>
+                <div class="p-2"> {{function=videoRating|id=%%VIDEO_ID%%,rating=%%STAR_RATING%%}}</div>
+
             </div>
+
+
 
         </div>
 
@@ -172,7 +178,7 @@
             const urlParams = new URLSearchParams(queryString);
 
             if (urlParams.has('r') == false) {
-                window.resizeBy(0,  %%PLAYLIST_HEIGHT%% );
+                window.resizeBy(0, !!PLAYLIST_HEIGHT!!);
             }
         }
     </script>
