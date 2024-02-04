@@ -59,7 +59,7 @@ class VideoCard
                 'EDITABLE'  => $editable,
             ]
         );
-        dump($params, $field, $value, $class);
+        // dump($params, $field, $value, $class);
         return $params;
     }
 
@@ -296,7 +296,7 @@ class VideoCard
 
         $card_body['CARD_TITLE'] =  $card_title['CARD_TITLE'] ;
         $card_body['CARD_HTML_ROWS'] =  $card_rows['CARD_ROWS'] ; 
-        dump($card_body);
+        // dump($card_body);
         $params['CARD_BODY'] = process_template( $this->template_base.'/card_body', $card_body ); 
         // if (true == $this->showVideoDetails) {
         //     if (is_array($infoParams)) {

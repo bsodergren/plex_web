@@ -33,17 +33,15 @@ class GridDisplay extends VideoDisplay
             );
         }
         $r               = 0;
-dump($results[0]);
         for ($i = 0; $i < count($results); ++$i) {
             $full_filename = $results[$i]['fullpath'].\DIRECTORY_SEPARATOR.$results[$i]['filename'];
 
             // %%FILE_MISSING%%
             $class_missing = '';
-            if(!file_exists($full_filename))
-            {
+            if (!file_exists($full_filename)) {
                 $class_missing = 'bg-danger';
             }
-            $file_info = [
+            $file_info     = [
                 'title'     => $results[$i]['title'],
                 'library'   => $results[$i]['library'],
                 'studio'    => $results[$i]['studio'],
@@ -62,20 +60,20 @@ dump($results[0]);
             if ('' != $results[$i]['studio']) {
                 $studio = $results[$i]['studio'];
             }
-            $videoInfo = '';
+            $videoInfo     = '';
             foreach ($file_info as $field => $value) {
                 // if ($value != '') {
                 $videoInfo .= process_template(
                     'grid/video_data',
                     [
-                        'FILE_FIELD' => ucfirst($field),
-                        'FILE_INFO'  => $value,
+                        'FILE_FIELD'   => ucfirst($field),
+                        'FILE_INFO'    => $value,
                         'FILE_MISSING' => $class_missing,
                     ]
                 );
                 // }
             }
-            $thumbnail = '';
+            $thumbnail     = '';
             if (__SHOW_THUMBNAILS__ == true) {
                 $thumbnail = process_template(
                     'grid/thumbnail',
@@ -90,7 +88,7 @@ dump($results[0]);
             $cell_html .= process_template(
                 'grid/cell',
                 [
-                    'FILE_MISSING' => $class_missing,
+                    'FILE_MISSING'   => $class_missing,
 
                     'PLAYLIST_LINKS' => str_replace('VIDEO_ID', $results[$i]['id'], $playlist_html),
                     'THUMBNAIL'      => $thumbnail,

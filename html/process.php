@@ -31,5 +31,5 @@ if (array_key_exists('action', $_REQUEST)) {
 }
 logger('_REQUEST', $_REQUEST);
 $forms = new ProcessForms($_REQUEST);
-dump($forms->redirect);
+// dump($forms->redirect);
 echo $forms->redirect;
