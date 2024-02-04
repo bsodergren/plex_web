@@ -145,6 +145,7 @@ $sort_type_map  = [
 
 $url_array      = [
     'url'          => $_SERVER['SCRIPT_NAME'],
+    'sortDefault' => 'm.title',
     'query_string' => $query_string,
     'current'      => $_SESSION['sort'],
     'direction'    => $_SESSION['direction'],

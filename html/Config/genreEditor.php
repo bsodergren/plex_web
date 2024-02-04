@@ -3,7 +3,7 @@
 require_once '../_config.inc.php';
 define('TITLE', 'Home');
 define('ALPHA_SORT', true);
-// define('__SHOW_SORT__',false);
+ define('__SHOW_SORT__',true);
 
 if (isset($_SESSION['direction'])) {
     $direction = $_SESSION['direction'];
@@ -13,15 +13,14 @@ if (isset($_REQUEST['alpha'])) {
     // } else {
     $uri['alpha'] = $_REQUEST['alpha'];
 }
-
-
+$_SESSION['sort'] = 'genre';
 if (isset($_SESSION['sort'])) {
     switch ($_SESSION['sort']) {
         case 'Replacement': break;
             // case 'Genre': break;
         case 'Keep': break;
         default:
-            $_SESSION['sort'] = 'Genre';
+            $_SESSION['sort'] = 'genre';
             break;
     }
     $sort       = $_SESSION['sort'];
@@ -32,15 +31,19 @@ if (isset($_SESSION['sort'])) {
 $url_array          = [
     'url'          => $_SERVER['SCRIPT_NAME'],
     'query_string' => $query_string,
+    'sortDefault' => 'genre',
+
     'current'      => $_SESSION['sort'],
     'direction'    => $_SESSION['direction'],
     'sort_types'   => [
-        'Genre' => 'Genre',
+        'Genre' => 'genre',
     ],
 ];
 
+
 $pageObj            = new GenrePagenate($currentPage, $urlPattern);
 $where              = '';
+
 $query              = urlQuerystring($urlPattern, ['current', 'allfiles', 'sec'], true);
 
 if (count($query) > 0) {
@@ -67,10 +70,10 @@ include __LAYOUT_HEADER__;
 ?>
 
 <main role="main" class="container">
-    <a href="<?php echo 'Config/'.__THIS_FILE__; ?>">back</a>
-    <br>
-    <br>
-    <?php
+	<a href="<?php echo 'Config/'.__THIS_FILE__; ?>">back</a>
+	<br>
+	<br>
+	<?php
 
     $genre_row_html = '';
 
@@ -104,7 +107,6 @@ Template::echo(
 </main>
 
 <?php
-define('__SHOW_PAGES__', 1);
 
 require __LAYOUT_FOOTER__;
 ?>

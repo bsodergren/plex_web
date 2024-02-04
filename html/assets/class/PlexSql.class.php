@@ -27,9 +27,9 @@ class PlexSql extends MysqliDb
 
     public static function getAlphaKey($field, $key)
     {
-        global $tag_types;
+        global $tag_types, $url_array;
         if($field === null){
-            $field = 'm.title';
+            $field = $url_array['sortDefault'];
         }
         $tag_string = implode(',', $tag_types);
         $f          = explode('.', $field);

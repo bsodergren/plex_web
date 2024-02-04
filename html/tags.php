@@ -34,11 +34,11 @@ define('__TAG_CAT_CLASS__', ''); // border border-1 border-black');
 
 $html            = process_template('cloud/main',
     [
-        'TAG_CAT_CLASS'     => __TAG_CAT_CLASS__,
-        'TAG_CLOUD_HTML'    => keyword_cloud('genre'),
-        'TAG_CLOUD_KEYWORD' => keyword_cloud('keyword'),
+        'TAG_CAT_CLASS'  => __TAG_CAT_CLASS__,
+        'TAG_CLOUD_HTML' => keyword_cloud('genre'),
+        //   'TAG_CLOUD_KEYWORD' => keyword_cloud('keyword'),
     ]);
-    
+
 template::echo('base/page', ['BODY' => $html]);
 
 include_once __LAYOUT_FOOTER__;

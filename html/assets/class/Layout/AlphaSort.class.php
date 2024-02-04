@@ -11,7 +11,7 @@ class AlphaSort extends Render
     private static $ShowAlpha = false;
 
     private static $alpha_sort_map = [
-        'm.studio', 'm.substudio','m.artist','m.title','f.filename', 'm.genre'
+        'm.studio', 'm.substudio','m.artist','m.title','f.filename', 'm.genre','genre'
    ];
 
     public static function display_alphaSort($offset = 0, $len = 13)
@@ -27,11 +27,9 @@ class AlphaSort extends Render
             if (isset($url_array['direction'])) {
                 $query_parts['direction'] = $url_array['direction'];
             }
-
             if (!isset($query_parts['sort'])) {
-                $query_parts['sort'] = 'm.title';
+                $query_parts['sort'] = $url_array['sortDefault'];
             }
-
 
             $sort        = $query_parts['sort'];
             

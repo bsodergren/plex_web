@@ -34,10 +34,10 @@ const __DISPLAY_PAGES__ = [
         'sort'  => 1,
         'pages' => 1,
     ],
-    'studioEditor.php' => [
-        'sort'  => 1,
-        'pages' => 1,
-    ],
+    // 'studioEditor.php' => [
+    //     'sort'  => 1,
+    //     'pages' => 1,
+    // ],
     'genreEditor.php'  => [
         'sort'  => 1,
         'pages' => 1,
@@ -76,12 +76,12 @@ $sort_types             = [
 ];
 
 $login_link_array       = [
-    'login' => [
-        'url'    => 'login.php',
-        'text'   => 'login',
-        'secure' => false,
-        'js'     => false,
-    ],
+    // 'login' => [
+    //     'url'    => 'login.php',
+    //     'text'   => 'login',
+    //     'secure' => false,
+    //     'js'     => false,
+    // ],
     /*    'register'             => [
         'url'    => 'register.php',
         'text'   => 'register',
@@ -168,12 +168,12 @@ $navigation_link_array  = [
         'js'     => false,
     ],
 
-    'artistEditor' => [
-        'url'    => 'Config/artistEditor.php',
-        'text'   => 'Config artists',
-        'secure' => false,
-        'js'     => false,
-    ],
+    // 'artistEditor' => [
+    //     'url'    => 'Config/artistEditor.php',
+    //     'text'   => 'Config artists',
+    //     'secure' => false,
+    //     'js'     => false,
+    // ],
     // 'studioEditor' => [
     //     'url'    => 'Config/studioEditor.php',
     //     'text'   => 'Config Studio',

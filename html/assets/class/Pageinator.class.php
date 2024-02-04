@@ -29,6 +29,7 @@ class pageinate extends Paginator
 
         $this->currentPage  = $currentPage;
 
+
         if (false != $query) {
             if (str_contains($query, 'AND')) {
                 $findArr = explode('AND', $query);
@@ -53,8 +54,8 @@ class pageinate extends Paginator
                 }
             }
         } else {
+         
             $query = urlQuerystring($urlPattern, ['current', 'allfiles','sec'], true);
-
             if (count($query) > 0) {
                 $q = trim(str_replace('m.', '', $query['sql']));
                 $db->where($q);
