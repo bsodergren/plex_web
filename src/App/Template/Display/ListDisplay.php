@@ -1,0 +1,336 @@
+<?php
+/**
+ * plex web viewer
+ */
+
+namespace Plex\Template\Display;
+
+use Plex\Template\Render;
+use Plex\Template\Display\VideoDisplay;
+
+/**
+ * plex web viewer.
+ */
+
+/**
+ * plex web viewer.
+ */
+class ListDisplay extends VideoDisplay
+{
+    public $showVideoDetails = false;
+    private $template_base   = '';
+
+    public function __construct($template_base = 'filelist')
+    {
+        $this->template_base = $template_base;
+    }
+
+    public function fileRow($params, $field, $value, $class, $id = '')
+    {
+        $videoinfo_js = '';
+        $editable     = '';
+        $add_button   = '';
+        if (\defined('NONAVBAR')) {
+            if ('' != $id) {
+                $id            = ucfirst($id);
+                $editableClass = 'edit'.$id;
+                $functionName  = 'make'.$id.'Editable';
+
+                $params['VIDEOINFO_EDIT_JS'] .= Render::javascript(
+                    'videoinfo/filerow_js',
+                    [
+                        'ID_NAME'   => $id,
+                        'EDITABLE'  => $editableClass,
+                        'FUNCTION'  => $functionName,
+                        'VIDEO_KEY' => $params['video_key'],
+                    ]
+                );
+
+                $editable      = $editableClass;
+
+                $add_button    = Render::html(
+                    'videoinfo/add_button',
+                    [
+                        'EDITABLE' => $editable,
+                    ]
+                );
+            }
+        }
+        $params['FIELD_ROW_HTML'] .= Render::html(
+            'videoinfo/file_row',
+            [
+                // 'ADD_BUTTON'  => $add_button,
+                'FIELD'     => $field,
+                'VALUE'     => $value,
+                'ALT_CLASS' => $class,
+                'EDITABLE'  => $editable,
+            ]
+        );
+
+        return $params;
+    }
+
+    // $this->fileRowfs($params, ucfirst($key), display_size($value),$duration, $class);
+    public function fileRowfs($params, $field, $value, $duration, $class, $id = '')
+    {
+        $videoinfo_js = '';
+        $editable     = '';
+
+        $params['FIELD_ROW_HTML'] .= Render::html(
+            'videoinfo/file_dur_fs',
+            [
+                'DUR_FIELD' => 'Duration',
+                'DUR_VALUE' => $duration,
+                'FS_FIELD'  => $field,
+                'FS_VALUE'  => $value,
+                'ALT_CLASS' => $class,
+                'EDITABLE'  => $editable,
+            ]
+        );
+
+        return $params;
+    }
+
+    public function fileInfo($fileInfoArray, $total_files)
+    {
+        global $db;
+        $table_body_html              = [];
+        $x                            = 0;
+        $row_id                       = $fileInfoArray['id'];
+        $next_id                      = $fileInfoArray['next'];
+        // $row_filename = $row_id.":".$row['filename'];
+        $row_filename                 = $fileInfoArray['filename'];
+        $row_fullpath                 = $fileInfoArray['fullpath'];
+        $row_video_key                = $fileInfoArray['video_key'];
+        $infoParams                   = null;
+
+        if (isset($fileInfoArray['rownum'])) {
+            $result_number = $fileInfoArray['rownum'];
+        }
+
+        $params['FILE_NAME']          = $row_filename;
+        if ($fileInfoArray['title']) {
+            $params['FILE_NAME'] = $fileInfoArray['title'];
+        }
+        $params['ROW_ID']             = '';
+        if (!\defined('NONAVBAR')) {
+            $params['FILE_NAME']     = Render::html(
+                $this->template_base.'/popup_js',
+                ['APP_HOME'     => APP_HOME,
+                    'ROW_ID'    => $row_id,
+                    'FILE_NAME' => $params['FILE_NAME']]
+            );
+
+            $params['VERTICAL_TEXT'] = Render::html(
+                $this->template_base.'/file_vertical',
+                ['ROW_ID' => '&nbsp;&nbsp;&nbsp;'.$result_number.' of '.$total_files]
+            );
+        }
+
+        // $params['DELETE_ID']          = 'delete_'.$row_id;
+        $params['FILE_NAME_ID']       = $row_id.'_filename';
+        $params['FULL_PATH']          = $row_fullpath;
+        $params['FILE_ID']            = $row_id;
+        $params['DELETE_ID']          = add_hidden('id', $row_id, 'id="DorRvideoId"');
+        // krsort($fileInfoArray);
+        // dd($fileInfoArray);
+        $params['video_key']          = $row_video_key;
+        foreach ($fileInfoArray as $key => $value) {
+            $class       = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
+            $value_array = [];
+
+            switch ($key) {
+                // case 'favorite':
+                case 'rating':
+                    $params['STAR_RATING']  = $value;
+                    break;
+
+                case 'library':
+                case 'title':
+                    $value                  = str_replace(__PLEX_LIBRARY__.'/', '', $value);
+                    $params                 = $this->fileRow($params, ucfirst($key), $value, $class, $key);
+                    ++$x;
+
+                    break;
+
+                case 'filename':
+                    $filename               = $value;
+                    break;
+                case 'fullpath':
+                    $full_filename          = $value.\DIRECTORY_SEPARATOR.$filename;
+                    $class_missing          = '';
+                    if (!file_exists($full_filename)) {
+                        $class_missing = 'bg-danger';
+                    }
+                    $value                  = str_replace(__PLEX_LIBRARY__.'/', '', $full_filename);
+                    $params                 = $this->fileRow($params, ucfirst($key), $value, $class);
+                    $params['FILE_MISSING'] = $class_missing;
+                    ++$x;
+
+                    break;
+
+                case 'added':
+                    $params                 = $this->fileRow($params, ucfirst($key), $value, $class);
+                    ++$x;
+
+                    break;
+
+                case 'thumbnail':
+                    $thumbnail              = '';
+                    if (__SHOW_THUMBNAILS__ == true) {
+                        $thumbnail         = $this->fileThumbnail($row_id);
+                        $row_preview_image = $this->filePreview($row_id);
+                    }
+                    $params['THUMBNAIL_HTML'] .= Render::html(
+                        $this->template_base.'/file_thumbnail',
+                        [
+                            'PREVIEW'   => $row_preview_image,
+                            'THUMBNAIL' => $thumbnail,
+                            'FILE_ID'   => $row_id,
+                            'NEXT_ID'   => $next_id,
+                        ]
+                    );
+
+                    break;
+
+                case 'studio':
+                case 'substudio':
+                    if ('' != $value || \defined('NONAVBAR')) {
+                        if (!\defined('NONAVBAR')) {
+                            $table_body_html['HIDDEN_STUDIO'] .= add_hidden(strtolower($key), $value);
+
+                            $value = keyword_list($key, $value);
+
+                            // $value = Render::html(
+                            //     "filelist/search_link",
+                            //     [
+                            //         'KEY' => $key,
+                            //         'QUERY' => urlencode($value),
+                            //         'URL_TEXT' => $value
+                            //     ]
+                            // );
+                        }
+                        $params = $this->fileRow($params, ucfirst($key), $value, $class, $key);
+                        ++$x;
+                    }
+
+                    break;
+                case 'genre':
+                    //  $params['HIDDEN_STUDIO_NAME']          .= add_hidden(strtolower($key), $value);
+
+                case 'artist':
+                case 'keyword':
+                    if ('' != $value || \defined('NONAVBAR')) {
+                        if (!\defined('NONAVBAR')) {
+                            $value = keyword_list($key, $value);
+                        }
+                        $params = $this->fileRow($params, ucfirst($key), $value, $class, $key);
+                        ++$x;
+                    }
+
+                    break;
+                case 'duration':
+                    $duration               = videoDuration($value);
+                    break;
+
+                case 'filesize':
+                    $params                 = $this->fileRowfs($params, ucfirst($key), display_size($value), $duration, $class);
+                    ++$x;
+
+                    break;
+
+                case 'bit_rate':
+                    if ('' != $value) {
+                        $infoParams[strtoupper($key)] = byte_convert($value);
+                    }
+                    break;
+
+                case 'width':
+                case 'height':
+                case 'format':
+                    if ('' != $value) {
+                        $infoParams[strtoupper($key)] = $value;
+                    }
+
+                    break;
+                    //     }
+                    // }
+                    // $infoParams['ALT_CLASS'] =  $class;
+
+                    // break;
+            } // end switch
+
+            // ++$x;
+        } // end foreach
+        if (true == $this->showVideoDetails) {
+            if (\is_array($infoParams)) {
+                $params = $this->fileRow($params, '', Render::html(
+                    $this->template_base.'/file_videoinfo',
+                    $infoParams
+                ), $class);
+            }
+        }
+        // dd($params['HIDDEN_STUDIO']);
+        $table_body_html['filecards'] = Render::html($this->template_base.'/file', $params);
+        $table_body_html['VIDEO_KEY'] = $row_video_key;
+
+        return $table_body_html;
+    }
+
+    public function display($results, $page_array = [])
+    {
+        global $db;
+        global $hidden_fields;
+        $table_html              = [];
+        $redirect_string         = '';
+        $total_files             = '';
+        $js_html                 = '';
+
+        if (isset($page_array['total_files'])) {
+            $total_files = $page_array['total_files'];
+        }
+
+        if (isset($page_array['redirect_string'])) {
+            $redirect_string = $page_array['redirect_string'];
+        }
+        foreach ($results as $id => $row) {
+            $row_id                      = $row['id'];
+            $row['next']                 = 0;
+            if (\array_key_exists($id + 1, $results)) {
+                $row['next'] = $results[$id + 1]['id'];
+            }
+            $videoInfo                   = [];
+
+            // $cols       = ['format', 'bit_rate', 'width', 'height'];
+            // $db->where('video_key', $row['video_key']);
+            // $videoInfo  = $db->get(Db_TABLE_VIDEO_INFO, null, $cols);
+
+            // if (array_key_exists(0, $videoInfo)) {
+            //     $row['video_info'] = $videoInfo[0];
+            // }
+
+            $table_body                  = $this->fileInfo($row, $total_files);
+
+            $js_html .= $table_body['js'];
+            $table_html['HIDDEN_STUDIO'] = $table_body['HIDDEN_STUDIO'];
+            $table_html['BODY'] .= Render::html($this->template_base.'/file_form_wrapper', [
+                'FILE_ID'         => $row_id,
+                'FILE_TABLE'      => $table_body['filecards'],
+                'REDIRECT_STRING' => $redirect_string,
+                'SUBMIT_ID'       => 'hiddenSubmit_'.$row_id,
+                'HIDDEN_INPUT'    => $hidden_fields,
+            ]);
+        } // end foreach
+
+        // $javascript_html = Render::html(
+        //     $template_base.'/list_js',
+        //     [
+        //         '__LAYOUT_URL__' => __LAYOUT_URL__,
+        //         'JS_TAG_HTML'    => $js_html,
+        //     ]
+        // );
+        $table_html['VIDEO_KEY'] = $table_body['VIDEO_KEY'];
+
+        return $table_html; // .$javascript_html;
+    } // end display_filelist()
+}

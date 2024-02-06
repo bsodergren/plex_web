@@ -1,5 +1,17 @@
 <?php
+
+use Plex\Core\ProcessForms;
+use Plex\Template\Template;
+use Plex\Template\Render;
+use Plex\Core\FileListing;
+use Plex\Core\ProcessForms;
+use Plex\Template\Template;
+use Plex\Template\Layout\Footer;
+use Plex\Template\Layout\Header;
+use Plex\Template\Display\Display;
+use Plex\Template\Display\VideoDisplay;
 /**
+
  * plex web viewer
  */
 
@@ -26,7 +38,7 @@ if (array_key_exists('action', $_REQUEST)) {
     if ('refresh' == $_REQUEST['action']) {
         define('TITLE', 'Home');
 
-        include __LAYOUT_HEADER__;
+Header::Display();
     }
 }
 logger('_REQUEST', $_REQUEST);

@@ -4,7 +4,7 @@ require_once '../_config.inc.php';
 
 define('TITLE', 'Home');
 
-include __LAYOUT_HEADER__;
+ \Plex\Template\Layout\Header::Display();
 
 $sql             = 'select  artist from '.Db_TABLE_VIDEO_FILE." WHERE library = '".$in_directory."' and artist is not null GROUP by artist ORDER BY `artist` ASC;";
 $result          = $db->query($sql);
@@ -37,4 +37,4 @@ print_r2($new_names);
 ?>
  </ul>
  </main>
- <?php include __LAYOUT_FOOTER__; ?>
+ <?php  \Plex\Template\Layout\Footer::Display(); ?>

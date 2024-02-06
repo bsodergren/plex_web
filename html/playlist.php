@@ -1,4 +1,13 @@
 <?php
+
+use Plex\Template\Render;
+use Plex\Core\FileListing;
+use Plex\Core\ProcessForms;
+use Plex\Template\Template;
+use Plex\Template\Layout\Footer;
+use Plex\Template\Layout\Header;
+use Plex\Template\Display\Display;
+use Plex\Template\Display\VideoDisplay;
 /**
  * plex web viewer
  */
@@ -31,19 +40,19 @@ if (null === $playlist_id) {
             'PLAYLIST_COUNT' => $results[$i]['count'],
         ];
         if ($library == $prev) {
-            $playlist_links .= process_template('playlist/playlist_link', $params);
+            $playlist_links .= Render::html('playlist/playlist_link', $params);
         } else {
-            $table_body_html .= process_template('playlist/main', [
+            $table_body_html .= Render::html('playlist/main', [
                 'PLAYLIST_LIST'    => $playlist_links,
                 'PLAYLIST_LIBRARY' => $prev,
             ]);
-            $playlist_links = process_template('playlist/playlist_link', $params);
+            $playlist_links = Render::html('playlist/playlist_link', $params);
 
             $prev           = $library;
         }
     }
 
-    $table_body_html .= process_template('playlist/main', [
+    $table_body_html .= Render::html('playlist/main', [
         'PLAYLIST_LIST'    => $playlist_links,
         'PLAYLIST_LIBRARY' => $library,
     ]);
@@ -59,7 +68,7 @@ if (null === $playlist_id) {
     for ($i = 0; $i < count($results); ++$i) {
         $thumbnail = '';
         if (__SHOW_THUMBNAILS__ == true) {
-            $thumbnail = process_template(
+            $thumbnail = Render::html(
                'playlist/thumbnail',
                 [
                     'THUMBNAIL'         => $VideoDisplay->fileThumbnail($results[$i]['id'], 'alt="#" class="img-fluid" '),
@@ -70,7 +79,7 @@ if (null === $playlist_id) {
             );
         }
 
-        $cell_html .= process_template(
+        $cell_html .= Render::html(
             'playlist/cell',
             [
                 // 'VID_NUMBER' => $i +1,
@@ -86,7 +95,7 @@ if (null === $playlist_id) {
     $form_url        = __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
     $form_action     = add_hidden('playlist_id', $playlist_id);
 
-    $table_body_html = process_template('playlist/table', [
+    $table_body_html = Render::html('playlist/table', [
         'FORM_URL'        => $form_url,
         'HIDDEN'          => $form_action,
         'PLAYLIST_ID'     => $playlist_id,
@@ -100,7 +109,5 @@ if (null === $playlist_id) {
 define('TITLE', 'Home');
 define('GRID_VIEW', 1);
 
-require __LAYOUT_HEADER__;
-template::echo('base/page', ['BODY' => $table_body_html]);
+Template::echo('base/page', ['BODY' => $table_body_html]);
 
-require __LAYOUT_FOOTER__;

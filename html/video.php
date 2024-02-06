@@ -3,7 +3,16 @@
  * plex web viewer
  */
 
-use Nette\Utils\FileSystem;
+
+ use Plex\Template\Render;
+ use Plex\Core\FileListing;
+ use Plex\Core\ProcessForms;
+ use Plex\Template\Template;
+ use Plex\Template\Layout\Footer;
+ use Plex\Template\Layout\Header;
+ use Plex\Template\Display\Display;
+ use Plex\Template\Display\VideoDisplay;
+ 
 
 require_once '_config.inc.php';
 $carousel_js                        = '';
@@ -24,12 +33,13 @@ if (array_key_exists('playlist_id', $_REQUEST)) {
         $db->where('playlist_id', $playlist_id);
 
         $playlist_result = $db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
+        $query = $db->getLastQuery();
         $id          = $playlist_result['playlist_video_id'];
     }
 
 }
 
-
+dump($id,$query );
 // if (is_array($playlist_result)) {
 //     if (array_key_exists('playlist_id', $playlist_result)) {
 //         $playlist_id = $playlist_result['playlist_id'];
@@ -86,7 +96,7 @@ if (isset($playlist_id)) {
         }
 
 
-        $carousel_item .= process_template(
+        $carousel_item .= Render::html(
             'video/carousel_item',
             [
                 'PLAYLIST_ID'  => $playlist_id,
@@ -115,8 +125,8 @@ if (isset($playlist_id)) {
         }
     }
 
-    $carousel_js                        = process_template('video/carousel_js', ['PLAYLIST_ID' => $playlist_id]);
-    $carousel                           = process_template('video/carousel', ['CAROUSEL_INNER_HTML' => $carousel_item]);
+    $carousel_js                        = Render::html('video/carousel_js', ['PLAYLIST_ID' => $playlist_id]);
+    $carousel                           = Render::html('video/carousel', ['CAROUSEL_INNER_HTML' => $carousel_item]);
     $video_js_params['PLAYLIST_HEIGHT'] = 120;
     $video_js_params['PLAYLIST_WIDTH']  = 50;
     $video_js_params['PLAYLIST_ID']     = $playlist_id;
@@ -140,6 +150,6 @@ $params                             = [
     'VIDEO_TITLE'     => $active_title,
     'CAROUSEL_HTML'   => $carousel,
     'CAROUSEL_JS'     => $carousel_js,
-    'VIDEO_JS'        => process_javascript('video/video_js', $video_js_params),
+    'VIDEO_JS'        => Render::javascript('video/video_js', $video_js_params),
 ];
 Template::echo('video/main', $params);

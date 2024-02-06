@@ -1,14 +1,17 @@
 <?php
 
+use Plex\Template\Render;
+use Plex\Template\Template;
+
 require_once '_config.inc.php';
 
 define('TITLE', 'Login');
-require __LAYOUT_HEADER__;
+ \Plex\Template\Layout\Header::Display();
 
 $selector  = $_GET['selector'];
 $validator = $_GET['validator'];
 if (isset($validator, $selector)) {
-    $body = process_template('auth/reset', [
+    $body = Render::html('auth/reset', [
         'CSRF_TOKEN'         => insert_csrf_token(),
         'SELECTOR'           => $selector,
         'VALIDATOR'          => $validator,
@@ -16,16 +19,16 @@ if (isset($validator, $selector)) {
         'STATUS_PASSWDERROR' => $_SESSION['ERRORS']['passworderror'],
     ]);
 } else {
-    $body = process_template('auth/reset_send', [
+    $body = Render::html('auth/reset_send', [
         'CSRF_TOKEN'         => insert_csrf_token(),
         'STATUS_RESETSUBMIT' => $_SESSION['STATUS']['resetsubmit'],
         'STATUS_PASSWDERROR' => $_SESSION['ERRORS']['passworderror'],
     ]);
 }
 
-template::echo('base/page', ['BODY' => $body]);
+Template::echo('base/page', ['BODY' => $body]);
 
-require __LAYOUT_FOOTER__;
+ \Plex\Template\Layout\Footer::Display();
 
 ?>
 

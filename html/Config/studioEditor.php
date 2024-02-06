@@ -1,5 +1,8 @@
 <?php
 
+use Plex\Template\Render;
+use Plex\Template\Template;
+use Plex\Template\Pageinate\ConfigPagenate;
 require_once '../_config.inc.php';
 
 define('TITLE', 'Home');
@@ -22,7 +25,7 @@ $results          = $db->query($sql);
 
 $redirect_string  = __THIS_FILE__;
 
-include __LAYOUT_HEADER__;
+ \Plex\Template\Layout\Header::Display();
 
 ?>
 
@@ -38,18 +41,18 @@ $hidden .= add_hidden('submit', 'addNewEntry');
 $hidden .= add_hidden('redirect', $redirect_string);
 $lib_name         = 'Add Amateur entry';
 
-$studio_add_entry = process_template('config/studio/studio_row', ['STUDIO_ID' => 'studio', 'PATH_ID' => 'path', 'STUDIO_NAME' => '<input type="text" name="name">']);
-$studio_add_entry = process_template('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' => $studio_add_entry]);
-$studio_main_html = process_template('config/studio/form_wrapper', ['HIDDEN' => $hidden, 'STUDIO_FORM_HTML' => $studio_add_entry]);
+$studio_add_entry = Render::html('config/studio/studio_row', ['STUDIO_ID' => 'studio', 'PATH_ID' => 'path', 'STUDIO_NAME' => '<input type="text" name="name">']);
+$studio_add_entry = Render::html('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' => $studio_add_entry]);
+$studio_main_html = Render::html('config/studio/form_wrapper', ['HIDDEN' => $hidden, 'STUDIO_FORM_HTML' => $studio_add_entry]);
 
 $hidden           = add_hidden('library', 'Studios');
 $hidden .= add_hidden('submit', 'addNewEntry');
 $hidden .= add_hidden('redirect', $redirect_string);
 $lib_name         = 'Add Studios entry';
 
-$studio_add_entry = process_template('config/studio/studio_row', ['STUDIO_ID' => 'studio', 'PATH_ID' => 'path', 'STUDIO_NAME' => '<input type="text" name="name">']);
-$studio_add_entry = process_template('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' => $studio_add_entry]);
-$studio_main_html .= process_template('config/studio/form_wrapper', ['HIDDEN' => $hidden, 'STUDIO_FORM_HTML' => $studio_add_entry]);
+$studio_add_entry = Render::html('config/studio/studio_row', ['STUDIO_ID' => 'studio', 'PATH_ID' => 'path', 'STUDIO_NAME' => '<input type="text" name="name">']);
+$studio_add_entry = Render::html('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' => $studio_add_entry]);
+$studio_main_html .= Render::html('config/studio/form_wrapper', ['HIDDEN' => $hidden, 'STUDIO_FORM_HTML' => $studio_add_entry]);
 
 foreach ($results as $key => $row) {
     $studio_rows[$row['studio']][] = $row;
@@ -59,7 +62,7 @@ foreach ($studio_rows as $library => $studios) {
     $studio_row_html = '';
 
     foreach ($studios as $k => $row) {
-        $studio_row_html .= process_template(
+        $studio_row_html .= Render::html(
             'config/studio/studio_row',
             [
                 'STUDIO_ID'   => 'studio_'.$row['id'],
@@ -73,7 +76,7 @@ foreach ($studio_rows as $library => $studios) {
         );
     }
 
-    $studio_list_html .= process_template(
+    $studio_list_html .= Render::html(
         'config/studio/studios',
         [
             'STUDIO_LIBRARY' => $library,
@@ -84,7 +87,7 @@ foreach ($studio_rows as $library => $studios) {
 
 $hidden           = add_hidden('submit', 'StudioConfigSave');
 $hidden .= add_hidden('redirect', $redirect_string);
-$studio_main_html .= process_template('config/studio/form_wrapper', [
+$studio_main_html .= Render::html('config/studio/form_wrapper', [
     'HIDDEN'           => $hidden,
     'STUDIO_FORM_HTML' => $studio_list_html,
 ]);
@@ -102,5 +105,5 @@ Template::echo(
 <?php
 define('__SHOW_PAGES__', 1);
 
-require __LAYOUT_FOOTER__;
+ \Plex\Template\Layout\Footer::Display();
 ?>

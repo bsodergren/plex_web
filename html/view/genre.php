@@ -4,7 +4,7 @@ require_once '../_config.inc.php';
 
 define('TITLE', 'Home');
 
-include __LAYOUT_HEADER__;
+ \Plex\Template\Layout\Header::Display();
 
 $sql            = query_builder(Db_TABLE_VIDEO_FILE, 'count(genre) as cnt, genre',
     "library = '".$in_directory."'",
@@ -47,4 +47,4 @@ foreach ($allgenre_array as $x => $g) {
 ?>
  </ul>
  </main>
- <?php include __LAYOUT_FOOTER__; ?>
+ <?php  \Plex\Template\Layout\Footer::Display(); ?>

@@ -1,7 +1,12 @@
 <?php
+
+use Plex\Template\Display\Display;
+use Plex\Template\Display\VideoDisplay;
+use Plex\Template\Layout\Footer;
+use Plex\Template\Layout\Header;
 require_once '_config.inc.php';
 define('TITLE', 'View Genres');
-define('USE_FILTER', true);
+
 $null        = '';
 $null_req    = '&';
 $sql_studio  = 'library';
@@ -64,8 +69,7 @@ foreach ($result as $k => $v) {
 
 $genre_array = array_unique($genre_array);
 $studio_url  = 'studio.php?studio='.$_REQUEST['prev'];
-
-require __LAYOUT_HEADER__;
+Header::Display();
 ?>
 <main role="main" class="container">
 
@@ -90,4 +94,5 @@ foreach ($genre_array as $k => $v) {
 ?>
 </main>
 <?php
-require __LAYOUT_FOOTER__;
+
+Footer::Display();

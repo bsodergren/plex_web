@@ -10,16 +10,16 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>%%PAGE_TITLE%%</title>
 
-        <script src="%%__LAYOUT_URL__%%external/js/popper.min.js"></script>
-        <script src="%%__LAYOUT_URL__%%external/js/bootstrap.min.js"></script>
+        {{javascript=external/popper.min.js}}
+        {{javascript=external/bootstrap.min.js}}
 
-        <link rel="stylesheet" href="%%__LAYOUT_URL__%%external/css/bootstrap.min.css">
+        {{stylesheet=themes/bootstrap.min.css}}
 
-        <script src="%%__LAYOUT_URL__%%external/js/jquery.min.js"></script>
+        {{javascript=external/jquery.min.js}}
 
-        <script src="%%__LAYOUT_URL__%%js/app.js?%%__RANDOM__%%"></script>
+        {{javascript=app.js}}
 
-        <link rel="stylesheet" href="%%__LAYOUT_URL__%%css/video.css?%%__RANDOM__%%">
+        {{stylesheet=video.css}}
         {{function=ratingInclude}}
     </head>
 
@@ -165,12 +165,11 @@
             </defs>
         </svg>
     </body>
-    %%CAROUSEL_JS%%
-    <!-- <script type="text/javascript"> -->
 
+    %%CAROUSEL_JS%%
     %%VIDEO_JS%%
-    <!-- </script> -->
-    <script src="%%__LAYOUT_URL__%%js/footer.js?%%__RANDOM__%%"></script>
+
+    {{javascript=footer.js}}
     <script>
         function resizeVideoPage() {
 

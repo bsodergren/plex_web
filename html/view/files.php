@@ -46,7 +46,7 @@ $request_key                = uri_String($uri);
 $total_results              = $pageObj->totalRecords;
 
 logger('total_results', $total_results);
-include __LAYOUT_HEADER__;
+ \Plex\Template\Layout\Header::Display();
 
 ?>
 
@@ -65,4 +65,4 @@ include __PHP_TEMPLATE__.'main_form.php'; ?>
 
       </main>
       <?php
-      require __LAYOUT_FOOTER__;
+       \Plex\Template\Layout\Footer::Display();

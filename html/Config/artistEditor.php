@@ -1,4 +1,8 @@
 <?php
+
+use Plex\Template\Render;
+use Plex\Template\Template;
+use Plex\Template\Pageinate\ArtistPagenate;
 require_once '../_config.inc.php';
 define('TITLE', 'Home');
 define('ALPHA_SORT', true);
@@ -55,7 +59,7 @@ if (false != $limit && false != $offset) {
 $results             = $db->query($sql);
 
 $redirect_string     = 'Config/'.__THIS_FILE__.$request_string_query;
-include __LAYOUT_HEADER__;
+ \Plex\Template\Layout\Header::Display();
 
 ?>
 
@@ -69,7 +73,7 @@ include __LAYOUT_HEADER__;
     $artist_row_html = '';
 
 foreach ($results as $key => $row) {
-    $artist_row_html .= process_template(
+    $artist_row_html .= Render::html(
         'config/artist/artist_row',
         [
             'ARTIST_ID'       => 'replacement_'.$row['id'],
@@ -82,7 +86,7 @@ foreach ($results as $key => $row) {
 
 $hidden              = add_hidden('submit', 'ArtistConfigSave');
 $hidden .= add_hidden('redirect', $redirect_string);
-$artist_main_html .= process_template('config/artist/form_wrapper', [
+$artist_main_html .= Render::html('config/artist/form_wrapper', [
     'HIDDEN'           => $hidden,
     'ARTIST_FORM_HTML' => $artist_row_html,
 ]);
@@ -98,7 +102,9 @@ Template::echo(
 </main>
 
 <?php
+
+
 define('__SHOW_PAGES__', 1);
 
-require __LAYOUT_FOOTER__;
+ \Plex\Template\Layout\Footer::Display();
 ?>

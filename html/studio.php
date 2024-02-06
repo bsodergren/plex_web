@@ -1,4 +1,14 @@
 <?php
+
+
+use Plex\Template\Render;
+use Plex\Core\FileListing;
+use Plex\Core\ProcessForms;
+use Plex\Template\Template;
+use Plex\Template\Layout\Footer;
+use Plex\Template\Layout\Header;
+use Plex\Template\Display\Display;
+use Plex\Template\Display\VideoDisplay;
 /**
  * plex web viewer
  */
@@ -7,59 +17,59 @@ require_once '_config.inc.php';
 
 define('TITLE', 'View Studios');
 
-$lib_where .= '  ';
-
-$null        = '';
 
 if (isset($_REQUEST['substudio'])) {
     $studio_key   = 'substudio';
-    $studio_field = 'substudio';
-
+    $studio_field = 'studio';
     $studio_text  = $_REQUEST['substudio'];
+
+
 } else {
     $studio_key   = 'studio';
-    $studio_field = 'studio';
+    $studio_field = 'substudio';
+    $studio_text  = $_REQUEST['studio'];  
+}    
 
-    $studio_text  = $_REQUEST['studio'];
-    // $null=' and substudio is null ';
-}
+    $studio      = str_replace('-', ' ', $studio_text);
+    $studio      = str_replace('_', '/', $studio);
+    $order       = $studio_field.' ASC';
 
-$studio      = str_replace('-', ' ', $studio_text);
-$studio      = str_replace('_', '/', $studio);
-
-$sql_studio  = $lib_where.$studio_key." = '".$studio."'";
+    $sql_studio  = $studio_key." = '".$studio."'";
+    $sql         = query_builder(Db_TABLE_VIDEO_TAGS,
+        "DISTINCT(". $studio_field .") as ". $studio_field ." ",
+        $sql_studio,
+        $studio_field,
+        $order
+    );
 
 $request_key = $studio_key.'='.$studio_text;
 
-$order       = $studio_field.' ASC';
-$sql         = query_builder(Db_TABLE_VIDEO_TAGS,
-    'DISTINCT('.$studio_field.') as '.$studio_field.', count('.$studio_field.') as cnt ',
-    $sql_studio,
-    ''.$studio_field.'',
-    $order
-);
+dump($sql);
+
+
 
 $result      = $db->query($sql);
-
 $rows        = count($result);
-// if ($rows <= 1) {
-//     JavaRefresh('genre.php?'.$request_key, 0);
-// }
 
 $all_url     = 'files.php?'.$request_key.'&allfiles=1';
 
-// $genre_url = "genre.php?".$request_key;
-// DEFINE('BREADCRUMB', ['home' => "home.php",$_REQUEST['prev']=>$studio_url, $_REQUEST[$studio_key] => '', 'all' => $all_url]);
-
-require __LAYOUT_HEADER__;
-
+dump([$studio,$studio_field,$studio_key]);
 foreach ($result as $k => $v) {
+    $len = strlen($studio) * 2;
     // $v["cnt"]=1; ".$v["cnt"]."
+
     if ('' != $v[$studio_field]) {
+        if($studio_field == 'studio'){
+            // Template::GetHTML('elements/html/a',[]);
+            $body .= $v[$studio_field]." <a href='genre.php?".$studio_key.'='.$studio."'>".$studio.'</a> '.$v['cnt'].'<br>'."\n";            
+        } else {
         $body .= $studio." <a href='genre.php?".$studio_field.'='.$v[$studio_field].'&prev='.$studio_text."'>".$v[$studio_field].'</a> '.$v['cnt'].'<br>'."\n";
+        }
+    } else {
+        $char = '&nbsp;';
+        $body .= str_repeat($char,$len)."<a href='genre.php?studio=".$studio."'>".$studio.'</a> <br>'."\n";
     }
 }
 
-template::echo('base/page', ['BODY' => $body]);
+Template::echo('base/page', ['BODY' => $body]);
 
-require __LAYOUT_FOOTER__;

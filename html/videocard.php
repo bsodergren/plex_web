@@ -14,13 +14,13 @@ $id                        = $_REQUEST['id'];
 $fileinfo                  = new FileListing();
 $videoInfo                 = $fileinfo->getVideoDetails($id);
 
-require __LAYOUT_HEADER__;
+ \Plex\Template\Layout\Header::Display();
 // die(print_r(THEME_SWITCHER));
 $vidInfo                   = new VideoCard('VideoCard');
 $vidInfo->showVideoDetails = true;
 $body                      = $vidInfo->filelist($videoInfo);
 $body['THEME_SWITCHER']    = THEME_SWITCHER;
 
-// template::echo('videoinfo/videoinfo', ['BODY' => $body, 'DELETE_HTML' => $delete_html]);
-template::echo('VideoCard/main', $body);
-require __LAYOUT_FOOTER__;
+// Template::echo('videoinfo/videoinfo', ['BODY' => $body, 'DELETE_HTML' => $delete_html]);
+Template::echo('VideoCard/main', $body);
+ \Plex\Template\Layout\Footer::Display();

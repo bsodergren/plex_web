@@ -5,7 +5,7 @@ require_once '_config.inc.php';
 
 define('TITLE', 'Verify Email');
 
-require __LAYOUT_HEADER__;
+ \Plex\Template\Layout\Header::Display();
 
 ?>
 
@@ -47,6 +47,6 @@ require __LAYOUT_HEADER__;
 
 <?php
 
-require __LAYOUT_FOOTER__;
+ \Plex\Template\Layout\Footer::Display();
 
 ?>

@@ -3,11 +3,17 @@
  * plex web viewer
  */
 
+ use Plex\Core\FileListing;
+use Plex\Core\PlexSql;
+use Plex\Template\Render;
+use Plex\Template\Display;
+use Plex\Template\Template;
+use Plex\Template\Display\VideoDisplay;
+
 define('TITLE', 'Home');
 define('__SHOW_SORT__', true);
 require_once '_config.inc.php';
 
-include __LAYOUT_HEADER__;
 $column                         = 'duration';
 $url_array['sort_types']['Key'] = 'f.video_key';
 unset($url_array['sort_types']['Genre'], $url_array['sort_types']['Title'], $url_array['sort_types']['Studio'], $url_array['sort_types']['Sub Studio'], $url_array['sort_types']['Artist']);
@@ -31,15 +37,14 @@ if (count($results) > 0) {
         }
     }
     // define('NONAVBAR',true);
-    $vidInfo = new VideoDisplay('videoinfo');
+    $vidInfo     = (new VideoDisplay('List'))->init('videoinfo');
     // $vidInfo->showVideoDetails = true;
 
-    $body    = $vidInfo->filelist($fileresults);
+    $body    = $vidInfo->Display($fileresults);
 } else {
     $body['BODY'] = 'No duplicates Found';
 }
-template::echo('dupe/main', $body);
-// Template::echo("artist/main",$PARAMS);
 $pageObj                        = true;
 
-include __LAYOUT_FOOTER__;
+Template::echo('dupe/main', $body);
+// Template::echo("artist/main",$PARAMS);

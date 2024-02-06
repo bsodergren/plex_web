@@ -6,14 +6,14 @@
 require_once '_config.inc.php';
 
 define('TITLE', 'Login');
-require __LAYOUT_HEADER__;
+ \Plex\Template\Layout\Header::Display();
 
-$body = process_template('auth/login', [
+$body = Render::html('auth/login', [
     'CSRF_TOKEN'       => insert_csrf_token(),
     'SESSION_STATUS'   => $_SESSION['STATUS']['loginstatus'],
     'STATUS_NOUSER'    => $_SESSION['ERRORS']['nouser'],
     'STATUS_WRONGPASS' => $_SESSION['ERRORS']['wrongpassword'],
 ]);
-template::echo('base/page', ['BODY' => $body]);
+Template::echo('base/page', ['BODY' => $body]);
 
-require __LAYOUT_FOOTER__;
+ \Plex\Template\Layout\Footer::Display();

@@ -1,4 +1,9 @@
 <?php
+
+use Plex\Core\PlexSql;
+use Plex\Template\Render;
+use Plex\Template\Template;
+use Plex\Template\Display\VideoDisplay;
 /**
  * plex web viewer
  */
@@ -7,7 +12,6 @@ require_once '_config.inc.php';
 define('TITLE', 'artist Page');
 
 // define('BREADCRUMB', ['home' => "home.php"]);
-include __LAYOUT_HEADER__;
 
 $results               = (new PlexSql())->getArtists();
 
@@ -55,13 +59,13 @@ foreach ($sortedArray as $num => $artistArray) {
     $link_array                 = [];
 
     sort($artistArray);
-    $artist_box['COUNT_HTML']   = process_template('artist/artist_count', ['ARTIST_COUNT' => $num]);
+    $artist_box['COUNT_HTML']   = Render::html('artist/artist_count', ['ARTIST_COUNT' => $num]);
     $artist_links               = '';
 
     // foreach($artistArray as $artist)
     // {
 
-    //    //$artist_links .= process_template("artist/artist_link",['ARTIST'=>$artist,'ARTIST_NAME'=>$name]);
+    //    //$artist_links .= Render::html("artist/artist_link",['ARTIST'=>$artist,'ARTIST_NAME'=>$name]);
     //    //$artist_links .= keyword_cloud($name,'artist');
     //  //dump( [ $num ,$artist]);
     // }
@@ -79,7 +83,7 @@ foreach ($sortedArray as $num => $artistArray) {
         }
         $name         = strtolower(str_replace('-', '.', $artist));
         $name         = strtolower(str_replace('_', ' ', $name));
-        $link_array[] = process_template(
+        $link_array[] = Render::html(
             'filelist/search_link',
             [
                 'KEY'      => $field,
@@ -94,7 +98,7 @@ foreach ($sortedArray as $num => $artistArray) {
     // dd($link_array);
     $artist_box['ARTIST_LINKS'] = $artist_links;
 
-    $artist_html .= process_template('artist/artist_box', $artist_box);
+    $artist_html .= Render::html('artist/artist_box', $artist_box);
 }
 $params['ARTIST_HTML'] = $artist_html;
 
@@ -110,7 +114,7 @@ foreach ($results as $num => $artistArray) {
         $title   = str_replace('_', ' ', $artistArray['filename']);
        // $titleBg = ' bg-info ';
     }
-    $params['THUMBNAIL_HTML'] .= process_template(
+    $params['THUMBNAIL_HTML'] .= Render::html(
         'artist/artist_thumbnail',
         [
             'MISSING_TITLE_BG' => $titleBg,
@@ -125,4 +129,3 @@ foreach ($results as $num => $artistArray) {
 Template::echo('artist/cloud', $params);
 // Template::echo("artist/main",$PARAMS);
 
-include __LAYOUT_FOOTER__;

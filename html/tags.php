@@ -3,6 +3,16 @@
  * plex web viewer
  */
 
+
+ use Plex\Template\Render;
+ use Plex\Core\FileListing;
+ use Plex\Core\ProcessForms;
+ use Plex\Template\Template;
+ use Plex\Template\Layout\Footer;
+ use Plex\Template\Layout\Header;
+ use Plex\Template\Display\Display;
+ use Plex\Template\Display\VideoDisplay;
+ 
 define('__TAG_CAT_CLASS__', 'border border-2 border-dark  mx-2 d-flex');
 
 require_once '_config.inc.php';
@@ -28,17 +38,15 @@ if (isset($uri)) {
 $redirect_string = 'search.php'.$request_key;
 $field           = 'genre';
 
-include_once __LAYOUT_HEADER__;
 
 define('__TAG_CAT_CLASS__', ''); // border border-1 border-black');
 
-$html            = process_template('cloud/main',
+$html            = Render::html('cloud/main',
     [
         'TAG_CAT_CLASS'  => __TAG_CAT_CLASS__,
         'TAG_CLOUD_HTML' => keyword_cloud('genre'),
         //   'TAG_CLOUD_KEYWORD' => keyword_cloud('keyword'),
     ]);
 
-template::echo('base/page', ['BODY' => $html]);
+Template::echo('base/page', ['BODY' => $html]);
 
-include_once __LAYOUT_FOOTER__;

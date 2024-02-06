@@ -3,20 +3,24 @@
  * plex web viewer
  */
 
+use Plex\Core\FileListing;
+use Plex\Template\Template;
+use Plex\Template\Display\Display;
+use Plex\Template\Display\VideoDisplay;
+
 require_once '_config.inc.php';
 
 define('TITLE', 'Home');
 define('__SHOW_SORT__', true);
 
-define('USE_FILTER', true);
 define('ALPHA_SORT', true);
-Template::$Render                = true;
+Template::$Render         = true;
 
-$fileinfo                        = new FileListing($_REQUEST, $currentPage, $urlPattern);
-[$results,$pageObj,$uri]         = $fileinfo->getVideoArray();
+$fileinfo                 = new FileListing($_REQUEST, $currentPage, $urlPattern);
+[$results,$pageObj,$uri]  = $fileinfo->getVideoArray();
 
-$request_key                     = uri_String($uri);
-$redirect_string                 = __THIS_FILE__.$request_key;
+$request_key              = uri_String($uri);
+$redirect_string          = __THIS_FILE__.$request_key;
 
 if (array_key_exists('genre', $_REQUEST)) {
     $studio_url = urlQuerystring($redirect_string, 'genre');
@@ -30,23 +34,18 @@ if (array_key_exists('genre', $_REQUEST)) {
 //  //   exit;
 // }
 
-$referer_url                     = '';
+$referer_url              = '';
 if ('home.php' != basename($_SERVER['HTTP_REFERER'])) {
     $referer_url = $_SERVER['HTTP_REFERER'];
 }
-Render::$CrubURL['grid']         = 'gridview.php';
+Display::$CrubURL['grid'] = 'gridview.php';
 
-$page_array                      = [
+$vidInfo                  = (new VideoDisplay('List'))->init('filelist');
+$body                     = $vidInfo->Display($results, [
     'total_files'     => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
-];
+]);
 
-$vidInfo                         = new VideoDisplay('filelist');
-$body                            = $vidInfo->filelist($results, '', $page_array);
-// $body['PLAYLIST_ADD_BUTTON']     = Render::displayPlaylistButton();
-// $body['PLAYLIST_ADD_ALL_BUTTON'] = Render::displayPlaylistAddAllButton();
-//$body['PLAYLIST_ADD_ALL_BUTTON'] = Render::displayPlaylistCanvas();
-
-template::echo('filelist/page', $body);
+Template::echo('filelist/page', $body);
 
 Template::render();

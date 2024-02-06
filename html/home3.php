@@ -25,7 +25,7 @@ $result       = $db->query($sql);
 $all_url      = 'files.php?allfiles=1';
 
 // DEFINE('BREADCRUMB', [$in_directory => "", 'all' => $all_url]);
-require __LAYOUT_HEADER__;
+ \Plex\Template\Layout\Header::Display();
 
 foreach ($result as $r => $row) {
     if (null === $row['subLibrary']) {
@@ -45,7 +45,7 @@ foreach ($studioArray as $subLibrary => $studioArr) {
         $cnt           = $sname['cnt'];
         if (0 == $index % 4) {
             if ('' != $studio_links) {
-                $studio_box .= process_template('home/studio_box', [
+                $studio_box .= Render::html('home/studio_box', [
                     'STUDIO_LINKS' => $studio_links,
                     'CLASS'        => '',
                 ]);
@@ -68,7 +68,7 @@ foreach ($studioArray as $subLibrary => $studioArr) {
             $cnt = ' ('.$cnt.') ';
         }
 
-        $studio_links .= process_template('home/studio_link', [
+        $studio_links .= Render::html('home/studio_link', [
             'GET_REQUEST' => 'studio='.$studio,
             'NAME'        => $name['studio'],
             'COUNT'       => $cnt,
@@ -86,14 +86,14 @@ foreach ($studioArray as $subLibrary => $studioArr) {
                     $ssCnt     = ' ('.$ssName['cnt'].')';
 
                     $substudio = urlencode($ssName['substudio']);
-                    $studio_links .= process_template('home/studio_link', [
+                    $studio_links .= Render::html('home/studio_link', [
                         'GET_REQUEST' => 'substudio='.$substudio,
                         'NAME'        => $ssName['substudio'],
                         'COUNT'       => $ssCnt,
                         'CLASS'       => 'btn btn-secondary',
                     ]);
                     if (0 == $iindex % 8) {
-                        $studio_box .= process_template('home/studio_box', [
+                        $studio_box .= Render::html('home/studio_box', [
                             'STUDIO_LINKS' => $studio_links,
                             'CLASS'        => '',
                         ]);
@@ -102,7 +102,7 @@ foreach ($studioArray as $subLibrary => $studioArr) {
                 }
             }
             if ('' != $studio_links) {
-                $studio_box .= process_template('home/studio_box', [
+                $studio_box .= Render::html('home/studio_box', [
                     'STUDIO_LINKS' => $studio_links,
                     'CLASS'        => '',
                 ]);
@@ -110,7 +110,7 @@ foreach ($studioArray as $subLibrary => $studioArr) {
             $studio_links = '';
         } else {
             if ('' != $studio_links) {
-                $studio_box .= process_template('home/studio_box', [
+                $studio_box .= Render::html('home/studio_box', [
                     'STUDIO_LINKS' => $studio_links,
                     'CLASS'        => '',
                 ]);
@@ -123,12 +123,12 @@ foreach ($studioArray as $subLibrary => $studioArr) {
         // }
     }
 
-    $studio_html .= process_template('home/studio_lib', [
+    $studio_html .= Render::html('home/studio_lib', [
         'STUDIO_BOX_HTML' => $studio_box,
         'LIBRARY_NAME'    => $subLibrary]);
 } // end foreach
 
-$body         = process_template('home/main', ['BODY_HTML' => $studio_html]);
-template::echo('base/page', ['BODY' => $body]);
+$body         = Render::html('home/main', ['BODY_HTML' => $studio_html]);
+Template::echo('base/page', ['BODY' => $body]);
 
-require __LAYOUT_FOOTER__;
+ \Plex\Template\Layout\Footer::Display();

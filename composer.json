@@ -50,7 +50,11 @@
     "symfony/security-bundle": "^6.3",
     "delight-im/auth": "^8.3",
     "camoo/config": "^1.0",
-    "bsodergren/raintpl": "dev-master"
+    "bsodergren/raintpl": "dev-master",
+    "sunra/php-simple-html-dom-parser": "^1.5",
+    "paquettg/php-html-parser": "^2.2",
+    "nette/robot-loader": "^4.0",
+    "kub-at/php-simple-html-dom-parser": "^1.9"
   },
   "require-dev": {
     "symfony/var-dumper": "^6.2"

@@ -1,5 +1,10 @@
 <?php
-
+use Plex\Core\FileListing;
+use Plex\Template\Display\Display;
+use Plex\Template\Template;
+use Plex\Template\Display\VideoDisplay;
+use Plex\Template\Layout\Footer;
+use Plex\Template\Layout\Header;
 require_once '_config.inc.php';
 
 $form = new Formr\Formr('bootstrap4');
@@ -10,7 +15,7 @@ if ($form->submitted()) {
 
 define('TITLE', 'Test Page');
 
-require __LAYOUT_HEADER__;
+Header::Display();
 ?>
 
 <main role="main" class="container">
@@ -113,4 +118,5 @@ $form->close();
 
 ?>
  </main>
- <?php include __LAYOUT_FOOTER__; ?>
+ <?php Footer::Display();
+ ?>

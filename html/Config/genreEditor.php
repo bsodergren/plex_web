@@ -1,5 +1,7 @@
 <?php
-
+use Plex\Template\Render;
+use Plex\Template\Template;
+use Plex\Template\Pageinate\GenrePagenate;
 require_once '../_config.inc.php';
 define('TITLE', 'Home');
 define('ALPHA_SORT', true);
@@ -65,7 +67,7 @@ $results            = $db->query($sql);
 
 $redirect_string    = 'Config/'.__THIS_FILE__.$request_string_query;
 
-include __LAYOUT_HEADER__;
+ \Plex\Template\Layout\Header::Display();
 
 ?>
 
@@ -78,7 +80,7 @@ include __LAYOUT_HEADER__;
     $genre_row_html = '';
 
 foreach ($results as $key => $row) {
-    $genre_row_html .= process_template(
+    $genre_row_html .= Render::html(
         'config/genre/genre_row',
         [
             'GENRE_ID'       => 'replacement_'.$row['id'],
@@ -91,7 +93,7 @@ foreach ($results as $key => $row) {
 
 $hidden             = add_hidden('submit', 'GenreConfigSave');
 $hidden .= add_hidden('redirect', $redirect_string);
-$genre_main_html .= process_template('config/genre/form_wrapper', [
+$genre_main_html .= Render::html('config/genre/form_wrapper', [
     'HIDDEN'          => $hidden,
     'GENRE_FORM_HTML' => $genre_row_html,
 ]);
@@ -108,5 +110,5 @@ Template::echo(
 
 <?php
 
-require __LAYOUT_FOOTER__;
+ \Plex\Template\Layout\Footer::Display();
 ?>

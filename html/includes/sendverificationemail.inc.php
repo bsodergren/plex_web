@@ -81,7 +81,7 @@ if (
     $mail_variables['EMAIL']    = $email;
     $mail_variables['URL']      = $url;
 
-    $message                    = process_template('auth/email/verify', $mail_variables);
+    $message                    = Render::html('auth/email/verify', $mail_variables);
 
     $mail                       = new PHPMailer(true);
 

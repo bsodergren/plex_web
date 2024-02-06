@@ -3,11 +3,22 @@
  * plex web viewer
  */
 
+
+ use Plex\Template\Render;
+ use Plex\Core\FileListing;
+ use Plex\Core\ProcessForms;
+ use Plex\Template\Template;
+ use Plex\Template\Layout\Footer;
+ use Plex\Template\Layout\Header;
+ use Plex\Template\Display\Display;
+ use Plex\Template\Display\VideoDisplay;
+ 
+
 require_once '_config.inc.php';
 define('GRID_VIEW', true);
 $playlist_ids    = [];
 define('TITLE', 'search');
-define('USE_FILTER', true);
+define('USE_FILTER', false);
 define("ALPHA_SORT",true) ;
 
 foreach ($tag_array as $tag) {
@@ -62,8 +73,8 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     $msg                = 'Showing '.count($results).' results for for '.$_REQUEST['query'];
     $msg                = strtolower(str_replace('-', '.', $msg));
     $msg                = strtolower(str_replace('_', ' ', $msg));
-    $html_msg           = process_template('search/search_msg', ['MSG' => $msg]);
-    //  $html_msg .= process_template("search/search_msg", [   'MSG' => $sql] );
+    $html_msg           = Render::html('search/search_msg', ['MSG' => $msg]);
+    //  $html_msg .= Render::html("search/search_msg", [   'MSG' => $sql] );
 
     $grid               = new GridDisplay();
     $search_results     = $grid->gridview($results, count($results));
@@ -81,10 +92,10 @@ $search_types    = [
 
 foreach ($search_types as $key) {
     // $checkbox = draw_checkbox("searchField[]", $key, $key);
-    $checkboxes .= process_template('search/checkboxes', ['NAME' => $key]);
+    $checkboxes .= Render::html('search/checkboxes', ['NAME' => $key]);
 }
 
-$body            = process_template('search/search', [
+$body            = Render::html('search/search', [
     'HIDDEN_IDS'     => add_hidden('playlist', $playlist_ids_str),
     'HIDDEN_STUDIO'  => add_hidden('studio', $_REQUEST['query'].' Search'),
     'SEARCH_RESULTS' => $search_results,
@@ -92,8 +103,6 @@ $body            = process_template('search/search', [
     'HTML_MSG'       => $html_msg,
 ]);
 
-include_once __LAYOUT_HEADER__;
 
-template::echo('base/page', ['BODY' => $body]);
+Template::echo('base/page', ['BODY' => $body]);
 
-include_once __LAYOUT_FOOTER__;
