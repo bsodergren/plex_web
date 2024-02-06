@@ -1,16 +1,10 @@
 <?php
-/**
- * plex web viewer
- */
 
 
  use Plex\Template\Render;
  use Plex\Core\FileListing;
  use Plex\Core\ProcessForms;
  use Plex\Template\Template;
- use Plex\Template\Layout\Footer;
- use Plex\Template\Layout\Header;
- use Plex\Template\Display\Display;
  use Plex\Template\Display\VideoDisplay;
  
 
@@ -70,14 +64,18 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     $playlist_ids_str   = implode(',', $playlist_ids);
     // $msg              = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);
 
+
     $msg                = 'Showing '.count($results).' results for for '.$_REQUEST['query'];
     $msg                = strtolower(str_replace('-', '.', $msg));
     $msg                = strtolower(str_replace('_', ' ', $msg));
     $html_msg           = Render::html('search/search_msg', ['MSG' => $msg]);
     //  $html_msg .= Render::html("search/search_msg", [   'MSG' => $sql] );
 
-    $grid               = new GridDisplay();
-    $search_results     = $grid->gridview($results, count($results));
+
+    $grid                 = (new VideoDisplay('Grid'))->init();
+
+$search_results         = $grid->Display($results, [  'total_files'     => count($results)]);
+
 
     //   $search_results =     display_filelist($results, '', $page_array);
 }

@@ -30,7 +30,7 @@ $videoInfo                 = $fileinfo->getVideoDetails($id);
 $vidInfo                   = (new VideoDisplay())->init('videoinfo');
 $vidInfo->showVideoDetails = true;
 $body                      = $vidInfo->Display($videoInfo);
-$body['THEME_SWITCHER']    = THEME_SWITCHER;
+//$body['THEME_SWITCHER']    = THEME_SWITCHER;
 
 // Template::echo('videoinfo/videoinfo', ['BODY' => $body, 'DELETE_HTML' => $delete_html]);
 Template::echo('videoinfo/videoinfo', $body);
