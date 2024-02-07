@@ -1,0 +1,137 @@
+<main class="container-fluid">
+    <form method="post" id="ajaxform">
+        <button
+            class="btn btn-primary"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasTop"
+            aria-controls="offcanvasTop"
+        >
+            Playlist
+        </button>
+
+        <div
+            class="offcanvas offcanvas-top offcanvas-top-list"
+            data-content-overlay="false"
+            data-bs-scroll="true"
+            data-bs-backdrop="false"
+            tabindex="-1"
+            id="offcanvasTop"
+            aria-labelledby="offcanvasTopLabel"
+        >
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                    Playlist
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"
+                ></button>
+            </div>
+
+            <div class="offcanvas-body">
+                <div
+                    class="playlistData btn-group w-50 btn-primary border border-2 border-dark"
+                    role="group"
+                    aria-label="Vertical button group"
+                >
+                    <input type="hidden" name="search_id" value="180" />
+
+                    <button
+                        type="button"
+                        class="btn PlaylistButton"
+                        id="PlayAll"
+                    >
+                        Play All
+                    </button>
+                    <button
+                        type="button"
+                        class="btn PlaylistButton"
+                        id="AddPlaylist"
+                    >
+                        Add selected to Playlist
+                    </button>
+                    <span class="btn PlaylistButton" id="AddAll"
+                        >Add all Playlist</span
+                    >
+                    <span class="btn PlaylistButton" id="Clear">Clear</span>
+                </div>
+            </div>
+        </div>
+
+        <script
+            src="http://10.0.0.101/plex/assets/layouts/js/playlist.js?dyK690wB4b"
+            type="text/javascript"
+        ></script>
+
+        <div>
+            <input type="hidden" name="submit" value="playlist" />
+            <input type="hidden" name="studio" value="Private" />
+        </div>
+        <div class="fileList">
+            <div id="wrapper" name="32944" class="m-3">
+                <div class="">
+                    <div class="row">
+                        <div
+                            class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary text-start"
+                            style="padding-left: 10px; max-width: 175px"
+                        ></div>
+
+                        <div
+                            class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary text-start"
+                            style="padding-left: 205px"
+                        >
+                            <span
+                                onclick="popup('http://10.0.0.101/plex/videoinfo.php?id=32944', 'videoinfo_popup')"
+                                >The Sexual Fantasies of Angie Lynx</span
+                            >
+                        </div>
+                    </div>
+                    <div class="row flex-nowrap">
+                        <div
+                            class="col bg-primary bg-gradient fw-bold fs-5 text-white text-nowrap"
+                            style="max-width: 35px"
+                        >
+                            <div class="vertical-text">
+                                &nbsp;&nbsp;&nbsp;1 of 21
+                            </div>
+                        </div>
+
+                        <div
+                            class="col categories-wrapper"
+                            style="max-width: 340px"
+                        >
+                            <div
+                                class="custom-control custom-checkbox image-checkbox"
+                            >
+                                <input
+                                    type="checkbox"
+                                    class="category-input custom-control-input playlist_selector"
+                                    id="ck1a_32944"
+                                    name="playlist[]"
+                                    value="32944"
+                                />
+
+                                <label
+                                    class="custom-control-label position-relative"
+                                    for="ck1a_32944"
+                                >
+                                    <img
+                                        src="http://10.0.0.101/plex/images/plex/thumbnails/Studios/Private/MMF/SPE391_s01_720.jpg"
+                                        alt="#"
+                                        class="img-fluid"
+                                        id="ck1a_32944_img"
+                                        onmouseover="previewHover(this,'http://10.0.0.101/plex/images/plex/thumbnails/Studios/Private/MMF/SPE391_s01_720.jpg','http://10.0.0.101/plex/images/plex/preview/Studios/Private/MMF/SPE391_s01_720.gif')"
+                                        onerror="this.onerror=null;this.src='http://10.0.0.101/plex/images/default.jpg'"
+                                    />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</main>

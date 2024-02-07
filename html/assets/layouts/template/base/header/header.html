@@ -1,25 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    <meta charset="utf-8" />
-    <meta name="description" content="%%APP_DESCRIPTION%%" />
-    <meta name="author" content="%%APP_OWNER%%" />
-    <base href="%%__URL_HOME__%%/" />
+    <head>
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+        <meta charset="utf-8" />
+        <meta name="description" content="%%APP_DESCRIPTION%%" />
+        <meta name="author" content="%%APP_OWNER%%" />
+        <base href="%%__URL_HOME__%%/" />
 
-    <title>%%TITLE%%|%%APP_NAME%%</title>
-    %%SCRIPTS%%
-    %%THEME_JS%%
-{{function=ratingInclude}}
-<style>
+        <title>%%TITLE%%|%%APP_NAME%%</title>
 
 
+        {{javascript=external/popper.min.js}}
+        {{javascript=external/bootstrap.min.js}}
 
-</style>
-</head>
 
-<body %%ONLOAD%%>
-<!-- end of header.html -->
+        {{function=themeSwitcher}}
+        {{javascript=external/jquery.min.js}}
+
+        {{javascript=external/jquery.editable.min.js}}
+
+        {{javascript=app.js}}
+                {{javascript=styleswitch.js}}
+
+        <script>
+            // $(document).ready(function(){
+            //   $('[data-toggle="tooltip"]').tooltip();
+            // });
+        </script>
+
+        {{stylesheet=app.css}}
+        {{stylesheet=tags-input.css}}
+        {{stylesheet=bootstrap-image-checkbox.min.css}}
+
+        <script type="text/javascript">
+            window.onload = function () {
+                var formref = document.getElementById("switchform");
+                indicateSelected(formref.switchcontrol);
+            };
+        </script>
+
+        {{function=ratingInclude}}
+        %%SCRIPTS%%
+        <style>
+
+
+
+        </style>
+    </head>
+
+    <body %%ONLOAD%%>
+        <!-- end of header.html -->

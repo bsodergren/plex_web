@@ -5,11 +5,9 @@
 
 namespace Plex\Template\Layout;
 
-use Plex\Core\RoboLoader;
-use Plex\Template\Layout\Navbar;
+use Plex\Template\Display\Display;
 use Plex\Template\Render;
 use Plex\Template\Template;
-use Plex\Template\Display\Display;
 
 /**
  * plex web viewer.
@@ -41,13 +39,13 @@ class Header
         $params['__LAYOUT_URL__']  = __LAYOUT_URL__;
 
         // if (!defined('NONAVBAR')) {
-       
-        $params['SCRIPTS']         = Render::html('base/header/header_scripts', $params);
+
+        // $params['SCRIPTS']         = Render::html('base/header/header_scripts', $params);
 
         // if (!defined('VIDEOINFO')) {
-        $params['SCRIPTS'] .= Render::html('base/header/header_filelist', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
+        // $params['SCRIPTS'] .= Render::html('base/header/header_filelist', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
 
-        $params['THEME_JS']        = Render::html('base/header/header_themejs', []);
+        // $params['THEME_JS']        = Render::html('base/header/header_themejs', []);
         // } else {
         //     $params['SCRIPTS']  .= Render::html('base/header/header_videoinfo', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
         //  //     $params['ONLOAD'] = 'onbeforeunload="refreshAndClose();"';
