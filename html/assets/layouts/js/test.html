@@ -39,18 +39,10 @@
                 >
                     <input type="hidden" name="search_id" value="180" />
 
-                    <button
-                        type="button"
-                        class="btn PlaylistButton"
-                        id="PlayAll"
-                    >
+                    <button class="btn PlaylistButton" id="PlayAll">
                         Play All
                     </button>
-                    <button
-                        type="button"
-                        class="btn PlaylistButton"
-                        id="AddPlaylist"
-                    >
+                    <button class="btn PlaylistButton" id="AddPlaylist">
                         Add selected to Playlist
                     </button>
                     <span class="btn PlaylistButton" id="AddAll"
@@ -61,10 +53,7 @@
             </div>
         </div>
 
-        <script
-            src="http://10.0.0.101/plex/assets/layouts/js/playlist.js?dyK690wB4b"
-            type="text/javascript"
-        ></script>
+        <script src="http://10.0.0.101/plex/assets/layouts/js/playlist.js?YxAmUINcLy"></script>
 
         <div>
             <input type="hidden" name="submit" value="playlist" />
@@ -77,7 +66,21 @@
                         <div
                             class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary text-start"
                             style="padding-left: 10px; max-width: 175px"
-                        ></div>
+                        >
+                            <input
+                                id="ratingInput_32944"
+                                value="0"
+                                type="button"
+                                class="rating rating-input"
+                                data-theme="krajee-fas"
+                                data-min="0"
+                                data-max="5"
+                                data-step="0.5"
+                                data-size="xs"
+                                title=""
+                                name="rating"
+                            />
+                        </div>
 
                         <div
                             class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary text-start"
