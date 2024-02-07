@@ -50,6 +50,7 @@ jQuery(document).ready(function () {
 
 $('#ajaxform').submit(function (e) {
     var postData = $(this).serializeArray()
+    console.log(postData);
     $.ajax({
         url: 'process.php',
         type: 'POST',
@@ -57,11 +58,13 @@ $('#ajaxform').submit(function (e) {
         success: function (data) {
             const substring = 'video.php'
             if (data.includes(substring) == true) {
-                popup(data, 'PlaylistWindow')
+                console.log(data);
+                //  popup(data, 'PlaylistWindow')
             } else {
-                window.location = data
+                console.log(data);
+                //  window.location = data
             }
-            r
+            
         }
     })
 })

@@ -1,15 +1,15 @@
 <?php
-
-use Plex\Template\Render;
-use Plex\Core\FileListing;
-use Plex\Core\ProcessForms;
-use Plex\Template\Template;
-use Plex\Template\Layout\Footer;
-use Plex\Template\Layout\Header;
-use Plex\Template\Display\Display;
-use Plex\Template\Display\VideoDisplay;
 /**
  * plex web viewer
+ */
+
+use Plex\Core\ProcessForms;
+use Plex\Template\Display\VideoDisplay;
+use Plex\Template\Render;
+use Plex\Template\Template;
+
+/**
+ * plex web viewer.
  */
 
 require_once '_config.inc.php';
@@ -26,6 +26,7 @@ if (null === $playlist_id) {
     $sql     = 'select count(p.playlist_video_id) as count, p.playlist_id, d.name,
     d.library from '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = d.id) and d.hide = 0 group by p.playlist_id ORDER BY library ASC;';
     $results = $db->query($sql);
+    dump($sql);
     $total   = count($results);
     for ($i = 0; $i < count($results); ++$i) {
         $library = $results[$i]['library'];
@@ -69,11 +70,11 @@ if (null === $playlist_id) {
         $thumbnail = '';
         if (__SHOW_THUMBNAILS__ == true) {
             $thumbnail = Render::html(
-               'playlist/thumbnail',
+                'playlist/thumbnail',
                 [
                     'THUMBNAIL'         => $VideoDisplay->fileThumbnail($results[$i]['id'], 'alt="#" class="img-fluid" '),
                     'VIDEO_ID'          => $results[$i]['id'],
-                 
+
                     'PLAYLIST_VIDEO_ID' => $results[$i]['playlist_video_id'],
                 ]
             );
@@ -86,7 +87,7 @@ if (null === $playlist_id) {
                 'TITLE'             => $results[$i]['title'],
                 'THUMBNAIL'         => $thumbnail,
                 'VIDEO_ID'          => $results[$i]['id'],
-                'PLAYLIST_ID' =>  $playlist_id ,
+                'PLAYLIST_ID'       => $playlist_id,
                 'PLAYLIST_VIDEO_ID' => $results[$i]['playlist_video_id'],
             ]
         );
@@ -110,4 +111,3 @@ define('TITLE', 'Home');
 define('GRID_VIEW', 1);
 
 Template::echo('base/page', ['BODY' => $table_body_html]);
-

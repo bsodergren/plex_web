@@ -60,14 +60,22 @@ class Functions extends Render
 
     public function videoRating($matches)
     {
+        if(defined("SHOW_RATING") == true) {
+            if(SHOW_RATING == true) {
         $var = $this->parseVars($matches);
 
         return Render::html('elements/Rating/rating', ['ROW_ID' => $var['id'], 'STAR_RATING' => $var['rating']]);
+            }
+        }
     }
 
     public function ratingInclude($matches)
     {
+        if(defined("SHOW_RATING") == true) {
+            if(SHOW_RATING == true) {
         return Render::html('elements/Rating/header', []);
+            }
+        }
     }
 
     public function AlphaBlock($match)

@@ -1,18 +1,16 @@
 <?php
-
-use Plex\Core\ProcessForms;
-use Plex\Template\Template;
-use Plex\Template\Render;
-use Plex\Core\FileListing;
-use Plex\Core\ProcessForms;
-use Plex\Template\Template;
-use Plex\Template\Layout\Footer;
-use Plex\Template\Layout\Header;
-use Plex\Template\Display\Display;
-use Plex\Template\Display\VideoDisplay;
 /**
-
  * plex web viewer
+ */
+
+use Plex\Core\ProcessForms;
+use Plex\Core\ProcessForms;
+use Plex\Template\Layout\Header;
+use Plex\Template\Template;
+use Plex\Template\Template;
+
+/**
+ * plex web viewer.
  */
 
 require_once '_config.inc.php';
@@ -38,10 +36,12 @@ if (array_key_exists('action', $_REQUEST)) {
     if ('refresh' == $_REQUEST['action']) {
         define('TITLE', 'Home');
 
-Header::Display();
+        Header::Display();
     }
 }
 logger('_REQUEST', $_REQUEST);
+dump($_REQUEST);
 $forms = new ProcessForms($_REQUEST);
+dump($forms);
 // dump($forms->redirect);
 echo $forms->redirect;
