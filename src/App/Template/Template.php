@@ -90,7 +90,7 @@ class Template
         $template_obj       = new self();
         $template_obj->template($template, $array);
 
-        $template_obj->html = $template_obj->parse_urllink($template_obj->html);
+      //  $template_obj->html = $template_obj->parse_urllink($template_obj->html);
 
         if (true === self::$Render) {
             self::$RenderHTML .= $template_obj->html;
