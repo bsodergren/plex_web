@@ -6,7 +6,8 @@ use Plex\Template\Render;
 use Plex\Template\Template;
 use Plex\Template\HTML\Elements;
 use Plex\Core\PlexSql;
-
+use Plex\Template\Layout\Footer;
+use Plex\Template\Layout\Header;
 
 /**
  * plex web viewer.
@@ -109,5 +110,6 @@ if (null === $playlist_id) {
 
 define('TITLE', 'Home');
 define('GRID_VIEW', 1);
-
+Header::Display();
 Template::echo('base/page', ['BODY' => $table_body_html]);
+Footer::Display();

@@ -201,5 +201,8 @@ class Elements
 
     return $tag_links;
 }
-
+public static function Comment($text)
+{
+    return PHP_EOL."<!-- ---------- " . $text . " ----------- --->".PHP_EOL;
+}
 }

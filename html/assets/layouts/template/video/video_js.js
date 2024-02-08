@@ -261,7 +261,15 @@ function showControls() {
 // each supported shortcut key
 function keyboardShortcuts(event) {
     const { key } = event;
+    console.log(key);
+    //skip(value)
     switch (key) {
+        case "ArrowRight":
+            skip(30);
+            break;
+            case "ArrowLeft":
+                skip(-10);
+                break;
         case "k":
             togglePlay();
             animatePlayback();

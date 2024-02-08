@@ -8,7 +8,8 @@
  use Plex\Template\Display\VideoDisplay;
  use Plex\Template\HTML\Elements;
  use Plex\Core\PlexSql;
-
+use Plex\Template\Layout\Footer;
+use Plex\Template\Layout\Header;
 
 require_once '_config.inc.php';
 define('GRID_VIEW', true);
@@ -104,5 +105,6 @@ $body            = Render::html('search/search', [
 ]);
 
 
+Header::Display();
 Template::echo('base/page', ['BODY' => $body]);
-
+Footer::Display();

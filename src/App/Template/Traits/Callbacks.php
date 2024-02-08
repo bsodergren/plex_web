@@ -33,7 +33,9 @@ trait Callbacks
         }
 
         if(array_key_exists($key,$this->replacement_array)){
-            return $this->replacement_array[$key];
+            $value = $this->replacement_array[$key];
+          //  unset($this->replacement_array[$key]);
+            return $value;
         }
 
         return '';

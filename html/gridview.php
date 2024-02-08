@@ -47,6 +47,7 @@ $table_body_html         = $grid->Display($results, [
     'total_files'     => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
 ]);
-
+\Plex\Template\Layout\Header::Display();
 Template::echo('base/page', ['BODY' => $table_body_html]);
+\Plex\Template\Layout\Footer::Display();
 

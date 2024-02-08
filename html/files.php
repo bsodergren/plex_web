@@ -5,6 +5,8 @@
 
 use Plex\Core\FileListing;
 use Plex\Template\Template;
+use Plex\Template\Layout\Footer;
+use Plex\Template\Layout\Header;
 use Plex\Template\Display\Display;
 use Plex\Template\Display\VideoDisplay;
 
@@ -16,7 +18,6 @@ define('__SHOW_SORT__', true);
 define('ALPHA_SORT', true);
 define('SHOW_RATING', true);
 
-Template::$Render         = true;
 
 $fileinfo                 = new FileListing($_REQUEST, $currentPage, $urlPattern);
 [$results,$pageObj,$uri]  = $fileinfo->getVideoArray();
@@ -26,15 +27,7 @@ $redirect_string          = __THIS_FILE__.$request_key;
 
 if (array_key_exists('genre', $_REQUEST)) {
     $studio_url = urlQuerystring($redirect_string, 'genre');
-    //  $studio_url  = 'studio.php?studio='.$_REQUEST['studio'];
 }
-
-// $res = count($results);
-// if($res == 0){
-//     $redirect_string = urlQuerystring($redirect_string, 'alpha');
-//   //  echo Elements::javaRefresh($redirect_string, 0);
-//  //   exit;
-// }
 
 $referer_url              = '';
 if ('home.php' != basename($_SERVER['HTTP_REFERER'])) {
@@ -47,6 +40,7 @@ $body                     = $vidInfo->Display($results, [
     'total_files'     => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
 ]);
-Template::echo('filelist/page', $body);
 
-Template::render();
+Header::Display();
+Template::echo('filelist/page', $body);
+Footer::Display();

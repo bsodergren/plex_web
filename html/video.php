@@ -3,7 +3,6 @@
 use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
 use Plex\Template\Template;
-use Plex\Core\PlexSql;
 
 require_once '_config.inc.php';
 define('SHOW_RATING', true);
@@ -62,14 +61,33 @@ if (isset($playlist_id)) {
     $VideoDisplay = new Functions();
 
     $sql = 'select
-        f.thumbnail,f.filename,m.title,p.playlist_video_id from
-        '.Db_TABLE_VIDEO_FILE.' as f,
+        f.thumbnail,f.filename,p.playlist_video_id,
+         m.title,
+        m.genre,
+        m.studio,
+         m.artist
+         from
+         '.Db_TABLE_VIDEO_FILE.' as f,
         '.Db_TABLE_PLAYLIST_VIDEOS.' as p,
         '.Db_TABLE_VIDEO_TAGS.' as m where (
             p.playlist_id = '.$playlist_id.' and
             p.playlist_video_id = f.id  and
             f.video_key = m.video_key);';
     $results = $db->query($sql);
+$newArray = [];
+$test = $results;
+    foreach($test as $index =>$row)
+    {
+        if($row['playlist_video_id'] ==  $id)
+        {
+            break;
+        }
+       $last = array_shift($test);
+       $newArray[] = $last;
+    }
+
+    $results = array_merge($test,$newArray);
+
     for ($i = 0; $i < count($results); ++$i) {
         $class = '';
 
@@ -84,9 +102,25 @@ if (isset($playlist_id)) {
         $carousel_item .= Render::html(
             'video/carousel_item',
             [
-                'PLAYLIST_ID' => $playlist_id,
-
                 'THUMBNAIL' => $VideoDisplay->fileThumbnail($results[$i]['playlist_video_id'], 'alt="#" class="img-fluid" '),
+                'STUDIO' => $results[$i]['studio'],
+                'ARTIST' => $results[$i]['artist'],
+                'GENRE' => $results[$i]['genre'],
+                'PLAYLIST_ID' => $playlist_id,
+                'CLASS_ACTIVE' => $class,
+                'VIDEO_ID' => $results[$i]['playlist_video_id'],
+                'TITLE' => $title,
+            ]
+        );
+
+        $canvas_item .= Render::html(
+            'video/canvas_item',
+            [
+                'THUMBNAIL' => $VideoDisplay->fileThumbnail($results[$i]['playlist_video_id'], 'alt="#" class="img-fluid" '),
+                'STUDIO' => $results[$i]['studio'],
+                'ARTIST' => $results[$i]['artist'],
+                'GENRE' => $results[$i]['genre'],
+                'PLAYLIST_ID' => $playlist_id,
                 'CLASS_ACTIVE' => $class,
                 'VIDEO_ID' => $results[$i]['playlist_video_id'],
                 'TITLE' => $title,
@@ -112,6 +146,8 @@ if (isset($playlist_id)) {
 
     $carousel_js = Render::html('video/carousel_js', ['PLAYLIST_ID' => $playlist_id]);
     $carousel = Render::html('video/carousel', ['CAROUSEL_INNER_HTML' => $carousel_item]);
+    $canvas = Render::html('video/canvas', ['CANVAS_LIST' => $canvas_item]);
+
     $video_js_params['PLAYLIST_HEIGHT'] = 120;
     $video_js_params['PLAYLIST_WIDTH'] = 50;
     $video_js_params['PLAYLIST_ID'] = $playlist_id;
@@ -134,6 +170,7 @@ $params = [
     'VIDEO_URL' => $video_file,
     'VIDEO_TITLE' => $active_title,
     'CAROUSEL_HTML' => $carousel,
+    'CANVAS_HTML' => $canvas,
     'CAROUSEL_JS' => $carousel_js,
     'VIDEO_JS' => Render::javascript('video/video_js', $video_js_params),
 ];

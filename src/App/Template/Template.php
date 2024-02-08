@@ -6,11 +6,12 @@
 namespace Plex\Template;
 
 use Nette\Utils\FileSystem;
+use Plex\Template\HTML\Elements;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
 use KubAT\PhpSimple\HtmlDomParser;
-use Plex\Template\Functions\Functions;
 use Plex\Template\Traits\Callbacks;
+use Plex\Template\Functions\Functions;
 
 class Template
 {
@@ -91,11 +92,9 @@ class Template
 
       //  $template_obj->html = $template_obj->parse_urllink($template_obj->html);
 
-        if (true === self::$Render) {
-            self::$RenderHTML .= $template_obj->html;
-        } else {
+   
             echo $template_obj->html;
-        }
+   
     }
 
     public static function GetHTML($template = '', $array = [])
@@ -134,6 +133,7 @@ class Template
 
     public function template($template = '', $replacement_array = '', $extension = 'html')
     {
+        unset($this->replacement_array);
         if($extension == ''){
             $extension = 'html';
         }
@@ -150,7 +150,6 @@ class Template
         }
 
         $html_text     = file_get_contents($template_file);
-       
         $this->replacement_array = $replacement_array;
 
         $html_text     = preg_replace_callback(self::VARIABLE_CALLBACK, [$this, 'callback_parse_variable'], $html_text);
@@ -167,7 +166,6 @@ class Template
         if ('.js' == $extension) {
             $html_text = '<script>'.\PHP_EOL.$html_text.\PHP_EOL.'</script>'.\PHP_EOL;
         }
-
         $this->html = $html_text;
         return $html_text;
     }

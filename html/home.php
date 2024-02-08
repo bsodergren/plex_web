@@ -4,6 +4,7 @@ use Plex\Core\PlexSql;
 use Plex\Template\Render;
 use Plex\Template\Template;
 use Plex\Template\Display\Display;
+use Plex\Template\Layout\Footer;
 
 /**
  * plex web viewer
@@ -137,6 +138,8 @@ foreach ($studioArray as $subLibrary => $studioArr) {
 } // end foreach
 
 $body         = Render::html('accordian/main', ['BODY_HTML' => $studio_html]);
+\Plex\Template\Layout\Header::Display();
 Template::echo('base/page', ['BODY' => $body]);
+\Plex\Template\Layout\Footer::Display();
 
 //  \Plex\Template\Layout\Footer::Display();
