@@ -14,6 +14,8 @@ define('TITLE', 'Home');
 define('__SHOW_SORT__', true);
 
 define('ALPHA_SORT', true);
+define('SHOW_RATING', true);
+
 Template::$Render         = true;
 
 $fileinfo                 = new FileListing($_REQUEST, $currentPage, $urlPattern);
@@ -45,7 +47,6 @@ $body                     = $vidInfo->Display($results, [
     'total_files'     => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
 ]);
-
 Template::echo('filelist/page', $body);
 
 Template::render();

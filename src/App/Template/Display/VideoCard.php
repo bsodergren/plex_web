@@ -1,7 +1,12 @@
 <?php
+
 namespace Plex\Template\Display;
+
+use Plex\Template\Display\Traits\VideoRow;
+use Plex\Template\Render;
+
 /**
- * plex web viewer
+ * plex web viewer.
  */
 
 /**
@@ -9,357 +14,96 @@ namespace Plex\Template\Display;
  */
 class VideoCard
 {
+    use VideoRow;
+
     public $showVideoDetails = false;
-    private $template_base   = '';
+    private $template_base = '';
 
-    public function __construct($template_base = 'filelist')
+    public function __construct()
     {
-        $this->template_base = $template_base;
+        $this->template_base = 'VideoCard';
     }
 
-    public function fileThumbnail($row_id, $extra = '')
+    public function __call($method, $args)
     {
-        global $db;
-        $query  = 'SELECT thumbnail FROM metatags_video_file WHERE id = '.$row_id;
-        $result = $db->query($query);
-        if (defined('NOTHUMBNAIL')) {
-            return null;
-        }
+        $key = $args[1];
 
-        return __URL_HOME__.$result[0]['thumbnail'];
-        //  return __URL_HOME__.'/images/thumbnail.php?id='.$row_id;
-    }
-
-    public function filePreview($row_id, $extra = '')
-    {
-        global $db;
-        $query  = 'SELECT preview FROM metatags_video_file WHERE id = '.$row_id;
-        $result = $db->query($query);
-
-        if (defined('NOTHUMBNAIL')) {
-            return null;
-        }
-        if (null === $result[0]['preview']) {
-            return null;
-        }
-
-        return __URL_HOME__.$result[0]['preview'];
-        //  return __URL_HOME__.'/images/thumbnail.php?id='.$row_id;
-    }
-
-    public function cardTitle($params, $field, $value, $class, $id = '')
-    {
-       
-        $params['CARD_TITLE'] .= Render::html(
-            $this->template_base . '/card_title',
-            [
-                // 'ADD_BUTTON'  => $add_button,
-                'FIELD'     => $field,
-                'VIDEO_TITLE'     => $value,
-                'ALT_CLASS' => $class,
-                'EDITABLE'  => $editable,
-            ]
-        );
-        // dump($params, $field, $value, $class);
-        return $params;
-    }
-
-    public function fileRow($params, $field, $value, $class, $id = '')
-    {
-        $videoinfo_js = '';
-        $editable     = '';
-        $add_button   = '';
-        // if (defined('NONAVBAR')) {
-        //     if ('' != $id) {
-        //         $id            = ucfirst($id);
-        //         $editableClass = 'edit'.$id;
-        //         $functionName  = 'make'.$id.'Editable';
-
-        //         $params['VIDEOINFO_EDIT_JS'] .= Render::javascript(
-        //             'videoinfo/filerow_js',
-        //             [
-        //                 'ID_NAME'   => $id,
-        //                 'EDITABLE'  => $editableClass,
-        //                 'FUNCTION'  => $functionName,
-        //                 'VIDEO_KEY' => $params['video_key'],
-        //             ]
-        //         );
-
-        //         $editable      = $editableClass;
-
-        //         $add_button    = Render::html(
-        //             'videoinfo/add_button',
-        //             [
-        //                 'EDITABLE' => $editable,
-        //             ]
-        //         );
-        //     }
-        // }
-        $params['CARD_ROWS'] .= Render::html(
-            $this->template_base . '/card_row',
-            [
-                // 'ADD_BUTTON'  => $add_button,
-                'FIELD'     => $field,
-                'VALUE'     => $value,
-                'ALT_CLASS' => $class,
-                'EDITABLE'  => $editable,
-            ]
-        );
-
-        return $params;
+        return $this->info($key);
     }
 
     // $this->fileRowfs($params, ucfirst($key), display_size($value),$duration, $class);
-    public function fileRowfs($params, $field, $value, $duration, $class, $id = '')
-    {
-        $videoinfo_js = '';
-        $editable     = '';
 
-        $params['CARD_ROWS'] .= Render::html(
-            $this->template_base . '/card_row',
-            [
-                'DUR_FIELD' => 'Duration',
-                'DUR_VALUE' => $duration,
-                'FS_FIELD'  => $field,
-                'FS_VALUE'  => $value,
-                'ALT_CLASS' => $class,
-                'EDITABLE'  => $editable,
-            ]
-        );
-
-        return $params;
-    }
-
-    public function fileInfo($fileInfoArray, $total_files)
+    public function VideoInfo($fileInfoArray, $total_files)
     {
         global $db;
-        $table_body_html              = [];
-        $x                            = 0;
-        $row_id                       = $fileInfoArray['id'];
-        $next_id                      = $fileInfoArray['next'];
+        $this->fileInfoArray = $fileInfoArray;
+        $this->params = [];
+        $table_body_html = [];
+        $row_id = $fileInfoArray['id'];
         // $row_filename = $row_id.":".$row['filename'];
-        $row_filename                 = $fileInfoArray['filename'];
-        $row_fullpath                 = $fileInfoArray['fullpath'];
-        $row_video_key                = $fileInfoArray['video_key'];
-        $infoParams                   = null;
+        $row_filename = $fileInfoArray['filename'];
+        $row_fullpath = $fileInfoArray['fullpath'];
+        $row_video_key = $fileInfoArray['video_key'];
+        $this->params['video_key'] = $row_video_key;
 
         if (isset($fileInfoArray['rownum'])) {
             $result_number = $fileInfoArray['rownum'];
         }
 
-        $params['FILE_NAME']          = $row_filename;
+        $this->params['VIDEO_TITLE'] = $row_filename;
         if ($fileInfoArray['title']) {
-            $params['FILE_NAME'] = $fileInfoArray['title'];
+            $this->params['VIDEO_TITLE'] = $fileInfoArray['title'];
         }
-        $params['ROW_ID']             = '';
-        // if (!defined('NONAVBAR')) {
-        //     $params['FILE_NAME']     = Render::html(
-        //         $this->template_base.'/popup_js',
-        //         ['APP_HOME'     => APP_HOME,
-        //             'ROW_ID'    => $row_id,
-        //             'FILE_NAME' => $params['FILE_NAME']]
-        //     );
+        $this->params['ROW_ID'] = '';
+        if (!\defined('NONAVBAR')) {
+            $this->params['VERTICAL_TEXT'] = Render::html(
+                $this->template_base.'/vertical',
+                ['ROW_ID' => '&nbsp;&nbsp;&nbsp;'.$result_number.' of '.$total_files]
+            );
+        }
 
-        //     $params['VERTICAL_TEXT'] = Render::html(
-        //         $this->template_base.'/file_vertical',
-        //         ['ROW_ID' => '&nbsp;&nbsp;&nbsp;'.$result_number.' of '.$total_files]
-        //     );
-        // }
+        // $this->params['DELETE_ID']          = 'delete_'.$row_id;
+        $this->params['FILE_NAME_ID'] = $row_id.'_filename';
+        $this->params['FULL_PATH'] = $row_fullpath;
+        $this->params['FILE_ID'] = $row_id;
+        $this->params['WRAPPER_CLASS'] = 'm-3';
+        if (\defined('NONAVBAR')) {
+            $this->params['WRAPPER_CLASS'] = 'm-0';
+            $this->params['DELETE_BUTTONS'] = Render::html(
+                $this->template_base.'/deletebuttons',
+                ['DELETE_ID' => add_hidden('id', $row_id, 'id="DorRvideoId"')]);
+        }
 
-        // $params['DELETE_ID']          = 'delete_'.$row_id;
-        $params['FILE_NAME_ID']       = $row_id.'_filename';
-        $params['FULL_PATH']          = $row_fullpath;
-        $params['FILE_ID']            = $row_id;
-        $params['DELETE_ID']          = add_hidden('id', $row_id, 'id="DorRvideoId"');
-        // krsort($fileInfoArray);
-        // dd($fileInfoArray);
-        $params['video_key']          = $row_video_key;
-        foreach ($fileInfoArray as $key => $value) {
-            $class       = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
-            $value_array = [];
+        $fileArray = [
+            'rating',
+            'title',
+            'artist',
+            'genre',
+            'studio',
+            'substudio',
+            'keyword',
+            'library',
+            'fullpath',
+            'filesize',
+            'VideoInfo',
+            'added',
+        ];
+        $x = 0;
+        foreach ($fileArray as $field) {
+            $this->AltClass = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
 
-            switch ($key) {
-                // case 'favorite':
-                case 'rating':
-                    $card_body['STAR_RATING'] = $value;
-                    break;
+            if (\array_key_exists($field, $this->fileInfoArray)) {
+                $method = ucfirst($field);
+                $this->{$method}($field);
+            }
+            ++$x;
+        }
 
-                case 'library':
-                case 'title':
-                    $value                 = str_replace(__PLEX_LIBRARY__.'/', '', $value);
-                    $card_title          = $this->cardTitle($card_title, ucfirst($key), $value, $class, $key);
-                    ++$x;
 
-                    break;
-
-                case 'filename':
-                    $filename              = $value;
-                    break;
-                case 'fullpath':
-                    $value                 = str_replace(__PLEX_LIBRARY__.'/', '', $value).\DIRECTORY_SEPARATOR.$filename;
-                    $card_rows                = $this->fileRow($card_rows, ucfirst($key), $value, $class);
-                    ++$x;
-
-                    break;
-
-                case 'added':
-                    $card_rows                = $this->fileRow($card_rows, ucfirst($key), $value, $class);
-                    ++$x;
-
-                    break;
-
-                case 'thumbnail':
-                    $thumbnail             = '';
-                    if (__SHOW_THUMBNAILS__ == true) {
-                        $thumbnail         = $this->fileThumbnail($row_id);
-                        $row_preview_image = $this->filePreview($row_id);
-                    }
-                    $params['CARD_THUMBNAIL'] .= Render::html(
-                        $this->template_base.'/card_thumbnail',
-                        [
-                            'PREVIEW'   => $row_preview_image,
-                            'THUMBNAIL' => $thumbnail,
-                            'FILE_ID'   => $row_id,
-                            'NEXT_ID'   => $next_id,
-                        ]
-                    );
-                    break;
-
-                case 'studio':
-                case 'substudio':
-                    if ('' != $value || defined('NONAVBAR')) {
-                        if (!defined('NONAVBAR')) {
-                            $table_body_html['HIDDEN_STUDIO'] .= add_hidden(strtolower($key), $value);
-
-                            $value = keyword_list($key, $value);
-
-                            // $value = Render::html(
-                            //     "filelist/search_link",
-                            //     [
-                            //         'KEY' => $key,
-                            //         'QUERY' => urlencode($value),
-                            //         'URL_TEXT' => $value
-                            //     ]
-                            // );
-                        }
-                        $card_rows = $this->fileRow($card_rows, ucfirst($key), $value, $class, $key);
-                        ++$x;
-                    }
-
-                    break;
-                case 'genre':
-                    //  $params['HIDDEN_STUDIO_NAME']          .= add_hidden(strtolower($key), $value);
-
-                case 'artist':
-                case 'keyword':
-                    if ('' != $value || defined('NONAVBAR')) {
-                        if (!defined('NONAVBAR')) {
-                            $value = keyword_list($key, $value);
-                        }
-                        $card_rows = $this->fileRow($card_rows, ucfirst($key), $value, $class, $key);
-                        ++$x;
-                    }
-
-                    break;
-                case 'duration':
-                    $duration              = videoDuration($value);
-                    break;
-
-                case 'filesize':
-                    $card_rows                = $this->fileRowfs($card_rows, ucfirst($key), display_size($value), $duration, $class);
-                    ++$x;
-
-                    break;
-
-                case 'bit_rate':
-                    if ('' != $value) {
-                        $infoParams[strtoupper($key)] = byte_convert($value);
-                    }
-                    break;
-
-                case 'width':
-                case 'height':
-                case 'format':
-                    if ('' != $value) {
-                        $infoParams[strtoupper($key)] = $value;
-                    }
-
-                    break;
-                    //     }
-                    // }
-                    // $infoParams['ALT_CLASS'] =  $class;
-
-                    // break;
-            } // end switch
-
-            // ++$x;
-        } // end foreach
-
-        $card_body['CARD_TITLE'] =  $card_title['CARD_TITLE'] ;
-        $card_body['CARD_HTML_ROWS'] =  $card_rows['CARD_ROWS'] ; 
-        // dump($card_body);
-        $params['CARD_BODY'] = Render::html( $this->template_base.'/card_body', $card_body ); 
-        // if (true == $this->showVideoDetails) {
-        //     if (is_array($infoParams)) {
-        //         $params = $this->fileRow($params, '', Render::html(
-        //             $this->template_base.'/file_videoinfo',
-        //             $infoParams
-        //         ), $class);
-        //     }
-        // }
-        // dd($params['HIDDEN_STUDIO']);
-        $table_body_html['filecards'] = Render::html($this->template_base.'/card', $params);
+        // dd($this->params['HIDDEN_STUDIO']);
+        $table_body_html['VIDEO'] = Render::html($this->template_base.'/Video', $this->params);
         $table_body_html['VIDEO_KEY'] = $row_video_key;
 
         return $table_body_html;
     }
-
-    public function fileList($results, $option = '', $page_array = [])
-    {
-        global $db;
-        global $hidden_fields;
-        $table_html              = [];
-        $redirect_string         = '';
-        $total_files             = '';
-        $js_html                 = '';
-        foreach ($results as $id => $row) {
-            $row_id                      = $row['id'];
-            $row['next']                 = 0;
-            if (array_key_exists($id + 1, $results)) {
-                $row['next'] = $results[$id + 1]['id'];
-            }
-            $videoInfo                   = [];
-
-            // $cols       = ['format', 'bit_rate', 'width', 'height'];
-            // $db->where('video_key', $row['video_key']);
-            // $videoInfo  = $db->get(Db_TABLE_VIDEO_INFO, null, $cols);
-
-            // if (array_key_exists(0, $videoInfo)) {
-            //     $row['video_info'] = $videoInfo[0];
-            // }
-
-            $table_body                  = $this->fileInfo($row, $total_files);
-
-            $js_html .= $table_body['js'];
-            $table_html['HIDDEN_STUDIO'] = $table_body['HIDDEN_STUDIO'];
-            $table_html['BODY'] .= Render::html($this->template_base.'/file_form_wrapper', [
-                'FILE_ID'         => $row_id,
-                'FILE_TABLE'      => $table_body['filecards'],
-                'REDIRECT_STRING' => $redirect_string,
-                'SUBMIT_ID'       => 'hiddenSubmit_'.$row_id,
-                'HIDDEN_INPUT'    => $hidden_fields,
-            ]);
-        } // end foreach
-
-        // $javascript_html = Render::html(
-        //     $template_base.'/list_js',
-        //     [
-        //         '__LAYOUT_URL__' => __LAYOUT_URL__,
-        //         'JS_TAG_HTML'    => $js_html,
-        //     ]
-        // );
-        $table_html['VIDEO_KEY'] = $table_body['VIDEO_KEY'];
-
-        return $table_html; // .$javascript_html;
-    } // end display_filelist()
 }

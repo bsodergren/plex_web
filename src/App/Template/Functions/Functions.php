@@ -1,26 +1,33 @@
 <?php
+/**
+ * plex web viewer
+ */
+
 namespace Plex\Template\Functions;
 
-use Plex\Core\RoboLoader;
-use Plex\Template\Render;
 use Plex\Core\FileListing;
+use Plex\Core\RoboLoader;
+use Plex\Template\Display\Display;
+use Plex\Template\Functions\Traits\Navbar;
+use Plex\Template\Functions\Traits\VideoDisplay;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
-use Plex\Template\Display\Display;
-use Plex\Template\Functions\AlphaSort;
-use Plex\Template\Functions\metaFilters;
+use Plex\Template\Render;
 
 class Functions extends Render
 {
+    use VideoDisplay;
+    use Navbar;
+
     public function __construct() {}
 
     public function hiddenSearch()
     {
-        if(FileListing::$searchId === null){
+        if (null === FileListing::$searchId) {
             return '';
         }
 
-        return add_hidden("search_id", FileListing::$searchId );
+        return add_hidden('search_id', FileListing::$searchId);
     }
 
     private function parseVars($matches)
@@ -43,40 +50,16 @@ class Functions extends Render
 
         return $values;
     }
+
     public function playListButton()
     {
         $params['CANVAS_HEADER'] = Render::html('elements/Playlist/canvas_header', []);
-        $params['CANVAS_BODY'] = Render::html('elements/Playlist/canvas_body', []);
-        
-        $html= Render::html('elements/Playlist/canvas', $params);
+        $params['CANVAS_BODY']   = Render::html('elements/Playlist/canvas_body', []);
+
+        return Render::html('elements/Playlist/canvas', $params);
         // dump($html);
-        return $html;
-        
-    }
-    public function breadcrumbs($match)
-    {
-        return Display::breadcrumbs();
     }
 
-    public function videoRating($matches)
-    {
-        if(defined("SHOW_RATING") == true) {
-            if(SHOW_RATING == true) {
-        $var = $this->parseVars($matches);
-
-        return Render::html('elements/Rating/rating', ['ROW_ID' => $var['id'], 'STAR_RATING' => $var['rating']]);
-            }
-        }
-    }
-
-    public function ratingInclude($matches)
-    {
-        if(defined("SHOW_RATING") == true) {
-            if(SHOW_RATING == true) {
-        return Render::html('elements/Rating/header', []);
-            }
-        }
-    }
 
     public function AlphaBlock($match)
     {
@@ -85,52 +68,49 @@ class Functions extends Render
 
     public function metaFilters($match)
     {
-        if(defined("USE_FILTER") == true) {
-            if(USE_FILTER == true) {
-            $method = $match[2];
-            return (new metaFilters)->$method();
+        if (true == \defined('USE_FILTER')) {
+            if (USE_FILTER == true) {
+                $method = $match[2];
+
+                return (new metaFilters())->{$method}();
+            }
         }
-    }
-        
-    }
-
-    public function videoPlayer($matches)
-    {
-        $var    = $this->parseVars($matches);
-
-        if (is_array($var['query'])) {
-            $req = '?'.http_build_query($var['query']);
-        }
-
-        $window = basename($var['href'], '.php').'_popup';
-        $url    = __URL_HOME__.'/'.$var['href'].$req;
-
-        return " onclick=\"popup('".$url."', '".$window."')\"";
     }
 
     public function videoButton($matches)
     {
         $var = $this->parseVars($matches);
-        if (array_key_exists('pl_id', $var)) {
+        if (\array_key_exists('pl_id', $var)) {
             if ('' == $var['pl_id']) {
                 return '';
             }
         }
 
         return Render::html('video/buttons/'.$var['template'], []);
+    
     }
-    public function pageHeader($matches){
+    public function pageHeader($matches)
+    {
         Header::Display();
     }
-    public function pageFooter($matches){
+
+    public function pageFooter($matches)
+    {
         Footer::Display();
     }
+    public  function theme_dropdown()
+    {
+        $theme_options = Render::html('base/navbar/theme/option', ['THEME_NAME' => 'Default', 'THEME_OPTION' => 'none']);
+        foreach (Display::$CSS_THEMES as $theme) {
+            $theme_options .= Render::html('base/navbar/theme/option', ['THEME_NAME' => ucfirst($theme).' Theme', 'THEME_OPTION' => $theme.'-theme']);
+        }
 
+        return Render::html('base/navbar/theme/select', ['THEME_OPTIONS' => $theme_options]);
+    }
     public function themeSwitcher($matches)
     {
-
-        $css_dir                   = __LAYOUT_PATH__.'/css/themes/';
-        $files                     = RoboLoader::get_filelist($css_dir, 'bootstrap.min.css', 0);
+        $css_dir = __LAYOUT_PATH__.'/css/themes/';
+        $files   = RoboLoader::get_filelist($css_dir, 'bootstrap.min.css', 0);
 
         foreach ($files as $stylesheet) {
             $dirArray              = explode('/', $stylesheet);
@@ -142,6 +122,7 @@ class Functions extends Render
             // $name =
             $css_html .= Render::html('base/header/header_css_link', ['CSS_NAME' => $theme, 'CSS_URL' => $stylesheet]);
         }
+
         return $css_html;
         // }
     }

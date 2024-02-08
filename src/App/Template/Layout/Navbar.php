@@ -6,6 +6,7 @@
 namespace Plex\Template\Layout;
 
 use Plex\Template\Display\Display;
+use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
 use Plex\Template\Template;
 
@@ -29,7 +30,7 @@ class Navbar
             }
             $library_links .= Display::navbar_left_links('home.php?library=All', 'All');
 
-            $library_links .= Display::theme_dropdown();
+            $library_links .= (new Functions)->theme_dropdown();
 
             $params['NAV_BAR_LEFT_LINKS'] = Render::html('base/navbar/library_menu', ['LIBRARY_SELECT_LINKS' => $library_links]);
             // if (defined('BREADCRUMB')) {
@@ -38,7 +39,7 @@ class Navbar
             //     // $params['BREADCRUMB']  .=
             // }
         }
-        $params['NAV_BAR_RIGHT_LINKS'] = Display::navbar_links();
+      //  $params['NAV_BAR_RIGHT_LINKS'] = Display::navbar_links();
 
         Template::echo('base/navbar/main', $params);
     }

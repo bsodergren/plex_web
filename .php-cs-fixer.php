@@ -1,41 +1,38 @@
 <?php
-/**
- * plex web viewer
- */
 
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
 $fileHeaderComment = <<<'EOF'
-plex web viewer
+
 EOF;
 
 return (new PhpCsFixer\Config())->setRules([
-    'array_syntax'           => ['syntax' => 'short'],
-    // // 'binary_operator_spaces' => [
-    // //     'default' => 'single_space',
-    // //     'operators' => ['=>' => null],
-    // // ],
-    // // 'blank_line_after_namespace' => true,
-    // 'blank_line_after_opening_tag'                => true,
-    // 'blank_line_before_statement'                 => [
-    //     'statements' => ['return'],
-    // ],
-    // 'braces'                                      => true,
-    // 'cast_spaces'                                 => true,
-    // 'class_attributes_separation'                 => [
-    //     'elements' => [
-    //         'const'        => 'one',
-    //         'method'       => 'one',
-    //         'property'     => 'one',
-    //         'trait_import' => 'none',
-    //     ],
-    // ],
-    // 'class_definition'                            => [
-    //     'multi_line_extends_each_single_line' => true,
-    //     'single_item_single_line'             => true,
-    //     'single_line'                         => true,
-    // ],
+    'array_syntax' => ['syntax' => 'short'],
+    'binary_operator_spaces' => [
+        'default' => 'single_space',
+        'operators' => ['=>' => null],
+    ],
+    'blank_line_after_namespace' => true,
+    'blank_line_after_opening_tag' => true,
+    'blank_line_before_statement' => [
+        'statements' => ['return'],
+    ],
+    'braces' => true,
+    'cast_spaces' => true,
+    'class_attributes_separation' => [
+        'elements' => [
+            'const' => 'one',
+            'method' => 'one',
+            'property' => 'one',
+            'trait_import' => 'none',
+        ],
+    ],
+    'class_definition' => [
+        'multi_line_extends_each_single_line' => true,
+        'single_item_single_line' => true,
+        'single_line' => true,
+    ],
     // 'concat_space'                                => [
     //     'spacing' => 'none',
     // ],
@@ -43,7 +40,7 @@ return (new PhpCsFixer\Config())->setRules([
     // 'declare_equal_normalize'                     => true,
     // 'elseif'                                      => true,
     // 'encoding'                                    => true,
-    'header_comment'         => ['header' => $fileHeaderComment, 'comment_type' => 'PHPDoc', 'location' => 'after_open', 'separate' => 'bottom'],
+    'header_comment' => ['header' => $fileHeaderComment, 'comment_type' => 'PHPDoc', 'location' => 'after_open', 'separate' => 'bottom'],
 
     // 'full_opening_tag'                            => true,
     // 'fully_qualified_strict_types'                => true, // added by Shift
@@ -128,9 +125,9 @@ return (new PhpCsFixer\Config())->setRules([
     // 'simplified_null_return'                      => false, // disabled as "risky"
     // 'single_blank_line_at_eof'                    => true,
     // 'single_blank_line_before_namespace'          => true,
-    // 'single_class_element_per_statement'          => [
-    //     'elements' => ['const', 'property'],
-    // ],
+    'single_class_element_per_statement' => [
+        'elements' => ['const', 'property'],
+    ],
 
     // 'single_import_per_statement'                 => true,
     // 'single_line_after_imports'                   => true,
@@ -146,19 +143,19 @@ return (new PhpCsFixer\Config())->setRules([
     // 'trailing_comma_in_multiline'                 => ['elements' => ['arrays']],
     // 'trim_array_spaces'                           => true,
     // 'unary_operator_spaces'                       => true,
-    // 'visibility_required'                         => [
-    //     'elements' => ['method', 'property'],
-    // ],
-    // 'whitespace_after_comma_in_array'             => true,
-    '@PhpCsFixer'            => true,
-    '@PSR12:risky'           => true,
-    // // '@PER-CS1.0' => true,
-    // // '@PER-CS1.0:risky' => true,
+    'visibility_required' => [
+        'elements' => ['method', 'property'],
+    ],
+    'whitespace_after_comma_in_array' => true,
+    '@PhpCsFixer' => true,
+    '@PSR12:risky' => true,
+    '@PER-CS1.0' => true,
+    '@PER-CS1.0:risky' => true,
 
-    // // '@PHP71Migration' => true,
-    // // '@PHPUnit75Migration:risky' => true,
-    '@Symfony'               => true,
-    '@Symfony:risky'         => true,
+    '@PHP71Migration' => true,
+    '@PHPUnit75Migration:risky' => true,
+    '@Symfony' => true,
+    '@Symfony:risky' => true,
 
     // 'protected_to_private' => false,
     // 'native_constant_invocation' => ['strict' => false],
@@ -168,20 +165,20 @@ return (new PhpCsFixer\Config())->setRules([
     // 'header_comment' => ['header' => $fileHeaderComment,
     // 'comment_type' => 'PHPDoc', 'location' => 'after_open', 'separate' => 'bottom'],
     // 'modernize_strpos' => true,
-    // 'get_class_to_class_keyword' => true,
+    'get_class_to_class_keyword' => true,
     // 'braces'                                      => [
     //     'allow_single_line_closure'                   => true,
     //     'position_after_functions_and_oop_constructs' => 'same',
     // ],
-    'no_unused_imports'      => true,
+    'no_unused_imports' => true,
 
-    'binary_operator_spaces' => [
-        'operators' => [
-            '=>'  => 'align_single_space_minimal_by_scope',
-            '='   => 'align_single_space_minimal_by_scope',
-            '===' => 'align_single_space_minimal_by_scope',
-        ],
-    ],
+    // 'binary_operator_spaces'                      => [
+    //     'operators' => [
+    //         '=>'  => 'single_space',
+    //         '='   => 'single_space',
+    //         '===' => 'single_space',
+    //     ],
+    // ],
 ])
     ->setRiskyAllowed(true)
     ->setCacheFile('.php-cs-fixer.cache')

@@ -46,4 +46,19 @@ class Elements
         }
         return Template::getHtml('elements/html/script',['SCRIPT_URL' => __LAYOUT_URL__ .$javafile]);
     }
+
+
+    public static function addButton($text,$type='button',$class='btn button',$extra='',$javascript='')
+    {
+
+        
+
+        return Template::getHtml('elements/html/button',[
+            'TEXT' =>$text,
+            'TYPE' => $type,
+            'CLASS' => $class,
+            'EXTRA' => $extra,
+            'JAVASCRIPT' => $javascript,
+    ]);
+    }
 }

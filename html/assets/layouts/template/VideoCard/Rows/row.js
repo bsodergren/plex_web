@@ -13,7 +13,12 @@ function !!FUNCTION!!() {
                         submit: 'update',
                         !!ID_NAME!!: data.content,
                         video_key: '!!VIDEO_KEY!!'
-                        })
+                        }),
+                        success: function (data) {
+                            console.log(data);
+                            window.opener.location.reload(true);
+                            window.close();
+                        }
                 })
                 console.log('   * The text was changed -> ' + data.content)
             } 

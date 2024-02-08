@@ -39,7 +39,7 @@ if (array_key_exists('playlist_id', $_REQUEST)) {
 
 }
 
-dump($id,$query );
+// dump($id,$query );
 // if (is_array($playlist_result)) {
 //     if (array_key_exists('playlist_id', $playlist_result)) {
 //         $playlist_id = $playlist_result['playlist_id'];

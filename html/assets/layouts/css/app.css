@@ -61,25 +61,6 @@ footer {
     /* order-left: 2px solid #D0E4F5; */
 }
 
-.card-body.card-rows span:nth-of-type(even) {
-    background: #1c6ea4;
-    text-align: center;
-
-    background: -moz-linear-gradient(top,
-            #5592bb 0%,
-            #327cad 66%,
-            #1c6ea4 100%);
-    background: -webkit-linear-gradient(top,
-            #5592bb 0%,
-            #327cad 66%,
-            #1c6ea4 100%);
-    background: linear-gradient(to bottom,
-            #5592bb 0%,
-            #327cad 66%,
-            #1c6ea4 100%);
-
-}
- .card-body.card-rows span:nth-of-type(odd) {  background: #74addf;} 
 
 
 table.blueTable thead th:first-child {

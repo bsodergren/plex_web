@@ -16,7 +16,6 @@ class VideoInfo
 
     public function __call($method, $args)
     {
-        // dump(['call', $method, $args]);
         $this->tagValue  = $args[0];
         $this->video_key = $args[1];
         $this->update($method);
@@ -25,7 +24,6 @@ class VideoInfo
     public function update($tag)
     {
         global $db;
-        // dump(['V update', $tag, $this->tagValue, $this->video_key]);
 
         $data['video_key'] = $this->video_key;
         $data[$tag]        = $this->tagValue;
@@ -35,7 +33,6 @@ class VideoInfo
 
             $query      = 'UPDATE `metatags_video_custom` SET ';
             $query .= ' `'.$tag."` = NULL WHERE `metatags_video_custom`.`video_key` = '".$this->video_key."'";
-            // dump($query);
             $db->rawQuery($query);
         } else {
             $fieldArray = $data;
@@ -45,7 +42,7 @@ class VideoInfo
             $db->onDuplicate($fieldArray, 'id');
             $db->insert(Db_TABLE_VIDEO_CUSTOM, $data);
         }
-        // dump($db->getLastQuery());
+         //echo $db->getLastQuery();
     }
 
     public function save($tag, $data)

@@ -6,6 +6,7 @@
 namespace Plex\Template\Layout;
 
 use Plex\Template\Display\Display;
+use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
 use Plex\Template\Template;
 
@@ -58,13 +59,10 @@ class Header
         Template::echo('base/header/header', $params);
 
         if (!\defined('NONAVBAR')) {
-            $crumbs = Display::createBreadcrumbs();
+            $crumbs = (new Functions)->createBreadcrumbs();
             \define('BREADCRUMB', $crumbs);
 
             Navbar::Display($params);
-        } else {
-            $crumbs = Display::theme_dropdown();
-            \define('THEME_SWITCHER', $crumbs);
         }
     }
 }

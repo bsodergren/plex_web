@@ -37,7 +37,9 @@ class ProcessForms
             $method = $this->postArray['submit'];
 
             unset($this->postArray['submit']);
+            // dump([__METHOD__,$method]);
             if (method_exists($this, $method)) {
+
                 $this->{$method}();
             } else {
                 dd('No Method for '.$method.' Found');
@@ -91,6 +93,7 @@ class ProcessForms
         $method    = $keys[0];
         $tagValue  = $this->postArray[$method];
         $video_key = $this->postArray[$keys[1]];
+        // dump([__METHOD__,$video_key,$tagValue,$method,$keys]);
         // dump(['update', $method, $video_key]);
         $this->VideoInfo->{$method}($tagValue, $video_key);
     }

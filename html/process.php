@@ -4,18 +4,11 @@
  */
 
 use Plex\Core\ProcessForms;
-use Plex\Core\ProcessForms;
 use Plex\Template\Layout\Header;
 use Plex\Template\Template;
-use Plex\Template\Template;
-
-/**
- * plex web viewer.
- */
 
 require_once '_config.inc.php';
 
-// dd($_REQUEST);
 
 if (true == $_GET['q']) {
     $q    = $_GET['q'];
@@ -40,8 +33,6 @@ if (array_key_exists('action', $_REQUEST)) {
     }
 }
 logger('_REQUEST', $_REQUEST);
-dump($_REQUEST);
+// dump($_REQUEST);
 $forms = new ProcessForms($_REQUEST);
-dump($forms);
-// dump($forms->redirect);
 echo $forms->redirect;

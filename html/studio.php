@@ -44,7 +44,7 @@ if (isset($_REQUEST['substudio'])) {
 
 $request_key = $studio_key.'='.$studio_text;
 
-dump($sql);
+// dump($sql);
 
 
 
@@ -53,7 +53,7 @@ $rows        = count($result);
 
 $all_url     = 'files.php?'.$request_key.'&allfiles=1';
 
-dump([$studio,$studio_field,$studio_key]);
+// dump([$studio,$studio_field,$studio_key]);
 foreach ($result as $k => $v) {
     $len = strlen($studio) * 2;
     // $v["cnt"]=1; ".$v["cnt"]."

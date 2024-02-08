@@ -1,59 +1,58 @@
 <?php
+
 namespace Plex\Core;
 
-use Plex\Core\PlexSql;
 use Plex\Template\Pageinate\Pageinate;
 
-class FileListing 
+class FileListing
 {
     public object $db;
     public $currentpage;
     public $request;
     public $urlPattern;
-    public static $searchId = null;
+    public static $searchId;
 
     public function __construct($request = '', $currentpage = '', $urlPattern = '')
     {
         // $this->db           = new PlexSql('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $this->db          = new PlexSql();
+        $this->db = new PlexSql();
         $this->currentpage = $currentpage;
-        $this->request     = $request;
-        $this->urlPattern  = $urlPattern;
+        $this->request = $request;
+        $this->urlPattern = $urlPattern;
     }
 
     public function saveSearch($query)
     {
-        dump($query);
-        $db             = new PlexSql();
-        $res            = $db->rawQuery($query);
+        $db = new PlexSql();
+        $res = $db->rawQuery($query);
         foreach ($res as $k => $row) {
             $vids[] = $row['id'];
         }
 
-        $vidsStr        = implode(',', $vids);
+        $vidsStr = implode(',', $vids);
 
         $db->where('video_list', $vidsStr);
-        $user           = $db->getOne('metatags_search_data');
+        $user = $db->getOne('metatags_search_data');
         if (null !== $user['id']) {
             self::$searchId = $user['id'];
 
             return $user['id'];
         }
-        $data           = [
+        $data = [
             'video_list' => $vidsStr,
             // "updatedAt" => $db->now()
         ];
 
-        $id             = $db->insert('metatags_search_data', $data);
-     //   dump("new index " . $id);
-     self::$searchId = $id;
+        $id = $db->insert('metatags_search_data', $data);
+        //   dump("new index " . $id);
+        self::$searchId = $id;
 
         return $id;
     }
 
     public function getSearchResults($field, $value)
     {
-        $where   = "{$field}='{$value}'";
+        $where = "{$field}='{$value}'";
 
         $pageObj = new Pageinate($where, $this->currentpage, $this->urlPattern);
 
@@ -68,12 +67,12 @@ class FileListing
         global $_SESSION;
         $tag_array = ['studio', 'substudio', 'genre', 'artist'];
 
-        $where     = '';
+        $where = '';
         // . ' AND ';
 
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
-                ${$tag}    = urldecode($this->request[$tag]);
+                ${$tag} = urldecode($this->request[$tag]);
                 $uri[$tag] = ${$tag};
                 if ('studio' == $tag || 'substudio' == $tag) {
                     $studio_key = $tag;
@@ -86,23 +85,22 @@ class FileListing
         }
 
         if (isset($_SESSION['sort'])) {
-
-            $uri['sort']           = $_SESSION['sort'];
+            $uri['sort'] = $_SESSION['sort'];
             $this->request['sort'] = $_SESSION['sort'];
         }
         if (isset($_SESSION['direction'])) {
-            $uri['direction']           = $_SESSION['direction'];
+            $uri['direction'] = $_SESSION['direction'];
             $this->request['direction'] = $_SESSION['direction'];
         }
 
         if (isset($this->request['alpha'])) {
-            $key   = $this->request['alpha'];
+            $key = $this->request['alpha'];
             $field = $this->request['sort'];
             $query = PlexSql::getAlphaKey($field, $key);
             if (null === $query) {
                 unset($this->request['alpha']);
             } else {
-                if (is_array($query)) {
+                if (\is_array($query)) {
                     $this->db->Where($query[0], $query[1], $query[2]);
                 } else {
                     $this->db->Where($query);
@@ -116,12 +114,12 @@ class FileListing
 
         if (isset($uri)) {
             $sql_studio = '';
-            $res_array  = uri_SQLQuery($uri);
-            if (array_key_exists('sort', $res_array)) {
+            $res_array = uri_SQLQuery($uri);
+            if (\array_key_exists('sort', $res_array)) {
                 $order_sort = $res_array['sort'];
             }
 
-            if (array_key_exists('sql', $res_array)) {
+            if (\array_key_exists('sql', $res_array)) {
                 $sql_studio = $res_array['sql'];
             }
 
@@ -131,23 +129,23 @@ class FileListing
             if (!isset($this->request['allfiles']) && '' != $sql_studio) {
                 $where = str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
             } else {
-                $studio_key      = '';
+                $studio_key = '';
                 $uri['allfiles'] = $this->request['allfiles'];
-                $where           = $sql_studio;
-                $genre           = '';
+                $where = $sql_studio;
+                $genre = '';
             }
         }
 
-        $pageObj   = new Pageinate(false, $this->currentpage, $this->urlPattern);
+        $pageObj = new Pageinate(false, $this->currentpage, $this->urlPattern);
 
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
-                $value     = '%'.$this->request[$tag].'%';
-                $comp      = ' like';
+                $value = '%'.$this->request[$tag].'%';
+                $comp = ' like';
 
                 if ('NULL' == $this->request[$tag]) {
                     $value = null;
-                    $comp  = ' IS';
+                    $comp = ' IS';
                 }
                 //  dump(['m.'.$tag, $value, $comp]);
                 $tag_query = '(m.'.$tag.' '.$comp.' \''.$value.'\' OR c.'.$tag.' '.$comp.' \''.$value.'\')';
@@ -160,7 +158,7 @@ class FileListing
             $this->db->orderBy($this->request['sort'], $this->request['direction']);
         }
 
-        $results   = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
+        $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
 
         return [$results, $pageObj, $uri];
     }
@@ -221,24 +219,21 @@ class FileListing
         //     Db_TABLE_VIDEO_FILE.' f'
         // );
 
-        // dump($resultQuery);
+        $num_rows = ' f.id ';
 
-        $num_rows   = ' f.id ';
-
-        $joinQuery  = $this->db->getQuery(
+        $joinQuery = $this->db->getQuery(
             Db_TABLE_VIDEO_FILE.' f',
             null,
             $num_rows
         );
-
         $this->saveSearch($joinQuery);
-        $joinQuery  = str_replace($num_rows, implode(',', $fieldArray), $joinQuery);
+        $joinQuery = str_replace($num_rows, implode(',', $fieldArray), $joinQuery);
 
         if (null !== $limit) {
             $joinQuery .= ' LIMIT '.$limit[0].','.$limit[1].'';
         }
-        $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
-        $results    = $this->db->rawQuery($query);
+        $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
+        $results = $this->db->rawQuery($query);
 
         return $results;
     }

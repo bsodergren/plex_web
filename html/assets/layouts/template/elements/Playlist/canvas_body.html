@@ -1,7 +1,9 @@
 <div class="playlistData btn-group w-50 btn-primary border border-2 border-dark" role="group" aria-label="Vertical button group">
     {{function=hiddenSearch}}
-    <button type="button" class="btn PlaylistButton" id="PlayAll">Play All</button>
-    <button type="button" class="btn PlaylistButton" id="AddPlaylist">Add selected to Playlist</button>
+    <input type="hidden" name="submit" value="playlist">
+  
+    <button type="button" class="btn PlaylistButton" id="PlayAll"   data-bs-dismiss="offcanvas" aria-label="Close">Play All</button>
+    <button type="button" class="btn PlaylistButton" id="AddPlaylist"   data-bs-dismiss="offcanvas" aria-label="Close">Add selected to Playlist</button>
     <span class="btn PlaylistButton" id="AddAll">Add all Playlist</span>
-    <span class="btn PlaylistButton" id="Clear">Clear</span>
+    <span class="btn PlaylistButton" id="Clear"   data-bs-dismiss="offcanvas" aria-label="Close">Clear</span>
 </div>

@@ -1,9 +1,9 @@
 
 
+
 $(document).ready(function () {
     $('.playlistData button').click(function () {
         var text = $(this).attr('id')
-
         if (text == 'PlayAll') {
             playlistSubmit(text)
         }
@@ -29,19 +29,21 @@ $(document).ready(function () {
 })
 
 function playlistSubmit (action) {
-
+    // let mybutton = document.getElementById('ajaxform')
     var form = $('#ajaxform')
+    console.log(action);
 
     var hiddenAction = document.createElement('input')
     hiddenAction.value = 'true'
     hiddenAction.name = action
     hiddenAction.type = 'hidden'
+    form.append(hiddenAction)
 
     var playlist = document.createElement('input')
     playlist.value = 'playlist'
     playlist.name = 'submit'
     playlist.type = 'submit'
 
-    form.append(hiddenAction)
     form.append(playlist)
+    form.submit()
 }

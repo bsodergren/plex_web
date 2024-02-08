@@ -26,7 +26,7 @@ if (null === $playlist_id) {
     $sql     = 'select count(p.playlist_video_id) as count, p.playlist_id, d.name,
     d.library from '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = d.id) and d.hide = 0 group by p.playlist_id ORDER BY library ASC;';
     $results = $db->query($sql);
-    dump($sql);
+    // dump($sql);
     $total   = count($results);
     for ($i = 0; $i < count($results); ++$i) {
         $library = $results[$i]['library'];
