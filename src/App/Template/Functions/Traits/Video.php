@@ -38,11 +38,20 @@ trait Video
 
     public function videoRating($matches)
     {
+        $hidden = null;
         if (true == \defined('SHOW_RATING')) {
             if (SHOW_RATING == true) {
                 $var = $this->parseVars($matches);
+                $params = [
+                    'ROW_ID' => $var['id'], 
+                'STAR_RATING' => $var['rating']
+                ];
 
-                return Render::html('elements/Rating/rating', ['ROW_ID' => $var['id'], 'STAR_RATING' => $var['rating']]);
+                if(array_key_exists("close",$var)){
+                    $params['RATING_HIDDEN'] = add_hidden('close','false','id="close_window"');
+                }
+
+                return Render::html('elements/Rating/rating', $params);
             }
         }
     }
@@ -76,7 +85,7 @@ trait Video
         );
     }
 
-    private function fileThumbnail($row_id, $extra = '')
+    public function fileThumbnail($row_id, $extra = '')
     {
         global $db;
         $query  = 'SELECT thumbnail FROM metatags_video_file WHERE id = '.$row_id;
@@ -89,7 +98,7 @@ trait Video
         //  return __URL_HOME__.'/images/thumbnail.php?id='.$row_id;
     }
 
-    private function filePreview($row_id, $extra = '')
+    public function filePreview($row_id, $extra = '')
     {
         global $db;
         $query  = 'SELECT preview FROM metatags_video_file WHERE id = '.$row_id;

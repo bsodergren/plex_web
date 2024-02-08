@@ -29,8 +29,6 @@ const writeLog = function (msg) {
 
 jQuery(document).ready(function () {
     $('.rating').on('change', function (e) {
-        console.log('Rating selected: ' + e.target.id)
-        console.log('Rating selected: ' + $(this).val())
         $.ajax({
             type: 'post',
             url: 'process.php',
@@ -41,14 +39,16 @@ jQuery(document).ready(function () {
             },
             cache: false,
             success: function (data) {
-                console.log(data);
-                if(window.opener != null){
-                window.opener.location.reload(true);
-                window.close();
+                let close = document.getElementById('close_window');
+                if (window.opener != null) {
+                    if (close == null) {
+                        window.opener.location.reload(true)
+                        window.close()
+                    }
                 } else {
-                    window.location.reload(true);
+                    window.location.reload(true)
                 }
-                // 
+                //
             }
         })
     })
@@ -63,13 +63,10 @@ $('#ajaxform').submit(function (e) {
         success: function (data) {
             const substring = 'video.php'
             if (data.includes(substring) == true) {
-                console.log("Video", data);
                 popup(data, 'PlaylistWindow')
             } else {
-                console.log("Refresh", data);
-                  window.location.href = data
+                window.location.href = data
             }
-            
         }
     })
 })

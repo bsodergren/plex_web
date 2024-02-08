@@ -1,42 +1,32 @@
 <?php
-/**
- * plex web viewer
- */
 
-
- use Plex\Template\Render;
- use Plex\Core\FileListing;
- use Plex\Core\ProcessForms;
- use Plex\Template\Template;
- use Plex\Template\Layout\Footer;
- use Plex\Template\Layout\Header;
- use Plex\Template\Display\Display;
- use Plex\Template\Display\VideoDisplay;
- 
+use Plex\Template\Functions\Functions;
+use Plex\Template\Render;
+use Plex\Template\Template;
 
 require_once '_config.inc.php';
-$carousel_js                        = '';
-$video_buttons                      = '';
+define('SHOW_RATING', true);
+
+$carousel_js = '';
+$video_buttons = '';
 
 // dump(["req",$_REQUEST]);
 if (array_key_exists('id', $_REQUEST)) {
-    $id   = $_REQUEST['id'];
+    $id = $_REQUEST['id'];
     // $cols = ['playlist_id'];
     // $db->where('playlist_video_id', $id);
-} 
+}
 
 if (array_key_exists('playlist_id', $_REQUEST)) {
-    $playlist_id   = $_REQUEST['playlist_id'];
-    if (!array_key_exists('id', $_REQUEST))
-    {
-        $cols = ['playlist_id','playlist_video_id'];
+    $playlist_id = $_REQUEST['playlist_id'];
+    if (!array_key_exists('id', $_REQUEST)) {
+        $cols = ['playlist_id', 'playlist_video_id'];
         $db->where('playlist_id', $playlist_id);
 
         $playlist_result = $db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
         $query = $db->getLastQuery();
-        $id          = $playlist_result['playlist_video_id'];
+        $id = $playlist_result['playlist_video_id'];
     }
-
 }
 
 // dump($id,$query );
@@ -46,36 +36,31 @@ if (array_key_exists('playlist_id', $_REQUEST)) {
 //         $playlist_video_id          = $playlist_result['playlist_video_id'];
 //     }
 
-
-
 //     dump($playlist_result);
 
 // }
 
-
-$cols                               = ['filename', 'fullpath','rating'];
+$cols = ['filename', 'fullpath', 'rating'];
 $db->where('id', $id);
-$result                             = $db->getone(Db_TABLE_VIDEO_FILE, null, $cols);
+$result = $db->getone(Db_TABLE_VIDEO_FILE, null, $cols);
 
-$active_title                       = null; // $result['title'];
+$active_title = null; // $result['title'];
 if (null === $active_title) {
     $active_title = $result['filename'];
 }
 
-
-$fullpath                           = str_replace(__PLEX_LIBRARY__, APP_HOME.'/videos', $result['fullpath']);
-$video_file                         = $fullpath.'/'.$result['filename'];
-$playlist_height                    = '0';
-$comments                           = '//';
+$fullpath = str_replace(__PLEX_LIBRARY__, APP_HOME.'/videos', $result['fullpath']);
+$video_file = $fullpath.'/'.$result['filename'];
+$playlist_height = '0';
+$comments = '//';
 if (isset($playlist_id)) {
     $video_js_params['PLAYLIST_HEIGHT'] = 50;
-    $video_js_params['PLAYLIST_WIDTH']  = 20;
-    
+    $video_js_params['PLAYLIST_WIDTH'] = 20;
 
-    $comments                           = '';
-    $VideoDisplay                       = new VideoDisplay();
+    $comments = '';
+    $VideoDisplay = new Functions();
 
-    $sql                                = 'select
+    $sql = 'select
         f.thumbnail,f.filename,m.title,p.playlist_video_id from
         '.Db_TABLE_VIDEO_FILE.' as f,
         '.Db_TABLE_PLAYLIST_VIDEOS.' as p,
@@ -83,7 +68,7 @@ if (isset($playlist_id)) {
             p.playlist_id = '.$playlist_id.' and
             p.playlist_video_id = f.id  and
             f.video_key = m.video_key);';
-    $results                            = $db->query($sql);
+    $results = $db->query($sql);
     for ($i = 0; $i < count($results); ++$i) {
         $class = '';
 
@@ -95,28 +80,27 @@ if (isset($playlist_id)) {
             $class = ' active';
         }
 
-
         $carousel_item .= Render::html(
             'video/carousel_item',
             [
-                'PLAYLIST_ID'  => $playlist_id,
+                'PLAYLIST_ID' => $playlist_id,
 
-                'THUMBNAIL'    => $VideoDisplay->fileThumbnail($results[$i]['playlist_video_id'], 'alt="#" class="img-fluid" '),
+                'THUMBNAIL' => $VideoDisplay->fileThumbnail($results[$i]['playlist_video_id'], 'alt="#" class="img-fluid" '),
                 'CLASS_ACTIVE' => $class,
-                'VIDEO_ID'     => $results[$i]['playlist_video_id'],
-                'TITLE'        => $title,
+                'VIDEO_ID' => $results[$i]['playlist_video_id'],
+                'TITLE' => $title,
             ]
         );
         if (' active' == $class) {
             $active_title = $title;
-            $indx         = $i + 1;
+            $indx = $i + 1;
             if (array_key_exists($indx, $results)) {
                 $next_video_id = $results[$indx]['playlist_video_id'];
             } else {
                 $next_video_id = $results[0]['playlist_video_id'];
             }
 
-            $pndx         = $i - 1;
+            $pndx = $i - 1;
             if (array_key_exists($pndx, $results)) {
                 $prev_video_id = $results[$pndx]['playlist_video_id'];
             } else {
@@ -125,31 +109,31 @@ if (isset($playlist_id)) {
         }
     }
 
-    $carousel_js                        = Render::html('video/carousel_js', ['PLAYLIST_ID' => $playlist_id]);
-    $carousel                           = Render::html('video/carousel', ['CAROUSEL_INNER_HTML' => $carousel_item]);
+    $carousel_js = Render::html('video/carousel_js', ['PLAYLIST_ID' => $playlist_id]);
+    $carousel = Render::html('video/carousel', ['CAROUSEL_INNER_HTML' => $carousel_item]);
     $video_js_params['PLAYLIST_HEIGHT'] = 120;
-    $video_js_params['PLAYLIST_WIDTH']  = 50;
-    $video_js_params['PLAYLIST_ID']     = $playlist_id;
+    $video_js_params['PLAYLIST_WIDTH'] = 50;
+    $video_js_params['PLAYLIST_ID'] = $playlist_id;
 
-    $video_js_params['NEXT_VIDEO_ID']   = $next_video_id;
-    $video_js_params['PREV_VIDEO_ID']   = $prev_video_id;
+    $video_js_params['NEXT_VIDEO_ID'] = $next_video_id;
+    $video_js_params['PREV_VIDEO_ID'] = $prev_video_id;
 
-    $playlist_height                    = $video_js_params['PLAYLIST_HEIGHT'];
+    $playlist_height = $video_js_params['PLAYLIST_HEIGHT'];
 }
-$video_js_params['COMMENT']         = $comments;
+$video_js_params['COMMENT'] = $comments;
 // $video_file                                       = FileSystem::unixSlashes(FileSystem::normalizePath($video_file));
 
-$params                             = [
-    'PAGE_TITLE'      => $result['title'],
-    'STAR_RATING'     => $result['rating'],
-    'VIDEO_ID'        => $id,
-    'PLAYLIST_ID'     => $playlist_id,
-    '__LAYOUT_URL__'  => __LAYOUT_URL__,
+$params = [
+    'PAGE_TITLE' => $result['title'],
+    'STAR_RATING' => $result['rating'],
+    'VIDEO_ID' => $id,
+    'PLAYLIST_ID' => $playlist_id,
+    '__LAYOUT_URL__' => __LAYOUT_URL__,
     'PLAYLIST_HEIGHT' => $playlist_height,
-    'VIDEO_URL'       => $video_file,
-    'VIDEO_TITLE'     => $active_title,
-    'CAROUSEL_HTML'   => $carousel,
-    'CAROUSEL_JS'     => $carousel_js,
-    'VIDEO_JS'        => Render::javascript('video/video_js', $video_js_params),
+    'VIDEO_URL' => $video_file,
+    'VIDEO_TITLE' => $active_title,
+    'CAROUSEL_HTML' => $carousel,
+    'CAROUSEL_JS' => $carousel_js,
+    'VIDEO_JS' => Render::javascript('video/video_js', $video_js_params),
 ];
 Template::echo('video/main', $params);
