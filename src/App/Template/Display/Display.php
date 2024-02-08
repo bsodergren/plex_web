@@ -36,54 +36,6 @@ class Display
         $this->_SERVER = $_SERVER;
     }
 
-    public static function sort_options($url_array)
-    {
-        $html = '';
-        $request_uri = '';
-        $sep = '?';
-        $current = '';
-
-        if ('' != $url_array['query_string']) {
-            parse_str($url_array['query_string'], $query_parts);
-            unset($query_parts['alpha']);
-            $current = 'studio';
-
-            if (isset($url_array['direction'])) {
-                $query_parts['direction'] = $url_array['direction'];
-            }
-
-            if (isset($query_parts['sort'])) {
-                $current = $query_parts['sort'];
-                unset($query_parts['sort']);
-            }
-
-            $request_uri = '?'.http_build_query($query_parts);
-            $sep = '&';
-        }
-        $i = 0;
-        $max = \count($url_array['sort_types']);
-        foreach ($url_array['sort_types'] as $key => $value) {
-            $bg = '';
-            $pill = '';
-            if (0 == $i) {
-                $pill = ' rounded-start-pill';
-            }
-            ++$i;
-            if ($i == $max) {
-                $pill = ' rounded-end-pill';
-            }
-
-            if ($current == $value) {
-                $bg = ' active';
-            }
-            $class = 'nav-link text-light'.$bg; // .$pill;
-            $request_string = $request_uri.$sep.'sort='.$value;
-            $html .= self::directory_navlinks($url_array['url'], $key, $request_string, $class, 'role="button" aria-pressed="true"')."\n";
-        }
-
-        return $html;
-    } // end sort_options()
-
     public static function directory_navlinks($url, $text, $request_uri = '', $class = '', $additional = '')
     {
         global $_SESSION;

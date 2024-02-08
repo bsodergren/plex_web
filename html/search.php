@@ -6,7 +6,9 @@
  use Plex\Core\ProcessForms;
  use Plex\Template\Template;
  use Plex\Template\Display\VideoDisplay;
- 
+ use Plex\Template\HTML\Elements;
+ use Plex\Core\PlexSql;
+
 
 require_once '_config.inc.php';
 define('GRID_VIEW', true);
@@ -89,13 +91,13 @@ $search_types    = [
 ];
 
 foreach ($search_types as $key) {
-    // $checkbox = draw_checkbox("searchField[]", $key, $key);
+    // $checkbox = Elements::draw_checkbox("searchField[]", $key, $key);
     $checkboxes .= Render::html('search/checkboxes', ['NAME' => $key]);
 }
 
 $body            = Render::html('search/search', [
-    'HIDDEN_IDS'     => add_hidden('playlist', $playlist_ids_str),
-    'HIDDEN_STUDIO'  => add_hidden('studio', $_REQUEST['query'].' Search'),
+    'HIDDEN_IDS'     => Elements::add_hidden('playlist', $playlist_ids_str),
+    'HIDDEN_STUDIO'  => Elements::add_hidden('studio', $_REQUEST['query'].' Search'),
     'SEARCH_RESULTS' => $search_results,
     'CHECKBOXES'     => $checkboxes,
     'HTML_MSG'       => $html_msg,

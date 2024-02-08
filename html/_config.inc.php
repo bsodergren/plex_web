@@ -39,12 +39,12 @@ require_once __PHP_CONFIG_DIR__.'/urlpaths.php';
 
 require_once __PHP_CONFIG_DIR__.'/database.php';
 require_once __PHP_CONFIG_DIR__.'/constants.php';
+require_once __PHP_CONFIG_DIR__.'/Functions.php';
 
 require_once __PHP_CONFIG_DIR__.'/header.inc.php';
 require_once __PHP_CONFIG_DIR__.'/variables.php';
 
 require_once __PHP_CONFIG_DIR__.'/settings.inc.php';
-
 $const_keys = array_keys(get_defined_constants(true)['user']);
 define('__TEMPLATE_CONSTANTS__', $const_keys);
 logger('____________________________________________________________________________________________________________________');

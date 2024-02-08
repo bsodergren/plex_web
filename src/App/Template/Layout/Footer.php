@@ -27,16 +27,13 @@ class Footer
         }
         if (!defined('NONAVBAR')) {
             if (__BOTTOM_NAV__ == 1) {
-                if (__SHOW_SORT__ == true && isset($pageObj)) {
-                    $sort_html = Template::return('base/footer/sort', 
-                    ['SORT_HTML' => Display::sort_options($url_array)]);
-                }
+               
 
                 if (__SHOW_PAGES__ == true && isset($pageObj)) {
                     $page_html = $pageObj->toHtml();
                 }
 
-                $footer_nav = ['FOOTER_NAV' => $sort_html.$page_html];
+                $footer_nav = ['FOOTER_NAV' => $page_html];
                 $navbar     = Template::return('base/footer/navbar', $footer_nav);
             }
         }

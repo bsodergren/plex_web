@@ -20,7 +20,7 @@ class metaFilters extends Render
         $filter_html = $this->filter($name);
         foreach ($_REQUEST as $name => $value) {
             if ('' != $value) {
-                $hidden .= add_hidden($name, $value);
+                $hidden .= Elements::add_hidden($name, $value);
             }
         }
 

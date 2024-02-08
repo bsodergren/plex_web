@@ -2,6 +2,8 @@
 use Plex\Template\Render;
 use Plex\Template\Template;
 use Plex\Template\Pageinate\GenrePagenate;
+use Plex\Template\HTML\Elements;
+
 require_once '../_config.inc.php';
 define('TITLE', 'Home');
 define('ALPHA_SORT', true);
@@ -67,7 +69,7 @@ $results            = $db->query($sql);
 
 $redirect_string    = 'Config/'.__THIS_FILE__.$request_string_query;
 
- \Plex\Template\Layout\Header::Display();
+ Header::Display();
 
 ?>
 
@@ -86,13 +88,13 @@ foreach ($results as $key => $row) {
             'GENRE_ID'       => 'replacement_'.$row['id'],
             'GENRE_NAME'     => $row['genre'],
             'GENRE_REP'      => $row['replacement'],
-            'GENRE_CHECKBOX' => draw_checkbox('keep_'.$row['id'], $row['keep'], ''),
+            'GENRE_CHECKBOX' => Elements::draw_checkbox('keep_'.$row['id'], $row['keep'], ''),
         ]
     );
 }
 
-$hidden             = add_hidden('submit', 'GenreConfigSave');
-$hidden .= add_hidden('redirect', $redirect_string);
+$hidden             = Elements::add_hidden('submit', 'GenreConfigSave');
+$hidden .= Elements::add_hidden('redirect', $redirect_string);
 $genre_main_html .= Render::html('config/genre/form_wrapper', [
     'HIDDEN'          => $hidden,
     'GENRE_FORM_HTML' => $genre_row_html,
@@ -110,5 +112,5 @@ Template::echo(
 
 <?php
 
- \Plex\Template\Layout\Footer::Display();
+ Footer::Display();
 ?>

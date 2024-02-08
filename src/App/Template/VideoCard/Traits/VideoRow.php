@@ -3,11 +3,68 @@
 namespace Plex\Template\VideoCard\Traits;
 
 use Plex\Template\Render;
+use Plex\Template\HTML\Elements;
+
 
 trait VideoRow
 {
 
 
+   public static function videoDuration($duration)
+    {
+        $seconds = round($duration / 1000);
+        $hours   = floor($seconds / 3600);
+    
+        $minutes = round((float) $seconds / 60 % 60);
+    
+        $sec     = round($seconds % 60);
+    
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $sec);
+    }
+    
+   public static function display_size($bytes, $precision = 2)
+    {
+        $units = [
+            'B',
+            'KB',
+            'MB',
+            'GB',
+            'TB',
+        ];
+        $bytes = max($bytes, 0);
+        $pow   = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow   = min($pow, count($units) - 1);
+        $bytes /= (1 << (10 * $pow));
+    
+        return round($bytes, $precision).'<span class="fs-0-8 bold">'.$units[$pow].'</span>';
+    } // end display_size()
+    
+    public static function byte_convert($size)
+    {
+        // size smaller then 1kb
+        if ($size < 1024) {
+            return $size.' Byte';
+        }
+    
+        // size smaller then 1mb
+        if ($size < 1048576) {
+            return sprintf('%4.2f KB', $size / 1024);
+        }
+    
+        // size smaller then 1gb
+        if ($size < 1073741824) {
+            return sprintf('%4.2f MB', $size / 1048576);
+        }
+    
+        // size smaller then 1tb
+        if ($size < 1099511627776) {
+            return sprintf('%4.2f GB', $size / 1073741824);
+        }
+        // size larger then 1tb
+    
+        return sprintf('%4.2f TB', $size / 1073741824);
+    } // end byte_convert()
+    
     private function metaValue($key,$cloud = false)
     {
         $value = $this->fileInfoArray[$key];
@@ -121,14 +178,14 @@ trait VideoRow
     public function Studio($key)
     {
         
-        $this->params['HIDDEN_STUDIO'] = add_hidden(strtolower($key), $this->metaValue($key));
+        $this->params['HIDDEN_STUDIO'] = Elements::add_hidden(strtolower($key), $this->metaValue($key));
 
         $this->cloudRow($key);
     }
 
     public function Substudio($key)
     {
-        $this->params['HIDDEN_STUDIO'] = add_hidden(strtolower($key), $this->metaValue($key));
+        $this->params['HIDDEN_STUDIO'] = Elements::add_hidden(strtolower($key), $this->metaValue($key));
 
         $this->cloudRow($key);
     }
@@ -172,10 +229,10 @@ trait VideoRow
 
     public function Filesize($key)
     {
-        $duration = videoDuration($this->metaValue('duration'));
+        $duration = self::videoDuration($this->metaValue('duration'));
         $filesize = $this->metaValue('filesize');
 
-        $this->filesizeRow(ucfirst($key), display_size($filesize), $duration);
+        $this->filesizeRow(ucfirst($key), self::display_size($filesize), $duration);
     }
 
     public function Format()
@@ -190,7 +247,7 @@ trait VideoRow
             $infoParams[strtoupper($key)] = $value;
         }
 
-        $infoParams[strtoupper('bit_rate')] = byte_convert($this->metaValue('bit_rate'));
+        $infoParams[strtoupper('bit_rate')] = self::byte_convert($this->metaValue('bit_rate'));
 
         // if (true == $this->showVideoDetails) {
         if (\is_array($infoParams)) {

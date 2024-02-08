@@ -1,19 +1,17 @@
-<div class="container-fluid justify-content-end">
-    <form action="%%PAGE_UPDATE%%" method="GET">
-        %%HIDDEN%%
+    <form action="{$PAGE_UPDATE}" method="GET">
+        {$HIDDEN}
         <input type=submit style="display:none;">
 
         <ul class="pagination m-0"> 
-            %%PREVIOUS_LINK%%
-            <!-- %%SHOW_PLACEHOLDER%% -->
-            <select class="page-link page-item %%PILL_CLASS%% " name="itemsPerPage" id="itemsPerPage" onchange="this.form.submit()">
+            {$PREVIOUS_LINK}
+            <!-- {$SHOW_PLACEHOLDER} -->
+            <select class="page-link page-item {$PILL_CLASS} " name="itemsPerPage" id="itemsPerPage" onchange="this.form.submit()">
 
-                %%OPTIONS%%
+                {$OPTIONS}
 
             </select>
            
-            %%LINK_LIST%%
-            %%NEXT_LINK%%
+            {$LINK_LIST}
+            {$NEXT_LINK}
         </ul>
     </form>
-</div>

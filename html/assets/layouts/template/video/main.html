@@ -7,7 +7,7 @@
         <meta http-equiv="Expires" content="0">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>%%PAGE_TITLE%%</title>
+        <title>{$PAGE_TITLE}</title>
         {{javascript=external/popper.min.js}}
         {{javascript=external/bootstrap.min.js}}
         {{javascript=external/jquery.min.js}}
@@ -19,7 +19,7 @@
         {{function=ratingInclude}}
     </head>
     <body onload="resizeVideoPage();">
-        %%CAROUSEL_HTML%%
+        {$CAROUSEL_HTML}
         <div class="container">
             <div class="video-container" id="video-container">
                 <div class="playback-animation" id="playback-animation">
@@ -35,7 +35,7 @@
                     id="video"
                     preload="metadata"
                 >
-                    <source src="%%VIDEO_URL%%" type="video/mp4" id="VideoFile"></source>
+                    <source src="{$VIDEO_URL}" type="video/mp4" id="VideoFile"></source>
                 </video>
                 <div class="video-controls hidden" id="video-controls">
                     <div class="video-progress">
@@ -84,10 +84,10 @@
                             </div>
                         </div>
                         <div class="center-controls">
-                            {{function=videoButton|template=prev,pl_id=%%PLAYLIST_ID%%}}
+                            {{function=videoButton|template=prev,pl_id={$PLAYLIST_ID}}}
                             {{function=videoButton|template=backward}}
                             {{function=videoButton|template=forward}}
-                            {{function=videoButton|template=next,pl_id=%%PLAYLIST_ID%%}}
+                            {{function=videoButton|template=next,pl_id={$PLAYLIST_ID}}}
                         </div>
                         <div class="right-controls">
                             <button data-title="PIP (p)" class="pip-button" id="pip-button">
@@ -107,9 +107,9 @@
             </div>
             <div class="d-flex mb-3">
                 <div class="me-auto p-2">
-                    <span class="title-text" onclick="popup('%%__URL_HOME__%%/videoinfo.php?id=%%VIDEO_ID%%', 'videoinfo')">%%VIDEO_TITLE%%</span>
+                    <span class="title-text" onclick="popup('{$__URL_HOME__}/videoinfo.php?id={$VIDEO_ID}', 'videoinfo')">{$VIDEO_TITLE}</span>
                 </div>
-                <div class="p-2"> {{function=videoRating|id=%%VIDEO_ID%%,rating=%%STAR_RATING%%,close=true}}</div>
+                <div class="p-2"> {{function=videoRating|id={$VIDEO_ID},rating={$STAR_RATING},close=true}}</div>
             </div>
         </div>
         <svg style="display: none">
@@ -157,8 +157,8 @@
             </defs>
         </svg>
     </body>
-    %%CAROUSEL_JS%%
-    %%VIDEO_JS%%
+    {$CAROUSEL_JS}
+    {$VIDEO_JS}
 
     {{javascript=footer.js}}
     <script>

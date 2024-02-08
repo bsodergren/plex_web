@@ -6,6 +6,7 @@
 use Plex\Core\ProcessForms;
 use Plex\Template\Layout\Header;
 use Plex\Template\Template;
+use Plex\Core\PlexSql;
 
 require_once '_config.inc.php';
 

@@ -1,4 +1,6 @@
 <?php
+
+use Plex\Template\HTML\Elements;
 /**
  * plex web viewer
  */
@@ -12,7 +14,8 @@
  use Plex\Template\Layout\Header;
  use Plex\Template\Display\Display;
  use Plex\Template\Display\VideoDisplay;
- 
+ use Plex\Core\PlexSql;
+
 define('__TAG_CAT_CLASS__', 'border border-2 border-dark  mx-2 d-flex');
 
 require_once '_config.inc.php';
@@ -44,8 +47,8 @@ define('__TAG_CAT_CLASS__', ''); // border border-1 border-black');
 $html            = Render::html('cloud/main',
     [
         'TAG_CAT_CLASS'  => __TAG_CAT_CLASS__,
-        'TAG_CLOUD_HTML' => keyword_cloud('genre'),
-        //   'TAG_CLOUD_KEYWORD' => keyword_cloud('keyword'),
+        'TAG_CLOUD_HTML' => Elements::keyword_cloud('genre'),
+        //   'TAG_CLOUD_KEYWORD' => Elements::keyword_cloud('keyword'),
     ]);
 
 Template::echo('base/page', ['BODY' => $html]);

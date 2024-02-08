@@ -69,27 +69,7 @@ class RoboLoader extends RobotLoader
         return strpos($line, '#skip');
     }
 
-    public static function javaRefresh($url, $timeout = 0)
-    {
-        global $_REQUEST;
-
-        $html = '<script>'."\n";
-
-        if ($timeout > 0) {
-            $html .= 'setTimeout(function(){ ';
-        }
-
-        $html .= "window.location.href = '".$url."';";
-
-        if ($timeout > 0) {
-            $timeout *= 1000;
-            $html .= '}, '.$timeout.');';
-        }
-        $html .= "\n".'</script>';
-        logger("Looking for redirect", $html);
-
-        echo $html;
-    }
+  
 
     public static function setSkipFile($filename)
     {

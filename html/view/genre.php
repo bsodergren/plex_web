@@ -6,7 +6,7 @@ define('TITLE', 'Home');
 
  \Plex\Template\Layout\Header::Display();
 
-$sql            = query_builder(Db_TABLE_VIDEO_FILE, 'count(genre) as cnt, genre',
+$sql            = PlexSql::query_builder(Db_TABLE_VIDEO_FILE, 'count(genre) as cnt, genre',
     "library = '".$in_directory."'",
     'genre', 'genre asc');
 $result         = $db->query($sql);

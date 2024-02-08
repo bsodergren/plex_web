@@ -39,7 +39,7 @@ logger('all files', $where);
 
 $pageObj                    = new pageinate($where, $currentPage, $urlPattern);
 
-$sql                        = query_builder(Db_TABLE_VIDEO_FILE, 'select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
+$sql                        = PlexSql::query_builder(Db_TABLE_VIDEO_FILE, 'select', $where, false, $order_sort, $pageObj->itemsPerPage, $pageObj->offset);
 
 $results                    = $db->query($sql);
 $request_key                = uri_String($uri);

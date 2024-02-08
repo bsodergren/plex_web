@@ -34,7 +34,7 @@ if ('home.php' != basename($_SERVER['HTTP_REFERER'])) {
 $res                     = count($results);
 if (0 == $res) {
     $redirect_string = urlQuerystring($redirect_string, 'alpha');
-    echo JavaRefresh($redirect_string, 0);
+    echo Elements::javaRefresh($redirect_string, 0);
     exit;
 }
 

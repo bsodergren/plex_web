@@ -2,9 +2,10 @@
 
 namespace Plex\Template\Layout;
 
-use Plex\Template\Display\Display;
+use Plex\Core\PlexSql;
 use Plex\Template\Render;
 use Plex\Template\Template;
+use Plex\Template\Display\Display;
 
 /**
  * plex web viewer.
@@ -20,7 +21,7 @@ class Navbar
         $library_links = '';
         if (isset($_SESSION['auth'])
             && 'verified' == $_SESSION['auth']) {
-            $sql = query_builder(Db_TABLE_VIDEO_TAGS, 'DISTINCT(library) as library ');
+            $sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'DISTINCT(library) as library ');
             foreach ($db->query($sql) as $k => $v) {
                 $library_links .= Display::navbar_left_links('home.php?library='.$v['library'], $v['library']);
             }

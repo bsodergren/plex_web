@@ -1,11 +1,11 @@
 <?php
+
 namespace Plex\Core;
-/**
+
+/*
  * plex web viewer
  */
 
-use Plex\Core\Playlist;
-use Plex\Core\VideoInfo;
 use Nette\Utils\Callback;
 use Plex\Template\Template;
 use Symfony\Component\Process\Process;
@@ -13,8 +13,8 @@ use Symfony\Component\Process\Process;
 class ProcessForms
 {
     public $postArray = [];
-    public $getArray  = [];
-    public $redirect  = ''; // .'/home.php';
+    public $getArray = [];
+    public $redirect = ''; // .'/home.php';
     public object $VideoInfo;
 
     public object $playlist;
@@ -23,11 +23,11 @@ class ProcessForms
     public function __construct($postArray)
     {
         global $db;
-        $this->db        = $db;
+        $this->db = $db;
         $this->VideoInfo = new VideoInfo();
         $this->postArray = $postArray;
-        $this->playlist  = new Playlist($this->postArray);
-        $this->redirect  = $_SERVER['HTTP_REFERER'];
+        $this->playlist = new Playlist($this->postArray);
+        $this->redirect = $_SERVER['HTTP_REFERER'];
 
         if (isset($postArray['redirect_url'])) {
             $this->redirect = $postArray['redirect_url'];
@@ -39,7 +39,6 @@ class ProcessForms
             unset($this->postArray['submit']);
             // dump([__METHOD__,$method]);
             if (method_exists($this, $method)) {
-
                 $this->{$method}();
             } else {
                 dd('No Method for '.$method.' Found');
@@ -49,7 +48,7 @@ class ProcessForms
         if (isset($this->postArray['action'])) {
             $method = $this->postArray['action'];
             if (str_contains($method, 'Playlist')) {
-                if (method_exists(get_class($this->playlist), $method)) {
+                if (method_exists(\get_class($this->playlist), $method)) {
                     $this->playlist->{$method}();
                 } else {
                     dd('No Method for '.$method.' Found in playlist');
@@ -77,11 +76,12 @@ class ProcessForms
 
     public function rating()
     {
-        [$_,$videoId] = explode("_",$this->postArray['id']);
+        [$_,$videoId] = explode('_', $this->postArray['id']);
         $rating = $this->postArray['rating'];
-        $this->VideoInfo->updateRating($videoId,$rating);
-//        dd($this->postArray);
+        $this->VideoInfo->updateRating($videoId, $rating);
+        //        dd($this->postArray);
     }
+
     public function update_file()
     {
         dd($this->postArray);
@@ -89,9 +89,9 @@ class ProcessForms
 
     public function update()
     {
-        $keys      = array_keys($this->postArray);
-        $method    = $keys[0];
-        $tagValue  = $this->postArray[$method];
+        $keys = array_keys($this->postArray);
+        $method = $keys[0];
+        $tagValue = $this->postArray[$method];
         $video_key = $this->postArray[$keys[1]];
         // dump([__METHOD__,$video_key,$tagValue,$method,$keys]);
         // dump(['update', $method, $video_key]);
@@ -113,35 +113,36 @@ class ProcessForms
     public function refresh()
     {
         $this->myHeader('home.php', 0);
+
         return 0;
-        $callback    = Callback::check([$this, 'ProcessProgressBar']);
+        $callback = Callback::check([$this, 'ProcessProgressBar']);
 
         $mediaupdate = '/home/bjorn/scripts/Mediatag/bin/mediaupdate';
-        $mediadb     = '/home/bjorn/scripts/Mediatag/bin/mediadb';
-        $path        = __PLEX_LIBRARY__.\DIRECTORY_SEPARATOR.$_SESSION['library'];
+        $mediadb = '/home/bjorn/scripts/Mediatag/bin/mediadb';
+        $path = __PLEX_LIBRARY__.\DIRECTORY_SEPARATOR.$_SESSION['library'];
 
-        $process     = new Process([$mediaupdate, '--path', $path, '-q']);
+        $process = new Process([$mediaupdate, '--path', $path, '-q']);
         // dump( $process->getCommandLine());
         $process->setTimeout(60000);
         $process->start();
         $process->wait($callback);
         unset($process);
-        $callback    = Callback::check([$this, 'ProcessOutput']);
+        $callback = Callback::check([$this, 'ProcessOutput']);
 
-        $process     = new Process([$mediadb, '--path', $path]);
+        $process = new Process([$mediadb, '--path', $path]);
         $process->setTimeout(60000);
         // dump( $process->getCommandLine());
         $process->start();
         $process->wait($callback);
         unset($process);
-        $process     = new Process([$mediadb, '--path', $path, '-tDi']);
+        $process = new Process([$mediadb, '--path', $path, '-tDi']);
         $process->setTimeout(60000);
         // dump( $process->getCommandLine());
         $process->start();
         $process->wait($callback);
         unset($process);
 
-        $process     = new Process([$mediadb, '--path', $path, '-u']);
+        $process = new Process([$mediadb, '--path', $path, '-u']);
         $process->setTimeout(60000);
         // dump( $process->getCommandLine());
         $process->start();
@@ -155,32 +156,30 @@ class ProcessForms
 
     public function GenreConfigSave()
     {
-        return GenreConfigSave($this->postArray, $this->redirect);
+        return self::StaticGenreConfigSave($this->postArray, $this->redirect);
     }
 
     public function ArtistConfigSave()
     {
-        return ArtistConfigSave($this->postArray, $this->redirect);
+        return self::StaticArtistConfigSave($this->postArray, $this->redirect);
     }
 
     public function StudioConfigSave()
     {
-        return saveStudioConfig($this->postArray, $this->redirect);
+        return self::StaticsaveStudioConfig($this->postArray, $this->redirect);
     }
 
     public function delete_file()
     {
-
-        deleteFile($this->postArray);
+        self::deleteFile($this->postArray);
     }
 
     public function playlist()
     {
-      $url= $this->playlist->createPlaylist();
-echo $url;
-       //  echo $this->myHeader($url);
-         exit;
-
+        $url = $this->playlist->createPlaylist();
+        echo $url;
+        //  echo $this->myHeader($url);
+        exit;
     }
 
     public function myHeader($redirect = '', $timeout = 0)
@@ -188,8 +187,109 @@ echo $url;
         if ('' != $redirect) {
             $this->redirect = $redirect;
         }
-        echo JavaRefresh($this->redirect, $timeout);
+        echo Elements::javaRefresh($this->redirect, $timeout);
 
-exit;
+        exit;
     } // end myHeader()
+
+    public static function StaticGenreConfigSave($data_array, $redirect, $timeout = 0)
+    {
+        global $db;
+
+        $__output = '';
+
+        foreach ($data_array as $key => $val) {
+            if (true == str_contains($key, '_')) {
+                $value = trim($val);
+
+                if ('' != $value) {
+                    $pcs = explode('_', $key);
+
+                    $id = $pcs[1];
+                    $field = $pcs[0];
+                    if ('null' == $value) {
+                        $set = '`'.$field.'`= NULL ';
+                    } else {
+                        if ('keep' != $field) {
+                            $value = '"'.$value.'"';
+                        }
+
+                        $set = '`'.$field.'` = '.$value;
+                    }
+
+                    $sql = 'UPDATE '.Db_TABLE_GENRE.'  SET '.$set.' WHERE id = '.$id;
+                    $db->query($sql);
+                }
+            }
+        }
+        if (false != $redirect) {
+            return Elements::JavaRefresh($redirect, $timeout);
+        }
+    }
+
+    public static function StaticArtistConfigSave($data_array, $redirect, $timeout = 0)
+    {
+        global $db;
+
+        $__output = '';
+        foreach ($data_array as $key => $val) {
+            if (true == str_contains($key, '_')) {
+                $value = trim($val);
+
+                if ('' != $value) {
+                    $pcs = explode('_', $key);
+
+                    $id = $pcs[1];
+                    $field = $pcs[0];
+                    if ('null' == $value) {
+                        $set = '`'.$field.'`= NULL ';
+                    } else {
+                        if ('hide' != $field) {
+                            $value = '"'.$value.'"';
+                        }
+
+                        $set = '`'.$field.'` = '.$value;
+                    }
+
+                    $sql = 'UPDATE '.Db_TABLE_ARTISTS.'  SET '.$set.' WHERE id = '.$id;
+                    $db->query($sql);
+                }
+            }
+        }
+        if (false != $redirect) {
+            return Elements::JavaRefresh($redirect, $timeout);
+        }
+    }
+
+    public static function StaticsaveStudioConfig($data_array, $redirect, $timeout = 0)
+    {
+        global $db;
+
+        $__output = '';
+
+        foreach ($data_array as $key => $val) {
+            if (true == str_contains($key, '_')) {
+                $value = trim($val);
+
+                if ('' != $value) {
+                    $pcs = explode('_', $key);
+
+                    $id = $pcs[1];
+                    $field = $pcs[0];
+                    $set = '`'.$field.'` = "'.$value.'"';
+
+                    if ('null' == $value) {
+                        $set = '`'.$field.'`= NULL ';
+                    }
+
+                    $sql = 'UPDATE '.Db_TABLE_STUDIO.'  SET '.$set.' WHERE id = '.$id;
+                    $db->query($sql);
+                }
+            }
+        }
+
+        if (false != $redirect) {
+            return Elements::JavaRefresh($redirect, $timeout);
+        }
+    }
 }

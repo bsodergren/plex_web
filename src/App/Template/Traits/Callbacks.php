@@ -19,9 +19,23 @@ trait Callbacks
     public const FUNCTION_CALLBACK = '|{{function=([a-zA-Z_]+)\|?(.*)?}}|i';
     public const STYLESHEET_CALLBACK = '|{{(stylesheet)=([a-zA-Z-_/\.]+)\|?(.*)?}}|i';
     public const JAVASCRIPT_CALLBACK = '|{{(javascript)=([a-zA-Z-_/\.]+)\|?(.*)?}}|i';
+    public const VARIABLE_CALLBACK = '|{\$([a-zA-Z_-]+)}|';
+    public const JS_VAR_CALLBACK = '|!!([a-zA-Z_-]+)!!|';
+    
+    
 
-    public function callback_replace($matches)
+    public function callback_parse_variable($matches)
     {
+        $key = $matches[1];
+
+        if(defined($key)){
+            return constant($key);
+        }
+
+        if(array_key_exists($key,$this->replacement_array)){
+            return $this->replacement_array[$key];
+        }
+
         return '';
     }
     

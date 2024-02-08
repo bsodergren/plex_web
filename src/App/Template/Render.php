@@ -23,6 +23,6 @@ class Render extends Template
 
     public static function javascript($template, $replacement_array = '')
     {
-        return Template::return($template, $replacement_array, 'javascript');
+        return Template::return($template, $replacement_array, 'js');
     } // end Render::html()
 }

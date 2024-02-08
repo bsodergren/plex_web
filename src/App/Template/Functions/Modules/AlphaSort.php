@@ -2,6 +2,7 @@
 
 namespace Plex\Template\Functions\Modules;
 
+use Plex\Core\Utilities\PlexArray;
 use Plex\Template\Display\Display;
 use Plex\Template\Render;
 
@@ -37,7 +38,7 @@ class AlphaSort extends Render
 
             $sort = $query_parts['sort'];
 
-            if (!matcharray(self::$alpha_sort_map, $sort)) {
+            if (!PlexArray::matcharray(self::$alpha_sort_map, $sort)) {
                 return '';
             }
             // unset($query_parts['sort']);

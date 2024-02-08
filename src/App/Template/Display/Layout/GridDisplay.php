@@ -2,8 +2,11 @@
 namespace Plex\Template\Display\Layout;
 
 use Plex\Template\Render;
+use Plex\Template\HTML\Elements;
+use Plex\Template\VideoCard\VideoCard;
 use Plex\Template\Display\VideoDisplay;
 use Plex\Template\Functions\Traits\Video;
+
 /**
  * plex web viewer
  */
@@ -68,7 +71,7 @@ class GridDisplay extends VideoDisplay
                 'genre'     => $results[$i]['genre'],
                 'added'     => $results[$i]['added'],
                 // 'filename'  => $results[$i]['filename'],
-                'duration'  => videoDuration($results[$i]['duration']),
+                'duration'  => VideoCard::videoDuration($results[$i]['duration']),
 
                 // 'Duration' => videoDuration($results[$i]['duration']),
             ];
@@ -122,7 +125,7 @@ class GridDisplay extends VideoDisplay
         $row_html        = Render::html('grid/row', ['ROW_CELLS' => $cell_html]);
 
         $table_body_html = Render::html('grid/table', [
-            'HIDDEN_STUDIO_NAME' => add_hidden('studio', $studio).add_hidden('substudio', $substudio),
+            'HIDDEN_STUDIO_NAME' => Elements::add_hidden('studio', $studio).Elements::add_hidden('substudio', $substudio),
             'ROWS_HTML'          => $row_html,
             'INFO_NAME'          => $sort_type_map['map'][$_REQUEST['sort']],
 

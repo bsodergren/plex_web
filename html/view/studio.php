@@ -6,7 +6,7 @@ define('TITLE', 'Home');
 
  \Plex\Template\Layout\Header::Display();
 
-$sql    = query_builder(
+$sql    = PlexSql::query_builder(
     Db_TABLE_VIDEO_FILE,
     'count(studio) as cnt, studio',
     "library = '".$in_directory."'",
@@ -26,7 +26,7 @@ $result = $db->query($sql);
 foreach ($result as $k => $v) {
     if ('' != $v['studio']) {
         $cnt        = $v['cnt'];
-        $query      = query_builder(
+        $query      = PlexSql::query_builder(
             Db_TABLE_VIDEO_FILE,
             'count(substudio) as cnt, substudio',
             'studio like "'.$v['studio'].'"',

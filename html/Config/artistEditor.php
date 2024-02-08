@@ -3,6 +3,8 @@
 use Plex\Template\Render;
 use Plex\Template\Template;
 use Plex\Template\Pageinate\ArtistPagenate;
+use Plex\Template\HTML\Elements;
+
 require_once '../_config.inc.php';
 define('TITLE', 'Home');
 define('ALPHA_SORT', true);
@@ -79,13 +81,13 @@ foreach ($results as $key => $row) {
             'ARTIST_ID'       => 'replacement_'.$row['id'],
             'ARTIST_NAME'     => $row['name'],
             'ARTIST_REP'      => $row['replacement'],
-            'ARTIST_CHECKBOX' => draw_checkbox('hide_'.$row['id'], $row['hide'], ''),
+            'ARTIST_CHECKBOX' => Elements::draw_checkbox('hide_'.$row['id'], $row['hide'], ''),
         ]
     );
 }
 
-$hidden              = add_hidden('submit', 'ArtistConfigSave');
-$hidden .= add_hidden('redirect', $redirect_string);
+$hidden              = Elements::add_hidden('submit', 'ArtistConfigSave');
+$hidden .= Elements::add_hidden('redirect', $redirect_string);
 $artist_main_html .= Render::html('config/artist/form_wrapper', [
     'HIDDEN'           => $hidden,
     'ARTIST_FORM_HTML' => $artist_row_html,

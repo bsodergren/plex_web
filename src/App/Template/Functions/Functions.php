@@ -5,6 +5,8 @@ namespace Plex\Template\Functions;
 use Plex\Core\RoboLoader;
 use Plex\Template\Render;
 use Plex\Core\FileListing;
+use Plex\Template\HTML\Elements;
+
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
 use Plex\Template\Display\Display;
@@ -13,6 +15,7 @@ use Plex\Template\Functions\Traits\Navbar;
 use Plex\Template\Functions\Modules\AlphaSort;
 use Plex\Template\Functions\Traits\Breadcrumbs;
 use Plex\Template\Functions\Modules\metaFilters;
+use Plex\Template\Functions\Traits\PageSort;
 use Plex\Template\Functions\Traits\ThemeSwitcher;
 
 class Functions extends Render
@@ -21,6 +24,7 @@ class Functions extends Render
     use Navbar;
     use Video;
 use ThemeSwitcher;
+use PageSort;
 
 public function __construct() {}
 
@@ -30,7 +34,7 @@ public function __construct() {}
             return '';
         }
 
-        return add_hidden('search_id', FileListing::$searchId);
+        return Elements::add_hidden('search_id', FileListing::$searchId);
     }
 
     private function parseVars($matches)

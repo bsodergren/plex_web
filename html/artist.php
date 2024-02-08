@@ -66,7 +66,7 @@ foreach ($sortedArray as $num => $artistArray) {
     // {
 
     //    //$artist_links .= Render::html("artist/artist_link",['ARTIST'=>$artist,'ARTIST_NAME'=>$name]);
-    //    //$artist_links .= keyword_cloud($name,'artist');
+    //    //$artist_links .= Elements::keyword_cloud($name,'artist');
     //  //dump( [ $num ,$artist]);
     // }
     $field                      = 'artist';

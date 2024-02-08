@@ -4,6 +4,8 @@ use Plex\Template\Display\Display;
 use Plex\Template\Display\VideoDisplay;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
+use Plex\Core\PlexSql;
+
 require_once '_config.inc.php';
 define('TITLE', 'View Genres');
 
@@ -45,7 +47,7 @@ if (isset($_REQUEST['allfiles'])) {
     $request_key = $studio_key.'='.$studio_text.$null_req;
 }
 $order       = 'genre ASC';
-$sql         = query_builder(Db_TABLE_VIDEO_TAGS,
+$sql         = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
     'DISTINCT(genre) as genre, count(genre) as cnt ',
     $sql_studio,
     'genre',
@@ -59,7 +61,7 @@ $result      = $db->query($sql);
 $rows        = count($result);
 
 if ($rows <= 1) {
-    //    JavaRefresh($all_url, 0);
+    //    Elements::javaRefresh($all_url, 0);
 }
 
 foreach ($result as $k => $v) {

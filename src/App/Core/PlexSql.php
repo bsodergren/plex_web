@@ -111,7 +111,7 @@ class PlexSql extends MysqliDb
     //         $library = "  AND library = '".$_SESSION['library']."' ";
     //     }
 
-    //     $query = query_builder('metatags_video_file','select', "`f.".$column."` = '".$value."' ");
+    //     $query = PlexSql::query_builder('metatags_video_file','select', "`f.".$column."` = '".$value."' ");
     //     //$query = "SELECT * FROM `metatags_video_file` WHERE `".$column."` = '".$value."' ".  $library;
     //     dd($query);
     //     return $db->query($query);
@@ -299,4 +299,31 @@ class PlexSql extends MysqliDb
     {
         $this->offset = $offset;
     }
+
+    
+public static function query_builder($table, $fields = 'select', $where = false, $group = false, $order = false, $limit = false, $offset = false)
+{
+    $query = new PlexSql();
+    if (false != $where) {
+        $query->pwhere($where);
+    }
+    if (false != $group) {
+        $query->pgroupBy($group);
+    }
+    if (false != $order) {
+        $query->porderBy($order);
+    }
+    if (false != $limit) {
+        $query->psetLimit($limit);
+    }
+    if (false != $offset) {
+        $query->psetOffset($offset);
+    }
+
+    $sql   = $query->pselect($table, $fields);
+    logger('SQL Builder', $sql);
+
+    return $sql;
+}
+
 }

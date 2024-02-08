@@ -3,6 +3,7 @@
 namespace Plex\Template\VideoCard;
 
 use Plex\Template\Render;
+use Plex\Template\HTML\Elements;
 use Plex\Template\VideoCard\Traits\VideoRow;
 
 /**
@@ -73,7 +74,7 @@ class VideoCard
             $this->params['RATING_WIDTH'] = 175;
             $this->params['DELETE_BUTTONS'] = Render::html(
                 $this->template_base.'/deletebuttons',
-                ['DELETE_ID' => add_hidden('id', $row_id, 'id="DorRvideoId"')]);
+                ['DELETE_ID' => Elements::add_hidden('id', $row_id, 'id="DorRvideoId"')]);
         }
 
         $fileArray = [

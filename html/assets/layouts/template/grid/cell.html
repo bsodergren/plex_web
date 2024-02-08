@@ -1,15 +1,15 @@
-<div style="width:320px" class="border p-2 categories-wrapper %%FILE_MISSING%%">
+<div style="width:320px" class="border p-2 categories-wrapper {$FILE_MISSING}">
     <div class="flex-shrink-0">
         <div class="custom-control custom-checkbox image-checkbox">
-            <input type="checkbox" class="category-input playlist_selector custom-control-input" id="ck1a_%%ROW_ID%%" name="playlist[]" value="%%ROW_ID%%">
-            %%THUMBNAIL%%
-            {{function=videoPlayer|query?id=%%ROW_ID%%,href=video.php,text=Play}}
-            {{function=videoPlayer|query?id=%%ROW_ID%%,href=videoinfo.php,text=Video_Info}}
+            <input type="checkbox" class="category-input playlist_selector custom-control-input" id="ck1a_{$ROW_ID}" name="playlist[]" value="{$ROW_ID}">
+            {$THUMBNAIL}
+            {{function=videoPlayer|query?id={$ROW_ID},href=video.php,text=Play}}
+            {{function=videoPlayer|query?id={$ROW_ID},href=videoinfo.php,text=Video_Info}}
         </div>
         <div class="container text-start" >
 
-            %%VIDEO_DATA%%
+            {$VIDEO_DATA}
         </div>
-        {{function=videoRating|id=%%ROW_ID%%,rating=%%STAR_RATING%%}}
+        {{function=videoRating|id={$ROW_ID},rating={$STAR_RATING}}}
     </div>
 </div>

@@ -108,7 +108,7 @@ class Pageinate extends Paginator
                 'LI_CLASS' => ' class="page-item " ',
                 'A_CLASS'  => ' class="page-link  rounded-start-pill" ',
                 'A_HREF'   => htmlspecialchars($this->paginator->getPrevUrl()),
-                'A_TExT'   => '&laquo; '.$this->paginator->previousText,
+                'A_TEXT'   => '&laquo; '.$this->paginator->previousText,
             ];
             $previous = Template::return('base/footer/page_item', $params);
         } else {
@@ -120,7 +120,7 @@ class Pageinate extends Paginator
                 'LI_CLASS' => ' class="page-item rounded-end-pill"',
                 'A_CLASS'  => ' class="page-link  rounded-end-pill"',
                 'A_HREF'   => htmlspecialchars($this->paginator->getNextUrl()),
-                'A_TExT'   => $this->paginator->nextText.' &raquo;',
+                'A_TEXT'   => $this->paginator->nextText.' &raquo;',
             ];
             $next      = Template::return('base/footer/page_item', $params);
         } else {
@@ -144,7 +144,7 @@ class Pageinate extends Paginator
                     'LI_CLASS' => $page['isCurrent'] ? ' class="page-item  active '.$pill_end_class.'"' : ' class="page-item '.$pill_end_class.'" ',
                     'A_CLASS'  => ' class="page-link '.$pill_end_class.'" ',
                     'A_HREF'   => htmlspecialchars($page['url']),
-                    'A_TExT'   => htmlspecialchars($page['num']),
+                    'A_TEXT'   => htmlspecialchars($page['num']),
                 ];
 
                 $link_list .= Template::return('base/footer/page_item', $params);

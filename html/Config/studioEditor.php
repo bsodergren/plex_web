@@ -3,6 +3,8 @@
 use Plex\Template\Render;
 use Plex\Template\Template;
 use Plex\Template\Pageinate\ConfigPagenate;
+use Plex\Template\HTML\Elements;
+
 require_once '../_config.inc.php';
 
 define('TITLE', 'Home');
@@ -25,7 +27,7 @@ $results          = $db->query($sql);
 
 $redirect_string  = __THIS_FILE__;
 
- \Plex\Template\Layout\Header::Display();
+\Plex\Template\Layout\Header::Display();
 
 ?>
 
@@ -36,18 +38,18 @@ $redirect_string  = __THIS_FILE__;
 	<br>
 	<?php
 
-    $hidden       = add_hidden('library', 'Amateur');
-$hidden .= add_hidden('submit', 'addNewEntry');
-$hidden .= add_hidden('redirect', $redirect_string);
+    $hidden       = Elements::add_hidden('library', 'Amateur');
+$hidden .= Elements::add_hidden('submit', 'addNewEntry');
+$hidden .= Elements::add_hidden('redirect', $redirect_string);
 $lib_name         = 'Add Amateur entry';
 
 $studio_add_entry = Render::html('config/studio/studio_row', ['STUDIO_ID' => 'studio', 'PATH_ID' => 'path', 'STUDIO_NAME' => '<input type="text" name="name">']);
 $studio_add_entry = Render::html('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' => $studio_add_entry]);
 $studio_main_html = Render::html('config/studio/form_wrapper', ['HIDDEN' => $hidden, 'STUDIO_FORM_HTML' => $studio_add_entry]);
 
-$hidden           = add_hidden('library', 'Studios');
-$hidden .= add_hidden('submit', 'addNewEntry');
-$hidden .= add_hidden('redirect', $redirect_string);
+$hidden           = Elements::add_hidden('library', 'Studios');
+$hidden .= Elements::add_hidden('submit', 'addNewEntry');
+$hidden .= Elements::add_hidden('redirect', $redirect_string);
 $lib_name         = 'Add Studios entry';
 
 $studio_add_entry = Render::html('config/studio/studio_row', ['STUDIO_ID' => 'studio', 'PATH_ID' => 'path', 'STUDIO_NAME' => '<input type="text" name="name">']);
@@ -85,8 +87,8 @@ foreach ($studio_rows as $library => $studios) {
     );
 }
 
-$hidden           = add_hidden('submit', 'StudioConfigSave');
-$hidden .= add_hidden('redirect', $redirect_string);
+$hidden           = Elements::add_hidden('submit', 'StudioConfigSave');
+$hidden .= Elements::add_hidden('redirect', $redirect_string);
 $studio_main_html .= Render::html('config/studio/form_wrapper', [
     'HIDDEN'           => $hidden,
     'STUDIO_FORM_HTML' => $studio_list_html,

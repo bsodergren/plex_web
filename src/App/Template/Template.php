@@ -108,7 +108,6 @@ class Template
 
     public static function render()
     {
-        global $db,$pageObj,$url_array,$studio_url;
         $output           = self::$RenderHTML;
 
         self::$RenderHTML = '';
@@ -133,75 +132,44 @@ class Template
     }
 
 
-    public function template($template = '', $replacement_array = '', $js = '')
+    public function template($template = '', $replacement_array = '', $extension = 'html')
     {
-        $extension     = '.html';
-        $s_delim       = '%%';
-        $e_delim       = '%%';
-        if ('' != $js) {
-            $extension = '.js';
-            $s_delim   = '!!';
-            $e_delim   = '!!';
+        if($extension == ''){
+            $extension = 'html';
         }
+        
+        $extension     = '.'.$extension;
 
         $template_file = __HTML_TEMPLATE__.'/'.$template.$extension;
         if (!file_exists($template_file)) {
           
                 $html_text = '<h1>NO TEMPLATE FOUND<br>';
                 $html_text .= 'FOR <pre>'.$template_file.'</pre></h1> <br>';
-
-                $this->html .= $html_text;
+                $this->html = $html_text;
+                return $html_text;
         }
 
         $html_text     = file_get_contents($template_file);
-        foreach (__TEMPLATE_CONSTANTS__ as $_ => $key) {
-            $value = \constant($key);
+       
+        $this->replacement_array = $replacement_array;
 
-            if (\is_array($value)) {
-                continue;
-            }
-
-            $key   = $s_delim.strtoupper($key).$e_delim;
-            if (null != $value) {
-                //   dump([$key,$value]);
-                $html_text = str_replace($key, $value, $html_text);
-            }
-        }
-
-        if (\is_array($replacement_array)) {
-            foreach ($replacement_array as $varkey => $value) {
-                // $value = "<!-- $key --> \n".$value;
-                if (null != $value) {
-                    $key       = '%%'.strtoupper($varkey).'%%';
-                    $html_text = str_replace($key, $value, $html_text);
-
-                    $key       = '!!'.strtoupper($varkey).'!!';
-                    $html_text = str_replace($key, $value, $html_text);
-                }
-            }
-        }
-
-        $html_text     = preg_replace_callback('|(%%\w+%%)|', [$this, 'callback_replace'], $html_text);
-        $html_text     = preg_replace_callback('|(\!\!\w+\!\!)|', [$this, 'callback_replace'], $html_text);
-
+        $html_text     = preg_replace_callback(self::VARIABLE_CALLBACK, [$this, 'callback_parse_variable'], $html_text);
+        $html_text     = preg_replace_callback(self::JS_VAR_CALLBACK, [$this, 'callback_parse_variable'], $html_text);
         $html_text     = preg_replace_callback(self::FUNCTION_CALLBACK, [$this, 'callback_parse_function'], $html_text);
         $html_text     = preg_replace_callback(self::STYLESHEET_CALLBACK, [$this, 'callback_parse_include'], $html_text);
         $html_text     = preg_replace_callback(self::JAVASCRIPT_CALLBACK, [$this, 'callback_parse_include'], $html_text);
-
         $html_text     = preg_replace_callback('/(##(\w+,?\w+)##)(.*)(##)/iU', [$this, 'callback_color'], $html_text);
-        $html_text     = preg_replace_callback('/(!!(\w+,?\w+)!!)(.*)(!!)/iU', [$this, 'callback_badge'], $html_text);
+        
+        // $html_text     = preg_replace_callback('/(!!(\w+,?\w+)!!)(.*)(!!)/iU', [$this, 'callback_badge'], $html_text);
 
-        // '<span $2>$3</span>'
-        //  $html_text     = str_replace('  ', ' ', $html_text);
         $html_text     = trim($html_text);
-        //   $html_text     = "<!-- start $template -->".PHP_EOL.$html_text.PHP_EOL."<!-- end $template -->". PHP_EOL;
-        $this->html    = $html_text.\PHP_EOL;
-        // $this->html
-        if ('' != $js) {
-            $this->html = '<script>'.\PHP_EOL.$this->html.\PHP_EOL.'</script>'.\PHP_EOL;
+        // 
+        if ('.js' == $extension) {
+            $html_text = '<script>'.\PHP_EOL.$html_text.\PHP_EOL.'</script>'.\PHP_EOL;
         }
 
-        return $this->html;
+        $this->html = $html_text;
+        return $html_text;
     }
 
 }

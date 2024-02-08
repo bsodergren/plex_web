@@ -48,7 +48,7 @@ trait Video
                 ];
 
                 if(array_key_exists("close",$var)){
-                    $params['RATING_HIDDEN'] = add_hidden('close','false','id="close_window"');
+                    $params['RATING_HIDDEN'] = Elements::add_hidden('close','false','id="close_window"');
                 }
 
                 return Render::html('elements/Rating/rating', $params);

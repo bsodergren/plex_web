@@ -4,6 +4,9 @@ use Plex\Core\ProcessForms;
 use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
 use Plex\Template\Template;
+use Plex\Template\HTML\Elements;
+use Plex\Core\PlexSql;
+
 
 /**
  * plex web viewer.
@@ -91,7 +94,7 @@ if (null === $playlist_id) {
     }
 
     $form_url = __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
-    $form_action = add_hidden('playlist_id', $playlist_id);
+    $form_action = Elements::add_hidden('playlist_id', $playlist_id);
 
     $table_body_html = Render::html('playlist/table', [
         'FORM_URL' => $form_url,

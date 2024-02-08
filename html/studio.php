@@ -9,6 +9,8 @@ use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
 use Plex\Template\Display\Display;
 use Plex\Template\Display\VideoDisplay;
+use Plex\Core\PlexSql;
+
 /**
  * plex web viewer
  */
@@ -35,7 +37,7 @@ if (isset($_REQUEST['substudio'])) {
     $order       = $studio_field.' ASC';
 
     $sql_studio  = $studio_key." = '".$studio."'";
-    $sql         = query_builder(Db_TABLE_VIDEO_TAGS,
+    $sql         = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
         "DISTINCT(". $studio_field .") as ". $studio_field ." ",
         $sql_studio,
         $studio_field,
