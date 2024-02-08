@@ -1,20 +1,10 @@
 <?php
-/**
- * plex web viewer
- */
 
 namespace Plex\Template\Display\Layout;
 
+use Plex\Template\VideoCard\VideoCard;
 use Plex\Template\Display\VideoDisplay;
-use Plex\Template\Display\Layout\VideoCard;
 
-/**
- * plex web viewer.
- */
-
-/**
- * plex web viewer.
- */
 class ListDisplay extends VideoDisplay
 {
     public $showVideoDetails = false;

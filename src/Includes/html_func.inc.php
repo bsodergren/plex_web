@@ -6,27 +6,6 @@ use Plex\Core\RoboLoader;
 Use Plex\Template\Render;
 use Plex\Core\PlexSql;
 
-function keyword_list($key, $list)
-{
-    $link_array = [];
-    $value      = '';
-    $list_array = explode(',', $list);
-
-    foreach ($list_array as $k => $keyword) {
-        $link_array[] = Render::html(
-            'filelist/search_link',
-            [
-                'KEY'      => $key,
-                'QUERY'    => urlencode($keyword),
-                'URL_TEXT' => $keyword,
-                //  'CLASS'    => ' class="badge fs-6 blueTable-thead" ',
-            ]
-        );
-    }
-
-    return implode('  ', $link_array);
-}
-
 function keyword_cloud($field = 'keyword')
 {
     global $db;

@@ -7,6 +7,7 @@ namespace Plex\Template\Pageinate;
 use JasonGrimes\Paginator;
 use Plex\Template\Template;
 use Plex\Template\Display\Display;
+use Plex\Template\HTML\Elements;
 
 class Pageinate extends Paginator
 {
@@ -164,7 +165,7 @@ class Pageinate extends Paginator
             $hidden_text .= $this->hidden_Field($name, $value);
         }
 
-        $option_text      = Display::SelectOptions($this->itemsSelection, $this->itemsPerPage);
+        $option_text      = Elements::SelectOptions($this->itemsSelection, $this->itemsPerPage);
         $params           = [
             'HIDDEN'           => $hidden_text,
             'SHOW_PLACEHOLDER' => $placeholder,

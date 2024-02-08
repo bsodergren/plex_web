@@ -23,7 +23,6 @@ class Template
     public static $BarHeight       = 30;
 
     private static $RenderHTML     = '';
-   // public const FUNCTION_CALLBACK = '|{{function=([a-zA-Z_]+)\|?(.*)?}}|i';
 
     public function __construct()
     {
@@ -134,23 +133,6 @@ class Template
     }
 
 
-
-    public function getTemplate($file)
-    {
-        $file_copy = str_replace('template', 'template_files', $file);
-        if (file_exists($file_copy)) {
-            $file_dir = \dirname($file);
-
-            FileSystem::createDir($file_dir);
-            FileSystem::rename($file_copy, $file);
-            FileSystem::delete($file_copy);
-
-            return true;
-        }
-
-        return false;
-    }
-
     public function template($template = '', $replacement_array = '', $js = '')
     {
         $extension     = '.html';
@@ -164,13 +146,11 @@ class Template
 
         $template_file = __HTML_TEMPLATE__.'/'.$template.$extension;
         if (!file_exists($template_file)) {
-            if (!$this->getTemplate($template_file)) {
-                // use default template directory
+          
                 $html_text = '<h1>NO TEMPLATE FOUND<br>';
                 $html_text .= 'FOR <pre>'.$template_file.'</pre></h1> <br>';
 
                 $this->html .= $html_text;
-            }
         }
 
         $html_text     = file_get_contents($template_file);
