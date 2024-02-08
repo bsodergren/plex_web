@@ -9,14 +9,14 @@ use Plex\Core\FileListing;
 use Plex\Core\RoboLoader;
 use Plex\Template\Display\Display;
 use Plex\Template\Functions\Traits\Navbar;
-use Plex\Template\Functions\Traits\VideoDisplay;
+use Plex\Template\Functions\Traits\Video;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
 use Plex\Template\Render;
 
 class Functions extends Render
 {
-    use VideoDisplay;
+    use Video;
     use Navbar;
 
     public function __construct() {}

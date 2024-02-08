@@ -29,7 +29,7 @@ $videoInfo                 = $fileinfo->getVideoDetails($id);
 // die(print_r(THEME_SWITCHER));
 
 $vidInfo                   = (new VideoDisplay())->init('videoinfo');
-$vidInfo->showVideoDetails = true;
+// $vidInfo->showVideoDetails = true;
 $body                      = $vidInfo->Display($videoInfo);
 // dump($body);
 //$body['THEME_SWITCHER']    = THEME_SWITCHER;

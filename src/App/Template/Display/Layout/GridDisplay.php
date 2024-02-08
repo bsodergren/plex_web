@@ -1,14 +1,17 @@
 <?php
-namespace Plex\Template\Display;
+namespace Plex\Template\Display\Layout;
 
 use Plex\Template\Render;
 use Plex\Template\Display\VideoDisplay;
+use Plex\Template\Functions\Traits\Video;
 /**
  * plex web viewer
  */
 
 class GridDisplay extends VideoDisplay
 {
+
+    use Video;
     public $showVideoDetails = false;
     private $template_base   = '';
 

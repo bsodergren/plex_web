@@ -43,7 +43,7 @@ trait VideoRow
                 // 'ADD_BUTTON'  => $add_button,
                 'FIELD' => $field,
                 'VALUE' => $value,
-                'ALT_CLASS' => $class,
+                'ALT_CLASS' => $this->AltClass,
                 'EDITABLE' => $editable,
             ]
         );
@@ -76,6 +76,8 @@ trait VideoRow
     public function info($key)
     {
         $value = $this->fileInfoArray[$key];
+
+
         $value = str_replace(__PLEX_LIBRARY__.'/', '', $value);
 
         $this->row(ucfirst($key), $value, $this->AltClass, $key);
@@ -144,8 +146,9 @@ trait VideoRow
         $this->filesizeRow(ucfirst($key), display_size($filesize), $duration, $this->AltClass);
     }
 
-    public function VideoInfo()
+    public function Format()
     {
+
         $fileInfo = [
             'width',
             'height',
@@ -156,14 +159,16 @@ trait VideoRow
             $infoParams[strtoupper($key)] = $value;
         }
 
-        $infoParams[strtoupper($key)] = byte_convert($this->fileInfoArray['bit_rate']);
-        if (true == $this->showVideoDetails) {
+        $infoParams[strtoupper('bit_rate')] = byte_convert($this->fileInfoArray['bit_rate']);
+
+
+        // if (true == $this->showVideoDetails) {
             if (\is_array($infoParams)) {
-                $this->row('', Render::html(
+                $this->row('Info', Render::html(
                     $this->template_base.'/Rows/info',
                     $infoParams
                 ), $this->AltClass);
             }
-        }
+        // }
     }
 }

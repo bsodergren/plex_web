@@ -182,7 +182,7 @@ class FileListing
         $sql .= 'LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
         $sql .= 'LEFT OUTER JOIN metatags_video_info i on f.video_key=i.video_key ';
         $sql .= "WHERE   f.id = '".$id."'";
-
+// dump($sql);
         return $this->db->query($sql);
     }
 

@@ -8,7 +8,7 @@ namespace Plex\Template\Functions\Traits;
 use Plex\Template\HTML\Elements;
 use Plex\Template\Render;
 
-trait VideoDisplay
+trait Video
 {
     public function UseEditable($matches) {}
 

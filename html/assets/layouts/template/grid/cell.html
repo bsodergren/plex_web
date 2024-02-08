@@ -3,9 +3,11 @@
         <div class="custom-control custom-checkbox image-checkbox">
             <input type="checkbox" class="category-input playlist_selector custom-control-input" id="ck1a_%%ROW_ID%%" name="playlist[]" value="%%ROW_ID%%">
             %%THUMBNAIL%%
-            <div {{function=videoPlayer|query?id=%%ROW_ID%%,href=video.php}} class="videoLink videoBadge badge">Video</div>
+            {{function=videoPlayer|query?id=%%ROW_ID%%,href=video.php,text=Play}}
+            {{function=videoPlayer|query?id=%%ROW_ID%%,href=videoinfo.php,text=Video_Info}}
         </div>
-        <div class="container text-start" {{function=videoPlayer|query?id=%%ROW_ID%%,href=videoinfo.php}}>
+        <div class="container text-start" >
+
             %%VIDEO_DATA%%
         </div>
         {{function=videoRating|id=%%ROW_ID%%,rating=%%STAR_RATING%%}}

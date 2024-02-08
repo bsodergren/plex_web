@@ -3,7 +3,10 @@
  * plex web viewer
  */
 
-namespace Plex\Template\Display;
+namespace Plex\Template\Display\Layout;
+
+use Plex\Template\Display\VideoDisplay;
+use Plex\Template\Display\Layout\VideoCard;
 
 /**
  * plex web viewer.

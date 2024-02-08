@@ -1,6 +1,6 @@
 <?php
 
-namespace Plex\Template\Display;
+namespace Plex\Template\Display\Layout;
 
 use Plex\Template\Display\Traits\VideoRow;
 use Plex\Template\Render;
@@ -26,7 +26,7 @@ class VideoCard
 
     public function __call($method, $args)
     {
-        $key = $args[1];
+        $key = $args[0];
 
         return $this->info($key);
     }
@@ -85,18 +85,20 @@ class VideoCard
             'library',
             'fullpath',
             'filesize',
-            'VideoInfo',
+            'format',
             'added',
         ];
         $x = 0;
+        // dump($this->fileInfoArray);
         foreach ($fileArray as $field) {
             $this->AltClass = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
 
             if (\array_key_exists($field, $this->fileInfoArray)) {
                 $method = ucfirst($field);
                 $this->{$method}($field);
+                 ++$x;
             }
-            ++$x;
+           
         }
 
 
