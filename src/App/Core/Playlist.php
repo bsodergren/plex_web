@@ -65,7 +65,7 @@ class Playlist extends ProcessForms
                 if (null === $pl_search) {
                     $hide                   = true;
                     $this->db->where('id', $search_id);
-                    $search_data            = $this->db->getOne('metatags_search_data');
+                    $search_data            = $this->db->getOne(Db_TABLE_SEARCH_DATA);
 
                     $this->data['playlist'] = $search_data['video_list'];
                 } else {
@@ -115,7 +115,9 @@ class Playlist extends ProcessForms
         if (array_key_exists('PlayAll', $this->data)) {
             return __URL_HOME__.'/video.php?playlist_id='.$playlist_id.'';
         }
-
+        if (array_key_exists('refresh', $this->data)) {
+            return __URL_HOME__.'/video.php?playlist_id='.$playlist_id.'';
+        }
         return __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
     }
 

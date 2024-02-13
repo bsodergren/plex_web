@@ -81,7 +81,6 @@ if(array_key_exists('view',$_REQUEST)){
     $grid                 = (new VideoDisplay($view ))->init();
 $search_results         = $grid->Display($results, [  'total_files'     => count($results)]);
 
-dump($search_results);
 
     //   $search_results =     display_filelist($results, '', $page_array);
 }

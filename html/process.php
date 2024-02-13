@@ -12,6 +12,8 @@ use Plex\Template\Layout\Header;
 require_once '_config.inc.php';
 dump($_REQUEST);
 
+
+
 if (true == $_GET['q']) {
     $q    = $_GET['q'];
 

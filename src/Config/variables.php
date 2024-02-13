@@ -74,7 +74,12 @@ $navigation_link_array  = [
         'secure' => false,
         'js'     => false,
     ],
-
+    'smartlist'     => [
+        'url'    => 'smartpl.php',
+        'text'   => 'Smart List',
+        'secure' => false,
+        'js'     => false,
+    ],
     'tag'          => [
         'url'    => 'tags.php',
         'text'   => 'Tags',

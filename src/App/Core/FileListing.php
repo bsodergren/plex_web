@@ -40,7 +40,7 @@ class FileListing
         $vidsStr = implode(',', $vids);
 
         $db->where('video_list', $vidsStr);
-        $user = $db->getOne('metatags_search_data');
+        $user = $db->getOne(Db_TABLE_SEARCH_DATA);
         if (null !== $user['id']) {
             self::$searchId = $user['id'];
 
@@ -51,7 +51,7 @@ class FileListing
             // "updatedAt" => $db->now()
         ];
 
-        $id = $db->insert('metatags_search_data', $data);
+        $id = $db->insert(Db_TABLE_SEARCH_DATA, $data);
         //   dump("new index " . $id);
         self::$searchId = $id;
 

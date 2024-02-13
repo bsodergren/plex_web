@@ -89,7 +89,6 @@ $(document).ready(function () {
 function playlistSubmit (action) {
     // let mybutton = document.getElementById('ajaxform')
     var form = $('#ajaxform')
-    console.log(action);
 
     var hiddenAction = document.createElement('input')
     hiddenAction.value = 'true'
