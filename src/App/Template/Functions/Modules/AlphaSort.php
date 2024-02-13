@@ -2,6 +2,7 @@
 
 namespace Plex\Template\Functions\Modules;
 
+use Plex\Core\Request;
 use Plex\Core\Utilities\PlexArray;
 use Plex\Template\Display\Display;
 use Plex\Template\Render;
@@ -21,8 +22,7 @@ class AlphaSort extends Render
 
     public function display_alphaSort($offset = 0, $len = 13)
     {
-        global $url_array;
-        global $tag_types;
+        $url_array = Request::$url_array;
         $sep = '&';
         if ('' != $url_array['query_string']) {
             parse_str($url_array['query_string'], $query_parts);

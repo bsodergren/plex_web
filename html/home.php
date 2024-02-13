@@ -2,9 +2,8 @@
 
 use Plex\Core\PlexSql;
 use Plex\Template\Render;
-use Plex\Template\Template;
+
 use Plex\Template\Display\Display;
-use Plex\Template\Layout\Footer;
 
 /**
  * plex web viewer
@@ -74,7 +73,7 @@ foreach ($studioArray as $subLibrary => $studioArr) {
             $accordian['ACCORDIAN_ID']     = Display::RandomId('accordian_');
             $accordian['ACCORDIAN_HEADER'] = $name['studio'];
             
-            $accordian['STUDIO_LINK']= Render::html('accordian/studio_link', [
+            $accordian['STUDIO_LINK']= Render::html('home/studio/link', [
                 'GET_REQUEST' => 'studio='.$studio,
                 'NAME'        => $name['studio'],
                 'COUNT'       => $cnt,
@@ -88,40 +87,31 @@ foreach ($studioArray as $subLibrary => $studioArr) {
                 }
                     $ssCnt     = ' ('.$ssName['cnt'].')';
                     $substudio = urlencode($ssName['substudio']);
-                    $accordian['STUDIO_LINK'] .= Render::html('accordian/studio_link', [
+                    $accordian['STUDIO_LINK'] .= Render::html('home/studio/link', [
                         'GET_REQUEST' => 'substudio='.$substudio,
                         'NAME'        => $ssName['substudio'],
                         'COUNT'       => $ssCnt,
                         'CLASS'       => 'btn btn-secondary',
                     ]);
-                    // if (0 == $iindex % 8) {
-                    //     $studio_box .= Render::html('accordian/studio_box', [
-                    //         'STUDIO_LINKS' => $studio_links,
-                    //         'CLASS'        => '',
-                    //     ]);
-                    //     $studio_links = '';
-                    // }
+                   
                 
             }
-            $accordian['ACCORDIAN_LINKS'] = Render::html('accordian/studio_group',$accordian);
-            //  if ('' != $studio_links) {
-            $studio_links .= Render::html('accordian/studio_header', $accordian);
-            // }
-            // $studio_links                  = '';
+            $accordian['ACCORDIAN_LINKS'] = Render::html('home/studio/group',$accordian);
+            $studio_links .= Render::html('home/accordian/block', $accordian);
+           
         } else {
-            $studio_links .= Render::html('accordian/studio_group', [
-
-                'STUDIO_LINK' => Render::html('accordian/studio_link', [
+            $studio_links .= Render::html('home/studio/group', [
+                'STUDIO_LINK' => Render::html('home/studio/link', [
                     'GET_REQUEST' => 'studio='.$studio,
-                    'NAME'        => $name['studio'],
+                    'NAME'        => $name['studio'] ,
                     'COUNT'       => $cnt,
                     'CLASS'       => 'btn btn-secondary',
                 ]),
             ]);
           
-        } // end if
+        } 
         if ('' != $studio_links) {
-            $studio_box .= Render::html('accordian/studio_box', [
+            $studio_box .= Render::html('home/block', [
                 'STUDIO_LINKS' => $studio_links,
                 'CLASS'        => '',
             ]);
@@ -132,14 +122,10 @@ foreach ($studioArray as $subLibrary => $studioArr) {
         // }
     }
 
-    $studio_html .= Render::html('accordian/studio_lib', [
+    $studio_html .= Render::html('home/studio/lib', [
         'STUDIO_BOX_HTML' => $studio_box,
         'LIBRARY_NAME'    => $subLibrary]);
 } // end foreach
 
-$body         = Render::html('accordian/main', ['BODY_HTML' => $studio_html]);
-\Plex\Template\Layout\Header::Display();
-Template::echo('base/page', ['BODY' => $body]);
-\Plex\Template\Layout\Footer::Display();
+Render::Display($studio_html);
 
-//  \Plex\Template\Layout\Footer::Display();

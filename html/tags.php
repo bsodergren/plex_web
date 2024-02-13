@@ -1,14 +1,12 @@
 <?php
 
+use Plex\Template\HTML\Elements;
 use Plex\Template\Render;
-use Plex\Template\Template;
 /*
  * plex web viewer
  */
 
-use Plex\Template\HTML\Elements;
-use Plex\Template\Layout\Footer;
-use Plex\Template\Layout\Header;
+
 
 define('__TAG_CAT_CLASS__', 'border border-2 border-dark  mx-2 d-flex');
 
@@ -43,6 +41,4 @@ $html = Render::html('cloud/main',
         'TAG_CLOUD_HTML' => Elements::keyword_cloud('genre'),
         //   'TAG_CLOUD_KEYWORD' => Elements::keyword_cloud('keyword'),
     ]);
-Header::Display();
-Template::echo('base/page', ['BODY' => $html]);
-Footer::Display();
+Render::Display($html);

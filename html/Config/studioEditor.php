@@ -1,7 +1,7 @@
 <?php
 
 use Plex\Template\Render;
-use Plex\Template\Template;
+
 use Plex\Template\Pageinate\ConfigPagenate;
 use Plex\Template\HTML\Elements;
 
@@ -94,7 +94,7 @@ $studio_main_html .= Render::html('config/studio/form_wrapper', [
     'STUDIO_FORM_HTML' => $studio_list_html,
 ]);
 
-Template::echo(
+Render::echo(
     'config/studio/main',
     [
         'STUDIO_MAIN_HTML' => $studio_main_html,

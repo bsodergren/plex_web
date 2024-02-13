@@ -49,6 +49,13 @@ class Playlist extends ProcessForms
             $studio[] = $this->data['studio'];
         }
 
+        if (array_key_exists('playlist_name', $this->data)) 
+        {
+            if($this->data['playlist_name'] != '') {
+                $name     = $this->data['playlist_name'];
+            }
+        }
+
         if (array_key_exists('PlayAll', $this->data)) {
             if (array_key_exists('search_id', $this->data)) {
                 $search_id = $this->data['search_id'];

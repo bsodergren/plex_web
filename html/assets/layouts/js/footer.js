@@ -1,5 +1,4 @@
 let mybutton = document.getElementById('myBtn')
-
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function () {
     scrollFunction()
@@ -27,6 +26,10 @@ const writeLog = function (msg) {
     window.console.log(date.toISOString() + ' ' + msg)
 }
 
+
+
+
+
 jQuery(document).ready(function () {
     $('.rating').on('change', function (e) {
         $.ajax({
@@ -39,7 +42,7 @@ jQuery(document).ready(function () {
             },
             cache: false,
             success: function (data) {
-                let close = document.getElementById('close_window');
+                let close = document.getElementById('close_window')
                 if (window.opener != null) {
                     if (close == null) {
                         window.opener.location.reload(true)
@@ -56,6 +59,7 @@ jQuery(document).ready(function () {
 
 $('#ajaxform').submit(function (e) {
     var postData = $(this).serializeArray()
+    console.info(postData)
     $.ajax({
         url: 'process.php',
         type: 'POST',

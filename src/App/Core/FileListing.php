@@ -2,6 +2,7 @@
 
 namespace Plex\Core;
 
+use Plex\Core\Request;
 use Plex\Template\Pageinate\Pageinate;
 
 class FileListing
@@ -11,13 +12,20 @@ class FileListing
     public $request;
     public $urlPattern;
     public static $searchId;
+    public object $ReqObj;
 
-    public function __construct($request = '', $currentpage = '', $urlPattern = '')
+    public function __construct(Request $ReqObj)
     {
+
+         $this->ReqObj = $ReqObj;
+        $uri = $this->ReqObj->getURI();
+        $urlPattern = $this->ReqObj->geturlPattern();
+        $url_array = $this->ReqObj->url_array();
+        $currentpage = $this->ReqObj->currentPage;
         // $this->db           = new PlexSql('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
         $this->db = new PlexSql();
         $this->currentpage = $currentpage;
-        $this->request = $request;
+        $this->request = $this->ReqObj->http_request;
         $this->urlPattern = $urlPattern;
     }
 

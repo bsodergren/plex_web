@@ -4,7 +4,7 @@ namespace Plex\Template\Layout;
 
 use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
-use Plex\Template\Template;
+
 
 /**
  * plex web viewer.
@@ -39,7 +39,7 @@ class Header
             $params['SCRIPTS'] .= Render::html('base/header/header_grid', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
         }
 
-        Template::echo('base/header/header', $params);
+        Render::echo('base/header/header', $params);
 
         if (!\defined('NONAVBAR')) {
             $crumbs = (new Functions())->createBreadcrumbs();

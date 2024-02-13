@@ -2,11 +2,10 @@
 /**
  * plex web viewer
  */
-
+use Plex\Template\Render;
 require_once '_config.inc.php';
 
 define('TITLE', 'Login');
- \Plex\Template\Layout\Header::Display();
 
 $body = Render::html('auth/login', [
     'CSRF_TOKEN'       => insert_csrf_token(),
@@ -14,6 +13,5 @@ $body = Render::html('auth/login', [
     'STATUS_NOUSER'    => $_SESSION['ERRORS']['nouser'],
     'STATUS_WRONGPASS' => $_SESSION['ERRORS']['wrongpassword'],
 ]);
-Template::echo('base/page', ['BODY' => $body]);
+Render::Display($body);
 
- \Plex\Template\Layout\Footer::Display();

@@ -1,11 +1,11 @@
 <?php
 exit;
-
+use Plex\Template\Layout\Footer;
+use Plex\Template\Layout\Header;
 require_once '_config.inc.php';
 
 define('TITLE', 'Verify Email');
-
- \Plex\Template\Layout\Header::Display();
+Header::Display();
 
 ?>
 
@@ -47,6 +47,7 @@ define('TITLE', 'Verify Email');
 
 <?php
 
- \Plex\Template\Layout\Footer::Display();
+
+Footer::Display();
 
 ?>

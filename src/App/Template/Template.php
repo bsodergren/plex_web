@@ -85,51 +85,6 @@ class Template
         @ob_flush();
     }
 
-    public static function echo($template = '', $array = '')
-    {
-        $template_obj       = new self();
-        $template_obj->template($template, $array);
-
-      //  $template_obj->html = $template_obj->parse_urllink($template_obj->html);
-
-   
-            echo $template_obj->html;
-   
-    }
-
-    public static function GetHTML($template = '', $array = [])
-    {
-        $template_obj = new self();
-        $template_obj->template($template, $array);
-
-        return $template_obj->html;
-    }
-
-    public static function render()
-    {
-        $output           = self::$RenderHTML;
-
-        self::$RenderHTML = '';
-
-        Header::Display();
-        $header           = self::$RenderHTML;
-
-        self::$RenderHTML = '';
-
-        Footer::Display();
-        $footer           = self::$RenderHTML;
-
-        echo $header.$output.$footer;
-    }
-
-    public static function return($template = '', $array = '', $js = '')
-    {
-        $template_obj = new self();
-        $template_obj->template($template, $array, $js);
-
-        return $template_obj->html;
-    }
-
 
     public function template($template = '', $replacement_array = '', $extension = 'html')
     {

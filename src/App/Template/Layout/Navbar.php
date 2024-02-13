@@ -4,7 +4,7 @@ namespace Plex\Template\Layout;
 
 use Plex\Core\PlexSql;
 use Plex\Template\Render;
-use Plex\Template\Template;
+
 use Plex\Template\Display\Display;
 
 /**
@@ -31,6 +31,6 @@ class Navbar
                 ['LIBRARY_SELECT_LINKS' => $library_links]);
         }
 
-        Template::echo('base/navbar/main', $params);
+        Render::echo('base/navbar/main', $params);
     }
 }

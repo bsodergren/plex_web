@@ -7,7 +7,8 @@ namespace Plex\Core;
  */
 
 use Nette\Utils\Callback;
-use Plex\Template\Template;
+
+use Plex\Template\HTML\Elements;
 use Symfony\Component\Process\Process;
 
 class ProcessForms

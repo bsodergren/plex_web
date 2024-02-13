@@ -4,8 +4,9 @@ namespace Plex\Template\Layout;
  * plex web viewer
  */
 
+use Plex\Template\Render;
 use Plex\Template\Display\Display;
-use Plex\Template\Template;
+
 
 class Footer
 {
@@ -34,9 +35,9 @@ class Footer
                 }
 
                 $footer_nav = ['FOOTER_NAV' => $page_html];
-                $navbar     = Template::return('base/footer/navbar', $footer_nav);
+                $navbar     = Render::html('base/footer/navbar', $footer_nav);
             }
         }
-        Template::echo('base/footer/main', ['FOOT_NAVBAR' => $navbar]);
+        Render::echo('base/footer/main', ['FOOT_NAVBAR' => $navbar]);
     }
 }

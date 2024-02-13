@@ -5,7 +5,7 @@ use Plex\Template\Display\VideoDisplay;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
 use Plex\Core\PlexSql;
-
+use Plex\Template\Render;
 require_once '_config.inc.php';
 define('TITLE', 'View Genres');
 

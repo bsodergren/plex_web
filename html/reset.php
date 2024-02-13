@@ -1,12 +1,11 @@
 <?php
 
 use Plex\Template\Render;
-use Plex\Template\Template;
+
 
 require_once '_config.inc.php';
 
 define('TITLE', 'Login');
- \Plex\Template\Layout\Header::Display();
 
 $selector  = $_GET['selector'];
 $validator = $_GET['validator'];
@@ -26,14 +25,4 @@ if (isset($validator, $selector)) {
     ]);
 }
 
-Template::echo('base/page', ['BODY' => $body]);
-
- \Plex\Template\Layout\Footer::Display();
-
-?>
-
-
-
-
-
-
+Render::Display($body);

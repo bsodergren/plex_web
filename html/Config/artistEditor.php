@@ -1,7 +1,7 @@
 <?php
 
 use Plex\Template\Render;
-use Plex\Template\Template;
+
 use Plex\Template\Pageinate\ArtistPagenate;
 use Plex\Template\HTML\Elements;
 
@@ -93,7 +93,7 @@ $artist_main_html .= Render::html('config/artist/form_wrapper', [
     'ARTIST_FORM_HTML' => $artist_row_html,
 ]);
 
-Template::echo(
+Render::echo(
     'config/artist/main',
     [
         'ARTIST_MAIN_HTML' => $artist_main_html,

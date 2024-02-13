@@ -1,7 +1,7 @@
 <?php
 use Plex\Core\FileListing;
 use Plex\Template\Display\Display;
-use Plex\Template\Template;
+
 use Plex\Template\Display\VideoDisplay;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;

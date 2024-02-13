@@ -8,7 +8,6 @@ define('TITLE', 'Signup');
 require_once '_config.inc.php';
 check_logged_out();
 
- \Plex\Template\Layout\Header::Display();
 
 $body = Render::html('auth/register', [
     'CSRF_TOKEN'        => insert_csrf_token(),
@@ -18,6 +17,5 @@ $body = Render::html('auth/register', [
     'STATUS_EMAILERROR' => $_SESSION['ERRORS']['emailerror'],
     'STATUS_PASSERROR'  => $_SESSION['ERRORS']['passworderror'],
 ]);
-Template::echo('base/page', ['BODY' => $body]);
+Render::Display($body);
 
- \Plex\Template\Layout\Footer::Display();

@@ -2,7 +2,7 @@
 
 use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
-use Plex\Template\Template;
+
 
 require_once '_config.inc.php';
 define('SHOW_RATING', true);
@@ -174,4 +174,4 @@ $params = [
     'CAROUSEL_JS' => $carousel_js,
     'VIDEO_JS' => Render::javascript('video/video_js', $video_js_params),
 ];
-Template::echo('video/main', $params);
+Render::echo('video/main', $params);

@@ -2,9 +2,10 @@
 
 namespace Plex\Template\Functions\Traits;
 
+use Plex\Core\Request;
 use Plex\Template\Display\Display;
 use Plex\Template\Render;
-use Plex\Template\Template;
+
 
 trait PageSort
 {
@@ -13,7 +14,8 @@ trait PageSort
     
     public static function sort_options()
     {
-        global $pageObj,$url_array;
+        global $pageObj;
+        $url_array = Request::$url_array;
         $html = '';
         $request_uri = '';
         $sep = '?';
@@ -65,7 +67,7 @@ trait PageSort
     {
         global $pageObj,$url_array;
         if (__SHOW_SORT__ == true && isset($pageObj)) {
-           return Template::return($this->PageSortDir.'/sort', 
+           return Render::return($this->PageSortDir.'/sort', 
             ['SORT_HTML' => self::sort_options()]);
         }
 

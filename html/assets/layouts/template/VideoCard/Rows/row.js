@@ -17,7 +17,7 @@ function !!FUNCTION!!() {
                         success: function (data) {
                             console.log(data);
                             window.opener.location.reload(true);
-                            window.close();
+                           // window.close();
                         }
                 })
                 console.log('   * The text was changed -> ' + data.content)

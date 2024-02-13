@@ -7,7 +7,7 @@
 use Plex\Core\PlexSql;
 use Plex\Template\Render;
 use Plex\Template\Display;
-use Plex\Template\Template;
+
 use Plex\Template\Display\VideoDisplay;
 
 define('TITLE', 'Home');
@@ -46,5 +46,6 @@ if (count($results) > 0) {
 }
 $pageObj                        = true;
 
-Template::echo('dupe/main', $body);
-// Template::echo("artist/main",$PARAMS);
+
+Render::Display(Render::html('dupe/main', $body));
+// Render::echo("artist/main",$PARAMS);

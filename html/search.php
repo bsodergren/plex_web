@@ -4,10 +4,11 @@
  use Plex\Template\Render;
  use Plex\Core\FileListing;
  use Plex\Core\ProcessForms;
- use Plex\Template\Template;
+ 
  use Plex\Template\Display\VideoDisplay;
  use Plex\Template\HTML\Elements;
  use Plex\Core\PlexSql;
+use Plex\Core\Request;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
 
@@ -56,7 +57,7 @@ $redirect_string = 'search.php'.$request_key;
 
 if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     // dump($_REQUEST);
-    $search             = new FileListing($_REQUEST, $currentPage, $urlPattern);
+    $search             = new FileListing(new Request);
 
     [$results,$pageObj] = $search->getSearchResults($_REQUEST['field'], $_REQUEST['query']);
 
@@ -66,8 +67,10 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
 
     $playlist_ids_str   = implode(',', $playlist_ids);
     // $msg              = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);
-
-
+    $view = 'Grid';
+if(array_key_exists('view',$_REQUEST)){
+    $view = $_REQUEST['view'];
+}
     $msg                = 'Showing '.count($results).' results for for '.$_REQUEST['query'];
     $msg                = strtolower(str_replace('-', '.', $msg));
     $msg                = strtolower(str_replace('_', ' ', $msg));
@@ -75,10 +78,10 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     //  $html_msg .= Render::html("search/search_msg", [   'MSG' => $sql] );
 
 
-    $grid                 = (new VideoDisplay('Grid'))->init();
-
+    $grid                 = (new VideoDisplay($view ))->init();
 $search_results         = $grid->Display($results, [  'total_files'     => count($results)]);
 
+dump($search_results);
 
     //   $search_results =     display_filelist($results, '', $page_array);
 }
@@ -105,6 +108,4 @@ $body            = Render::html('search/search', [
 ]);
 
 
-Header::Display();
-Template::echo('base/page', ['BODY' => $body]);
-Footer::Display();
+Render::Display($body);

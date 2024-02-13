@@ -5,9 +5,10 @@ namespace Plex\Template\Pageinate;
  */
 
 use JasonGrimes\Paginator;
-use Plex\Template\Template;
+
 use Plex\Template\Display\Display;
 use Plex\Template\HTML\Elements;
+use Plex\Template\Render;
 
 class Pageinate extends Paginator
 {
@@ -110,7 +111,7 @@ class Pageinate extends Paginator
                 'A_HREF'   => htmlspecialchars($this->paginator->getPrevUrl()),
                 'A_TEXT'   => '&laquo; '.$this->paginator->previousText,
             ];
-            $previous = Template::return('base/footer/page_item', $params);
+            $previous = Render::return('base/footer/page_item', $params);
         } else {
             $pill_start_class = 'rounded-start-pill';
         }
@@ -122,7 +123,7 @@ class Pageinate extends Paginator
                 'A_HREF'   => htmlspecialchars($this->paginator->getNextUrl()),
                 'A_TEXT'   => $this->paginator->nextText.' &raquo;',
             ];
-            $next      = Template::return('base/footer/page_item', $params);
+            $next      = Render::return('base/footer/page_item', $params);
         } else {
             $next_page      = false;
             $pill_end_class = 'rounded-end-pill';
@@ -147,9 +148,9 @@ class Pageinate extends Paginator
                     'A_TEXT'   => htmlspecialchars($page['num']),
                 ];
 
-                $link_list .= Template::return('base/footer/page_item', $params);
+                $link_list .= Render::return('base/footer/page_item', $params);
             } else {
-                $link_list .= Template::return('base/footer/page_item_disabled', ['A_TEXT' => htmlspecialchars($page['num'])]);
+                $link_list .= Render::return('base/footer/page_item_disabled', ['A_TEXT' => htmlspecialchars($page['num'])]);
             }
         }
 
@@ -176,7 +177,7 @@ class Pageinate extends Paginator
             'PILL_NEXT_CLASS'  => $pill_end_class,
             'LINK_LIST'        => $link_list,
             'NEXT_LINK'        => $next];
-        $html             = Template::return('base/footer/pages', $params);
+        $html             = Render::return('base/footer/pages', $params);
 
         return $html;
     }

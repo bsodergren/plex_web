@@ -3,13 +3,14 @@
  * plex web viewer
  */
 
-use Plex\Core\ProcessForms;
-use Plex\Template\Layout\Header;
-use Plex\Template\Template;
 use Plex\Core\PlexSql;
+use Plex\Template\Render;
+use Plex\Core\ProcessForms;
+use Plex\Template\Template;
+use Plex\Template\Layout\Header;
 
 require_once '_config.inc.php';
-
+dump($_REQUEST);
 
 if (true == $_GET['q']) {
     $q    = $_GET['q'];
@@ -34,6 +35,6 @@ if (array_key_exists('action', $_REQUEST)) {
     }
 }
 logger('_REQUEST', $_REQUEST);
-// dump($_REQUEST);
+
 $forms = new ProcessForms($_REQUEST);
 echo $forms->redirect;

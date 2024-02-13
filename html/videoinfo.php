@@ -1,10 +1,9 @@
 <?php
 
+use Plex\Core\Request;
+use Plex\Template\Render;
 use Plex\Core\FileListing;
 use Plex\Template\Display\VideoDisplay;
-use Plex\Template\Template;
-use Plex\Template\HTML\Elements;
-
 define('TITLE', 'Home');
 define('NONAVBAR', true);
 define('VIDEOINFO', true);
@@ -12,7 +11,7 @@ define('SHOW_RATING', true);
 
 require_once '_config.inc.php';
 
-$videoInfo = (new FileListing())->getVideoDetails($_REQUEST['id']);
+$videoInfo = (new FileListing(new Request))->getVideoDetails($_REQUEST['id']);
 $vidInfo = (new VideoDisplay())->init('videoinfo')->Display($videoInfo);
 
-Template::echo('videoinfo/page', $vidInfo);
+Render::Display( $vidInfo);

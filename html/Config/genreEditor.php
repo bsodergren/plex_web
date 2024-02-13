@@ -1,6 +1,6 @@
 <?php
 use Plex\Template\Render;
-use Plex\Template\Template;
+
 use Plex\Template\Pageinate\GenrePagenate;
 use Plex\Template\HTML\Elements;
 
@@ -100,7 +100,7 @@ $genre_main_html .= Render::html('config/genre/form_wrapper', [
     'GENRE_FORM_HTML' => $genre_row_html,
 ]);
 
-Template::echo(
+Render::echo(
     'config/genre/main',
     [
         'GENRE_MAIN_HTML' => $genre_main_html,

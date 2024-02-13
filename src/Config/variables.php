@@ -1,21 +1,13 @@
 <?php
 
 use Plex\Template\Template;
+
+
 /**
  * plex web viewer
  */
 
  $template       = new Template();
-$tag_types             = [
-    'studio',
-    'substudio',
-    'artist',
-    'title',
-    'genre',
-    
-];
-
-$sort_types    =$url_array['sort_types'];
 
 $login_link_array       = [
     // 'login' => [

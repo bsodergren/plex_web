@@ -2,8 +2,10 @@
 
 use Plex\Core\PlexSql;
 use Plex\Template\Render;
-use Plex\Template\Template;
+
 use Plex\Template\Display\VideoDisplay;
+use Plex\Template\Functions\Functions;
+
 /**
  * plex web viewer
  */
@@ -15,7 +17,7 @@ define('TITLE', 'artist Page');
 
 $results               = (new PlexSql())->getArtists();
 
-$VideoDisplay          = new VideoDisplay();
+$VideoDisplay          = new Functions();
 $AristArray            = [];
 // $sortedArray[0]      = [];
 function compareArtist(&$array, $artist)
@@ -84,7 +86,7 @@ foreach ($sortedArray as $num => $artistArray) {
         $name         = strtolower(str_replace('-', '.', $artist));
         $name         = strtolower(str_replace('_', ' ', $name));
         $link_array[] = Render::html(
-            'filelist/search_link',
+            'VideoCard/search_link',
             [
                 'KEY'      => $field,
                 'QUERY'    => urlencode($name),
@@ -126,6 +128,6 @@ foreach ($results as $num => $artistArray) {
     //  dd($artistArray);
 }
 
-Template::echo('artist/cloud', $params);
-// Template::echo("artist/main",$PARAMS);
+Render::Display(Render::html('artist/cloud', $params));
+// Render::echo("artist/main",$PARAMS);
 

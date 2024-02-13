@@ -6,7 +6,7 @@
 namespace Plex\Template\Traits;
 
 use Nette\Utils\FileSystem;
-use Plex\Template\Template;
+
 use Plex\Template\HTML\Elements;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;

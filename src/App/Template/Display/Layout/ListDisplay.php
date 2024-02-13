@@ -2,6 +2,7 @@
 
 namespace Plex\Template\Display\Layout;
 
+use Plex\Template\Render;
 use Plex\Template\VideoCard\VideoCard;
 use Plex\Template\Display\VideoDisplay;
 
@@ -12,6 +13,7 @@ class ListDisplay extends VideoDisplay
 
     public function __construct($template_base = 'filelist')
     {
+
         $this->template_base = $template_base;
     }
 
@@ -46,6 +48,7 @@ class ListDisplay extends VideoDisplay
             $videohtml['VIDEO_KEY']     = $value['VIDEO_KEY'];
         }
 
-        return $videohtml; // .$javascript_html;
+       return  Render::html($this->template_base.'/page', $videohtml);
+//        return $videohtml; // .$javascript_html;
     } // end display_filelist()
 }
