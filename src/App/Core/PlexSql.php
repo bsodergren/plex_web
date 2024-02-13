@@ -5,6 +5,7 @@ namespace Plex\Core;
  */
 
 use MysqliDb;
+use Plex\Template\Render;
 
 class PlexSql extends MysqliDb
 {
@@ -28,11 +29,11 @@ class PlexSql extends MysqliDb
 
     public static function getAlphaKey($field, $key)
     {
-        global $tag_types, $url_array;
+        $url_array = Request::$url_array;
         if($field === null){
             $field = $url_array['sortDefault'];
         }
-        $tag_string = implode(',', $tag_types);
+        $tag_string = implode(',', Request::$tag_types);
         $f          = explode('.', $field);
         if (str_contains($tag_string, $f[1])) {
             if ('All' == $key) {
@@ -257,7 +258,6 @@ class PlexSql extends MysqliDb
         global $_SESSION;
 
         $library     = '';
-
         if ('All' != $_SESSION['library']) {
             $library = " library = '".$_SESSION['library']."' ";
         }

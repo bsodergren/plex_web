@@ -29,16 +29,15 @@ class ProcessForms
         $this->postArray = $postArray;
         $this->playlist = new Playlist($this->postArray);
         $this->redirect = $_SERVER['HTTP_REFERER'];
-
         if (isset($postArray['redirect_url'])) {
             $this->redirect = $postArray['redirect_url'];
         }
+            
 
         if (isset($postArray['submit'])) {
             $method = $this->postArray['submit'];
 
             unset($this->postArray['submit']);
-            // dump([__METHOD__,$method]);
             if (method_exists($this, $method)) {
                 $this->{$method}();
             } else {
@@ -182,7 +181,13 @@ class ProcessForms
         //  echo $this->myHeader($url);
         exit;
     }
-
+    public function RemovePlaylistVideo()
+    {
+        $url = $this->playlist->RemovePlaylistVideo();
+        echo $url;
+        //  echo $this->myHeader($url);
+        exit;
+    }
     public function myHeader($redirect = '', $timeout = 0)
     {
         if ('' != $redirect) {

@@ -134,7 +134,13 @@ class Playlist extends ProcessForms
 
         return 0;
     }
-
+    public function RemovePlaylistVideo()
+    { 
+     
+        $sql = "delete FROM ".Db_TABLE_PLAYLIST_VIDEOS." WHERE playlist_id = ".$this->data['playlistid']." and playlist_video_id = ".$this->data['videoId']."";
+        $results = $this->db->query($sql);
+        return __URL_HOME__.'/video.php?playlist_id='.$this->data['playlistid'].'';
+    }
     public function deletePlaylist()
     {
         // dump([__METHOD__,$this->playlist_id]);

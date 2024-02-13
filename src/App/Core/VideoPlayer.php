@@ -191,6 +191,7 @@ class VideoPlayer
                 }
             }
         }
+        $this->params['RemoveVideo'] = $this->getRemoveVideo();
 
         $this->js_params['PLAYLIST_ID'] = $this->playlist_id;
         $this->js_params['NEXT_VIDEO_ID'] = $next_video_id;
@@ -219,5 +220,12 @@ class VideoPlayer
     public function videoJs()
     {
         return Render::javascript('video/video_js', $this->js_params);
+    }
+
+    public function getRemoveVideo()
+    {
+        $videoId = Elements::add_hidden('videoId', $this->id);
+        $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
+        return Render::html('video/buttons/remove', ['HIDDEN_VIDEO_ID'=> $videoId]);
     }
 }

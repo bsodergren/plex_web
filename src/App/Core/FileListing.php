@@ -2,7 +2,6 @@
 
 namespace Plex\Core;
 
-use Plex\Core\Request;
 use Plex\Template\Pageinate\Pageinate;
 
 class FileListing
@@ -16,8 +15,7 @@ class FileListing
 
     public function __construct(Request $ReqObj)
     {
-
-         $this->ReqObj = $ReqObj;
+        $this->ReqObj = $ReqObj;
         $uri = $this->ReqObj->getURI();
         $urlPattern = $this->ReqObj->geturlPattern();
         $url_array = $this->ReqObj->url_array();
@@ -33,29 +31,33 @@ class FileListing
     {
         $db = new PlexSql();
         $res = $db->rawQuery($query);
-        foreach ($res as $k => $row) {
-            $vids[] = $row['id'];
+        if (\count($res) > 0) {
+            foreach ($res as $k => $row) {
+                $vids[] = $row['id'];
+            }
+
+            $vidsStr = implode(',', $vids);
+
+            $db->where('video_list', $vidsStr);
+            $user = $db->getOne(Db_TABLE_SEARCH_DATA);
+            if (null !== $user['id']) {
+                self::$searchId = $user['id'];
+
+                return $user['id'];
+            }
+            $data = [
+                'video_list' => $vidsStr,
+                // "updatedAt" => $db->now()
+            ];
+
+            $id = $db->insert(Db_TABLE_SEARCH_DATA, $data);
+            //   dump("new index " . $id);
+            self::$searchId = $id;
+
+            return $id;
         }
 
-        $vidsStr = implode(',', $vids);
-
-        $db->where('video_list', $vidsStr);
-        $user = $db->getOne(Db_TABLE_SEARCH_DATA);
-        if (null !== $user['id']) {
-            self::$searchId = $user['id'];
-
-            return $user['id'];
-        }
-        $data = [
-            'video_list' => $vidsStr,
-            // "updatedAt" => $db->now()
-        ];
-
-        $id = $db->insert(Db_TABLE_SEARCH_DATA, $data);
-        //   dump("new index " . $id);
-        self::$searchId = $id;
-
-        return $id;
+        return 0;
     }
 
     public function getSearchResults($field, $value)
@@ -190,7 +192,8 @@ class FileListing
         $sql .= 'LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
         $sql .= 'LEFT OUTER JOIN metatags_video_info i on f.video_key=i.video_key ';
         $sql .= "WHERE   f.id = '".$id."'";
-// dump($sql);
+
+        // dump($sql);
         return $this->db->query($sql);
     }
 

@@ -1,54 +1,46 @@
 <?php
-/**
- * plex web viewer
- */
 
 namespace Plex\Template\Traits;
 
-use Nette\Utils\FileSystem;
-
-use Plex\Template\HTML\Elements;
-use Plex\Template\Layout\Footer;
-use Plex\Template\Layout\Header;
 use KubAT\PhpSimple\HtmlDomParser;
 use Plex\Template\Functions\Functions;
+use Plex\Template\HTML\Elements;
 
 trait Callbacks
 {
-
     public const FUNCTION_CALLBACK = '|{{function=([a-zA-Z_]+)\|?(.*)?}}|i';
     public const STYLESHEET_CALLBACK = '|{{(stylesheet)=([a-zA-Z-_/\.]+)\|?(.*)?}}|i';
     public const JAVASCRIPT_CALLBACK = '|{{(javascript)=([a-zA-Z-_/\.]+)\|?(.*)?}}|i';
     public const VARIABLE_CALLBACK = '|{\$([a-zA-Z_-]+)}|';
     public const JS_VAR_CALLBACK = '|!!([a-zA-Z_-]+)!!|';
-    
-    
 
     public function callback_parse_variable($matches)
     {
         $key = $matches[1];
 
-        if(defined($key)){
-            return constant($key);
+        if (\defined($key)) {
+            return \constant($key);
         }
-
-        if(array_key_exists($key,$this->replacement_array)){
-            $value = $this->replacement_array[$key];
-          //  unset($this->replacement_array[$key]);
-            return $value;
+        if (\is_array($this->replacement_array)) {
+            if (\array_key_exists($key, $this->replacement_array)) {
+                return $this->replacement_array[$key];
+                //  unset($this->replacement_array[$key]);
+            }
         }
 
         return '';
     }
-    
+
     public function callback_parse_include($matches)
     {
         $method = $matches[1];
-           return Elements::$method($matches[2]);
+
+        return Elements::$method($matches[2]);
     }
+
     public function parse_urllink($text)
     {
-        $dom   = HtmlDomParser::str_get_html($text);
+        $dom = HtmlDomParser::str_get_html($text);
 
         if (false === $dom) {
             return $text;
@@ -82,13 +74,13 @@ trait Callbacks
 
     private function callback_badge($matches)
     {
-        $text  = $matches[3];
-        $font  = '';
+        $text = $matches[3];
+        $font = '';
         $class = $matches[2];
         if (str_contains($matches[2], ',')) {
-            $arr   = explode(',', $matches[2]);
+            $arr = explode(',', $matches[2]);
             $class = $arr[0];
-            $font  = 'fs-'.$arr[1];
+            $font = 'fs-'.$arr[1];
         }
 
         $style = 'class="badge text-bg-'.$class.' '.$font.'"';
@@ -98,7 +90,7 @@ trait Callbacks
 
     private function callback_color($matches)
     {
-        $text  = $matches[3];
+        $text = $matches[3];
         $style = 'style="';
         if (str_contains($matches[2], ',')) {
             $colors = explode(',', $matches[2]);

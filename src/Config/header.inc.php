@@ -13,8 +13,8 @@ foreach ($include_array as $required_file) {
     require_once $required_file;
 }
 
-// $r = new Request();
-// $uri = $r->getURI();
-// $urlPattern = $r->geturlPattern();
-// $url_array = $r->url_array();
-// $currentPage = $r->currentPage;
+$r = new Request();
+$uri = $r->getURI();
+$urlPattern = $r->geturlPattern();
+$url_array = $r->url_array();
+$currentPage = $r->currentPage;

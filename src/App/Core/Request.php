@@ -6,6 +6,8 @@ use Plex\Core\Utilities\PlexArray;
 
 class Request
 {
+
+    
     public $http_request = [];
 
     public $sort_type_map = [
@@ -37,31 +39,28 @@ class Request
         ],
     ];
     public static $sort_types = [
-            'Studio' => 'm.studio',
-            'Sub Studio' => 'm.substudio',
-            'Title' => 'm.title',
-            'Genre' => 'm.genre',
+        'Studio' => 'm.studio',
+        'Sub Studio' => 'm.substudio',
+        'Title' => 'm.title',
+        'Genre' => 'm.genre',
 
-            'Artist' => 'm.artist',
-            'Filename' => 'f.filename',
+        'Artist' => 'm.artist',
+        'Filename' => 'f.filename',
 
-            'File size' => 'f.filesize',
-            'Duration' => 'f.duration',
-            'Date Added' => 'f.added',
-            'Rating' => 'f.rating',
+        'File size' => 'f.filesize',
+        'Duration' => 'f.duration',
+        'Date Added' => 'f.added',
+        'Rating' => 'f.rating',
     ];
     public static $url_array = [
     ];
-public static         $tag_array = ['genre', 'artist', 'keyword'];
-public static     $tag_types             = [
-    'studio',
-    'substudio',
-    'artist',
-    'title',
-    'genre',
-    
-];
+    public static $tag_array = ['genre', 'artist', 'keyword'];
+    public static $tag_types = ['studio','substudio','artist','title','genre',];
 
+    public $session;
+
+    public $uri;
+        
 
     public function __construct()
     {
@@ -106,7 +105,6 @@ public static     $tag_types             = [
         $this->currentPage = $_REQUEST['current'];
         $this->uri['current'] = $this->currentPage;
 
-
         if (isset($_REQUEST['submit'])) {
             if ('Search' == $_REQUEST['submit']) {
                 $delim = ',';
@@ -129,17 +127,17 @@ public static     $tag_types             = [
         }
 
         $request_key = '';
-
         if ('' != $_SERVER['QUERY_STRING']) {
-            $query_string = '&'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
+            $this->query_string = '&'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
             $request_string_query = '?'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
             $query_string_no_current = '&'.urlQuerystring($_SERVER['QUERY_STRING'], 'current');
 
             $query_string_no_current = '&'.urlQuerystring($query_string_no_current, 'itemsPerPage');
             // dd([$_SERVER['QUERY_STRING'],$query_string_no_current]);
         }
-        $this->query_string;
+
         $this->urlPattern = $_SERVER['PHP_SELF'].'?current=(:num)'.$query_string_no_current;
+        $this->uri = $uri;
     }
 
     public function getURI()
@@ -155,7 +153,7 @@ public static     $tag_types             = [
     public function url_array($url_array = false)
     {
         if (false === $url_array) {
-           self::$url_array = [
+            self::$url_array = [
                 'url' => $_SERVER['SCRIPT_NAME'],
                 'sortDefault' => 'm.title',
                 'query_string' => $this->query_string,
@@ -169,7 +167,6 @@ public static     $tag_types             = [
 
         return self::$url_array;
     }
-
 
     public static function uri_SQLQuery($request_array)
     {
@@ -223,8 +220,8 @@ public static     $tag_types             = [
             $uri_query['sql'] = implode(' AND ', $uri_array);
         }
 
-        if (\array_key_exists('sort', $request_array) &&
-         \array_key_exists('direction', $request_array)) {
+        if (\array_key_exists('sort', $request_array)
+         && \array_key_exists('direction', $request_array)) {
             if (false === PlexArray::matcharray(self::$sort_types, $request_array['sort'])) {
                 $_SESSION['sort'] = 'm.title';
                 $request_array['sort'] = 'm.title';
