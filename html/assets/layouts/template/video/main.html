@@ -116,6 +116,13 @@
                 <div class="p-2"> {{function=videoRating|id={$VIDEO_ID},rating={$STAR_RATING},close=true}}</div>
                {$RemoveVideo}
             </div>
+            <div class="d-flex mb-3">
+                <div class="me-auto p-2">
+                    <span class="title-text">{$Video_Genre}</span>
+                    <span class="title-text">{$Video_studio}</span>
+                    <span class="title-text">{$Video_substudio}</span>
+                </div>
+            </div>
             {$CAROUSEL_HTML}
         </div>
 
@@ -168,13 +175,18 @@
     {$VIDEO_JS}
 
     <script>
-        function resizeVideoPage() {
+      
+videoWidth = {$width};
+videoHeight = {$height};
+if(videoHeight > 1080){
+    videoHeight = 1080;
+}
+if(videoWidth > 1920){
+    videoWidth = 1920;
+}
 
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            if (urlParams.has('r') == false) {
-              //  window.resizeBy(0, !!PLAYLIST_HEIGHT!!);
-            }
-        }
+windowWidth = videoWidth * .75;
+windowHeight = videoHeight * .80;
+window.resizeTo(windowWidth, windowHeight);
     </script>
 </html>

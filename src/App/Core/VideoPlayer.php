@@ -12,7 +12,7 @@ class VideoPlayer
     public $id;
     public $db;
     public $playlistName;
-
+    public $videoTemplate = 'videoPlyr';
     public $canvas_form;
     public $carousel_item;
     public $canvas_item;
@@ -35,20 +35,19 @@ class VideoPlayer
         $this->params['VIDEO_ID'] = $this->id;
         $this->params['PLAYLIST_ID'] = $this->playlist_id;
         $this->params['__LAYOUT_URL__'] = __LAYOUT_URL__;
-        // $this->params['PLAYLIST_HEIGHT'] = $playlist_height;
-
-        // $this->params['CAROUSEL_HTML' => $this->getCarousel();
-        $this->params['CANVAS_HTML'] = $this->getCanvas();
-        $this->params['CAROUSEL_JS'] = $this->getCarouselScript();
+ 
         $this->params['VIDEO_JS'] = $this->videoJs();
     }
 
     public function videoInfo()
     {
-        $cols = ['filename', 'fullpath', 'rating'];
-        $this->db->where('id', $this->id);
-        $result = $this->db->getone(Db_TABLE_VIDEO_FILE, null, $cols);
 
+        $res = (new FileListing(new Request))->getVideoDetails($this->id);
+        // $cols = ['filename', 'fullpath', 'rating'];
+        // $this->db->where('id', $this->id);
+        // $result = $this->db->getone(Db_TABLE_VIDEO_FILE, null, $cols);
+        $result = $res[0];
+dump($result);
         $active_title = null; // $result['title'];
         if (null === $active_title) {
             $active_title = $result['filename'];
@@ -58,9 +57,17 @@ class VideoPlayer
         $video_file = $fullpath.'/'.$result['filename'];
 
         $this->params['PAGE_TITLE'] = $result['title'];
+        $this->params['thumbnail'] = APP_HOME . $result['thumbnail'];
+        
+        $this->params['Video_studio'] = $result['studio'];
+        $this->params['Video_substudio'] = $result['substudio'];
+        $this->params['Video_Genre'] = $result['genre'];
         $this->params['STAR_RATING'] = $result['rating'];
         $this->params['VIDEO_URL'] = $video_file;
+        $this->params['height'] = $result['height'];
         $this->params['VIDEO_TITLE'] = $active_title;
+        $this->js_params['height'] =  $result['height'];
+        $this->js_params['width'] =  $result['width'];
     }
 
     public function videoId()
@@ -107,7 +114,7 @@ class VideoPlayer
                 $hiddenList .= Elements::add_hidden('playlist[]', $video_id);
             }
             $this->canvas_form = Render::html(
-                'video/canvas/form',
+                $this->videoTemplate . '/canvas/form',
                 [
                     'search_id' => $playlist_info['search_id'],
                     'playlist_list' => $hiddenList,
@@ -124,7 +131,7 @@ class VideoPlayer
         }
 
         return Render::html(
-            'video/'.$type.'/item',
+            $this->videoTemplate . '/'.$type.'/item',
             [
                 'THUMBNAIL' => ( new Functions())->fileThumbnail($row['playlist_video_id'], 'alt="#" class="img-fluid" '),
                 'STUDIO' => $row['studio'],
@@ -192,7 +199,12 @@ class VideoPlayer
             }
         }
         $this->params['RemoveVideo'] = $this->getRemoveVideo();
+       // $this->params['PLAYLIST_HEIGHT'] = $playlist_height;
 
+        // $this->params['CAROUSEL_HTML' => $this->getCarousel();
+        $this->params['CANVAS_HTML'] = $this->getCanvas();
+        $this->params['CAROUSEL_JS'] = $this->getCarouselScript();
+        
         $this->js_params['PLAYLIST_ID'] = $this->playlist_id;
         $this->js_params['NEXT_VIDEO_ID'] = $next_video_id;
         $this->js_params['PREV_VIDEO_ID'] = $prev_video_id;
@@ -201,31 +213,31 @@ class VideoPlayer
 
     public function getCarousel()
     {
-        return Render::html('video/carousel/block', ['CAROUSEL_INNER_HTML' => $this->carousel_item]);
+        return Render::html($this->videoTemplate . '/carousel/block', ['CAROUSEL_INNER_HTML' => $this->carousel_item]);
     }
 
     public function getCarouselScript()
     {
-        return Render::html('video/carousel/js', ['PLAYLIST_ID' => $this->playlist_id]);
+        return Render::html($this->videoTemplate .'/carousel/js', ['PLAYLIST_ID' => $this->playlist_id]);
     }
 
     public function getCanvas()
     {
         $this->addSearchBox();
 
-        return Render::html('video/canvas/block', ['CANVAS_LIST' => $this->canvas_item,
+        return Render::html($this->videoTemplate .'/canvas/block', ['CANVAS_LIST' => $this->canvas_item,
             'PlaylistName' => $this->playlistName, 'Canvas_Form' => $this->canvas_form]);
     }
 
     public function videoJs()
     {
-        return Render::javascript('video/video_js', $this->js_params);
+        return Render::javascript($this->videoTemplate .'/video_js', $this->js_params);
     }
 
     public function getRemoveVideo()
     {
         $videoId = Elements::add_hidden('videoId', $this->id);
         $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
-        return Render::html('video/buttons/remove', ['HIDDEN_VIDEO_ID'=> $videoId]);
+        return Render::html($this->videoTemplate .'/buttons/remove', ['HIDDEN_VIDEO_ID'=> $videoId]);
     }
 }

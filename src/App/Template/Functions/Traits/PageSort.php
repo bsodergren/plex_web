@@ -20,7 +20,6 @@ trait PageSort
         $request_uri = '';
         $sep = '?';
         $current = '';
-        dump([__METHOD__,$url_array]);
         if ('' != $url_array['query_string']) {
             parse_str($url_array['query_string'], $query_parts);
             unset($query_parts['alpha']);

@@ -47,5 +47,5 @@ if (count($results) > 0) {
 $pageObj                        = true;
 
 
-Render::Display(Render::html('dupe/main', $body));
+Render::Display( $body);
 // Render::echo("artist/main",$PARAMS);

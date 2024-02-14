@@ -29,7 +29,6 @@ class ProcessForms
         $this->postArray = $postArray;
         $this->playlist = new Playlist($this->postArray);
         $this->redirect = $_SERVER['HTTP_REFERER'];
-        dump([__METHOD__,$postArray]);
         if (isset($postArray['redirect_url'])) {
             $this->redirect = $postArray['redirect_url'];
         }

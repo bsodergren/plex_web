@@ -18,4 +18,4 @@ if (isset($videoPlayer->playlist_id))
 
 $videoPlayer->getVideo();
 
-Render::echo('video/main', $videoPlayer->params);
+Render::echo($videoPlayer->videoTemplate.'/main', $videoPlayer->params);

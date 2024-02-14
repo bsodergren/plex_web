@@ -54,7 +54,8 @@
     "sunra/php-simple-html-dom-parser": "^1.5",
     "paquettg/php-html-parser": "^2.2",
     "nette/robot-loader": "^4.0",
-    "kub-at/php-simple-html-dom-parser": "^1.9"
+    "kub-at/php-simple-html-dom-parser": "^1.9",
+    "gajus/dindent": "^2.0"
   },
   "require-dev": {
     "symfony/var-dumper": "^6.2"

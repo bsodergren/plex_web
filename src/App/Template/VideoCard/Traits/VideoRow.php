@@ -141,6 +141,7 @@ trait VideoRow
         $list_array = explode(',', $list);
 
         foreach ($list_array as $k => $keyword) {
+            $keyword = trim($keyword);
             $link_array[] = Render::html(
                 $this->template_base.'/search_link',
                 [
@@ -151,7 +152,6 @@ trait VideoRow
                 ]
             );
         }
-
         return implode('  ', $link_array);
     }
 

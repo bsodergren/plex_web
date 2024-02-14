@@ -105,6 +105,7 @@ class Template
         }
 
         $html_text     = file_get_contents($template_file);
+        $replacement_array['self'] = $template;
         $this->replacement_array = $replacement_array;
 
         $html_text     = preg_replace_callback(self::VARIABLE_CALLBACK, [$this, 'callback_parse_variable'], $html_text);
@@ -116,11 +117,12 @@ class Template
         
         // $html_text     = preg_replace_callback('/(!!(\w+,?\w+)!!)(.*)(!!)/iU', [$this, 'callback_badge'], $html_text);
 
-        $html_text     = trim($html_text);
         // 
         if ('.js' == $extension) {
-            $html_text = '<script>'.\PHP_EOL.$html_text.\PHP_EOL.'</script>'.\PHP_EOL;
+            $html_text = '<script>'.\PHP_EOL.$html_text.\PHP_EOL.'</script>';
         }
+               $html_text     = trim($html_text).PHP_EOL;
+
         $this->html = $html_text;
         return $html_text;
     }
