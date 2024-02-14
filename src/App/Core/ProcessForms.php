@@ -188,6 +188,37 @@ class ProcessForms
         //  echo $this->myHeader($url);
         exit;
     }
+    public function updateChapter()
+    {
+        $timeCode = null;
+        foreach($this->postArray as $key => $value)
+        {
+            if(is_int($key))
+            {
+                $timeCode = $key;
+                $name = $value;
+                continue;
+            }
+            if($key == "video_key"){
+                $videoId = $value;
+                continue;
+            }
+        }
+    $sql = "UPDATE ".Db_TABLE_VIDEO_CHAPTER." SET name = '".$name."' WHERE video_id = ".$videoId." and timeCode = ".$timeCode."";
+            dump([__METHOD__, $videoId, $timeCode, $name,$sql]);
+
+    $this->db->query($sql);
+       
+    }
+
+    public function addChapterVideo()
+    {
+        $url = $this->playlist->addChapterVideo();
+       echo $url;
+        //  echo $this->myHeader($url);
+        exit;
+    }
+
     public function myHeader($redirect = '', $timeout = 0)
     {
         if ('' != $redirect) {

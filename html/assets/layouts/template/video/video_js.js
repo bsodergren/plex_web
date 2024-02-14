@@ -110,6 +110,20 @@ function updateSeekTooltip(event) {
     seekTooltip.style.left = `${event.pageX - rect.left}px`;
 }
 
+
+function rightClickSeekTooltip(event) {
+    const skipTo = Math.round(
+        (event.offsetX / event.target.clientWidth) *
+        parseInt(event.target.getAttribute("max"), 10)
+    );
+    const t = formatTime(skipTo);
+
+    time = `${t.minutes}:${t.seconds}`;
+    console.log(time);
+}
+
+
+
 // skipAhead jumps to a different point in the video when the progress bar
 // is clicked
 function skipAhead(event) {
@@ -309,6 +323,8 @@ videoControls.addEventListener("mouseenter", showControls);
 videoControls.addEventListener("mouseleave", hideControls);
 seek.addEventListener("mousemove", updateSeekTooltip);
 seek.addEventListener("input", skipAhead);
+
+seek.addEventListener("contextmenu",rightClickSeekTooltip);
 volume.addEventListener("input", updateVolume);
 volumeButton.addEventListener("click", toggleMute);
 fullscreenButton.addEventListener("click", toggleFullScreen);
@@ -331,9 +347,17 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 document.addEventListener("keyup", keyboardShortcuts);
 
-function resize() {
-   
 
+videoWidth = {$width};
+videoHeight = {$height};
+if(videoHeight > 1080){
+    videoHeight = 1080;
+}
+if(videoWidth > 1920){
+    videoWidth = 1920;
 }
 
+windowWidth = videoWidth * .75;
+windowHeight = videoHeight * 1;
+window.resizeTo(windowWidth, windowHeight);
 

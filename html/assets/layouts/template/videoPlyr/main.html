@@ -11,6 +11,8 @@
         {{javascript=external/popper.min.js}}
         {{javascript=external/bootstrap.min.js}}
         {{javascript=external/jquery.min.js}}
+        {{javascript=external/jquery.editable.min.js}}
+
         {{javascript=app.js}}
         {{stylesheet=themes/slate/bootstrap.min.css}}
         {{stylesheet=video.css}}
@@ -26,6 +28,7 @@
     </head>
     <body>
         <div class="container">
+           
             {$CANVAS_HTML}
             <video
                 controls
@@ -36,7 +39,11 @@
             >
                 <source src="{$VIDEO_URL}" type="video/mp4" size="{$height}" />
             </video>
+            {$ChapterButtons}
         </div>
+        {$AddChapter}
+       
+
     </body>
     {$VIDEO_JS}
 </html>

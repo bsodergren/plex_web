@@ -15,7 +15,7 @@ define('Db_TABLE_VIDEO_FILE', Db_TABLE_PREFIX.'video_file');
 define('Db_TABLE_VIDEO_INFO', Db_TABLE_PREFIX.'video_info');
 define('Db_TABLE_VIDEO_CUSTOM', Db_TABLE_PREFIX.'video_custom');
 define('Db_TABLE_VIDEO_TAGS', Db_TABLE_PREFIX.'video_metadata');
-
+define('Db_TABLE_VIDEO_CHAPTER', Db_TABLE_PREFIX.'video_chapter');
 define('Db_TABLE_STUDIO', Db_TABLE_PREFIX.'studios');
 define('Db_TABLE_GENRE', Db_TABLE_PREFIX.'genre');
 define('Db_TABLE_ARTISTS', Db_TABLE_PREFIX.'artists');

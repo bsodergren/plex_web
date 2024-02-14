@@ -40,7 +40,7 @@ class Render extends Template
       //  $template_obj->html = $template_obj->parse_urllink($template_obj->html);
 
       $indenter = new \Gajus\Dindent\Indenter();
-      $template_obj->html=$indenter->indent($template_obj->html);
+     // $template_obj->html=$indenter->indent($template_obj->html);
             echo $template_obj->html;
    
     }

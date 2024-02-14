@@ -8,7 +8,7 @@ use Plex\Template\Render;
 
 class VideoPlayer
 {
-    public $playlist_id;
+    public $playlist_id = null;
     public $id;
     public $db;
     public $playlistName;
@@ -16,7 +16,7 @@ class VideoPlayer
     public $canvas_form;
     public $carousel_item;
     public $canvas_item;
-
+    public $chapterIndex = null;
     public $js_params = [];
     public $params = [
     ];
@@ -43,12 +43,9 @@ class VideoPlayer
     {
 
         $res = (new FileListing(new Request))->getVideoDetails($this->id);
-        // $cols = ['filename', 'fullpath', 'rating'];
-        // $this->db->where('id', $this->id);
-        // $result = $this->db->getone(Db_TABLE_VIDEO_FILE, null, $cols);
         $result = $res[0];
-dump($result);
-        $active_title = null; // $result['title'];
+        $active_title = null; 
+
         if (null === $active_title) {
             $active_title = $result['filename'];
         }
@@ -66,6 +63,9 @@ dump($result);
         $this->params['VIDEO_URL'] = $video_file;
         $this->params['height'] = $result['height'];
         $this->params['VIDEO_TITLE'] = $active_title;
+        $this->params['AddChapter'] = $this->addChapter();
+        $this->params['ChapterButtons'] = $this->getChapterButtons();
+        $this->js_params['ChapterIndex'] = $this->getChapterJson();
         $this->js_params['height'] =  $result['height'];
         $this->js_params['width'] =  $result['width'];
     }
@@ -240,4 +240,63 @@ dump($result);
         $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
         return Render::html($this->videoTemplate .'/buttons/remove', ['HIDDEN_VIDEO_ID'=> $videoId]);
     }
+    public function addChapter()
+    {
+        $videoId = Elements::add_hidden('videoId', $this->id);
+        if($this->playlist_id != null){
+            $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
+        }
+
+        return Render::html($this->videoTemplate .'/buttons/addChapter', ['HIDDEN_VIDEO_ID'=> $videoId]);
+    }
+    
+    public function getChapterButtons()
+    {
+        $index = $this->getChapters();
+        foreach($index as $i => $row){
+            $editableClass = 'edit'.$row['time'];
+            $functionName = 'make'.$row['time'].'Editable';
+
+            $row['EDITABLE'] = $editableClass;
+
+            $row['VIDEOINFO_EDIT_JS'] = Render::javascript(
+                $this->videoTemplate.'/buttons/chapter',
+                [
+                    'ID_NAME' => $row['time'],
+                    'EDITABLE' => $editableClass,
+                    'FUNCTION' => $functionName,
+                    'VIDEO_KEY' =>$this->id,
+                ]
+            );
+            $html .= Render::html($this->videoTemplate .'/buttons/chapter', $row);
+        }
+        return $html;
+       // 
+
+    }
+    public function getChapterJson()
+    {
+        return json_encode($this->getChapters());
+    }
+    public function getChapters()
+    {
+if($this->chapterIndex == null){
+        $this->db->where('video_id', $this->id);
+        $this->db->orderBy('timeCode', 'ASC');
+        $search_result = $this->db->get(Db_TABLE_VIDEO_CHAPTER);
+        foreach($search_result as $i => $row)
+        {
+            if($row['name'] === null){
+                $row['name'] = "Timestamp";
+            }
+
+            $this->chapterIndex[] = ['time'=>$row['timeCode'],'label'=>$row['name']];
+
+        }
+    }
+        dump($this->chapterIndex);
+        return $this->chapterIndex;
+
+    }
+    
 }
