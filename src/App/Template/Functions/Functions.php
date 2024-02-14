@@ -6,27 +6,47 @@ use Plex\Core\RoboLoader;
 use Plex\Template\Render;
 use Plex\Core\FileListing;
 use Plex\Template\HTML\Elements;
-
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
-use Plex\Template\Display\Display;
+use Plex\Template\Functions\Traits\Icons;
 use Plex\Template\Functions\Traits\Video;
 use Plex\Template\Functions\Traits\Navbar;
+use Plex\Template\Functions\Traits\PageSort;
 use Plex\Template\Functions\Modules\AlphaSort;
 use Plex\Template\Functions\Traits\Breadcrumbs;
 use Plex\Template\Functions\Modules\metaFilters;
-use Plex\Template\Functions\Traits\PageSort;
 use Plex\Template\Functions\Traits\ThemeSwitcher;
 
 class Functions extends Render
 {
     use Breadcrumbs;
+    use Icons;
     use Navbar;
+    use PageSort;
+    use ThemeSwitcher;
     use Video;
-use ThemeSwitcher;
-use PageSort;
 
-public function __construct() {}
+    public function __construct()
+    {
+
+        $dir = __HTML_TEMPLATE__."/".$this->IconsDir;
+        $include_array =  RoboLoader::get_filelist($dir, 'html', 1);
+        foreach($include_array as $required_file) {
+            $this->iconList[] = basename($required_file,".html");
+        }
+
+
+
+    }
+
+    public function __call($name, $arguments)
+    {
+        if (\in_array($name, $this->iconList)) {
+            //dump([__METHOD__,$arguments[0]]);
+            return $this->getIcon($name, $arguments[0]);
+        }
+        return false;
+    }
 
     public function hiddenSearch()
     {
@@ -39,7 +59,7 @@ public function __construct() {}
 
     private function parseVars($matches)
     {
-        $parts = explode(',', $matches[2]);
+        $parts = explode(',', $matches[2]);        
         foreach ($parts as $value) {
             if (str_contains($value, '=')) {
                 $v_parts = explode('=', $value);
@@ -60,9 +80,9 @@ public function __construct() {}
 
     public function displayFilters()
     {
-        
         return (new metaFilters())->displayFilters();
     }
+
     public function metaFilters($match)
     {
         $method = $match[2];
@@ -83,7 +103,6 @@ public function __construct() {}
     {
         return (new AlphaSort())->displayAlphaBlock();
     }
-
 
     public function videoButton($matches)
     {
@@ -106,5 +125,4 @@ public function __construct() {}
     {
         Footer::Display();
     }
-
 }

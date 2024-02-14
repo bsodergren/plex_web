@@ -11,6 +11,7 @@ use Plex\Template\Render;
  */
 
 require_once '_config.inc.php';
+$p = new ProcessForms($_REQUEST);
 
 if (isset($_REQUEST['playlist_id'])) {
     $playlist_id = $_REQUEST['playlist_id'];

@@ -2,6 +2,7 @@
 
 namespace Plex\Template\Functions\Traits;
 
+use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
 
 trait Navbar
@@ -61,6 +62,7 @@ trait Navbar
                     'MENULINK_URL' => $link_array['url'],
                     'MENULINK_JS' => $link_array['js'],
                     'MENULINK_TEXT' => $link_array['text'],
+                    'MENULINK_ICON' => self::navbarIcon($link_array),
                     'ACTIVE' => $is_active,
                 ];
 
@@ -76,4 +78,15 @@ trait Navbar
 
         return $html.$dropdown_html;
     } // end navbar_links()
+
+
+    public static function navbarIcon($link_array){
+        $html = '';
+        if (isset($link_array['icon'])) {
+            $icon = $link_array['icon'];
+            $html = " ".(new Functions)->$icon();
+        }
+
+        return $html;
+    }
 }
