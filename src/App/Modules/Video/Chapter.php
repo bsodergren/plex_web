@@ -66,6 +66,7 @@ class Chapter
         $data = [
             'timeCode' => $this->data['timeCode'],
             'video_id' => $this->data['videoId'],
+            'name' => $this->data['name'],
         ];
         $res = $this->db->insert(Db_TABLE_VIDEO_CHAPTER, $data);
         $urlQuery = '?id='.$this->data['videoId'];

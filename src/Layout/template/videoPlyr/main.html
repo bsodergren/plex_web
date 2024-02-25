@@ -8,42 +8,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <title>{$PAGE_TITLE}</title>
-        {{javascript=external/popper.min.js}}
-        {{javascript=external/bootstrap.min.js}}
-        {{javascript=external/jquery.min.js}}
-        {{javascript=external/jquery.editable.min.js}}
+        {{javascript=external/popper.min.js}} {{javascript=external/bootstrap.min.js}} {{javascript=external/jquery.min.js}} {{javascript=external/jquery.editable.min.js}} {{javascript=app.js}} {{stylesheet=themes/slate/bootstrap.min.css}} {{stylesheet=video.css}}
 
-        {{javascript=app.js}}
-        {{stylesheet=themes/slate/bootstrap.min.css}}
-        {{stylesheet=video.css}}
-        
         <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
         <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
         {{function=ratingInclude}}
+
+      
     </head>
     <body>
         <div class="container">
-           
             {$CANVAS_HTML}
-            <video
-                controls
-                autoplay
-                crossorigin
-                playsinline
-                poster="{$thumbnail}"
-            >
+            <video controls autoplay crossorigin playsinline poster="{$thumbnail}">
                 <source src="{$VIDEO_URL}" type="video/mp4" size="{$height}" />
             </video>
-            {$ChapterButtons}
+            <div class="d-flex flex-row justify-content-center">
+                <div>{{function=videoButton|template=prev,pl_id={$PLAYLIST_ID}}}</div>
+                <div>{{function=videoButton|template=backward}}</div>
+                <div>{{function=videoButton|template=forward}}</div>
+                <div>{{function=videoButton|template=next,pl_id={$PLAYLIST_ID}}}</div>
+            </div>
+            <div class="d-flex flex-row justify-content-start">{$ChapterButtons}</div>
+            <div class="d-flex flex-column justify-content-start">
+                <div onclick="popup('http://10.0.0.101/plex/videoinfo.php?id={$VideoId}', 'videoinfo_popup')">
+                    {$VIDEO_TITLE}</div>
+                <div>{$Video_studio}</div>
+                <div>{$Video_Genre}</div>
+            </div>
         </div>
-        {$AddChapter}
-       
 
-    </body>
-    {$VIDEO_JS}
+        {$AddChapter}
+   
+    {$VIDEOINFO_EDIT_JS} {$VIDEO_JS}
+
+ </body>
+
 </html>

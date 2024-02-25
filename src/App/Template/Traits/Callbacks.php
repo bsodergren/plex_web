@@ -9,8 +9,8 @@ use Plex\Template\HTML\Elements;
 trait Callbacks
 {
     public const FUNCTION_CALLBACK = '|{{function=([a-zA-Z_]+)\|?(.*)?}}|i';
-    public const STYLESHEET_CALLBACK = '|{{(stylesheet)=([a-zA-Z-_/\.]+)\|?(.*)?}}|i';
-    public const JAVASCRIPT_CALLBACK = '|{{(javascript)=([a-zA-Z-_/\.]+)\|?(.*)?}}|i';
+    public const STYLESHEET_CALLBACK = '|{{(stylesheet)=([a-zA-Z-_/\.]+)\|?([a-zA-Z=$,.\?\{\}]+)?}}|i';
+     public const JAVASCRIPT_CALLBACK = '|{{(javascript)=([a-zA-Z-_/\.]+)\|?([a-zA-Z=$,.\?\{\}]+)?}}|i';
     public const TEMPLATE_CALLBACK = '|{{(template)=([a-zA-Z-_/\.]+)\|?(.*)?}}|i';
     public const VARIABLE_CALLBACK = '|{\$([a-zA-Z_-]+)}|';
     public const JS_VAR_CALLBACK = '|!!([a-zA-Z_-]+)!!|';
@@ -58,11 +58,11 @@ trait Callbacks
     public function callback_parse_include($matches)
     {
         $method = $matches[1];
+        dump(['method' => __METHOD__, 'match' => $matches, 'method' => $method]);
+
         if (str_contains($matches[3], 'render')) {
             // $parts = explode(",",$matches[3]);
             // $vars = explode("=",$parts[1]);
-
-            // dump(["method"=>__METHOD__,"match"=>$matches,"method"=>$method]);
         }
 
         return Elements::$method($matches[2]);

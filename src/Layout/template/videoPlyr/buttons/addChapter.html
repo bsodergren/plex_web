@@ -1,43 +1,43 @@
-
 <div class="p-2">
     <form method="post" id="addChapter" class="addChapterBtn">
-      
         {$HIDDEN_VIDEO_ID}
-        </form>
+        <div id="info" class="mb-3 position-absolute" style="display: none">
+            <label for="textNameInput" class="form-label">Timestamp Label</label>
+            <input type="text" class="form-control" name="name" id="textNameInput" aria-describedby="emailHelp">
+        </div>
+        <input type="hidden" name="timeCode" id="timeCodeInput">
+        <input type="hidden" name="submit" value="addChapterVideo">
+    </form>
 </div>
+
+
+
 <script>
+    function addChapter(event, timeCode) {
+        let x = event.clientX;
+        let y = event.clientY;
 
+        txtField = document.getElementById("info");
+        txtField.style.left = x + "px";
+        txtField.style.top = y + "px";
+        txtField.style.display = "block";
 
-function addChapter (timeCode) {
-    // let mybutton = document.getElementById('ajaxform')
-    var form = $('#addChapter')
+        var hiddenAction = document.getElementById("timeCodeInput");
+        hiddenAction.value = timeCode;
 
-    var hiddenAction = document.createElement('input')
-    hiddenAction.value = timeCode
-    hiddenAction.name = 'timeCode'
-    hiddenAction.type = 'hidden'
-    form.append(hiddenAction)
+        // form.submit();
+    }
 
-    var playlist = document.createElement('input')
-    playlist.value = 'addChapterVideo'
-    playlist.name = 'submit'
-    playlist.type = 'hidden'
-
-    form.append(playlist)
-    form.submit()
-} 
-
-$('#addChapter').submit(function (e) {
-    var postData = $(this).serializeArray()
-    console.info(postData)
-    $.ajax({
-        url: 'process.php',
-        type: 'POST',
-        data: postData,
-        success: function (data) {
-          window.location.href = data
-        }
-    })
-})
-
+    $("#addChapter").submit(function (e) {
+        var postData = $(this).serializeArray();
+        console.info(postData);
+        $.ajax({
+            url: "process.php",
+            type: "POST",
+            data: postData,
+            success: function (data) {
+                window.location.href = data;
+            },
+        });
+    });
 </script>

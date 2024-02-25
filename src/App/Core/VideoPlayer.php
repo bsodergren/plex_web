@@ -55,6 +55,8 @@ class VideoPlayer
         $video_file = $fullpath.'/'.$result['filename'];
 
         $this->params['PAGE_TITLE'] = $result['title'];
+        $this->params['VideoId'] = $this->id;
+
         $this->params['thumbnail'] = APP_HOME . $result['thumbnail'];
         
         $this->params['Video_studio'] = $result['studio'];
@@ -69,6 +71,11 @@ class VideoPlayer
         $this->js_params['ChapterIndex'] = $this->getChapterJson();
         $this->js_params['height'] =  $result['height'];
         $this->js_params['width'] =  $result['width'];
+
+
+        $this->js_params['VideoStudio'] = $result['studio'];
+        $this->js_params['VideoTitle'] = $active_title;
+        $this->js_params['VideoArtist'] = $result['artist'];
     }
 
     public function videoId()
@@ -260,7 +267,7 @@ class VideoPlayer
 
             $row['EDITABLE'] = $editableClass;
 
-            $row['VIDEOINFO_EDIT_JS'] = Render::javascript(
+            $this->params['VIDEOINFO_EDIT_JS'] .= Render::javascript(
                 $this->videoTemplate.'/buttons/chapter',
                 [
                     'ID_NAME' => $row['time'],
@@ -295,7 +302,6 @@ if($this->chapterIndex == null){
 
         }
     }
-        dump($this->chapterIndex);
         return $this->chapterIndex;
 
     }
