@@ -3,6 +3,7 @@
 namespace Plex\Modules\Playlist;
 
 use Plex\Core\ProcessForms;
+use Plex\Template\HTML\Elements;
 
 /**
  * plex web viewer.
@@ -19,7 +20,7 @@ class Playlist extends ProcessForms
     public $library;
     public $playlist_id;
 
-    public function __construct($data)
+    public function __construct($data = [])
     {
         global $db,$_SESSION;
         $this->data = $data;
@@ -28,6 +29,7 @@ class Playlist extends ProcessForms
         if (isset($data['playlist_id'])) {
             $this->playlist_id = $data['playlist_id'];
         }
+
     }
 
     public function addAllPlaylist()
@@ -57,6 +59,13 @@ class Playlist extends ProcessForms
             if ('' != $this->data['playlist_name']) {
                 $name = $this->data['playlist_name'];
             }
+        }
+
+        if (\array_key_exists('AddToPlaylist', $this->data))
+        {
+
+           return $this->data['PlaylistID'];
+
         }
 
         if (\array_key_exists('PlayAll', $this->data)) {
@@ -97,6 +106,8 @@ class Playlist extends ProcessForms
 
     public function createPlaylist()
     {
+
+
         $playlist_id = $this->addPlaylistData();
 
         if (!\array_key_exists('playlist', $this->data)) {
@@ -106,7 +117,6 @@ class Playlist extends ProcessForms
         if (!\is_array($this->data['playlist'])) {
             $this->data['playlist'] = explode(',', $this->data['playlist']);
         }
-
         foreach ($this->data['playlist'] as $_ => $id) {
             $data = [
                 'playlist_id' => $playlist_id,
@@ -115,12 +125,13 @@ class Playlist extends ProcessForms
             ];
             $ids[] = $this->db->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
         }
-        if (\array_key_exists('PlayAll', $this->data)) {
+        if (\array_key_exists('PlayAll', $this->data) || 
+          //  \array_key_exists('AddToPlaylist', $this->data) ||
+            \array_key_exists('refresh', $this->data)
+        ) {
             return __URL_HOME__.'/video.php?playlist_id='.$playlist_id.'';
         }
-        if (\array_key_exists('refresh', $this->data)) {
-            return __URL_HOME__.'/video.php?playlist_id='.$playlist_id.'';
-        }
+      
 
         return __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
     }
@@ -194,4 +205,41 @@ class Playlist extends ProcessForms
         $form_url = __URL_HOME__.'/playlist.php?playlist_id='.$this->playlist_id.'';
         $this->myHeader($form_url);
     }
+
+    public function showPlaylists()
+    {
+        $sql = 'select count(p.playlist_video_id) as count, p.playlist_id, d.name,
+        d.library from '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_PLAYLIST_VIDEOS.' as 
+        p where (p.playlist_id = d.id) and d.hide = 0 group by p.playlist_id ORDER BY library ASC;';
+        $results = $this->db->query($sql);
+        return $results;
+    }
+
+    public function getPlaylistSelectOptions()
+    {
+        $res = $this->showPlaylists();
+        foreach($res as $i => $row){
+            if($row['library'] == $this->library){
+                $plArray[] = ['value' => $row['playlist_id'],
+                'text' => $row['name']];
+            }
+        }
+        return Elements::SelectOptions($plArray,'','');
+        
+    }
+
+    public function getPlaylist($playlist_id)
+    {
+
+        $sql = 'select f.thumbnail,f.id,d.name,d.genre,p.id as playlist_video_id,m.title from  '.Db_TABLE_PLAYLIST_DATA.' as d,
+        '.Db_TABLE_VIDEO_FILE.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p, '.Db_TABLE_VIDEO_TAGS.' as m
+         where (p.playlist_id = '.$playlist_id.' and p.playlist_video_id = f.id and d.id = p.playlist_id and f.video_key = m.video_key);';
+       $results = $this->db->query($sql);
+       return $results;
+
+    }
+
+   
+
+
 }

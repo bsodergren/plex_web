@@ -58,7 +58,6 @@ trait Callbacks
     public function callback_parse_include($matches)
     {
         $method = $matches[1];
-        dump(['method' => __METHOD__, 'match' => $matches, 'method' => $method]);
 
         if (str_contains($matches[3], 'render')) {
             // $parts = explode(",",$matches[3]);

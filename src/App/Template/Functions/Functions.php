@@ -4,10 +4,11 @@ namespace Plex\Template\Functions;
 
 use Plex\Core\RoboLoader;
 use Plex\Template\Render;
-use Plex\Modules\Database\FileListing;
 use Plex\Template\HTML\Elements;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
+use Plex\Modules\Playlist\Playlist;
+use Plex\Modules\Database\FileListing;
 use Plex\Template\Functions\Traits\Icons;
 use Plex\Template\Functions\Traits\Video;
 use Plex\Template\Functions\Traits\Navbar;
@@ -92,8 +93,13 @@ class Functions extends Render
 
     public function playListButton()
     {
+
+        
+    $playlists = (new Playlist())->getPlaylistSelectOptions();
+
         $params['CANVAS_HEADER'] = Render::html('elements/Playlist/canvas_header', []);
-        $params['CANVAS_BODY'] = Render::html('elements/Playlist/canvas_body', []);
+        $params['CANVAS_BODY'] = Render::html('elements/Playlist/canvas_body', ['SelectPlaylists' => $playlists]);
+        //$params['CANVAS_BODY'] = Render::html('elements/Playlist/canvas_body', []);
 
         return Render::html('elements/Playlist/canvas', $params);
         // dump($html);

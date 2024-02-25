@@ -48,7 +48,7 @@ class Elements
         ]);
     }
 
-    public static function SelectOptions($array, $selected = '', $blank = null)
+    public static function SelectOptions($array, $selected = '', $blank = null,$class="filter-option text-bg-primary")
     {
         $html = '';
         $default_option = '';
@@ -56,16 +56,28 @@ class Elements
         $checked = '';
         foreach ($array as $val) {
             $checked = '';
-            if ($val == $selected) {
+
+            if(is_array($val))
+            {
+                $text = $val['text'];
+                $value = $val['value'];
+
+            } else {
+                $text = $val;
+                $value = $val;
+            }
+
+            if ($text == $selected) {
                 $checked = ' selected';
             }
-            $html .= '<option class="filter-option text-bg-primary" value="'.$val.'" '.$checked.'>'.$val.'</option>'."\n";
+            
+            $html .= '<option class="'.$class.'" value="'.$value.'" '.$checked.'>'.$text.'</option>'."\n";
         }
         if (null !== $blank) {
             if ('' == $checked) {
                 $default = ' selected';
             }
-            $default_option = '<option class="filter-option text-bg-primary" value=""  '.$default.'>'.$blank.'</option>'."\n";
+            $default_option = '<option class="'.$class.'" value=""  '.$default.'>'.$blank.'</option>'."\n";
         }
 
         return $default_option.$html;

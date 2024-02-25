@@ -66,6 +66,9 @@ $(document).ready(function () {
         if (text == 'AddPlaylist') {
             playlistSubmit(text)
         }
+        if (text == 'AddToPlaylist') {
+            playlistSubmit(text)
+        }
     })
 })
 

@@ -1,6 +1,7 @@
 <?php
 
 use Plex\Core\ProcessForms;
+use Plex\Modules\Playlist\Playlist;
 use Plex\Template\Functions\Functions;
 use Plex\Template\HTML\Elements;
 use Plex\Template\Render;
@@ -11,18 +12,18 @@ use Plex\Template\Render;
  */
 
 require_once '_config.inc.php';
-$p = new ProcessForms($_REQUEST);
 
+dump($_REQUEST);
 if (isset($_REQUEST['playlist_id'])) {
+    $p = new ProcessForms($_REQUEST);
+
     $playlist_id = $_REQUEST['playlist_id'];
 }
 $table_body_html = '';
 $main_links = '';
-
+$playlist = new Playlist();
 if (null === $playlist_id) {
-    $sql = 'select count(p.playlist_video_id) as count, p.playlist_id, d.name,
-    d.library from '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_PLAYLIST_VIDEOS.' as p where (p.playlist_id = d.id) and d.hide = 0 group by p.playlist_id ORDER BY library ASC;';
-    $results = $db->query($sql);
+   $results = $playlist->showPlaylists();
     // dump($sql);
     $total = count($results);
     for ($i = 0; $i < count($results); ++$i) {
@@ -57,10 +58,8 @@ if (null === $playlist_id) {
 } else {
     $VideoDisplay = new Functions();
 
-    $sql = 'select f.thumbnail,f.id,d.name,d.genre,p.id as playlist_video_id,m.title from  '.Db_TABLE_PLAYLIST_DATA.' as d,
-     '.Db_TABLE_VIDEO_FILE.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p, '.Db_TABLE_VIDEO_TAGS.' as m
-      where (p.playlist_id = '.$playlist_id.' and p.playlist_video_id = f.id and d.id = p.playlist_id and f.video_key = m.video_key);';
-    $results = $db->query($sql);
+
+    $results = $playlist->getPlaylist($playlist_id);
     $total = count($results);
 
     for ($i = 0; $i < count($results); ++$i) {
