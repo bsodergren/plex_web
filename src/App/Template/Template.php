@@ -90,6 +90,7 @@ class Template
         if (!file_exists($template_file)) {
             $html_text = '<h1>NO TEMPLATE FOUND<br>';
             $html_text .= 'FOR <pre>'.$template_file.'</pre></h1> <br>';
+            dump($html_text);
             $this->html = $html_text;
 
             return $html_text;

@@ -1,0 +1,43 @@
+
+<div class="p-2">
+    <form method="post" id="addChapter" class="addChapterBtn">
+      
+        {$HIDDEN_VIDEO_ID}
+        </form>
+</div>
+<script>
+
+
+function addChapter (timeCode) {
+    // let mybutton = document.getElementById('ajaxform')
+    var form = $('#addChapter')
+
+    var hiddenAction = document.createElement('input')
+    hiddenAction.value = timeCode
+    hiddenAction.name = 'timeCode'
+    hiddenAction.type = 'hidden'
+    form.append(hiddenAction)
+
+    var playlist = document.createElement('input')
+    playlist.value = 'addChapterVideo'
+    playlist.name = 'submit'
+    playlist.type = 'hidden'
+
+    form.append(playlist)
+    form.submit()
+} 
+
+$('#addChapter').submit(function (e) {
+    var postData = $(this).serializeArray()
+    console.info(postData)
+    $.ajax({
+        url: 'process.php',
+        type: 'POST',
+        data: postData,
+        success: function (data) {
+          window.location.href = data
+        }
+    })
+})
+
+</script>

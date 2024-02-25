@@ -113,7 +113,7 @@ class Functions extends Render
             }
         }
 
-        return Render::html('video/buttons/'.$var['template'], []);
+        return Render::html('Video/buttons/'.$var['template'], []);
     }
 
     public function pageHeader($matches)
