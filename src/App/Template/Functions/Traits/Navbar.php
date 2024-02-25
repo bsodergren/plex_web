@@ -7,9 +7,8 @@ use Plex\Template\Render;
 
 trait Navbar
 {
-
     private $NavbarDir = 'base/navbar';
-    
+
     public static function navbar_links()
     {
         $html = '';
@@ -29,12 +28,23 @@ trait Navbar
 
                 foreach ($link_array as $dropdown_name => $dropdown_array) {
                     $dropdown_link_html = '';
-
                     foreach ($dropdown_array as $d_name => $d_values) {
+                        $is_active = '';
+
+                        if (str_contains($d_name, 'Divider')) {
+                            $dropdown_link_html .= ' <li><hr class="dropdown-divider"></li>';
+                            continue;
+                        }
+                        if (__THIS_PAGE__ == basename($d_values, '.php')) {
+                            $is_active = ' active';
+                        }
+
                         $array = [
+                            'ACTIVE' => $is_active,
                             'DROPDOWN_URL_TEXT' => $d_name,
                             'DROPDOWN_URL' => $d_values,
                         ];
+
                         $dropdown_link_html .= Render::html('base/navbar/menu_dropdown_link', $array);
                     }
 
@@ -79,12 +89,12 @@ trait Navbar
         return $html.$dropdown_html;
     } // end navbar_links()
 
-
-    public static function navbarIcon($link_array){
+    public static function navbarIcon($link_array)
+    {
         $html = '';
         if (isset($link_array['icon'])) {
             $icon = $link_array['icon'];
-            $html = " ".(new Functions)->$icon();
+            $html = ' '.(new Functions())->{$icon}();
         }
 
         return $html;

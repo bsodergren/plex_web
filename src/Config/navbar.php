@@ -2,7 +2,7 @@
 
 $navigation_link_array = [
     /*
-    'dropdown' => [
+
         'View'    => [
             'Artist' => 'view/artist.php',
             'Studio' => 'view/studio.php',
@@ -27,7 +27,7 @@ $navigation_link_array = [
         'text' => 'Home',
         'secure' => false,
         'js' => false,
-     'icon' => 'home',
+        'icon' => 'home',
     ],
     'files' => [
         'url' => 'files.php',
@@ -51,12 +51,7 @@ $navigation_link_array = [
         'secure' => false,
         'js' => false,
     ],
-    'smartlist' => [
-        'url' => 'smartpl.php',
-        'text' => 'Smart List',
-        'secure' => false,
-        'js' => false,
-    ],
+
     'tag' => [
         'url' => 'tags.php',
         'text' => 'Tags',
@@ -76,71 +71,31 @@ $navigation_link_array = [
         'secure' => false,
         'js' => false,
     ],
-    'dups' => [
-        'url' => 'dupes.php',
-        'text' => 'Duplicates',
-        'secure' => false,
-        'js' => false,
-    ],
 
-    // 'artistEditor' => [
-    //     'url'    => 'Config/artistEditor.php',
-    //     'text'   => 'Config artists',
-    //     'secure' => false,
-    //     'js'     => false,
-    // ],
-    // 'studioEditor' => [
-    //     'url'    => 'Config/studioEditor.php',
-    //     'text'   => 'Config Studio',
-    //     'secure' => false,
-    //     'js'     => false,
-    // ],
-    'genreEditor' => [
-        'url' => 'Config/genreEditor.php',
-        'text' => 'Config Genre',
-        'secure' => false,
-        'js' => false,
-    ],
-    'wordMap' => [
-        'url' => 'editor.php',
-        'text' => 'Word Map',
-        'secure' => false,
-        'js' => false,
-    ],
-
-    /*
-    'File Browser' => [
-        'url'    => 'filebrowser.php',
-        'text'   => 'File Browser',
-        'secure' => false,
-        'js'     => false,
-    ],
-    'test'     => [
-        'url'    => 'test.php',
-        'text'   => 'Test Page',
-        'secure' => false,
-        'js'     => false,
-    ],
-    */
-
-    'refresh' => [
-        'url' => 'process.php?action=refresh',
-        'text' => 'Refresh',
-        'secure' => false,
-        'js' => false,
-    ],
-
-    'settings' => [
-        'url' => 'settings.php',
-        'text' => 'Settings',
-        'secure' => false,
-        'js' => false,
-    ],
     'logout' => [
         'url' => 'logout.php',
         'text' => 'Log Out',
         'secure' => true,
         //        'js'     => ' onclick="logout();"',
         'js' => false,
+    ],
+    'dropdown' => [
+        'Extra' => [
+            'smartlist' => 'smartpl.php',
+            'Duplicates' => 'dupes.php',
+            'Divider_1'=>1,
+
+            'artistEditor' => 'Config/artistEditor.php',
+            'studioEditor' => 'Config/studioEditor.php',
+            'genreEditor' => 'Config/genreEditor.php',
+            'Divider_2'=>1,
+            'wordMap' => 'editor.php',
+
+            'File Browser' => 'filebrowser.php',
+            'test' => 'test.php',
+            'Divider_3'=>1,
+            'refresh' => 'process.php?action=refresh',
+            'settings' => 'settings.php',
+        ],
     ],
 ];
