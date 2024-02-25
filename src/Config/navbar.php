@@ -27,7 +27,7 @@ $navigation_link_array = [
         'text' => 'Home',
         'secure' => false,
         'js' => false,
-        'icon' => 'home',
+     'icon' => 'home',
     ],
     'files' => [
         'url' => 'files.php',
