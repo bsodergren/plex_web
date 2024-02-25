@@ -22,9 +22,8 @@ define('__TPL_CACHE_DIR__', __PLEX_APP_DIR__.'/var/cache/template/');
 define('__RAIN_TEMPLATE_DIR__', __PLEX_APP_DIR__);
 define('__DEBUG__', true);
 
-define('__LAYOUT_PATH__', __PHP_ASSETS_DIR__.'/layouts');
+define('__LAYOUT_PATH__', __PHP_ASSETS_DIR__);
 
-define('__HTML_TEMPLATE__', __LAYOUT_PATH__.'/template');
-
+define('__HTML_TEMPLATE__', __PLEX_APP_DIR__.'/Layout/template');
 define('__METADB_HASH', __CACHE_DIR.'/'.$cache_directory.'/metadb.hash');
 
