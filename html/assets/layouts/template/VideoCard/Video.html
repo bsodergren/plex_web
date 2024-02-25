@@ -8,14 +8,16 @@
             <div class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary text-start p-1">
                 {$VIDEO_TITLE}
             </div>
-
             {$DELETE_BUTTONS}
         </div>
+        
+                {$ChapterRow}
+  
         <div class="row flex-nowrap">
-            {$VERTICAL_TEXT} {{function=Thumbnail|id={$FILE_ID}}}
+            {$VERTICAL_TEXT}
+             {{function=Thumbnail|id={$FILE_ID}}}
             <div class="col">{$FIELD_ROW_HTML}</div>
         </div>
     </div>
-
     {$VIDEOINFO_EDIT_JS}
 </div>

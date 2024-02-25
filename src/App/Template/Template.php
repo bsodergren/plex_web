@@ -1,36 +1,28 @@
 <?php
-/**
- * plex web viewer
- */
 
 namespace Plex\Template;
 
-use Nette\Utils\FileSystem;
-use Plex\Template\HTML\Elements;
-use Plex\Template\Layout\Footer;
-use Plex\Template\Layout\Header;
-use KubAT\PhpSimple\HtmlDomParser;
+use Plex\Core\Utilities\Colors;
 use Plex\Template\Traits\Callbacks;
-use Plex\Template\Functions\Functions;
 
 class Template
 {
     use Callbacks;
     public $html;
 
-    public static $Render          = false;
+    public static $Render = false;
     public static $flushdummy;
-    public static $BarStarted      = false;
-    public static $BarHeight       = 30;
+    public static $BarStarted = false;
+    public static $BarHeight = 30;
 
-    private static $RenderHTML     = '';
+    private static $RenderHTML = '';
 
     public function __construct()
     {
         ob_implicit_flush(true);
         @ob_end_flush();
 
-        $flushdummy       = '';
+        $flushdummy = '';
         for ($i = 0; $i < 1200; ++$i) {
             $flushdummy .= '      ';
         }
@@ -85,46 +77,52 @@ class Template
         @ob_flush();
     }
 
-
     public function template($template = '', $replacement_array = '', $extension = 'html')
     {
         unset($this->replacement_array);
-        if($extension == ''){
+        if ('' == $extension) {
             $extension = 'html';
         }
-        
-        $extension     = '.'.$extension;
+
+        $extension = '.'.$extension;
 
         $template_file = __HTML_TEMPLATE__.'/'.$template.$extension;
         if (!file_exists($template_file)) {
-          
-                $html_text = '<h1>NO TEMPLATE FOUND<br>';
-                $html_text .= 'FOR <pre>'.$template_file.'</pre></h1> <br>';
-                $this->html = $html_text;
-                return $html_text;
+            $html_text = '<h1>NO TEMPLATE FOUND<br>';
+            $html_text .= 'FOR <pre>'.$template_file.'</pre></h1> <br>';
+            $this->html = $html_text;
+
+            return $html_text;
         }
 
-        $html_text     = file_get_contents($template_file);
+        $html_text = file_get_contents($template_file);
         $replacement_array['self'] = $template;
         $this->replacement_array = $replacement_array;
 
-        $html_text     = preg_replace_callback(self::VARIABLE_CALLBACK, [$this, 'callback_parse_variable'], $html_text);
-        $html_text     = preg_replace_callback(self::JS_VAR_CALLBACK, [$this, 'callback_parse_variable'], $html_text);
-        $html_text     = preg_replace_callback(self::FUNCTION_CALLBACK, [$this, 'callback_parse_function'], $html_text);
-        $html_text     = preg_replace_callback(self::STYLESHEET_CALLBACK, [$this, 'callback_parse_include'], $html_text);
-        $html_text     = preg_replace_callback(self::JAVASCRIPT_CALLBACK, [$this, 'callback_parse_include'], $html_text);
-        $html_text     = preg_replace_callback('/(##(\w+,?\w+)##)(.*)(##)/iU', [$this, 'callback_color'], $html_text);
-        
+        $html_text = preg_replace_callback(self::VARIABLE_CALLBACK, [$this, 'callback_parse_variable'], $html_text);
+        $html_text = preg_replace_callback(self::JS_VAR_CALLBACK, [$this, 'callback_parse_variable'], $html_text);
+        $html_text = preg_replace_callback(self::CSS_VAR_CALLBACK, [$this, 'callback_parse_variable'], $html_text);
+        $html_text = preg_replace_callback(self::FUNCTION_CALLBACK, [$this, 'callback_parse_function'], $html_text);
+        $html_text = preg_replace_callback(self::STYLESHEET_CALLBACK, [$this, 'callback_parse_include'], $html_text);
+        $html_text = preg_replace_callback(self::JAVASCRIPT_CALLBACK, [$this, 'callback_parse_include'], $html_text);
+        $html_text = preg_replace_callback(self::TEMPLATE_CALLBACK, [$this, 'callback_parse_include'], $html_text);
+        $html_text = preg_replace_callback(self::IF_CALLBACK, [$this, 'callback_if_statement'], $html_text);
+        $html_text = preg_replace_callback(self::EXPLODE_CALLBACK, [$this, 'callback_explode_callback'], $html_text);
+
+        $html_text = preg_replace_callback('/(##(\w+,?\w+)##)(.*)(##)/iU', [$this, 'callback_color'], $html_text);
+
         // $html_text     = preg_replace_callback('/(!!(\w+,?\w+)!!)(.*)(!!)/iU', [$this, 'callback_badge'], $html_text);
 
-        // 
         if ('.js' == $extension) {
             $html_text = '<script>'.\PHP_EOL.$html_text.\PHP_EOL.'</script>';
         }
-               $html_text     = trim($html_text).PHP_EOL;
+        if ('.css' == $extension) {
+            $html_text = '<style>'.\PHP_EOL.$html_text.\PHP_EOL.'</style>';
+        }
+        $html_text = trim($html_text).\PHP_EOL;
 
         $this->html = $html_text;
+
         return $html_text;
     }
-
 }

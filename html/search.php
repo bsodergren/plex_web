@@ -1,35 +1,42 @@
 <?php
 
-
- use Plex\Template\Render;
- use Plex\Core\FileListing;
- use Plex\Core\ProcessForms;
- 
- use Plex\Template\Display\VideoDisplay;
- use Plex\Template\HTML\Elements;
- use Plex\Core\PlexSql;
 use Plex\Core\Request;
-use Plex\Template\Layout\Footer;
-use Plex\Template\Layout\Header;
+use Plex\Modules\Database\FileListing;
+use Plex\Template\Display\VideoDisplay;
+use Plex\Template\HTML\Elements;
+use Plex\Template\HTML\Elements;
+use Plex\Template\Render;
+use Plex\Template\Render;
 
 require_once '_config.inc.php';
 define('GRID_VIEW', true);
-$playlist_ids    = [];
+$playlist_ids = [];
+$queries = [];
 define('TITLE', 'search');
 define('USE_FILTER', false);
-define("ALPHA_SORT",true) ;
-
-foreach ($tag_array as $tag) {
+define('ALPHA_SORT', true);
+foreach (Request::$tag_array as $tag) {
     if (isset($_REQUEST[$tag])) {
         if (is_array($_REQUEST[$tag])) {
-            $queries[] = implode(',', $_REQUEST[$tag]);
+            $queries = $_REQUEST[$tag];
+            continue;
         }
+        $queries[] = $_REQUEST[$tag];
     }
 }
 
-if (is_array($_REQUEST['query'])) {
-    $_REQUEST['query'] = implode(',', $queries);
+if (!is_array($_REQUEST['field'])) {
+    $fieldArray[] = $_REQUEST['field'];
+    $_REQUEST['field'] = $fieldArray;
 }
+
+dump([__LINE__, $_REQUEST]);
+
+if (count($queries) > 0) {
+    $_REQUEST['query'] = $queries;
+}
+
+dump([__LINE__, $_REQUEST]);
 
 if (isset($_REQUEST['sort'])) {
     $uri['sort'] = $_REQUEST['sort'];
@@ -56,35 +63,32 @@ if (isset($uri)) {
 $redirect_string = 'search.php'.$request_key;
 
 if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
-    // dump($_REQUEST);
-    $search             = new FileListing(new Request);
+    $search = new FileListing(new Request());
 
-    [$results,$pageObj] = $search->getSearchResults($_REQUEST['field'], $_REQUEST['query']);
+    [$results,$pageObj] = $search->getSearchResults($_REQUEST['field'][0], $_REQUEST['query']);
 
     foreach ($results as $n => $row) {
         $playlist_ids[] = $row['id'];
     }
 
-    $playlist_ids_str   = implode(',', $playlist_ids);
+    $playlist_ids_str = implode(',', $playlist_ids);
     // $msg              = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);
     $view = 'Grid';
-if(array_key_exists('view',$_REQUEST)){
-    $view = $_REQUEST['view'];
-}
-    $msg                = 'Showing '.count($results).' results for for '.$_REQUEST['query'];
-    $msg                = strtolower(str_replace('-', '.', $msg));
-    $msg                = strtolower(str_replace('_', ' ', $msg));
-    $html_msg           = Render::html('search/search_msg', ['MSG' => $msg]);
+    if (array_key_exists('view', $_REQUEST)) {
+        $view = $_REQUEST['view'];
+    }
+    $msg = 'Showing '.count($results).' results for for '.$_REQUEST['query'];
+    $msg = strtolower(str_replace('-', '.', $msg));
+    $msg = strtolower(str_replace('_', ' ', $msg));
+    $html_msg = Render::html('search/search_msg', ['MSG' => $msg]);
     //  $html_msg .= Render::html("search/search_msg", [   'MSG' => $sql] );
 
-
-    $grid                 = (new VideoDisplay($view ))->init();
-$search_results         = $grid->Display($results, [  'total_files'     => count($results)]);
-
+    $grid = (new VideoDisplay($view))->init();
+    $search_results = $grid->Display($results, ['total_files' => count($results)]);
 
     //   $search_results =     display_filelist($results, '', $page_array);
 }
-$search_types    = [
+$search_types = [
     'studio',
     'substudio',
     'artist',
@@ -98,13 +102,12 @@ foreach ($search_types as $key) {
     $checkboxes .= Render::html('search/checkboxes', ['NAME' => $key]);
 }
 
-$body            = Render::html('search/search', [
-    'HIDDEN_IDS'     => Elements::add_hidden('playlist', $playlist_ids_str),
-    'HIDDEN_STUDIO'  => Elements::add_hidden('studio', $_REQUEST['query'].' Search'),
+$body = Render::html('search/search', [
+    'HIDDEN_IDS' => Elements::add_hidden('playlist', $playlist_ids_str),
+    'HIDDEN_STUDIO' => Elements::add_hidden('studio', $_REQUEST['query'].' Search'),
     'SEARCH_RESULTS' => $search_results,
-    'CHECKBOXES'     => $checkboxes,
-    'HTML_MSG'       => $html_msg,
+    'CHECKBOXES' => $checkboxes,
+    'HTML_MSG' => $html_msg,
 ]);
-
 
 Render::Display($body);

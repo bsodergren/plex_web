@@ -65,6 +65,7 @@ const player = new Plyr('video', {
     keyboard: { focused: true, global: true },
     hideControls: false,
     disableContextMenu: true,
+    seekTime: 30,
 
     markers: { enabled: true, points: !!ChapterIndex!! }
 })
@@ -87,3 +88,11 @@ if (videoWidth > 1920) {
 windowWidth = videoWidth * 0.75
 windowHeight = videoHeight * .90
 window.resizeTo(windowWidth, windowHeight)
+
+function nextVideo() {
+    setTimeout(function () { window.location.href = '!!__URL_HOME__!!/video.php?id=!!NEXT_VIDEO_ID!!&playlist_id=!!PLAYLIST_ID!!&r=true'; }, 0);
+}
+
+function prevVideo() {
+    setTimeout(function () { window.location.href = '!!__URL_HOME__!!/video.php?id=!!PREV_VIDEO_ID!!&playlist_id=!!PLAYLIST_ID!!'+ '&r=true'; }, 0);
+}

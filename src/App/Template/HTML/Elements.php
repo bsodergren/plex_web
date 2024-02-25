@@ -2,11 +2,17 @@
 
 namespace Plex\Template\HTML;
 
-use Plex\Core\PlexSql;
 use Plex\Template\Render;
+use Plex\Template\HTML\Elements;
 
 class Elements
 {
+
+    public static function template($template)
+    {
+        return Render::return($template, []);
+    }
+
     public static function stylesheet($stylesheet)
     {
         $stylesheet = 'css/'.$stylesheet;

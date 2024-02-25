@@ -3,7 +3,7 @@
 namespace Plex\Template\Display\Layout;
 
 use Plex\Template\Render;
-use Plex\Template\VideoCard\VideoCard;
+use Plex\Modules\Video\Render\Card;
 use Plex\Template\Display\VideoDisplay;
 
 class ListDisplay extends VideoDisplay
@@ -30,7 +30,7 @@ class ListDisplay extends VideoDisplay
             $redirect_string = $page_array['redirect_string'];
         }
 
-        $videoinfo       = new VideoCard();
+        $videoinfo       = new Card();
         foreach ($results as $id => $row) {
             $row_id       = $row['id'];
             $row['next']  = 0;

@@ -1,7 +1,6 @@
 <?php
 namespace Plex\Template\Display;
 
-use Plex\Template\Functions\Traits\Video;
 
 class VideoDisplay
 {

@@ -2,9 +2,9 @@
 
 namespace Plex\Template\Layout;
 
-use Plex\Core\PlexSql;
 use Plex\Template\Render;
 
+use Plex\Modules\Database\PlexSql;
 use Plex\Template\Display\Display;
 
 /**

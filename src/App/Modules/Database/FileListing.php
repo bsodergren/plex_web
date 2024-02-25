@@ -1,7 +1,9 @@
 <?php
 
-namespace Plex\Core;
+namespace Plex\Modules\Database;
 
+use Plex\Core\Request;
+use Plex\Modules\Database\PlexSql;
 use Plex\Template\Pageinate\Pageinate;
 
 class FileListing
@@ -60,13 +62,27 @@ class FileListing
         return 0;
     }
 
-    public function getSearchResults($field, $value)
+    public function getSearchResults($field, $query)
     {
-        $where = "{$field}='{$value}'";
+        if(!is_array($query))
+        {
+            $query = [$query];
+        }
+        
+        dump([$field,$query]);
+        foreach($query as $search){
+            $WhereList[] = "{$field} like '%{$search}%'";
+        }
+
+        $where = implode(" and ",$WhereList);
+        dump($where);
 
         $pageObj = new Pageinate($where, $this->currentpage, $this->urlPattern);
 
-        $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$field, '%'.$value.'%', 'like');
+      //  $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$field, '%'.$value.'%', 'like');
+      foreach($query as $search){
+        $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$field, '%'.$search.'%', 'like');
+    }
         $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
 
         return [$results, $pageObj];
@@ -237,6 +253,8 @@ class FileListing
             null,
             $num_rows
         );
+
+        dump($joinQuery);
         $this->saveSearch($joinQuery);
         $joinQuery = str_replace($num_rows, implode(',', $fieldArray), $joinQuery);
 

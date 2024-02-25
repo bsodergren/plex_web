@@ -1,6 +1,8 @@
 <?php
 
-namespace Plex\Core;
+namespace Plex\Modules\Playlist;
+
+use Plex\Core\ProcessForms;
 
 /**
  * plex web viewer.
@@ -123,20 +125,7 @@ class Playlist extends ProcessForms
         return __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
     }
 
-    public function addChapterVideo()
-    {
-        $data = [
-            'timeCode' => $this->data['timeCode'],
-            'video_id' => $this->data['videoId'],
-        ];
-        $res = $this->db->insert(Db_TABLE_VIDEO_CHAPTER, $data);
-        $urlQuery = '?id='.$this->data['videoId'];
-        if (\array_key_exists('playlistid', $this->data)) {
-            $urlQuery .= '&playlist_id='.$this->data['playlistid'];
-        }
-
-        return __URL_HOME__.'/video.php'.$urlQuery;
-    }
+    
 
     public function addPlaylist()
     {

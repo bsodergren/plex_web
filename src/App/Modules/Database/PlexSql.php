@@ -1,19 +1,20 @@
 <?php
-namespace Plex\Core;
-/**
+
+namespace Plex\Modules\Database;
+
+/*
  * plex web viewer
  */
 
-use MysqliDb;
-use Plex\Template\Render;
+use Plex\Core\Request;
 
-class PlexSql extends MysqliDb
+class PlexSql extends \MysqliDb
 {
-    public $limit   = false;
+    public $limit = false;
     public $db;
 
-    public $offset  = false;
-    public $where   = '';
+    public $offset = false;
+    public $where = '';
     public $groupBy = '';
     public $orderBy = '';
 
@@ -22,19 +23,16 @@ class PlexSql extends MysqliDb
         global $_SESSION,$db;
         parent::__construct('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
         $this->db = $db;
-  
-        
-
     }
 
     public static function getAlphaKey($field, $key)
     {
         $url_array = Request::$url_array;
-        if($field === null){
+        if (null === $field) {
             $field = $url_array['sortDefault'];
         }
         $tag_string = implode(',', Request::$tag_types);
-        $f          = explode('.', $field);
+        $f = explode('.', $field);
         if (str_contains($tag_string, $f[1])) {
             if ('All' == $key) {
                 return null;
@@ -45,9 +43,10 @@ class PlexSql extends MysqliDb
             if ('None' == $key) {
                 return $field.' IS NULL';
             }
-            if( $f[1] == 'artist'){
-                return "(".$field." LIKE '".$key."%' OR ".$field." LIKE '%,".$key."%')";
+            if ('artist' == $f[1]) {
+                return '('.$field." LIKE '".$key."%' OR ".$field." LIKE '%,".$key."%')";
             }
+
             return $field." LIKE '".$key."%' ";
         }
 
@@ -58,7 +57,7 @@ class PlexSql extends MysqliDb
     {
         global $_SESSION,$db;
         $tag_array = ['studio', 'substudio', 'genre', 'artist'];
-        $query     = [];
+        $query = [];
         foreach ($tag_array as $tag) {
             if ($tag == $field) {
                 continue;
@@ -71,17 +70,17 @@ class PlexSql extends MysqliDb
         if ('All' != $_SESSION['library']) {
             $query[] = " library = '".$_SESSION['library']."'  ";
         }
-        if (count($query) > 0) {
+        if (\count($query) > 0) {
             $querySQl = ' WHERE ';
             $partsSQL = implode(' AND ', $query);
             $querySQl .= $partsSQL;
         }
 
-        $sql       = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
+        $sql = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
     1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
     ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit  '.$querySQl.'  ORDER BY `val` ASC';
 
-        $res       = $db->query($sql);
+        $res = $db->query($sql);
         foreach ($res as $k => $g) {
             $array[] = $g['val'];
         }
@@ -98,9 +97,10 @@ class PlexSql extends MysqliDb
         if ('All' != $_SESSION['library']) {
             $library = " WHERE library = '".$_SESSION['library']."' ";
         }
-        $query   = 'SELECT '.$column.',count('.$column.') FROM `metatags_video_file` '.$library.' group
+        $query = 'SELECT '.$column.',count('.$column.') FROM `metatags_video_file` '.$library.' group
         by '.$column.' having COUNT('.$column.') > 1;';
-// echo $query;
+
+        // echo $query;
         return $db->query($query);
     }
 
@@ -143,17 +143,17 @@ class PlexSql extends MysqliDb
         // $fieldArray[] = 'm.library';
 
         $fieldArray = array_merge($fieldArray, [
-            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'f.library','f.preview',
+            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'f.library', 'f.preview',
             'f.filename', 'f.thumbnail', 'f.fullpath', 'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key']);
 
-        $joinQuery  = $this->db->getQuery(
+        $joinQuery = $this->db->getQuery(
             Db_TABLE_VIDEO_FILE.' f',
             null,
             $fieldArray
         );
 
         // $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
-        $results    = $this->db->rawQuery($joinQuery);
+        $results = $this->db->rawQuery($joinQuery);
 
         // return $this->db->getlastquery();
         return $results;
@@ -161,16 +161,16 @@ class PlexSql extends MysqliDb
 
     public function getArtistsList()
     {
-        $res        = $this->getArtists();
+        $res = $this->getArtists();
         foreach ($res as $k => $v) {
             $array[] = $v['artist'];
         }
-        $namesStr   = implode(',', $array);
+        $namesStr = implode(',', $array);
         $namesArray = explode(',', $namesStr);
         $namesArray = array_unique($namesArray);
         sort($namesArray);
-        $namesStr   = implode(',', $namesArray);
-        $namesStr   = '"'.implode('","', $namesArray).'"';
+        $namesStr = implode(',', $namesArray);
+        $namesStr = '"'.implode('","', $namesArray).'"';
 
         return trim(str_replace('" ', '"', $namesStr));
     }
@@ -179,14 +179,14 @@ class PlexSql extends MysqliDb
     {
         global $db;
 
-
         $sql = 'SELECT ';
 
         $sql .= 'COALESCE (c.artist,m.artist) as artist, ';
         $sql .= 'f.video_key FROM metatags_video_file f ';
-        $sql .= 'INNER JOIN metatags_video_metadata m on f.video_key=m.video_key '.PlexSql::getLibrary();
+        $sql .= 'INNER JOIN metatags_video_metadata m on f.video_key=m.video_key '.self::getLibrary();
         $sql .= 'LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
-        //$where = $this->pwhere("(artist is not null and artist != 'Missing')");
+
+        // $where = $this->pwhere("(artist is not null and artist != 'Missing')");
         return $db->query($sql.$where);
     }
 
@@ -196,7 +196,7 @@ class PlexSql extends MysqliDb
             $columns = '*';
         }
 
-        $column       = is_array($columns) ? implode(', ', $columns) : $columns;
+        $column = \is_array($columns) ? implode(', ', $columns) : $columns;
 
         if (!str_contains($tableName, '.')) {
             $this->_tableName = self::$prefix.$tableName;
@@ -206,7 +206,7 @@ class PlexSql extends MysqliDb
 
         $this->_query = 'SELECT '.implode(' ', $this->_queryOptions).' '.
             $column.' FROM '.$this->_tableName;
-        $stmt         = $this->_buildQuery($numRows);
+        $stmt = $this->_buildQuery($numRows);
 
         if ($this->isSubQuery) {
             return $this;
@@ -234,7 +234,7 @@ class PlexSql extends MysqliDb
             $sql = 'SELECT '.$fields;
         }
 
-        $sql        = $sql.' FROM '.$table.' ';
+        $sql = $sql.' FROM '.$table.' ';
         $sql .= $this->where;
         $sql .= $this->groupBy;
         $sql .= $this->orderBy;
@@ -257,7 +257,7 @@ class PlexSql extends MysqliDb
     {
         global $_SESSION;
 
-        $library     = '';
+        $library = '';
         if ('All' != $_SESSION['library']) {
             $library = " library = '".$_SESSION['library']."' ";
         }
@@ -300,30 +300,28 @@ class PlexSql extends MysqliDb
         $this->offset = $offset;
     }
 
-    
-public static function query_builder($table, $fields = 'select', $where = false, $group = false, $order = false, $limit = false, $offset = false)
-{
-    $query = new PlexSql();
-    if (false != $where) {
-        $query->pwhere($where);
-    }
-    if (false != $group) {
-        $query->pgroupBy($group);
-    }
-    if (false != $order) {
-        $query->porderBy($order);
-    }
-    if (false != $limit) {
-        $query->psetLimit($limit);
-    }
-    if (false != $offset) {
-        $query->psetOffset($offset);
-    }
+    public static function query_builder($table, $fields = 'select', $where = false, $group = false, $order = false, $limit = false, $offset = false)
+    {
+        $query = new self();
+        if (false != $where) {
+            $query->pwhere($where);
+        }
+        if (false != $group) {
+            $query->pgroupBy($group);
+        }
+        if (false != $order) {
+            $query->porderBy($order);
+        }
+        if (false != $limit) {
+            $query->psetLimit($limit);
+        }
+        if (false != $offset) {
+            $query->psetOffset($offset);
+        }
 
-    $sql   = $query->pselect($table, $fields);
-    logger('SQL Builder', $sql);
+        $sql = $query->pselect($table, $fields);
+        logger('SQL Builder', $sql);
 
-    return $sql;
-}
-
+        return $sql;
+    }
 }

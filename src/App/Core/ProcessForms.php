@@ -8,7 +8,11 @@ namespace Plex\Core;
 
 use Nette\Utils\Callback;
 
+use Plex\Template\Template;
+use Plex\Modules\Video\Info;
+use Plex\Modules\Video\Chapter;
 use Plex\Template\HTML\Elements;
+use Plex\Modules\Playlist\Playlist;
 use Symfony\Component\Process\Process;
 
 class ProcessForms
@@ -17,17 +21,20 @@ class ProcessForms
     public $getArray = [];
     public $redirect = ''; // .'/home.php';
     public object $VideoInfo;
-
-    public object $playlist;
+    
+    public object $VideoChapter;
     public object $db;
+    public object $playlist;
 
     public function __construct($postArray)
     {
         global $db;
         $this->db = $db;
-        $this->VideoInfo = new VideoInfo();
+        $this->VideoInfo = new Info();
         $this->postArray = $postArray;
         $this->playlist = new Playlist($this->postArray);
+        $this->VideoChapter = new Chapter($this->postArray);
+
         $this->redirect = $_SERVER['HTTP_REFERER'];
         if (isset($postArray['redirect_url'])) {
             $this->redirect = $postArray['redirect_url'];
@@ -188,37 +195,22 @@ class ProcessForms
         //  echo $this->myHeader($url);
         exit;
     }
-    public function updateChapter()
-    {
-        $timeCode = null;
-        foreach($this->postArray as $key => $value)
-        {
-            if(is_int($key))
-            {
-                $timeCode = $key;
-                $name = $value;
-                continue;
-            }
-            if($key == "video_key"){
-                $videoId = $value;
-                continue;
-            }
-        }
-    $sql = "UPDATE ".Db_TABLE_VIDEO_CHAPTER." SET name = '".$name."' WHERE video_id = ".$videoId." and timeCode = ".$timeCode."";
-            dump([__METHOD__, $videoId, $timeCode, $name,$sql]);
-
-    $this->db->query($sql);
-       
-    }
 
     public function addChapterVideo()
     {
-        $url = $this->playlist->addChapterVideo();
+        $url = $this->VideoChapter->addChapterVideo();
        echo $url;
         //  echo $this->myHeader($url);
         exit;
     }
-
+    public function updateChapter()
+    {
+        $url = $this->VideoChapter->updateChapter();
+       echo $url;
+        //  echo $this->myHeader($url);
+        exit;
+    }
+    
     public function myHeader($redirect = '', $timeout = 0)
     {
         if ('' != $redirect) {

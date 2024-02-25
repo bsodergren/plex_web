@@ -1,5 +1,5 @@
 <?php
-use Plex\Core\FileListing;
+use Plex\Modules\Database\FileListing;
 use Plex\Template\Display\Display;
 
 use Plex\Template\Display\VideoDisplay;

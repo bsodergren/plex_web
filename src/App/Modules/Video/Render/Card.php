@@ -1,10 +1,11 @@
 <?php
 
-namespace Plex\Template\VideoCard;
+namespace Plex\Modules\Video\Render;
 
-use Plex\Template\Render;
+use Plex\Modules\Video\Chapter;
+use Plex\Modules\Video\Render\Traits\VideoRow;
 use Plex\Template\HTML\Elements;
-use Plex\Template\VideoCard\Traits\VideoRow;
+use Plex\Template\Render;
 
 /**
  * plex web viewer.
@@ -13,16 +14,15 @@ use Plex\Template\VideoCard\Traits\VideoRow;
 /**
  * plex web viewer.
  */
-class VideoCard
+class Card
 {
     use VideoRow;
 
     public $showVideoDetails = false;
     private $template_base = 'VideoCard';
+    public object $Chapters;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function __call($method, $args)
     {
@@ -41,6 +41,7 @@ class VideoCard
         $this->params = [];
         $table_body_html = [];
         $row_id = $fileInfoArray['id'];
+        $this->Chapters = new Chapter(['id' => $row_id]);
         // $row_filename = $row_id.":".$row['filename'];
         $row_filename = $fileInfoArray['filename'];
         $row_fullpath = $fileInfoArray['fullpath'];
@@ -69,6 +70,7 @@ class VideoCard
         $this->params['FILE_ID'] = $row_id;
         $this->params['WRAPPER_CLASS'] = 'm-3';
         $this->params['RATING_WIDTH'] = 365;
+
         if (\defined('NONAVBAR')) {
             $this->params['WRAPPER_CLASS'] = 'm-0';
             $this->params['RATING_WIDTH'] = 175;
@@ -85,6 +87,7 @@ class VideoCard
             'studio',
             'substudio',
             'keyword',
+            'Chapters',
             'library',
             'fullpath',
             'filesize',
@@ -96,19 +99,14 @@ class VideoCard
             $this->AltClass = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
 
             if (\array_key_exists($field, $this->fileInfoArray)) {
-                if($this->fileInfoArray[$field] === null){
-
-                    
-                   $this->fileInfoArray[$field] = '';
-                    
+                if (null === $this->fileInfoArray[$field]) {
+                    $this->fileInfoArray[$field] = '';
                 }
                 $method = ucfirst($field);
                 $this->{$method}($field);
-                 ++$x;
+                ++$x;
             }
-           
         }
-
 
         // dd($this->params['HIDDEN_STUDIO']);
         $table_body_html['VIDEO'] = Render::html($this->template_base.'/Video', $this->params);

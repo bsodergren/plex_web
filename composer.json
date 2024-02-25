@@ -5,6 +5,7 @@
     }
 },
   "require": {
+    
     "symfony/polyfill-php80": "^1.26",
     "symfony/polyfill-mbstring": "^1.26",
     "symfony/polyfill-ctype": "^1.26",
@@ -55,7 +56,8 @@
     "paquettg/php-html-parser": "^2.2",
     "nette/robot-loader": "^4.0",
     "kub-at/php-simple-html-dom-parser": "^1.9",
-    "gajus/dindent": "^2.0"
+    "gajus/dindent": "^2.0",
+    "froala/wysiwyg-editor-php-sdk": "^4.0"
   },
   "require-dev": {
     "symfony/var-dumper": "^6.2"

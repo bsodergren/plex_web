@@ -11,8 +11,32 @@ trait Callbacks
     public const FUNCTION_CALLBACK = '|{{function=([a-zA-Z_]+)\|?(.*)?}}|i';
     public const STYLESHEET_CALLBACK = '|{{(stylesheet)=([a-zA-Z-_/\.]+)\|?(.*)?}}|i';
     public const JAVASCRIPT_CALLBACK = '|{{(javascript)=([a-zA-Z-_/\.]+)\|?(.*)?}}|i';
+    public const TEMPLATE_CALLBACK = '|{{(template)=([a-zA-Z-_/\.]+)\|?(.*)?}}|i';
     public const VARIABLE_CALLBACK = '|{\$([a-zA-Z_-]+)}|';
     public const JS_VAR_CALLBACK = '|!!([a-zA-Z_-]+)!!|';
+    public const IF_CALLBACK = '|{if="([^"]+)"}(.*?){\/if}|misu';
+    public const CSS_VAR_CALLBACK = '|\$([a-zA-Z_-]+)\$|';
+
+    public const EXPLODE_CALLBACK = '|{replace="?([^"]+)"?}|mis';
+
+    public function callback_explode_callback($matches)
+    {
+        $data = str_getcsv($matches[1], ',', "'");
+
+        return str_replace($data[1], $data[2], $data[0]).$data[2];
+    }
+
+    public function callback_if_statement($matches)
+    {
+        $compare = $matches[1];
+        $array = explode('=', $compare);
+        $return = '';
+        if ($array[0] == $array[1]) {
+            $return = $matches[2];
+        }
+
+        return $return;
+    }
 
     public function callback_parse_variable($matches)
     {
@@ -34,6 +58,12 @@ trait Callbacks
     public function callback_parse_include($matches)
     {
         $method = $matches[1];
+        if (str_contains($matches[3], 'render')) {
+            // $parts = explode(",",$matches[3]);
+            // $vars = explode("=",$parts[1]);
+
+            // dump(["method"=>__METHOD__,"match"=>$matches,"method"=>$method]);
+        }
 
         return Elements::$method($matches[2]);
     }

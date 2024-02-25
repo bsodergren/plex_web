@@ -1,7 +1,6 @@
 <?php
 
-
-$navigation_link_array  = [
+$navigation_link_array = [
     /*
     'dropdown' => [
         'View'    => [
@@ -23,66 +22,65 @@ $navigation_link_array  = [
     ],
 */
 
-    'home'         => [
-        'url'    => 'home.php',
-        'text'   => 'Home',
+    'home' => [
+        'url' => 'home.php',
+        'text' => 'Home',
         'secure' => false,
-        'js'     => false,
-        'icon' =>'home',
+        'js' => false,
+        'icon' => 'home',
     ],
-    'files'     => [
-        'url'    => 'files.php',
-        'text'   => 'List  Display',
+    'files' => [
+        'url' => 'files.php',
+        'text' => 'List  Display',
         'secure' => false,
-        'js'     => false,
+        'js' => false,
         'studio' => true,
     ],
-    'gridview'     => [
-        'url'    => 'gridview.php',
-        'text'   => 'Grid Display',
+    'gridview' => [
+        'url' => 'gridview.php',
+        'text' => 'Grid Display',
         'secure' => false,
-        'js'     => false,
+        'js' => false,
         'studio' => true,
     ],
 
-    'playlist'     => [
-        'url'    => 'playlist.php',
-        'text'   => 'Playlist Display',
+    'playlist' => [
+        'url' => 'playlist.php',
+        'text' => 'Playlist Display',
         'icon' => 'playlist',
         'secure' => false,
-        'js'     => false,
+        'js' => false,
     ],
-    'smartlist'     => [
-        'url'    => 'smartpl.php',
-        'text'   => 'Smart List',
+    'smartlist' => [
+        'url' => 'smartpl.php',
+        'text' => 'Smart List',
         'secure' => false,
-        'js'     => false,
+        'js' => false,
     ],
-    'tag'          => [
-        'url'    => 'tags.php',
-        'text'   => 'Tags',
+    'tag' => [
+        'url' => 'tags.php',
+        'text' => 'Tags',
         'secure' => false,
-        'js'     => false,
+        'js' => false,
     ],
-    'artist'       => [
-        'url'    => 'artist.php',
-        'text'   => 'Artist Page',
+    'artist' => [
+        'url' => 'artist.php',
+        'text' => 'Artist Page',
         'secure' => false,
-        'js'     => false,
+        'js' => false,
     ],
 
-
-    'search'       => [
-        'url'    => 'search.php',
-        'text'   => 'Search',
+    'search' => [
+        'url' => 'search.php',
+        'text' => 'Search',
         'secure' => false,
-        'js'     => false,
+        'js' => false,
     ],
-    'dups'         => [
-        'url'    => 'dupes.php',
-        'text'   => 'Duplicates',
+    'dups' => [
+        'url' => 'dupes.php',
+        'text' => 'Duplicates',
         'secure' => false,
-        'js'     => false,
+        'js' => false,
     ],
 
     // 'artistEditor' => [
@@ -97,14 +95,18 @@ $navigation_link_array  = [
     //     'secure' => false,
     //     'js'     => false,
     // ],
-    'genreEditor'  => [
-        'url'    => 'Config/genreEditor.php',
-        'text'   => 'Config Genre',
+    'genreEditor' => [
+        'url' => 'Config/genreEditor.php',
+        'text' => 'Config Genre',
         'secure' => false,
-        'js'     => false,
+        'js' => false,
     ],
-
-
+    'wordMap' => [
+        'url' => 'editor.php',
+        'text' => 'Word Map',
+        'secure' => false,
+        'js' => false,
+    ],
 
     /*
     'File Browser' => [
@@ -121,24 +123,24 @@ $navigation_link_array  = [
     ],
     */
 
-    'refresh'      => [
-        'url'    => 'process.php?action=refresh',
-        'text'   => 'Refresh',
+    'refresh' => [
+        'url' => 'process.php?action=refresh',
+        'text' => 'Refresh',
         'secure' => false,
-        'js'     => false,
+        'js' => false,
     ],
 
-    'settings'     => [
-        'url'    => 'settings.php',
-        'text'   => 'Settings',
+    'settings' => [
+        'url' => 'settings.php',
+        'text' => 'Settings',
         'secure' => false,
-        'js'     => false,
+        'js' => false,
     ],
-    'logout'       => [
-        'url'    => 'logout.php',
-        'text'   => 'Log Out',
+    'logout' => [
+        'url' => 'logout.php',
+        'text' => 'Log Out',
         'secure' => true,
         //        'js'     => ' onclick="logout();"',
-        'js'     => false,
+        'js' => false,
     ],
 ];

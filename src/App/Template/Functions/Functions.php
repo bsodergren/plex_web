@@ -4,7 +4,7 @@ namespace Plex\Template\Functions;
 
 use Plex\Core\RoboLoader;
 use Plex\Template\Render;
-use Plex\Core\FileListing;
+use Plex\Modules\Database\FileListing;
 use Plex\Template\HTML\Elements;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;

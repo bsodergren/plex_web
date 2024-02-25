@@ -53,6 +53,8 @@ trait Breadcrumbs
                         continue;
                     }
                     if (__THIS_FILE__ == 'search.php') {
+
+                        $request_tag = [];
                         if ('view' == $key) {
                             if($value == 'List'){
                                 $value = 'Grid';
@@ -62,8 +64,10 @@ trait Breadcrumbs
 
                             $request_string['view'] = $value;
                             continue;
-                        } 
-                    
+                         
+                              
+                        
+                        }
                     }
                     $request_string[$key] = $value;
                 }
@@ -90,7 +94,7 @@ trait Breadcrumbs
 
             if (\count($request_tag) > 0) {
                 $crumbs[$_SESSION['library']] = $crumb_url.$sep.http_build_query(['studio' => $studio_key]);
-
+dump($request_tag);
                 foreach ($request_tag as $key => $value) {
                     $parts[$key] = $value;
                     $crumbs[$value] = $crumb_url.$sep.http_build_query($parts);

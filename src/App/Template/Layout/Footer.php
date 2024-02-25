@@ -5,7 +5,6 @@ namespace Plex\Template\Layout;
  */
 
 use Plex\Template\Render;
-use Plex\Template\Display\Display;
 
 
 class Footer

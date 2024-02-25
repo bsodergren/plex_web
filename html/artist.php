@@ -1,9 +1,9 @@
 <?php
 
-use Plex\Core\PlexSql;
+
 use Plex\Template\Render;
 
-use Plex\Template\Display\VideoDisplay;
+use Plex\Modules\Database\PlexSql;
 use Plex\Template\Functions\Functions;
 
 /**

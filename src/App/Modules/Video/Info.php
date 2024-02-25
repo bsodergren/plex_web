@@ -1,5 +1,5 @@
 <?php
-namespace Plex\Core;
+namespace Plex\Modules\Video;
 /**
  * plex web viewer
  */
@@ -7,7 +7,7 @@ namespace Plex\Core;
 /**
  * plex web viewer.
  */
-class VideoInfo
+class Info
 {
     public $tagValue;
     public $video_key;

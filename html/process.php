@@ -3,7 +3,7 @@
  * plex web viewer
  */
 
-use Plex\Core\PlexSql;
+use Plex\Modules\Database\PlexSql;
 use Plex\Template\Render;
 use Plex\Core\ProcessForms;
 use Plex\Template\Template;

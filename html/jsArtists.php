@@ -1,6 +1,6 @@
 <?php
 
-use Plex\Core\PlexSql;
+use Plex\Modules\Database\PlexSql;
 
 require_once '_config.inc.php';
 

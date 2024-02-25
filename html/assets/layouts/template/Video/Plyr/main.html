@@ -12,11 +12,11 @@
         {{javascript=external/bootstrap.min.js}}
         {{javascript=external/jquery.min.js}}
         {{javascript=external/jquery.editable.min.js}}
-
         {{javascript=app.js}}
-        {{stylesheet=themes/slate/bootstrap.min.css}}
-        {{stylesheet=video.css}}
-        
+
+        {{stylesheet=plyr/style.css}} 
+        {{stylesheet=plyr/simplebar.css}}
+
         <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
         <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
         <link
@@ -24,26 +24,21 @@
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
         />
 
-        {{function=ratingInclude}}
     </head>
-    <body>
-        <div class="container">
-           
-            {$CANVAS_HTML}
-            <video
-                controls
-                autoplay
-                crossorigin
-                playsinline
-                poster="{$thumbnail}"
-            >
-                <source src="{$VIDEO_URL}" type="video/mp4" size="{$height}" />
-            </video>
-            {$ChapterButtons}
+<body>
+        
+  <header>
+    <div class="menu-container">
+      <div class="row">
+        <div class="row-inner">
+          <div class="menu-horizontal menu-dd-shadow-lg"></div>
         </div>
-        {$AddChapter}
-       
-
+      </div>
+    </div>
+  </header>
+  {$VideoContainer}
+    {{template=videoPlyr/container/container}} 
+    {{javascript=plyr/app.js}} 
+    {{javascript=plyr/simplebar.js}}
     </body>
-    {$VIDEO_JS}
 </html>

@@ -1,7 +1,7 @@
 <?php
 
 use dbObject;
-use Plex\Core\PlexSql;
+use Plex\Modules\Database\PlexSql;
 use Plex\Core\Settings\MetaSettings;
 /**
  * plex web viewer

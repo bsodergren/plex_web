@@ -1,8 +1,7 @@
 <?php
 /**
- * plex web viewer
+ * plex web viewer.
  */
-
 function _cleaninjections($test)
 {
     $find = [

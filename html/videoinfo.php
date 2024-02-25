@@ -2,7 +2,7 @@
 
 use Plex\Core\Request;
 use Plex\Template\Render;
-use Plex\Core\FileListing;
+use Plex\Modules\Database\FileListing;
 use Plex\Template\Display\VideoDisplay;
 define('TITLE', 'Home');
 define('NONAVBAR', true);
