@@ -94,7 +94,6 @@ trait Breadcrumbs
 
             if (\count($request_tag) > 0) {
                 $crumbs[$_SESSION['library']] = $crumb_url.$sep.http_build_query(['studio' => $studio_key]);
-dump($request_tag);
                 foreach ($request_tag as $key => $value) {
                     $parts[$key] = $value;
                     $crumbs[$value] = $crumb_url.$sep.http_build_query($parts);

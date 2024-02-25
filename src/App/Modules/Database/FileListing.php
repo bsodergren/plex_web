@@ -69,13 +69,13 @@ class FileListing
             $query = [$query];
         }
         
-        dump([$field,$query]);
+        // dump([$field,$query]);
         foreach($query as $search){
             $WhereList[] = "{$field} like '%{$search}%'";
         }
 
         $where = implode(" and ",$WhereList);
-        dump($where);
+        // dump($where);
 
         $pageObj = new Pageinate($where, $this->currentpage, $this->urlPattern);
 
@@ -254,7 +254,7 @@ class FileListing
             $num_rows
         );
 
-        dump($joinQuery);
+        // dump($joinQuery);
         $this->saveSearch($joinQuery);
         $joinQuery = str_replace($num_rows, implode(',', $fieldArray), $joinQuery);
 

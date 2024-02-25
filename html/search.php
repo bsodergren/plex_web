@@ -28,13 +28,13 @@ if (!is_array($_REQUEST['field'])) {
     $_REQUEST['field'] = $fieldArray;
 }
 
-dump([__LINE__, $_REQUEST]);
+// dump([__LINE__, $_REQUEST]);
 
 if (count($queries) > 0) {
     $_REQUEST['query'] = $queries;
 }
 
-dump([__LINE__, $_REQUEST]);
+// dump([__LINE__, $_REQUEST]);
 
 if (isset($_REQUEST['sort'])) {
     $uri['sort'] = $_REQUEST['sort'];
