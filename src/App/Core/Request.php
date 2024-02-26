@@ -6,8 +6,6 @@ use Plex\Core\Utilities\PlexArray;
 
 class Request
 {
-
-    
     public $http_request = [];
 
     public $sort_type_map = [
@@ -55,15 +53,20 @@ class Request
     public static $url_array = [
     ];
     public static $tag_array = ['genre', 'artist', 'keyword'];
-    public static $tag_types = ['studio','substudio','artist','title','genre',];
+    public static $tag_types = ['studio', 'substudio', 'artist', 'title', 'genre'];
 
     public $session;
 
     public $uri;
-        
 
     public function __construct()
     {
+        foreach ($_REQUEST as $key => $value) {
+            if ('' == $value || null == $value) {
+                unset($_REQUEST[$key]);
+            }
+        }
+
         $this->http_request = $_REQUEST;
         $this->session = $_SESSION;
 

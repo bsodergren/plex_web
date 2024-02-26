@@ -113,11 +113,11 @@ class Functions extends Render
     public function videoButton($matches)
     {
         $var = $this->parseVars($matches);
-        if (\array_key_exists('pl_id', $var)) {
-            if ('' == $var['pl_id']) {
-                return '';
-            }
-        }
+        // if (\array_key_exists('pl_id', $var)) {
+        //     if ('' == $var['pl_id']) {
+        //         return '';
+        //     }
+        // }
 
         return Render::html('Video/buttons/'.$var['template'], []);
     }

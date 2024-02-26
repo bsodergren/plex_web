@@ -2,14 +2,14 @@
 
 namespace Plex\Core;
 
-use Plex\Template\Render;
-use Plex\Template\HTML\Elements;
 use Plex\Modules\Database\FileListing;
 use Plex\Template\Functions\Functions;
+use Plex\Template\HTML\Elements;
+use Plex\Template\Render;
 
 class VideoPlayer
 {
-    public $playlist_id = null;
+    public $playlist_id;
     public $id;
     public $db;
     public $playlistName;
@@ -17,10 +17,16 @@ class VideoPlayer
     public $canvas_form;
     public $carousel_item;
     public $canvas_item;
-    public $chapterIndex = null;
+    public $chapterIndex;
     public $js_params = [];
     public $params = [
     ];
+
+    public $sequence;
+    public $nextVideo;
+    public $prevVideo;
+    public $nextSequence;
+    public $prevSequence;
 
     public function __construct()
     {
@@ -31,21 +37,94 @@ class VideoPlayer
         $this->playlistId();
     }
 
+    public function getCurrentVideoid()
+    {
+        $this->db->where('video_id', $this->id);
+        $user = $this->db->getOne(Db_TABLE_SEQUENCE);
+        $this->sequence = $user['seq_id'];
+
+        return $user['seq_id'];
+    }
+
+    public function getVideoSeq($type)
+    {
+        $user = $this->db->rawQueryOne('select '.$type.'(seq_id) as cnt from '.Db_TABLE_SEQUENCE.' where Library = ?', [$_SESSION['library']]);
+
+        return $user['cnt'];
+    }
+
+    public function getPrevVideo()
+    {
+        $seq = $this->getCurrentVideoid();
+        $min = $this->getVideoSeq('MIN');
+        $max = $this->getVideoSeq('MAX');
+        $res = null;
+        do {
+            --$seq;
+            $this->db->where('seq_id', $seq);
+            $this->db->where('Library', $_SESSION['library']);
+            $res = $this->db->getone(Db_TABLE_SEQUENCE, '*');
+            if ($seq <= $min) {
+                $seq = $max + 1;
+            }
+        } while (null === $res);
+        $this->prevVideo = $res['video_id'];
+        $this->prevSequence = $seq;
+
+        return $this->prevVideo;
+    }
+
+    public function getNextVideo()
+    {
+        $seq = $this->getCurrentVideoid();
+        $min = $this->getVideoSeq('MIN');
+        $max = $this->getVideoSeq('MAX');
+        $res = null;
+        do {
+            ++$seq;
+            $this->db->where('seq_id', $seq);
+            $this->db->where('Library', $_SESSION['library']);
+            $res = $this->db->getone(Db_TABLE_SEQUENCE, '*');
+
+            if ($seq >= $max) {
+                $seq = $min - 1;
+            }
+        } while (null === $res);
+        $this->nextVideo = $res['video_id'];
+        $this->nextSequence = $seq;
+
+        return $this->nextVideo;
+    }
+
     public function getVideo()
     {
         $this->params['VIDEO_ID'] = $this->id;
         $this->params['PLAYLIST_ID'] = $this->playlist_id;
         $this->params['__LAYOUT_URL__'] = __LAYOUT_URL__;
- 
+
         $this->params['VIDEO_JS'] = $this->videoJs();
     }
 
     public function videoInfo()
     {
+        $fileList = (new FileListing(new Request()));
 
-        $res = (new FileListing(new Request))->getVideoDetails($this->id);
+        $res = $fileList->getVideoDetails($this->id);
+
+        if (!isset($this->playlist_id)) {
+            $this->js_params['NEXT_VIDEO_ID'] = $this->getNextVideo();
+            $this->js_params['PREV_VIDEO_ID'] = $this->getPrevVideo();
+            $this->js_params['COMMENT'] = '';
+
+            $txt = 'Prev: '.$this->prevVideo.':'.$this->prevSequence.' -- ';
+            $txt .= 'Current: '.$this->id.':'.$this->sequence.' -- ';
+            $txt .= 'Next: '.$this->nextVideo.':'.$this->nextSequence.'  ';
+
+            //   $this->params['nextprevIds'] =  $txt;
+        }
+
         $result = $res[0];
-        $active_title = null; 
+        $active_title = null;
 
         if (null === $active_title) {
             $active_title = $result['filename'];
@@ -57,8 +136,8 @@ class VideoPlayer
         $this->params['PAGE_TITLE'] = $result['title'];
         $this->params['VideoId'] = $this->id;
 
-        $this->params['thumbnail'] = APP_HOME . $result['thumbnail'];
-        
+        $this->params['thumbnail'] = APP_HOME.$result['thumbnail'];
+
         $this->params['Video_studio'] = $result['studio'];
         $this->params['Video_substudio'] = $result['substudio'];
         $this->params['Video_Genre'] = $result['genre'];
@@ -69,9 +148,8 @@ class VideoPlayer
         $this->params['AddChapter'] = $this->addChapter();
         $this->params['ChapterButtons'] = $this->getChapterButtons();
         $this->js_params['ChapterIndex'] = $this->getChapterJson();
-        $this->js_params['height'] =  $result['height'];
-        $this->js_params['width'] =  $result['width'];
-
+        $this->js_params['height'] = $result['height'];
+        $this->js_params['width'] = $result['width'];
 
         $this->js_params['VideoStudio'] = $result['studio'];
         $this->js_params['VideoTitle'] = $active_title;
@@ -122,7 +200,7 @@ class VideoPlayer
                 $hiddenList .= Elements::add_hidden('playlist[]', $video_id);
             }
             $this->canvas_form = Render::html(
-                $this->videoTemplate . '/canvas/form',
+                $this->videoTemplate.'/canvas/form',
                 [
                     'search_id' => $playlist_info['search_id'],
                     'playlist_list' => $hiddenList,
@@ -139,7 +217,7 @@ class VideoPlayer
         }
 
         return Render::html(
-            $this->videoTemplate . '/'.$type.'/item',
+            $this->videoTemplate.'/'.$type.'/item',
             [
                 'THUMBNAIL' => ( new Functions())->fileThumbnail($row['playlist_video_id'], 'alt="#" class="img-fluid" '),
                 'STUDIO' => $row['studio'],
@@ -207,12 +285,12 @@ class VideoPlayer
             }
         }
         $this->params['RemoveVideo'] = $this->getRemoveVideo();
-       // $this->params['PLAYLIST_HEIGHT'] = $playlist_height;
+        // $this->params['PLAYLIST_HEIGHT'] = $playlist_height;
 
         // $this->params['CAROUSEL_HTML' => $this->getCarousel();
         $this->params['CANVAS_HTML'] = $this->getCanvas();
         $this->params['CAROUSEL_JS'] = $this->getCarouselScript();
-        
+
         $this->js_params['PLAYLIST_ID'] = $this->playlist_id;
         $this->js_params['NEXT_VIDEO_ID'] = $next_video_id;
         $this->js_params['PREV_VIDEO_ID'] = $prev_video_id;
@@ -221,47 +299,49 @@ class VideoPlayer
 
     public function getCarousel()
     {
-        return Render::html($this->videoTemplate . '/carousel/block', ['CAROUSEL_INNER_HTML' => $this->carousel_item]);
+        return Render::html($this->videoTemplate.'/carousel/block', ['CAROUSEL_INNER_HTML' => $this->carousel_item]);
     }
 
     public function getCarouselScript()
     {
-        return Render::html($this->videoTemplate .'/carousel/js', ['PLAYLIST_ID' => $this->playlist_id]);
+        return Render::html($this->videoTemplate.'/carousel/js', ['PLAYLIST_ID' => $this->playlist_id]);
     }
 
     public function getCanvas()
     {
         $this->addSearchBox();
 
-        return Render::html($this->videoTemplate .'/canvas/block', ['CANVAS_LIST' => $this->canvas_item,
+        return Render::html($this->videoTemplate.'/canvas/block', ['CANVAS_LIST' => $this->canvas_item,
             'PlaylistName' => $this->playlistName, 'Canvas_Form' => $this->canvas_form]);
     }
 
     public function videoJs()
     {
-        return Render::javascript($this->videoTemplate .'/video_js', $this->js_params);
+        return Render::javascript($this->videoTemplate.'/video_js', $this->js_params);
     }
 
     public function getRemoveVideo()
     {
         $videoId = Elements::add_hidden('videoId', $this->id);
         $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
-        return Render::html($this->videoTemplate .'/buttons/remove', ['HIDDEN_VIDEO_ID'=> $videoId]);
+
+        return Render::html($this->videoTemplate.'/buttons/remove', ['HIDDEN_VIDEO_ID' => $videoId]);
     }
+
     public function addChapter()
     {
         $videoId = Elements::add_hidden('videoId', $this->id);
-        if($this->playlist_id != null){
+        if (null != $this->playlist_id) {
             $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
         }
 
-        return Render::html($this->videoTemplate .'/buttons/addChapter', ['HIDDEN_VIDEO_ID'=> $videoId]);
+        return Render::html($this->videoTemplate.'/buttons/addChapter', ['HIDDEN_VIDEO_ID' => $videoId]);
     }
-    
+
     public function getChapterButtons()
     {
         $index = $this->getChapters();
-        foreach($index as $i => $row){
+        foreach ($index as $i => $row) {
             $editableClass = 'edit'.$row['time'];
             $functionName = 'make'.$row['time'].'Editable';
 
@@ -273,37 +353,35 @@ class VideoPlayer
                     'ID_NAME' => $row['time'],
                     'EDITABLE' => $editableClass,
                     'FUNCTION' => $functionName,
-                    'VIDEO_KEY' =>$this->id,
+                    'VIDEO_KEY' => $this->id,
                 ]
             );
-            $html .= Render::html($this->videoTemplate .'/buttons/chapter', $row);
+            $html .= Render::html($this->videoTemplate.'/buttons/chapter', $row);
         }
-        return $html;
-       // 
 
+        return $html;
     }
+
     public function getChapterJson()
     {
         return json_encode($this->getChapters());
     }
+
     public function getChapters()
     {
-if($this->chapterIndex == null){
-        $this->db->where('video_id', $this->id);
-        $this->db->orderBy('timeCode', 'ASC');
-        $search_result = $this->db->get(Db_TABLE_VIDEO_CHAPTER);
-        foreach($search_result as $i => $row)
-        {
-            if($row['name'] === null){
-                $row['name'] = "Timestamp";
+        if (null == $this->chapterIndex) {
+            $this->db->where('video_id', $this->id);
+            $this->db->orderBy('timeCode', 'ASC');
+            $search_result = $this->db->get(Db_TABLE_VIDEO_CHAPTER);
+            foreach ($search_result as $i => $row) {
+                if (null === $row['name']) {
+                    $row['name'] = 'Timestamp';
+                }
+
+                $this->chapterIndex[] = ['time' => $row['timeCode'], 'label' => $row['name']];
             }
-
-            $this->chapterIndex[] = ['time'=>$row['timeCode'],'label'=>$row['name']];
-
         }
-    }
-        return $this->chapterIndex;
 
+        return $this->chapterIndex;
     }
-    
 }

@@ -117,11 +117,11 @@ class PlexSql extends \MysqliDb
     //     dd($query);
     //     return $db->query($query);
     // }
-    public static function getLibrary()
+    public static function getLibrary($prefix = 'm.', $useAnd = 'AND')
     {
         global $_SESSION;
         if ('All' != $_SESSION['library']) {
-            return " AND m.library = '".$_SESSION['library']."'  ";
+            return ' '.$useAnd.' '.$prefix."library = '".$_SESSION['library']."'  ";
         }
 
         return null;
