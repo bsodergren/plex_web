@@ -1,0 +1,49 @@
+
+.ScenePlayerHeaderPlus-ActionTags-ButtonLink {
+    background: rgba(0, 0, 0, 0);
+    color: white;
+    border: none;
+    border-bottom: 3px solid white;
+    font-size: 18px;
+}
+
+.ScenePlayerHeaderPlus-ActionTags-Triangle {
+    border-right: 3px solid white;
+    border-bottom: 3px solid white;
+}
+
+.styles_link_triangle {
+    position: relative;
+    margin: 0 20px 5px 0;
+    height: 25px;
+    user-select: none;
+}
+
+.styles_triangle {
+    top: 4px;
+    right: -8px;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    transform: rotate(-45deg);
+}
+
+.ButtonLink {
+    /* font-family: Hind; */
+    /* background: linear-gradient(#000000, #ffffff); */
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(143,143,148,1) 82%, rgba(255,255,255,1) 100%);
+
+    /* color: #0a0a0c; */
+    text-decoration: none;
+    /* border: #09c6cd 1px solid; */
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 18px;
+    text-transform: capitalize;
+    padding: .3em .8em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}

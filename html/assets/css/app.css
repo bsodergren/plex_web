@@ -47,10 +47,7 @@ footer {
 
 .vertical-text {
     transform-origin: center;
-    transform: rotate(90deg);
-
-    max-height: 35px;
-}
+    transform: rotate(90deg);}
 
 .blueTable-thead-th {
     font-size: 18px;

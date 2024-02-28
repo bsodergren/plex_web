@@ -1,0 +1,7 @@
+<div class="col  categories-wrapper" style="max-width:{$width}px;">
+{$Thumbnail_html}
+    <div class="d-grid gap-2">
+        {{function=videoPlayer|query?id={$FILE_ID},href=video.php,text=Play_Video}}
+        {{function=videoPlayer|query?id={$FILE_ID},query?next={$NEXT_ID},href=videoinfo.php,text=Video_Info}}
+    </div>
+</div>

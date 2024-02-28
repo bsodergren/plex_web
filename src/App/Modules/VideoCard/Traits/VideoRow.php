@@ -66,7 +66,6 @@ trait VideoRow
     } // end byte_convert()
     public function ChapterRow()
     {
-        dump("here");
         $this->params['FIELD_ROW_HTML'] .= Render::html($this->template_base.'/Rows/Chapters', 
         ['ChapterButtons' => $this->Chapters->getChapterButtons()]);
     }
