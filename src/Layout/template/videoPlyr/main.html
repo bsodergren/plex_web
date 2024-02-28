@@ -20,12 +20,16 @@
     </head>
     <body>
         <div class="container">
+            <div class="position-relative">
+                <button class="btn btn-primary canvas-btn-desc" type="button">
+                    {$nextprevIds}</button>
+            </div>
             {$CANVAS_HTML}
             <video controls autoplay crossorigin playsinline poster="{$thumbnail}">
                 <source src="{$VIDEO_URL}" type="video/mp4" size="{$height}" />
             </video>
             <div class="d-flex flex-row justify-content-center">
-                <div>{{function=videoButton|template=prev,pl_id={$PLAYLIST_ID}}}</div>
+                <div>{{function=videoButton|template=prev,prev_id={$nextprevIds},pl_id={$PLAYLIST_ID}}}</div>
                 <div>{{function=videoButton|template=backward}}</div>
                 <div>{{function=videoButton|template=forward}}</div>
                 <div>{{function=videoButton|template=next,pl_id={$PLAYLIST_ID}}}</div>

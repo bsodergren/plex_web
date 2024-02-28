@@ -6,7 +6,6 @@ use Plex\Template\Render;
 
 trait Icons 
 {
-    private $IconsDir = 'elements/Icons';
 
     public $iconList = [];
 
@@ -58,7 +57,7 @@ trait Icons
     private function getIconCSS($icon){
         $class = $this->getIconClass($icon);
         $color = $this->getColor();
-        return Render::html($this->IconsDir.'/css',['Color' => $color,'Class'=>$class]);
+        return Render::html(self::$IconsDir.'/css',['Color' => $color,'Class'=>$class]);
     }
     private function getIcon($icon, $matches){
         $this->IconMatches = $matches;
@@ -69,7 +68,7 @@ trait Icons
                 $CSS = $this->getIconCSS($icon);
         }
         // $this->IconMatches = [];
-        return Render::html($this->IconsDir.'/'.$icon,['ICONSTYLE' => $Style,'Class'=>$class,'CSS'=>$CSS]);
+        return Render::html(self::$IconsDir.'/'.$icon,['ICONSTYLE' => $Style,'Class'=>$class,'CSS'=>$CSS]);
 
     }
 }

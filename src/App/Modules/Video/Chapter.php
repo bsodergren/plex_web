@@ -35,7 +35,7 @@ class Chapter
             $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
         }
 
-        return Render::html($this->videoTemplate.'/buttons/addChapter', ['HIDDEN_VIDEO_ID' => $videoId]);
+        return Render::html($this->chapterTemplate . '/addChapter', ['HIDDEN_VIDEO_ID' => $videoId]);
     }
 
 
@@ -73,8 +73,8 @@ class Chapter
         if (\array_key_exists('playlistid', $this->data)) {
             $urlQuery .= '&playlist_id='.$this->data['playlistid'];
         }
-
-        return __URL_HOME__.'/video.php'.$urlQuery;
+return $this->data['timeCode'];
+        // return __URL_HOME__.'/video.php'.$urlQuery;
     }
 
     public function updateChapter()

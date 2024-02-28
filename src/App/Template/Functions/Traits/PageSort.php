@@ -3,15 +3,12 @@
 namespace Plex\Template\Functions\Traits;
 
 use Plex\Core\Request;
-use Plex\Template\Display\Display;
 use Plex\Template\Render;
-
 
 trait PageSort
 {
-    private $PageSortDir = 'elements/PageSort';
+    private static $PageSortDir = 'elements/PageSort';
 
-    
     public static function sort_options()
     {
         global $pageObj;
@@ -43,21 +40,26 @@ trait PageSort
             $bg = '';
             $pill = '';
             if (0 == $i) {
-                $pill = ' rounded-start-pill';
+                //   $pill = ' rounded-start-pill';
             }
             ++$i;
             if ($i == $max) {
-                $pill = ' rounded-end-pill';
+                //  $pill = ' rounded-end-pill';
             }
 
             if ($current == $value) {
-                $bg = ' active';
+                //    $bg = ' active';
             }
             $class = 'nav-link text-light'.$bg; // .$pill;
             $request_string = $request_uri.$sep.'sort='.$value;
-            $html .= Display::directory_navlinks($url_array['url'], $key, 
-            $request_string, $class, 'role="button" aria-pressed="true"');
+
+            $html .= Render::return(self::$PageSortDir.'/page_item',
+                ['LI_CLASS' => 'nav-item',
+                    'A_CLASS' => $class,
+                    'A_HREF' => $url_array['url'].$request_string,
+                    'A_TEXT' => $key]);
         }
+        //  dump($html);
 
         return $html;
     } // end sort_options()
@@ -66,10 +68,8 @@ trait PageSort
     {
         global $pageObj,$url_array;
         if (__SHOW_SORT__ == true && isset($pageObj)) {
-           return Render::return($this->PageSortDir.'/sort', 
-            ['SORT_HTML' => self::sort_options()]);
+            return Render::return(self::$PageSortDir.'/sort',
+                ['SORT_HTML' => self::sort_options()]);
         }
-
     }
 }
-

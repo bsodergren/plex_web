@@ -5,12 +5,26 @@
 
 namespace Plex\Template\Functions\Traits;
 
-use Plex\Template\HTML\Elements;
 use Plex\Template\Render;
+use Plex\Template\HTML\Elements;
+use Plex\Template\Functions\Functions;
 
 trait Video
 {
     public function UseEditable($matches) {}
+
+
+    public function videoButton($matches)
+    {
+        $var = $this->parseVars($matches);
+        // if (\array_key_exists('pl_id', $var)) {
+        //     if ('' == $var['pl_id']) {
+        //         return '';
+        //     }
+        // }
+
+        return Render::html(Functions::$ButtonDir.'/'.$var['template'], $var);
+    }
 
     public function videoPlayer($matches)
     {
@@ -51,7 +65,7 @@ trait Video
                     $params['RATING_HIDDEN'] = Elements::add_hidden('close','false','id="close_window"');
                 }
 
-                return Render::html('elements/Rating/rating', $params);
+                return Render::html(Functions::$RatingsDir. '/rating', $params);
             }
         }
     }
@@ -60,7 +74,7 @@ trait Video
     {
         if (true == \defined('SHOW_RATING')) {
             if (SHOW_RATING == true) {
-                return Render::html('elements/Rating/header', []);
+                return Render::html(Functions::$RatingsDir. '/header', []);
             }
         }
     }

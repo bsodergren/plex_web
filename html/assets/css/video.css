@@ -92,7 +92,26 @@ svg {
     transition: all 0.3s ease;
 }
 
+.canvas-btn-desc
+{
+    -ms-transform: rotate(270deg);
+    /* IE 9 */
+    -webkit-transform: rotate(270deg);
+    /* Chrome, Safari, Opera */
+    transform: rotate(270deg);
+    position: fixed;
+    top: 205px;
+    left: -55px;
 
+    display: block;
+    text-decoration: none;
+
+    -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
 .ScenePlayerHeaderPlus-ActionTags-ButtonLink {
     background: rgba(0, 0, 0, 0);
     color: white;

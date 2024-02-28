@@ -8,7 +8,6 @@ use Plex\Template\Render;
 
 trait Breadcrumbs
 {
-    private $BreadcrumbsDir = 'elements/Breadcrumb';
     
     public function createBreadcrumbs()
     {
@@ -153,9 +152,9 @@ trait Breadcrumbs
 
             $params['CLASS'] = $class;
             $params['LINK'] = $link;
-            $crumbs_html .= Render::html($this->BreadcrumbsDir.'/crumb', $params);
+            $crumbs_html .= Render::html(self::$BreadcrumbsDir.'/crumb', $params);
         }
 
-        return Render::html($this->BreadcrumbsDir.'/breadcrumb', ['CRUMB_LINKS' => $crumbs_html]);
+        return Render::html(self::$BreadcrumbsDir.'/breadcrumb', ['CRUMB_LINKS' => $crumbs_html]);
     }
 }

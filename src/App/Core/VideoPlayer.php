@@ -120,7 +120,7 @@ class VideoPlayer
             $txt .= 'Current: '.$this->id.':'.$this->sequence.' -- ';
             $txt .= 'Next: '.$this->nextVideo.':'.$this->nextSequence.'  ';
 
-            //   $this->params['nextprevIds'] =  $txt;
+              // $this->params['nextprevIds'] =  $txt;
         }
 
         $result = $res[0];
@@ -200,7 +200,7 @@ class VideoPlayer
                 $hiddenList .= Elements::add_hidden('playlist[]', $video_id);
             }
             $this->canvas_form = Render::html(
-                $this->videoTemplate.'/canvas/form',
+                Functions::$PlaylistDir.'/canvas/form',
                 [
                     'search_id' => $playlist_info['search_id'],
                     'playlist_list' => $hiddenList,
@@ -217,7 +217,7 @@ class VideoPlayer
         }
 
         return Render::html(
-            $this->videoTemplate.'/'.$type.'/item',
+            Functions::$PlaylistDir.'/'.$type.'/item',
             [
                 'THUMBNAIL' => ( new Functions())->fileThumbnail($row['playlist_video_id'], 'alt="#" class="img-fluid" '),
                 'STUDIO' => $row['studio'],
@@ -299,19 +299,20 @@ class VideoPlayer
 
     public function getCarousel()
     {
-        return Render::html($this->videoTemplate.'/carousel/block', ['CAROUSEL_INNER_HTML' => $this->carousel_item]);
+        
+        return Render::html(Functions::$PlaylistDir.'/carousel/block', ['CAROUSEL_INNER_HTML' => $this->carousel_item]);
     }
 
     public function getCarouselScript()
     {
-        return Render::html($this->videoTemplate.'/carousel/js', ['PLAYLIST_ID' => $this->playlist_id]);
+        return Render::html(Functions::$PlaylistDir.'/carousel/js', ['PLAYLIST_ID' => $this->playlist_id]);
     }
 
     public function getCanvas()
     {
         $this->addSearchBox();
 
-        return Render::html($this->videoTemplate.'/canvas/block', ['CANVAS_LIST' => $this->canvas_item,
+        return Render::html(Functions::$PlaylistDir.'/canvas/block', ['CANVAS_LIST' => $this->canvas_item,
             'PlaylistName' => $this->playlistName, 'Canvas_Form' => $this->canvas_form]);
     }
 
@@ -325,7 +326,7 @@ class VideoPlayer
         $videoId = Elements::add_hidden('videoId', $this->id);
         $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
 
-        return Render::html($this->videoTemplate.'/buttons/remove', ['HIDDEN_VIDEO_ID' => $videoId]);
+        return Render::html(Functions::$ButtonDir.'/remove', ['HIDDEN_VIDEO_ID' => $videoId]);
     }
 
     public function addChapter()
@@ -335,7 +336,7 @@ class VideoPlayer
             $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
         }
 
-        return Render::html($this->videoTemplate.'/buttons/addChapter', ['HIDDEN_VIDEO_ID' => $videoId]);
+        return Render::html(Functions::$ChapterDir.'/addChapter', ['HIDDEN_VIDEO_ID' => $videoId]);
     }
 
     public function getChapterButtons()
@@ -348,7 +349,7 @@ class VideoPlayer
             $row['EDITABLE'] = $editableClass;
 
             $this->params['VIDEOINFO_EDIT_JS'] .= Render::javascript(
-                $this->videoTemplate.'/buttons/chapter',
+                Functions::$ChapterDir.'/chapter',
                 [
                     'ID_NAME' => $row['time'],
                     'EDITABLE' => $editableClass,
@@ -356,7 +357,7 @@ class VideoPlayer
                     'VIDEO_KEY' => $this->id,
                 ]
             );
-            $html .= Render::html($this->videoTemplate.'/buttons/chapter', $row);
+            $html .= Render::html(Functions::$ChapterDir.'/chapter', $row);
         }
 
         return $html;

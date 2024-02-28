@@ -27,6 +27,15 @@ class Functions extends Render
     use ThemeSwitcher;
     use Video;
 
+
+    public static $ElementsDir = 'elements';
+    public static $PlaylistDir = 'elements/Playlist';
+    public static $ChapterDir = 'elements/Chapters';
+    public static $ButtonDir = 'elements/Buttons';
+    public static $RatingsDir = 'elements/Rating';
+    public static $BreadcrumbsDir = 'elements/Breadcrumb';
+    public static $IconsDir = 'elements/Icons';
+
     public function __construct()
     {
 
@@ -94,14 +103,12 @@ class Functions extends Render
     public function playListButton()
     {
 
-        
-    $playlists = (new Playlist())->getPlaylistSelectOptions();
-
-        $params['CANVAS_HEADER'] = Render::html('elements/Playlist/canvas_header', []);
-        $params['CANVAS_BODY'] = Render::html('elements/Playlist/canvas_body', ['SelectPlaylists' => $playlists]);
+        $playlists = (new Playlist())->getPlaylistSelectOptions();
+        $params['CANVAS_HEADER'] = Render::html(self::$ButtonsDir.'/Playlist/canvas_header', []);
+        $params['CANVAS_BODY'] = Render::html(self::$ButtonsDir.'/Playlist/canvas_body', ['SelectPlaylists' => $playlists]);
         //$params['CANVAS_BODY'] = Render::html('elements/Playlist/canvas_body', []);
 
-        return Render::html('elements/Playlist/canvas', $params);
+        return Render::html(self::$ButtonsDir.'/Playlist/canvas', $params);
         // dump($html);
     }
 
@@ -110,17 +117,7 @@ class Functions extends Render
         return (new AlphaSort())->displayAlphaBlock();
     }
 
-    public function videoButton($matches)
-    {
-        $var = $this->parseVars($matches);
-        // if (\array_key_exists('pl_id', $var)) {
-        //     if ('' == $var['pl_id']) {
-        //         return '';
-        //     }
-        // }
-
-        return Render::html('Video/buttons/'.$var['template'], []);
-    }
+  
 
     public function pageHeader($matches)
     {

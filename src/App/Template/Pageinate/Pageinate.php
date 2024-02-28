@@ -109,7 +109,9 @@ class Pageinate extends Paginator
                 'LI_CLASS' => ' class="page-item " ',
                 'A_CLASS'  => ' class="page-link  rounded-start-pill" ',
                 'A_HREF'   => htmlspecialchars($this->paginator->getPrevUrl()),
-                'A_TEXT'   => '&laquo; '.$this->paginator->previousText,
+                'A_TEXT'   => $this->paginator->previousText,
+                // 'A_TEXT'   => '&laquo; '.$this->paginator->previousText,
+
             ];
             $previous = Render::return('base/footer/page_item', $params);
         } else {
@@ -119,9 +121,11 @@ class Pageinate extends Paginator
             $next_page = true;
             $params    = [
                 'LI_CLASS' => ' class="page-item rounded-end-pill"',
-                'A_CLASS'  => ' class="page-link  rounded-end-pill"',
+                'A_CLASS'  => ' class="page-link rounded-end-pill"',
                 'A_HREF'   => htmlspecialchars($this->paginator->getNextUrl()),
-                'A_TEXT'   => $this->paginator->nextText.' &raquo;',
+                'A_TEXT'   => $this->paginator->nextText,
+
+//                'A_TEXT'   => $this->paginator->nextText.' &raquo;',
             ];
             $next      = Render::return('base/footer/page_item', $params);
         } else {
