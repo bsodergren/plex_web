@@ -4,10 +4,12 @@ namespace Plex\Template\HTML;
 
 use Plex\Template\Render;
 use Plex\Template\HTML\Elements;
+use Plex\Modules\Database\PlexSql;
 
 class Elements
 {
 
+    public static $ElementsDir = 'elements/html';
     public static function template($template)
     {
         return Render::return($template, []);
@@ -22,7 +24,7 @@ class Elements
             return '';
         }
 
-        return Render::return('elements/html/link', ['CSS_URL' => __LAYOUT_URL__.$stylesheet]);
+        return Render::return(self::$ElementsDir.'/link', ['CSS_URL' => __LAYOUT_URL__.$stylesheet]);
     }
 
     public static function javascript($javafile)
@@ -34,12 +36,12 @@ class Elements
             return '';
         }
 
-        return Render::return('elements/html/script', ['SCRIPT_URL' => __LAYOUT_URL__.$javafile]);
+        return Render::return(self::$ElementsDir.'/script', ['SCRIPT_URL' => __LAYOUT_URL__.$javafile]);
     }
 
     public static function addButton($text, $type = 'button', $class = 'btn button', $extra = '', $javascript = '')
     {
-        return Render::return('elements/html/button', [
+        return Render::return(self::$ElementsDir.'/button', [
             'TEXT' => $text,
             'TYPE' => $type,
             'CLASS' => $class,

@@ -1,9 +1,9 @@
 <?php
 namespace Plex\Template\Display\Layout;
 
+use Plex\Modules\VideoCard\VideoCard;
 use Plex\Template\Render;
 use Plex\Template\HTML\Elements;
-use Plex\Modules\Video\Render\Card;
 use Plex\Template\Display\VideoDisplay;
 use Plex\Template\Functions\Traits\Video;
 
@@ -71,7 +71,7 @@ class GridDisplay extends VideoDisplay
                 'genre'     => $results[$i]['genre'],
                 'added'     => $results[$i]['added'],
                 // 'filename'  => $results[$i]['filename'],
-                'duration'  => Card::videoDuration($results[$i]['duration']),
+                'duration'  => VideoCard::videoDuration($results[$i]['duration']),
 
                 // 'Duration' => videoDuration($results[$i]['duration']),
             ];

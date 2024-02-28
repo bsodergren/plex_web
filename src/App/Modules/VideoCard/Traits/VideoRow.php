@@ -1,6 +1,6 @@
 <?php
 
-namespace Plex\Modules\Video\Render\Traits;
+namespace Plex\Modules\VideoCard\Traits;
 
 use Plex\Template\Render;
 use Plex\Template\HTML\Elements;

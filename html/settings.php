@@ -1,8 +1,6 @@
 <?php
-use Plex\Modules\Database\FileListing;
-use Plex\Template\Display\Display;
 
-use Plex\Template\Display\VideoDisplay;
+use Plex\Modules\Process\Settings;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
 require_once '_config.inc.php';
@@ -10,7 +8,7 @@ require_once '_config.inc.php';
 $form = new Formr\Formr('bootstrap4');
 
 if ($form->submitted()) {
-    echo proccess_settings('home.php');
+    echo (new Settings($_REQUEST))->proccess_settings('home.php');
 }
 
 define('TITLE', 'Test Page');

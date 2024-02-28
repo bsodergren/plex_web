@@ -3,10 +3,9 @@
  * plex web viewer
  */
 
-use Plex\Modules\Database\PlexSql;
-use Plex\Template\Render;
-use Plex\Core\ProcessForms;
+
 use Plex\Template\Template;
+use Plex\Modules\Process\Forms;
 use Plex\Template\Layout\Header;
 
 require_once '_config.inc.php';
@@ -36,7 +35,9 @@ if (array_key_exists('action', $_REQUEST)) {
         Header::Display();
     }
 }
+
 logger('_REQUEST', $_REQUEST);
 
-$forms = new ProcessForms($_REQUEST);
-echo $forms->redirect;
+$ProcessReq = new Forms($_REQUEST);
+$ProcessReq->process();
+echo $ProcessReq->redirect;

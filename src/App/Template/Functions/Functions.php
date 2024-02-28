@@ -104,11 +104,11 @@ class Functions extends Render
     {
 
         $playlists = (new Playlist())->getPlaylistSelectOptions();
-        $params['CANVAS_HEADER'] = Render::html(self::$ButtonsDir.'/Playlist/canvas_header', []);
-        $params['CANVAS_BODY'] = Render::html(self::$ButtonsDir.'/Playlist/canvas_body', ['SelectPlaylists' => $playlists]);
+        $params['CANVAS_HEADER'] = Render::html(self::$ButtonDir.'/Playlist/canvas_header', []);
+        $params['CANVAS_BODY'] = Render::html(self::$ButtonDir.'/Playlist/canvas_body', ['SelectPlaylists' => $playlists]);
         //$params['CANVAS_BODY'] = Render::html('elements/Playlist/canvas_body', []);
 
-        return Render::html(self::$ButtonsDir.'/Playlist/canvas', $params);
+        return Render::html(self::$ButtonDir.'/Playlist/canvas', $params);
         // dump($html);
     }
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Plex\Modules\Video\Render;
+namespace Plex\Modules\VideoCard;
 
-use Plex\Modules\Video\Chapter;
-use Plex\Modules\Video\Render\Traits\VideoRow;
-use Plex\Template\HTML\Elements;
 use Plex\Template\Render;
+use Plex\Template\HTML\Elements;
+use Plex\Modules\Chapter\Chapter;
+use Plex\Modules\VideoCard\Traits\VideoRow;
 
 /**
  * plex web viewer.
@@ -14,7 +14,7 @@ use Plex\Template\Render;
 /**
  * plex web viewer.
  */
-class Card
+class VideoCard
 {
     use VideoRow;
 

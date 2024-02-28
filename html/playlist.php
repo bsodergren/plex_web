@@ -1,10 +1,10 @@
 <?php
 
-use Plex\Core\ProcessForms;
+use Plex\Template\Render;
+use Plex\Modules\Process\Forms;
+use Plex\Template\HTML\Elements;
 use Plex\Modules\Playlist\Playlist;
 use Plex\Template\Functions\Functions;
-use Plex\Template\HTML\Elements;
-use Plex\Template\Render;
 
 
 /**
@@ -15,7 +15,8 @@ require_once '_config.inc.php';
 
 dump($_REQUEST);
 if (isset($_REQUEST['playlist_id'])) {
-    $p = new ProcessForms($_REQUEST);
+    $p = new Forms($_REQUEST);
+    $p->process();
 
     $playlist_id = $_REQUEST['playlist_id'];
 }

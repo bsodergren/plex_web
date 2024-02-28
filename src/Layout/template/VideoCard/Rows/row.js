@@ -10,7 +10,7 @@ function !!FUNCTION!!() {
                     type: 'post',
                     url: 'process.php',
                     data: jQuery.param({
-                        submit: 'update',
+                        submit: 'updateVideoCard',
                         !!ID_NAME!!: data.content,
                         video_key: '!!VIDEO_KEY!!'
                         }),

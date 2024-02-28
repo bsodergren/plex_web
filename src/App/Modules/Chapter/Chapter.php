@@ -1,8 +1,10 @@
 <?php
 
-namespace Plex\Modules\Video;
+namespace Plex\Modules\Chapter;
 
 use Plex\Template\Render;
+use Plex\Template\HTML\Elements;
+use Plex\Template\Functions\Functions;
 
 class Chapter
 {
@@ -12,7 +14,6 @@ class Chapter
     public $library;
     public $playlist_id;
     public $id;
-    public $chapterTemplate = 'elements/Chapters';
 
     public function __construct($data)
     {
@@ -35,14 +36,14 @@ class Chapter
             $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
         }
 
-        return Render::html($this->chapterTemplate . '/addChapter', ['HIDDEN_VIDEO_ID' => $videoId]);
+        return Render::html(Functions::$ChaptersDir.'/addChapter', ['HIDDEN_VIDEO_ID' => $videoId]);
     }
-
 
     public function getChapterJson()
     {
         return json_encode($this->Chapters->getChapters());
     }
+
     public function getChapters()
     {
         if (null == $this->chapterIndex) {
@@ -73,7 +74,8 @@ class Chapter
         if (\array_key_exists('playlistid', $this->data)) {
             $urlQuery .= '&playlist_id='.$this->data['playlistid'];
         }
-return $this->data['timeCode'];
+
+        return $this->data['timeCode'];
         // return __URL_HOME__.'/video.php'.$urlQuery;
     }
 
@@ -105,7 +107,7 @@ return $this->data['timeCode'];
             $row['EDITABLE'] = $editableClass;
 
             $row['VIDEOINFO_EDIT_JS'] = Render::javascript(
-                $this->chapterTemplate.'/chapter',
+                Functions::$ChaptersDir.'/chapter',
                 [
                     'ID_NAME' => $row['time'],
                     'EDITABLE' => $editableClass,
@@ -113,7 +115,7 @@ return $this->data['timeCode'];
                     'VIDEO_KEY' => $this->id,
                 ]
             );
-            $html .= Render::html($this->chapterTemplate.'/chapter', $row);
+            $html .= Render::html(Functions::$ChaptersDir.'/chapter', $row);
         }
 
         return $html;
