@@ -29,16 +29,6 @@ class Chapter
         }
     }
 
-    public function addChapter()
-    {
-        $videoId = Elements::add_hidden('videoId', $this->id);
-        if (null != $this->playlist_id) {
-            $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
-        }
-
-        return Render::html(Functions::$ChaptersDir.'/addChapter', ['HIDDEN_VIDEO_ID' => $videoId]);
-    }
-
     public function getChapterJson()
     {
         return json_encode($this->Chapters->getChapters());
@@ -46,6 +36,7 @@ class Chapter
 
     public function getChapters()
     {
+        
         if (null == $this->chapterIndex) {
             $this->db->where('video_id', $this->id);
             $this->db->orderBy('timeCode', 'ASC');
@@ -62,41 +53,6 @@ class Chapter
         return $this->chapterIndex;
     }
 
-    public function addChapterVideo()
-    {
-        $data = [
-            'timeCode' => $this->data['timeCode'],
-            'video_id' => $this->data['videoId'],
-            'name' => $this->data['name'],
-        ];
-        $res = $this->db->insert(Db_TABLE_VIDEO_CHAPTER, $data);
-        $urlQuery = '?id='.$this->data['videoId'];
-        if (\array_key_exists('playlistid', $this->data)) {
-            $urlQuery .= '&playlist_id='.$this->data['playlistid'];
-        }
-
-        return $this->data['timeCode'];
-        // return __URL_HOME__.'/video.php'.$urlQuery;
-    }
-
-    public function updateChapter()
-    {
-        $timeCode = null;
-        foreach ($this->data as $key => $value) {
-            if (\is_int($key)) {
-                $timeCode = $key;
-                $name = $value;
-                continue;
-            }
-            if ('video_key' == $key) {
-                $videoId = $value;
-                continue;
-            }
-        }
-        $sql = 'UPDATE '.Db_TABLE_VIDEO_CHAPTER." SET name = '".$name."' WHERE video_id = ".$videoId.' and timeCode = '.$timeCode.'';
-        $this->db->query($sql);
-    }
-
     public function getChapterButtons()
     {
         $index = $this->getChapters();
@@ -107,7 +63,7 @@ class Chapter
             $row['EDITABLE'] = $editableClass;
 
             $row['VIDEOINFO_EDIT_JS'] = Render::javascript(
-                Functions::$ChaptersDir.'/chapter',
+                Functions::$ChapterDir.'/chapter',
                 [
                     'ID_NAME' => $row['time'],
                     'EDITABLE' => $editableClass,
@@ -115,7 +71,7 @@ class Chapter
                     'VIDEO_KEY' => $this->id,
                 ]
             );
-            $html .= Render::html(Functions::$ChaptersDir.'/chapter', $row);
+            $html .= Render::html(Functions::$ChapterDir.'/chapter', $row);
         }
 
         return $html;

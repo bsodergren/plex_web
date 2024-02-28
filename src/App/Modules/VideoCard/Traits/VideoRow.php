@@ -64,9 +64,11 @@ trait VideoRow
     
         return sprintf('%4.2f TB', $size / 1073741824);
     } // end byte_convert()
-    public function Chapters()
+    public function ChapterRow()
     {
-        $this->params['FIELD_ROW_HTML'] .= Render::html($this->template_base.'/Rows/Chapters', ['ChapterButtons' => $this->Chapters->getChapterButtons()]);
+        dump("here");
+        $this->params['FIELD_ROW_HTML'] .= Render::html($this->template_base.'/Rows/Chapters', 
+        ['ChapterButtons' => $this->Chapters->getChapterButtons()]);
     }
 
     private function metaValue($key,$cloud = false)

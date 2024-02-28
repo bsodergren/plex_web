@@ -36,7 +36,6 @@ class VideoCard
     public function VideoInfo($fileInfoArray, $total_files)
     {
         global $db;
-
         $this->fileInfoArray = $fileInfoArray;
         $this->params = [];
         $table_body_html = [];
@@ -87,7 +86,6 @@ class VideoCard
             'studio',
             'substudio',
             'keyword',
-            'Chapters',
             'library',
             'fullpath',
             'filesize',
@@ -96,8 +94,6 @@ class VideoCard
         ];
         $x = 0;
         foreach ($fileArray as $field) {
-            $this->AltClass = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
-
             if (\array_key_exists($field, $this->fileInfoArray)) {
                 if (null === $this->fileInfoArray[$field]) {
                     $this->fileInfoArray[$field] = '';
@@ -105,8 +101,11 @@ class VideoCard
                 $method = ucfirst($field);
                 $this->{$method}($field);
                 ++$x;
+                $this->AltClass = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
+
             }
         }
+        $this->ChapterRow();
 
         // dd($this->params['HIDDEN_STUDIO']);
         $table_body_html['VIDEO'] = Render::html($this->template_base.'/Video', $this->params);

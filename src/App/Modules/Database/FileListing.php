@@ -204,7 +204,8 @@ class FileListing
         }
         $sql .= 'i.format, i.bit_rate, i.width, i.height, ';
         $sql .= 'f.filename, f.thumbnail, f.fullpath, f.duration, f.rating, f.preview,';
-        $sql .= 'f.filesize, f.added, f.id, f.video_key FROM metatags_video_file f ';
+        $sql .= 'f.filesize, f.added, f.id, f.video_key ';
+        $sql .= 'FROM metatags_video_file f ';
         $sql .= 'INNER JOIN metatags_video_metadata m on f.video_key=m.video_key '.PlexSql::getLibrary();
         $sql .= 'LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
         $sql .= 'LEFT OUTER JOIN metatags_video_info i on f.video_key=i.video_key ';
