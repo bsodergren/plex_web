@@ -154,6 +154,7 @@ class VideoPlayer
         $this->js_params['VideoStudio'] = $result['studio'];
         $this->js_params['VideoTitle'] = $active_title;
         $this->js_params['VideoArtist'] = $result['artist'];
+        dump($this->js_params);
     }
 
     public function videoId()

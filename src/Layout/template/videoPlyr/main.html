@@ -27,7 +27,7 @@
             </div>
             {$CANVAS_HTML}
             <video controls autoplay crossorigin playsinline poster="{$thumbnail}">
-                <source src="{$VIDEO_URL}" type="video/mp4" size="{$height}" />
+                <source src="{$VIDEO_URL}" type="video/mp4"  />
             </video>
             <div class="d-flex flex-row justify-content-center">
                 <div>{{function=videoButton|template=prev,prev_id={$nextprevIds},pl_id={$PLAYLIST_ID}}}</div>

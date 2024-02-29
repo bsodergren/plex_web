@@ -228,7 +228,7 @@ trait VideoRow
             $class_missing = 'bg-danger';
         }
 
-        $this->row(ucfirst($key), $full_filename);
+        $this->row(ucfirst($key), $full_filename, 'fullpath');
         $this->params['FILE_MISSING'] = $class_missing;
     }
 

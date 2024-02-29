@@ -25,22 +25,20 @@ $navigation_link_array = [
     'home' => [
         'url' => 'home.php',
         'text' => 'Home',
-        'secure' => false,
-        'js' => false,
         'icon' => 'home',
+        'studio' => false,
     ],
     'files' => [
         'url' => 'files.php',
         'text' => 'List  Display',
-        'secure' => false,
-        'js' => false,
+        'icon' => 'list',
         'studio' => true,
     ],
     'gridview' => [
         'url' => 'gridview.php',
         'text' => 'Grid Display',
-        'secure' => false,
-        'js' => false,
+        'icon' => 'grid',
+       
         'studio' => true,
     ],
 
@@ -48,37 +46,29 @@ $navigation_link_array = [
         'url' => 'playlist.php',
         'text' => 'Playlist Display',
         'icon' => 'playlist',
-        'secure' => false,
-        'js' => false,
+        'studio' => true,
     ],
 
     'tag' => [
         'url' => 'tags.php',
         'text' => 'Tags',
-        'secure' => false,
-        'js' => false,
+        'icon' => '',
+        'studio' => false,
     ],
     'artist' => [
         'url' => 'artist.php',
         'text' => 'Artist Page',
-        'secure' => false,
-        'js' => false,
+        'icon' => '',
+        'studio' => false,
     ],
 
     'search' => [
         'url' => 'search.php',
         'text' => 'Search',
-        'secure' => false,
-        'js' => false,
+        'icon' => '',
+        'studio' => false,
     ],
 
-    'logout' => [
-        'url' => 'logout.php',
-        'text' => 'Log Out',
-        'secure' => true,
-        //        'js'     => ' onclick="logout();"',
-        'js' => false,
-    ],
     'dropdown' => [
         'Extra' => [
             'smartlist' => 'smartpl.php',
