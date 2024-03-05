@@ -210,8 +210,8 @@ class FileListing
         // if()
         // $fieldArray[] = 'm.library';
 
-        $fieldArray = array_merge(VideoDb::$VideoMetaFields,VideoDb::$VideoInfoFields,VideoDb::$VideoFileFields
-        ,VideoDb::$PlayListFields );
+        $fieldArray = array_merge(VideoDb::$VideoMetaFields,VideoDb::$VideoInfoFields,VideoDb::$VideoFileFields);
+        // ,VideoDb::$PlayListFields );
         //  $dbcount = $this->db;
 
         // $resultQuery  = $this->db->getQuery(
@@ -225,15 +225,24 @@ class FileListing
             null,
             $num_rows
         );
-
         $this->saveSearch($joinQuery);
         $joinQuery = str_replace($num_rows, implode(',', $fieldArray), $joinQuery);
 
         if (null !== $limit) {
-            $joinQuery .= ' LIMIT '.$limit[0].','.$limit[1].'';
+            $limitQuery .= ' LIMIT '.$limit[0].','.$limit[1].'';
         }
-        $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' )
-         AS T1, (SELECT @rownum := '.$limit[0].') AS r';
+
+        if(str_contains($joinQuery,"ORDER BY")){
+            $joinQuery = str_replace("ORDER BY ", " GROUP BY f.id  ORDER BY ", $joinQuery);
+        } else {
+            $joinQuery .= " GROUP BY f.id ";
+        }
+
+        $joinQuery .= $limitQuery;
+        $joinQuery = str_replace("SELECT ", "SELECT count(DISTINCT p.playlist_video_id) as totalRecords, ", $joinQuery);
+        
+        $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
+
         $results = $this->db->rawQuery($query);
 
         return $results;

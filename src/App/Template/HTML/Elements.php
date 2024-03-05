@@ -138,52 +138,60 @@ class Elements
         $where = str_replace('AND', 'WHERE', $where);
         $where = str_replace('m.library', 'library', $where);
 
-        //         $sql = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val
-        //         FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
-        //  1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
-        //  ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit '.$where.' ORDER BY `val` ASC';
+                $sql_meta = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val
+                FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
+         1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
+         ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit '.$where.' ORDER BY `val` ASC';
 
-        $sql = "SELECT DISTINCT m.genre,c.genre FROM metatags_video_custom c, metatags_video_metadata m WHERE (m.genre is not null and c.genre is not null) and  m.Library = 'Studios'";
+         $sql_custom = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val
+         FROM ".Db_TABLE_VIDEO_CUSTOM.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
+  1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
+  ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit  ORDER BY `val` ASC';
+       // $sql = "SELECT DISTINCT m.genre,c.genre FROM metatags_video_custom c, metatags_video_metadata m WHERE (m.genre is not null and c.genre is not null) and  m.Library = 'Studios'";
+        $qlist_meta = $db->query($sql_meta);
+        $qlist_custom = $db->query($sql_custom);
+$list = array_merge($qlist_custom,$qlist_meta);
 
+        // foreach ($qlist as $k => $val) {
+        //     $tagArray[] = $val['genre'];
+        // }
+        // $tagArray = array_unique($tagArray, \SORT_STRING);
+        // $key = '';
+        // dd([$tagArray]);
 
-        $qlist = $db->query($sql);
-        foreach ($qlist as $k => $val) {
-            $tagArray[] = $val['genre'];
-        }
-        $tagArray = array_unique($tagArray, \SORT_STRING);
-        $key = '';
+        // foreach ($tagArray as $v => $value) {
+        //     $vArray = explode(',', $value);
 
-        foreach ($tagArray as $v => $value) {
-            $vArray = explode(',', $value);
+        //     foreach ($vArray as $x => $val) {
+        //         $val = trim($val);
+        //         if ('' != $val) {
+        //             if ($key == $val) {
+        //                 // dd([$val,$key]);
+        //                 continue;
+        //             }
+        //             $list[] = $val;
+        //             $key = $val;
+        //         }
+        //     }
+        // }
 
-            foreach ($vArray as $x => $val) {
-                $val = trim($val);
-                if ('' != $val) {
-                    if ($key == $val) {
-                        // dd([$val,$key]);
-                        continue;
-                    }
-                    $list[] = $val;
-                    $key = $val;
-                }
-            }
-        }
-
-        $list = array_unique($list);
+        // $list = array_unique($list);
        // dd(\count($list));
         $tag_links = '';
-
         if (0 == \count($list)) {
             return false;
         }
 
         if (\is_array($list)) {
             foreach ($list as $key => $keyword) {
-                $list_array[] = $keyword;
+                if($keyword['val'] != ""){
+                $list_array[] = $keyword['val'];
+                }
             }
         } else {
             $list_array = explode(',', $list);
         }
+        $list_array = array_unique($list_array);
 
         foreach ($list_array as $k => $keyword) {
             $letter = substr($keyword, 0, 1);
