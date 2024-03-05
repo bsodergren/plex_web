@@ -1,7 +1,7 @@
 <div class="p-2">
     <form method="post" id="addChapter" class="addChapterBtn">
         {$HIDDEN_VIDEO_ID}
-        <div id="info" class="mb-3 position-absolute" style="display: none">
+        <div id="info" class="mb-3  text-black position-absolute" style="display: none">
             <label for="textNameInput" class="form-label">{L Chapter_Timestap_Label}</label>
             <input type="text" class="form-control" name="name" id="textNameInput"
              aria-describedby="emailHelp">
@@ -10,37 +10,3 @@
         <input type="hidden" name="submit" value="addChapterVideo">
     </form>
 </div>
-
-
-
-<script>
-    function addChapter(event, timeCode) {
-        let x = event.clientX;
-        let y = event.clientY;
-
-        txtField = document.getElementById("info");
-        txtField.style.left = x + "px";
-        txtField.style.top = y + "px";
-        txtField.style.display = "block";
-
-        var hiddenAction = document.getElementById("timeCodeInput");
-        hiddenAction.value = timeCode;
-
-        // form.submit();
-    }
-
-    $("#addChapter").submit(function (e) {
-        var postData = $(this).serializeArray();
-        console.info(postData);
-        $.ajax({
-            url: "process.php",
-            type: "POST",
-            data: postData,
-            success: function (data) {
-            //    window.location.href = data;
-            var form = $('#addChapter')
-            setPlayerTime(data)
-            },
-        });
-    });
-</script>

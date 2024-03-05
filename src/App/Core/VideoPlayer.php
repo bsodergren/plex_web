@@ -319,21 +319,21 @@ class VideoPlayer
     {
         $index = $this->getChapters();
         foreach ($index as $i => $row) {
-            $editableClass = 'edit'.$row['time'];
-            $functionName = 'make'.$row['time'].'Editable';
+            // $editableClass = 'edit'.$row['time'];
+            // $functionName = 'make'.$row['time'].'Editable';
 
-            $row['EDITABLE'] = $editableClass;
+            // $row['EDITABLE'] = $editableClass;
 
-            $this->params['VIDEOINFO_EDIT_JS'] .= Render::javascript(
-                Functions::$ChapterDir.'/chapter',
-                [
-                    'ID_NAME' => $row['time'],
-                    'EDITABLE' => $editableClass,
-                    'FUNCTION' => $functionName,
-                    'VIDEO_KEY' => $this->id,
-                ]
-            );
-            $html .= Render::html(Functions::$ChapterDir.'/chapter', $row);
+            // $this->params['VIDEOINFO_EDIT_JS'] .= Render::javascript(
+            //     Functions::$ChapterDir.'/chapter',
+            //     [
+            //         'ID_NAME' => $row['time'],
+            //         'EDITABLE' => $editableClass,
+            //         'FUNCTION' => $functionName,
+            //         'VIDEO_KEY' => $this->id,
+            //     ]
+            // );
+             $html .= Render::html(Functions::$ChapterDir.'/chapter', $row);
         }
 
         return $html;

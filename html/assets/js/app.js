@@ -76,8 +76,6 @@ function popup (mylink, windowname, width = 1028, height = 800) {
 
     return winref
 }
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
 function previewHover (e, thumb, prev) {
     console.log(e.id)

@@ -210,7 +210,8 @@ class FileListing
         // if()
         // $fieldArray[] = 'm.library';
 
-        $fieldArray = array_merge(VideoDb::$VideoMetaFields,VideoDb::$VideoInfoFields,VideoDb::$VideoFileFields,VideoDb::$PlayListFields );
+        $fieldArray = array_merge(VideoDb::$VideoMetaFields,VideoDb::$VideoInfoFields,VideoDb::$VideoFileFields
+        ,VideoDb::$PlayListFields );
         //  $dbcount = $this->db;
 
         // $resultQuery  = $this->db->getQuery(
@@ -231,7 +232,7 @@ class FileListing
         if (null !== $limit) {
             $joinQuery .= ' LIMIT '.$limit[0].','.$limit[1].'';
         }
-
+dump($joinQuery);
         $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' )
          AS T1, (SELECT @rownum := '.$limit[0].') AS r';
         $results = $this->db->rawQuery($query);

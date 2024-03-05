@@ -58,10 +58,10 @@ trait Navbar
             } else {
                 if (true == $link_array['studio']) {
                     if ($_REQUEST['studio']) {
-                        $url = $link_array['url'].'?studio='.$_REQUEST['studio'];
+                        $link_array['url'] = $link_array['url'].'?studio='.$_REQUEST['studio'];
                     }
                     if ($_REQUEST['substudio']) {
-                        $url = $link_array['url'].'?substudio='.$_REQUEST['substudio'];
+                        $link_array['url'] = $link_array['url'].'?substudio='.$_REQUEST['substudio'];
                     }
                 }
 

@@ -114,3 +114,37 @@ if (videoWidth > 1920) {
 windowWidth = videoWidth * 0.75
 windowHeight = videoHeight * .90
 window.resizeTo(windowWidth, windowHeight)
+
+
+
+function addChapter(event, timeCode) {
+    let x = event.clientX;
+    let y = event.clientY;
+
+    txtField = document.getElementById("info");
+    txtField.style.left = x + "px";
+    txtField.style.top = y + "px";
+    txtField.style.display = "block";
+
+    var hiddenAction = document.getElementById("timeCodeInput");
+    hiddenAction.value = timeCode;
+
+    // form.submit();
+}
+
+$("#addChapter").submit(function (e) {
+    var postData = $(this).serializeArray();
+    console.info(postData);
+    $.ajax({
+        url: "process.php",
+        type: "POST",
+        data: postData,
+        success: function (data) {
+        //    window.location.href = data;
+        var form = $('#addChapter')
+        console.log(data)
+        return false;
+        setPlayerTime(data)
+        },
+    });
+});
