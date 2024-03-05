@@ -232,7 +232,6 @@ class FileListing
         if (null !== $limit) {
             $joinQuery .= ' LIMIT '.$limit[0].','.$limit[1].'';
         }
-dump($joinQuery);
         $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' )
          AS T1, (SELECT @rownum := '.$limit[0].') AS r';
         $results = $this->db->rawQuery($query);

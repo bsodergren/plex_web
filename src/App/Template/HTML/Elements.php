@@ -145,7 +145,6 @@ class Elements
 
         $sql = "SELECT DISTINCT m.genre,c.genre FROM metatags_video_custom c, metatags_video_metadata m WHERE (m.genre is not null and c.genre is not null) and  m.Library = 'Studios'";
 
-        dump($sql);
 
         $qlist = $db->query($sql);
         foreach ($qlist as $k => $val) {

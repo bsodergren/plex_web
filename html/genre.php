@@ -12,7 +12,6 @@ define('TITLE', 'View Genres');
 $null        = '';
 $null_req    = '&';
 $sql_studio  = 'library';
- dump($_REQUEST);
 
 if (isset($_REQUEST['allfiles'])) {
 } else {
@@ -55,7 +54,6 @@ $sql         = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
     $order
 );
 $genre_array = [];
-dump('qyefasd', $sql);
 $result      = $db->query($sql);
 
 

@@ -113,7 +113,6 @@ class VideoPlayer
         // $fileList = (new FileListing(new Request()));
 
         $res = $this->VideoDb->getVideoDetails($this->id);
-        dump($res);
 
         if (!isset($this->playlist_id)) {
             $this->js_params['NEXT_VIDEO_ID'] = $this->getNextVideo();

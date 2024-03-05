@@ -2,8 +2,8 @@
 
 namespace Plex\Modules\Process;
 
-use Plex\Modules\Process\Traits\DbWrapper;
 use Nette\Utils\FileSystem;
+use Plex\Modules\Process\Traits\DbWrapper;
 
 class Info
 {
@@ -36,7 +36,6 @@ class Info
             $query = 'UPDATE `metatags_video_custom` SET ';
             $query .= ' `'.$tag."` = NULL WHERE `metatags_video_custom`.`video_key` = '".$this->video_key."'";
 
-            dump($query);
             $this->rawQuery($query);
         } else {
             $fieldArray = $data;
@@ -69,7 +68,7 @@ class Info
     public function deleteFile()
     {
         $this->where('id', $this->postArray['id']);
-        $res = $this->getOne(Db_TABLE_VIDEO_FILE,['fullpath','filename']);
+        $res = $this->getOne(Db_TABLE_VIDEO_FILE, ['fullpath', 'filename']);
         $file = $res['fullpath'].\DIRECTORY_SEPARATOR.$res['filename'];
         FileSystem::delete($file);
         $this->where('id', $this->postArray['id']);
