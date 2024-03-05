@@ -3,7 +3,7 @@
 namespace Plex\Modules\Database;
 
 use Plex\Core\Request;
-use Plex\Modules\Database\PlexSql;
+use Plex\Modules\Database\VideoDb;
 use Plex\Template\Pageinate\Pageinate;
 
 class FileListing
@@ -17,7 +17,6 @@ class FileListing
 
     public function __construct(Request $ReqObj)
     {
-      
         $this->ReqObj = $ReqObj;
         $uri = $this->ReqObj->getURI();
         $urlPattern = $this->ReqObj->geturlPattern();
@@ -65,25 +64,26 @@ class FileListing
 
     public function getSearchResults($field, $query)
     {
-        if(!is_array($query))
-        {
+        if (!\is_array($query)) {
             $query = [$query];
         }
-        
-        // dump([$field,$query]);
-        foreach($query as $search){
-            $WhereList[] = "{$field} like '%{$search}%'";
-        }
 
-        $where = implode(" and ",$WhereList);
-        // dump($where);
+        foreach ($query as $search) {
+            $search = urldecode($search);
+            // $WhereList[] = "{$field} like '%{$search}%'";
+            $where[] = [
+                'field' => $field,
+                'search' => $search,
+            ];
+        }
 
         $pageObj = new Pageinate($where, $this->currentpage, $this->urlPattern);
 
-      //  $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$field, '%'.$value.'%', 'like');
-      foreach($query as $search){
-        $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.'.$field, '%'.$search.'%', 'like');
-    }
+        foreach ($query as $search) {
+            $search = urldecode($search);
+            $this->db->where('(m.'.$field.' like ? or c.'.$field.' like ?)', ['%'.$search.'%', '%'.$search.'%']);
+        }
+
         $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
 
         return [$results, $pageObj];
@@ -190,45 +190,17 @@ class FileListing
         return [$results, $pageObj, $uri];
     }
 
-    public function getVideoDetails($id)
-    {
-        $sql = 'SELECT ';
-        $sql .= 'COALESCE (c.title,m.title) as title, ';
-        $sql .= 'COALESCE (c.artist,m.artist) as artist, ';
-        $sql .= 'COALESCE (c.genre,m.genre) as genre, ';
-        $sql .= 'COALESCE (c.studio,m.studio) as studio, ';
-        $sql .= 'COALESCE (c.substudio,m.substudio) as substudio, ';
-        $sql .= 'COALESCE (c.keyword,m.keyword) as keyword, ';
-        if (null === PlexSql::getLibrary()) {
-            $sql .= 'm.library as library, ';
-        }
-        $sql .= 'i.format, i.bit_rate, i.width, i.height, ';
-        $sql .= 'f.filename, f.thumbnail, f.fullpath, f.duration, f.rating, f.preview,';
-        $sql .= 'f.filesize, f.added, f.id, f.video_key ';
-        $sql .= 'FROM metatags_video_file f ';
-        $sql .= 'INNER JOIN metatags_video_metadata m on f.video_key=m.video_key '.PlexSql::getLibrary();
-        $sql .= 'LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
-        $sql .= 'LEFT OUTER JOIN metatags_video_info i on f.video_key=i.video_key ';
-        $sql .= "WHERE   f.id = '".$id."'";
-
-        // dump($sql);
-        return $this->db->query($sql);
-    }
-
     private function loopTags($array) {}
 
     private function buildSQL($limit = null)
     {
-        $fieldArray = ['COALESCE (c.title,m.title) as title ',
-            'COALESCE (c.artist,m.artist) as artist ',
-            'COALESCE (c.genre,m.genre) as genre ',
-            'COALESCE (c.studio,m.studio) as studio ',
-            'COALESCE (c.substudio,m.substudio) as substudio ',
-            'COALESCE (c.keyword,m.keyword) as keyword '];
+       // $fieldArray = VideoDb::$VideoMetaFields;
 
         $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'f.video_key=m.video_key', 'INNER');
 
         $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'f.video_key=c.video_key', 'LEFT');
+        $this->db->join(Db_TABLE_PLAYLIST_VIDEOS.' p', 'f.id=p.playlist_video_id', 'LEFT OUTER');
+
         $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'f.video_key=i.video_key', 'LEFT OUTER');
 
         if (null !== PlexSql::getLibrary()) {
@@ -238,10 +210,7 @@ class FileListing
         // if()
         // $fieldArray[] = 'm.library';
 
-        $fieldArray = array_merge($fieldArray, [
-            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'f.library', 'f.rating',
-            'f.filename', 'f.thumbnail', 'f.fullpath', 'f.preview',
-            'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key']);
+        $fieldArray = array_merge(VideoDb::$VideoMetaFields,VideoDb::$VideoInfoFields,VideoDb::$VideoFileFields,VideoDb::$PlayListFields );
         //  $dbcount = $this->db;
 
         // $resultQuery  = $this->db->getQuery(
@@ -256,14 +225,15 @@ class FileListing
             $num_rows
         );
 
-        // dump($joinQuery);
         $this->saveSearch($joinQuery);
         $joinQuery = str_replace($num_rows, implode(',', $fieldArray), $joinQuery);
 
         if (null !== $limit) {
             $joinQuery .= ' LIMIT '.$limit[0].','.$limit[1].'';
         }
-        $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
+
+        $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' )
+         AS T1, (SELECT @rownum := '.$limit[0].') AS r';
         $results = $this->db->rawQuery($query);
 
         return $results;

@@ -22,6 +22,7 @@ class Request
             'Duration' => 'f.duration',
             'Date Added' => 'f.added',
             'Rating' => 'f.rating',
+            'Playlist' => 'p.playlist_id',
         ],
         'map' => [
             'f.rating' => 'Rating',
@@ -34,6 +35,7 @@ class Request
             'f.duration' => 'Duration',
             'f.added' => 'Date Added',
             'm.genre' => 'Genre',
+            'p.playlist_id' => 'Playlist',
         ],
     ];
     public static $sort_types = [
@@ -44,7 +46,7 @@ class Request
 
         'Artist' => 'm.artist',
         'Filename' => 'f.filename',
-
+        'Playlist' => 'p.playlist_id',
         'File size' => 'f.filesize',
         'Duration' => 'f.duration',
         'Date Added' => 'f.added',

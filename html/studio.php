@@ -32,6 +32,7 @@ $sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
     $studio_field,
     $order
 );
+// $studio = ;
 
 $request_key = $studio_key.'='.$studio_text;
 
@@ -50,13 +51,13 @@ foreach ($result as $k => $v) {
     if ('' != $v[$studio_field]) {
         if ('studio' == $studio_field) {
             // Render::return('elements/html/a',[]);
-            $body .= $v[$studio_field]." <a href='genre.php?".$studio_key.'='.$studio."'>".$studio.'</a> '.$v['cnt'].'<br>'."\n";
+            $body .= $v[$studio_field]." <a href='genre.php?".$studio_key.'='.urlencode($studio)."'>".$studio.'</a> '.$v['cnt'].'<br>'."\n";
         } else {
-            $body .= $studio." <a href='genre.php?".$studio_field.'='.$v[$studio_field].'&prev='.$studio_text."'>".$v[$studio_field].'</a> '.$v['cnt'].'<br>'."\n";
+            $body .= $studio." <a href='genre.php?".$studio_field.'='.urlencode($v[$studio_field]).'&prev='.$studio_text."'>".$v[$studio_field].'</a> '.$v['cnt'].'<br>'."\n";
         }
     } else {
         $char = '&nbsp;';
-        $body .= str_repeat($char, $len)."<a href='genre.php?studio=".$studio."'>".$studio.'</a> <br>'."\n";
+        $body .= str_repeat($char, $len)."<a href='genre.php?studio=".urlencode($studio)."'>".$studio.'</a> <br>'."\n";
     }
 }
 

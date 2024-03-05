@@ -64,11 +64,14 @@ trait VideoRow
     
         return sprintf('%4.2f TB', $size / 1073741824);
     } // end byte_convert()
+
+
     public function ChapterRow()
     {
         $this->params['FIELD_ROW_HTML'] .= Render::html($this->template_base.'/Rows/Chapters', 
         ['ChapterButtons' => $this->Chapters->getChapterButtons()]);
     }
+
 
     private function metaValue($key,$cloud = false)
     {
@@ -86,27 +89,31 @@ trait VideoRow
     }
 
 
-    public function row($field, $value, $id = '')
+    public function row($field, $value, $id = '',$editable = false)
     {
         $editableClass = '';
-
+        $editableBorder = '';
         if (\defined('NONAVBAR')) {
             if ('' != $id) {
-                $id = ucfirst($id);
-                $editableClass = 'edit'.$id;
-                $functionName = 'make'.$id.'Editable';
+                if ($editable === true) {
+                    $id = ucfirst($id);
+                    $editableClass = 'edit'.$id;
+                    $functionName = 'make'.$id.'Editable';
+                   $editableBorder = '  border-bottom border-4 border-info ';
 
-                $this->params['VIDEOINFO_EDIT_JS'] .= Render::javascript(
-                    $this->template_base.'/Rows/row',
-                    [
-                        'ID_NAME' => $id,
-                        'EDITABLE' => $editableClass,
-                        'FUNCTION' => $functionName,
-                        'VIDEO_KEY' => $this->params['video_key'],
-                    ]
-                );
+                    $this->params['VIDEOINFO_EDIT_JS'] .= Render::javascript(
+                        $this->template_base.'/Rows/row',
+                        [
+                            'ID_NAME' => $id,
+                            'EDITABLE' => $editableClass,
+                            'FUNCTION' => $functionName,
+                            'VIDEO_KEY' => $this->params['video_key'],
+                        ]
+                    );
+                }
             }
         }
+
         $this->params['FIELD_ROW_HTML'] .= Render::html(
             $this->template_base.'/Rows/row',
             [
@@ -114,6 +121,7 @@ trait VideoRow
                 'VALUE' => $value,
                 'ALT_CLASS' => $this->AltClass,
                 'EDITABLE' => $editableClass,
+                'EDITABLE_BORDER' => $editableBorder,
             ]
         );
     }
@@ -162,12 +170,12 @@ trait VideoRow
 
     public function cloudRow($key)
     {
-        $this->row(ucfirst($key), $this->metaValue($key,true), $key);
+        $this->row(ucfirst($key), $this->metaValue($key,true), $key,true);
     }
 
     public function metaRow($key)
     {
-        $this->row(ucfirst($key), $this->metaValue($key), $key);
+        $this->row(ucfirst($key), $this->metaValue($key), $key,true);
     }
 
     public function info($key)
@@ -212,7 +220,10 @@ trait VideoRow
 
     public function Title($key)
     {
+        if (\defined('NONAVBAR')) {
+
         $this->metaRow($key);
+        }
     }
 
     public function Fullpath($key)
@@ -228,7 +239,7 @@ trait VideoRow
             $class_missing = 'bg-danger';
         }
 
-        $this->row(ucfirst($key), $full_filename, 'fullpath');
+        $this->row(ucfirst($key), $full_filename, 'fullpath',true);
         $this->params['FILE_MISSING'] = $class_missing;
     }
 

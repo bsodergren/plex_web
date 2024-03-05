@@ -3,17 +3,20 @@
 namespace Plex\Modules\Process;
 
 use Plex\Modules\Process\Traits\DbWrapper;
+use Nette\Utils\FileSystem;
 
 class Info
 {
     use DbWrapper;
     public $tagValue;
     public $video_key;
+    private $postArray;
 
-    public function __construct()
+    public function __construct($req)
     {
         global $db;
         $this->db = $db;
+        $this->postArray = $req;
     }
 
     public function __call($method, $args)
@@ -27,11 +30,13 @@ class Info
     {
         $data['video_key'] = $this->video_key;
         $data[$tag] = $this->tagValue;
-        if ('null' == $this->tagValue) {
+        if ('NULL' == $this->tagValue) {
             $data[$tag] = null;
 
             $query = 'UPDATE `metatags_video_custom` SET ';
             $query .= ' `'.$tag."` = NULL WHERE `metatags_video_custom`.`video_key` = '".$this->video_key."'";
+
+            dump($query);
             $this->rawQuery($query);
         } else {
             $fieldArray = $data;
@@ -59,5 +64,18 @@ class Info
         ];
         $this->where('id', $video_id);
         $this->update(Db_TABLE_VIDEO_FILE, $data);
+    }
+
+    public function deleteFile()
+    {
+        $this->where('id', $this->postArray['id']);
+        $res = $this->getOne(Db_TABLE_VIDEO_FILE,['fullpath','filename']);
+        $file = $res['fullpath'].\DIRECTORY_SEPARATOR.$res['filename'];
+        FileSystem::delete($file);
+        $this->where('id', $this->postArray['id']);
+        $this->delete(Db_TABLE_VIDEO_FILE);
+        $res = $this->where('playlist_video_id', $id)->delete(Db_TABLE_PLAYLIST_VIDEOS);
+
+        return true;
     }
 }

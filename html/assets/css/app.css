@@ -5,28 +5,28 @@ body {
 footer {
     margin-top: 50px;
 }
-
+/* 
 .fileList {
     margin-right: 10px;
-}
+} */
 
-
+/* 
 .blueTable-td,
 .blueTable-th {
     border: 0px solid #aaaaaa;
     padding: 3px 2px;
-}
+} */
 
-.blueTable-tbody-td {
+/* .blueTable-tbody-td {
     font-size: 24px;
     text-align: left;
-}
+} */
 
 /* .blueTable-tr-even {
     background: #74addf;
 } */
 
-.blueTable-thead {
+/* .blueTable-thead {
     background: #1c6ea4;
     text-align: center;
 
@@ -42,27 +42,25 @@ footer {
             #5592bb 0%,
             #327cad 66%,
             #1c6ea4 100%);
-    /* border-bottom: 2px solid #444444; */
-}
+} */
 
 .vertical-text {
     transform-origin: center;
     transform: rotate(90deg);}
 
-.blueTable-thead-th {
+/* .blueTable-thead-th {
     font-size: 18px;
     font-weight: bold;
     color: #ffffff;
     white-space: nowrap;
 
-    /* order-left: 2px solid #D0E4F5; */
-}
+} */
 
 
-
+/* 
 table.blueTable thead th:first-child {
     border-left: none;
-}
+} */
 
 .categories-wrapper {
     position: relative;

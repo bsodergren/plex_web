@@ -51,7 +51,7 @@ class Forms
     public function process()
     {
         $redirect = false;
-        $this->VideoInfo = new Info();
+        $this->VideoInfo = new Info($this->postArray);
         $this->VideoChapter = new Chapter($this->postArray);
 
         if (isset($this->postArray['submit'])) {
@@ -180,12 +180,12 @@ class Forms
 
     public function delete_file()
     {
-        self::deleteFile($this->postArray);
+        $this->VideoInfo->deleteFile();
     }
 
     public function playlist()
     {
-        $this->createPlaylist();
+        $url = $this->createPlaylist();
         echo $url;
         //  echo $this->myHeader($url);
         exit;

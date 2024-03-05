@@ -5,13 +5,18 @@ function !!FUNCTION!!() {
         emptyMessage: 'Please write something...',
         callback: function (data) {
             console.log('Stopped editing ' + data.$el[0].nodeName)
-            if (data.content) {
+            if (data.content !== false) {
+                let value = data.content.trim();
+
+                if(value == ""){
+                    value = "NULL";
+                }
                 $.ajax({
                     type: 'post',
                     url: 'process.php',
                     data: jQuery.param({
                         submit: 'updateVideoCard',
-                        !!ID_NAME!!: data.content,
+                        !!ID_NAME!!: value,
                         video_key: '!!VIDEO_KEY!!'
                         }),
                         success: function (data) {
@@ -20,7 +25,7 @@ function !!FUNCTION!!() {
                            // window.close();
                         }
                 })
-                console.log('   * The text was changed -> ' + data.content)
+                console.log('   * The text was changed -> ' + value)
             } 
         }
     })

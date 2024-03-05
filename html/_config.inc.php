@@ -1,12 +1,8 @@
 <?php
-/**
- * plex web viewer
- */
 
 use Camoo\Config\Config;
 use Plex\EnvLoader;
 use Tracy\Debugger;
-use Plex\Core\RoboLoader;
 
 session_start();
 
@@ -29,11 +25,11 @@ require_once __COMPOSER_LIB__.'/autoload.php';
 // Debugger::$showLocation = false; // Hides additional location information
 // Debugger::$showLocation = true; // Shows all additional location information
 
-$config     = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
+$config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
 EnvLoader::LoadEnv($config['path']['mediatag'])->load();
 
-
+require_once __PHP_CONFIG_DIR__.'/Language.php';
 require_once __PHP_CONFIG_DIR__.'/paths.php';
 require_once __PHP_CONFIG_DIR__.'/urlpaths.php';
 

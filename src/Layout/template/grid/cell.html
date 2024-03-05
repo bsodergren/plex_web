@@ -3,8 +3,10 @@
         <div class="custom-control custom-checkbox image-checkbox">
             <input type="checkbox" class="category-input playlist_selector custom-control-input" id="ck1a_{$ROW_ID}" name="playlist[]" value="{$ROW_ID}">
             {$THUMBNAIL}
-            {{function=videoPlayer|query?id={$ROW_ID},href=video.php,text=Play}}
-            {{function=videoPlayer|query?id={$ROW_ID},href=videoinfo.php,text=Video_Info}}
+            <br>
+            {{function=videoPlayer|query?id={$ROW_ID},href=video.php,text={L Play_Video_Text}}}
+            {{function=videoPlayer|query?id={$ROW_ID},href=videoinfo.php,text={L Video_Info_Text}}}
+            {{function=videoPlaylistBtn|query?id={$ROW_ID},query?playlist_id={$PlaylistId},href=video.php}}
         </div>
         <div class="container text-start" >
 

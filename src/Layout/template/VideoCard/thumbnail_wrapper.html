@@ -1,7 +1,9 @@
-<div class="col  categories-wrapper" style="max-width:{$width}px;">
-{$Thumbnail_html}
-    <div class="d-grid gap-2">
-        {{function=videoPlayer|query?id={$FILE_ID},href=video.php,text=Play_Video}}
-        {{function=videoPlayer|query?id={$FILE_ID},query?next={$NEXT_ID},href=videoinfo.php,text=Video_Info}}
+<div class="col categories-wrapper" style="max-width:{$width}px;">
+    {$Thumbnail_html}
+    <div class="d-flex flex-row btn-group">
+        {{function=videoPlayer|query?id={$FILE_ID},href=video.php,text={L Play_Video_Text}}} 
+        {{function=videoPlayer|query?id={$FILE_ID},query?next={$NEXT_ID},href=videoinfo.php,text={L Video_Info_Text}}}
     </div>
+    <div class="d-grid gap-2 btn-group">
+        {{function=videoPlaylistBtn|query?id={$FILE_ID},query?playlist_id={$PlaylistId},href=video.php}}</div>
 </div>

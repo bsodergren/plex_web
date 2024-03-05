@@ -24,19 +24,19 @@ $navigation_link_array = [
 
     'home' => [
         'url' => 'home.php',
-        'text' => 'Home',
+        'text' => NavBar_Text_Home,
         'icon' => 'home',
         'studio' => false,
     ],
     'files' => [
         'url' => 'files.php',
-        'text' => 'List  Display',
+        'text' => NavBar_Text_List,
         'icon' => 'list',
         'studio' => true,
     ],
     'gridview' => [
         'url' => 'gridview.php',
-        'text' => 'Grid Display',
+        'text' => NavBar_Text_Grid,
         'icon' => 'grid',
        
         'studio' => true,
@@ -44,27 +44,27 @@ $navigation_link_array = [
 
     'playlist' => [
         'url' => 'playlist.php',
-        'text' => 'Playlist Display',
+        'text' => NavBar_Text_Playist,
         'icon' => 'playlist',
         'studio' => true,
     ],
 
     'tag' => [
         'url' => 'tags.php',
-        'text' => 'Tags',
+        'text' => NavBar_Text_Tags,
         'icon' => '',
         'studio' => false,
     ],
     'artist' => [
         'url' => 'artist.php',
-        'text' => 'Artist Page',
+        'text' => NavBar_Text_Artists,
         'icon' => '',
         'studio' => false,
     ],
 
     'search' => [
         'url' => 'search.php',
-        'text' => 'Search',
+        'text' => NavBar_Text_Search,
         'icon' => '',
         'studio' => false,
     ],

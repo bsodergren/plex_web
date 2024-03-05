@@ -69,6 +69,12 @@ class VideoCard
         $this->params['FILE_ID'] = $row_id;
         $this->params['WRAPPER_CLASS'] = 'm-3';
         $this->params['RATING_WIDTH'] = 365;
+ //$this->params['PlaylistId'] = $fileInfoArray['playlist_id'] ;
+        // if($fileInfoArray['playlist_id'] !== null) {
+        //     = Render::html(
+        //         $this->template_base.'/playlistButton',
+        //         ['PlaylistId' => $fileInfoArray['playlist_id']]);
+        // }
 
         if (\defined('NONAVBAR')) {
             $this->params['WRAPPER_CLASS'] = 'm-0';

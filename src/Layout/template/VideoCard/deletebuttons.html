@@ -1,9 +1,34 @@
-<div class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary text-end"  
-style="max-width:230px;">
+<div class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary text-end" style="max-width: 230px">
     <form id="videoRefreshOrDelete" onsubmit="return false;">
         {$DELETE_ID}
 
-        <button class="btn btn-outline-primary btn-lg px-3 text-bg-primary" id='RefreshBtn' onclick="clickButton(this);" type="submit" name="submit" value="update_file">Refresh</button>
-        <button class="btn btn-outline-danger btn-lg px-3 text-bg-danger " id='Closebtn' onclick="clickButton(this);" type="submit" name="submit" value="delete_file">Delete</button>
+        <button class="btn btn-outline-primary btn-lg px-3 text-bg-primary" id="RefreshBtn" 
+        onclick="clickButton(this);" type="submit" name="submit" 
+        value="update_file">{L VideoCard_Refresh_Btn}</button>
+        <button class="btn btn-outline-danger btn-lg px-3 text-bg-danger" id="Closebtn" 
+        onclick="clickButton(this);" type="submit" name="submit" 
+        value="delete_file">{L VideoCard_Delete_Btn}</button>
     </form>
 </div>
+<script>
+    function clickButton(e) {
+        let video_id = document.getElementById("DorRvideoId");
+
+        console.log(e.value + ", " + video_id.value);
+        $.ajax({
+            type: "post",
+            url: "process.php",
+            data: {
+                submit: e.value,
+                id: video_id.value,
+            },
+            cache: false,
+            success: function () {
+                window.opener.location.reload(true);
+                window.close();
+            },
+        });
+
+        return false;
+    }
+</script>

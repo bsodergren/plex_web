@@ -10,9 +10,10 @@ trait Callbacks
 {
     public const FUNCTION_CALLBACK = '|{{function=([a-zA-Z_]+)\|?(.*)?}}|i';
     public const STYLESHEET_CALLBACK = '|{{(stylesheet)=([a-zA-Z-_/\.]+)\|?([a-zA-Z=$,.\?\{\}]+)?}}|i';
-     public const JAVASCRIPT_CALLBACK = '|{{(javascript)=([a-zA-Z-_/\.]+)\|?([a-zA-Z=$,.\?\{\}]+)?}}|i';
+    public const JAVASCRIPT_CALLBACK = '|{{(javascript)=([a-zA-Z-_/\.]+)\|?([a-zA-Z=$,.\?\{\}]+)?}}|i';
     public const TEMPLATE_CALLBACK = '|{{(template)=([a-zA-Z-_/\.]+)\|?(.*)?}}|i';
     public const VARIABLE_CALLBACK = '|{\$([a-zA-Z_-]+)}|';
+    public const LANG_CALLBACK = '|{L ([a-zA-Z_]+)}|';
     public const JS_VAR_CALLBACK = '|!!([a-zA-Z_-]+)!!|';
     public const IF_CALLBACK = '|{if="([^"]+)"}(.*?){\/if}|misu';
     public const CSS_VAR_CALLBACK = '|\$([a-zA-Z_-]+)\$|';
@@ -38,7 +39,7 @@ trait Callbacks
         return $return;
     }
 
-    public function callback_parse_variable($matches)
+    private function parse_variable($matches)
     {
         $key = $matches[1];
 
@@ -52,7 +53,33 @@ trait Callbacks
             }
         }
 
-        return '';
+        return $key;
+    }
+
+    public function callback_text_variable($matches)
+    {
+        $key = $matches[1];
+        $text = $this->parse_variable($matches);
+        if($text == $key){
+            dump([$this->template_file,$text]);
+            return  $text;
+        }
+        return $text;
+
+      
+        
+    }
+
+
+    public function callback_parse_variable($matches)
+    {
+        $key = $matches[1];
+        $text = $this->parse_variable($matches);
+        if($text == $key){
+            return '';
+        }
+
+        return $text;
     }
 
     public function callback_parse_include($matches)

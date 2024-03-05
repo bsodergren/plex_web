@@ -8,6 +8,14 @@ trait DbWrapper
         return $this->db->query($sql);
     }
 
+    public function getOne($tableName, $columns = '*')
+    {
+        return $this->db->getOne($tableName,$columns);
+    }
+    public function delete($tableName)
+    {
+        return $this->db->delete($tableName);
+    }
     public function insert($table,$data)
     {
         return $this->db->insert($table,$data);

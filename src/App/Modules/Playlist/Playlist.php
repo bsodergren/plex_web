@@ -52,7 +52,12 @@ class Playlist
         return Elements::SelectOptions($plArray,'','');
         
     }
-
+    public static function getVideoPlaylists($id){
+        $sql = 'SELECT * FROM '.Db_TABLE_PLAYLIST_VIDEOS.' WHERE playlist_video_id = '.$id;
+        $results = (new Playlist())->db->query($sql);
+        return $results;
+    }
+    
     public function getPlaylist($playlist_id)
     {
 
@@ -64,6 +69,12 @@ class Playlist
 
     }
 
+    public static function getPlaylistName($playlist_id)
+    {
+        $sql = 'SELECT name FROM '.Db_TABLE_PLAYLIST_DATA.' WHERE id = '.$playlist_id;
+        $results = (new Playlist())->db->query($sql);
+        return $results[0]['name'];
+    }
    
 
 

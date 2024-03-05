@@ -2,6 +2,7 @@
 
 namespace Plex\Template\Functions\Traits;
 
+use Plex\Modules\Playlist\Playlist;
 use Plex\Template\Functions\Functions;
 use Plex\Template\HTML\Elements;
 use Plex\Template\Render;
@@ -13,20 +14,19 @@ trait Video
     public function videoButton($matches)
     {
         $var = $this->parseVars($matches);
+
         return Render::html(Functions::$ButtonDir.'/'.$var['template'], $var);
     }
 
     public function videoPlayer($matches)
     {
-    
         $var = $this->parseVars($matches);
-
 
         if (\defined('NONAVBAR')) {
             $page = strtolower(str_replace('_', '', $var['text']));
-            if (NONAVBAR == true &&
-             __THIS_PAGE__ == $page) {
-                 return '';
+            if (NONAVBAR == true
+             && __THIS_PAGE__ == $page) {
+                return '';
             }
         }
 
@@ -37,20 +37,43 @@ trait Video
         $window = basename($var['href'], '.php').'_popup';
         $url = __URL_HOME__.'/'.$var['href'].$req;
         $class = 'btn btn-primary';
-        $extra = '';
+        $extra = ' style="--bs-bg-opacity: .5;"';
         $javascript = " onclick=\"popup('".$url."', '".$window."')\"";
         $text = str_replace('_', ' ', $var['text']);
         if (__SHOW_THUMBNAILS__ == false) {
-            $class = $class. ' position-absolute vertical-text text-nowrap';
-            if($text == 'Play Video'){
+            $class .= ' position-absolute vertical-text text-nowrap';
+            if ('Play Video' == $text) {
                 $extra = ' style="left: -25px; top:40px"';
             }
-            if($text == 'Video Info'){
+            if ('Video Info' == $text) {
                 $extra = ' style="left: -25px;  top:150px"';
             }
-           
         }
+
         return Elements::addButton($text, 'button', $class, $extra, $javascript);
+    }
+
+    public function videoPlaylistBtn($matches)
+    {
+        $var = $this->parseVars($matches);
+
+        $results = Playlist::getVideoPlaylists($var['query']['id']);
+        foreach ($results as $n => $val) {
+            if (\is_array($var['query'])) {
+                $req = '?'.http_build_query($var['query']);
+            }
+
+            $window = basename($var['href'], '.php').'_popup';
+            $url = __URL_HOME__.'/'.$var['href'].$req.$val['playlist_id'];
+            $class = 'btn btn-outline-primary';
+            $extra = '';
+            $javascript = " onclick=\"popup('".$url."', '".$window."')\"";
+            $text = Playlist::getPlaylistName($val['playlist_id']);
+
+            $buttons .= Elements::addButton($text, 'button', $class, $extra, $javascript);
+        }
+
+        return $buttons;
     }
 
     public function videoRating($matches)
@@ -87,9 +110,10 @@ trait Video
         $var = $this->parseVars($matches);
         $row_id = $var['id'];
         $params = ['FILE_ID' => $row_id,
+            'PlaylistId' => $var['playlist_id'],
             'NEXT_ID' => $next_id,
-            'width' => 60
-            ];
+            'width' => 60,
+        ];
         if (__SHOW_THUMBNAILS__ == true) {
             $thumbnail = $this->fileThumbnail($row_id);
             $row_preview_image = $this->filePreview($row_id);

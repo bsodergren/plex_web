@@ -96,10 +96,13 @@ class Template
             return $html_text;
         }
 
+        $this->template_file = $template.$extension;
+
         $html_text = file_get_contents($template_file);
         $replacement_array['self'] = $template;
         $this->replacement_array = $replacement_array;
 
+        $html_text = preg_replace_callback(self::LANG_CALLBACK, [$this, 'callback_text_variable'], $html_text);
         $html_text = preg_replace_callback(self::VARIABLE_CALLBACK, [$this, 'callback_parse_variable'], $html_text);
         $html_text = preg_replace_callback(self::JS_VAR_CALLBACK, [$this, 'callback_parse_variable'], $html_text);
         $html_text = preg_replace_callback(self::CSS_VAR_CALLBACK, [$this, 'callback_parse_variable'], $html_text);

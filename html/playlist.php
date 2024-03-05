@@ -13,7 +13,6 @@ use Plex\Template\Functions\Functions;
 
 require_once '_config.inc.php';
 
-dump($_REQUEST);
 if (isset($_REQUEST['playlist_id'])) {
     $p = new Forms($_REQUEST);
     $p->process();

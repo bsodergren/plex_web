@@ -3,6 +3,7 @@
 namespace Plex\Core;
 
 use Plex\Modules\Database\FileListing;
+use Plex\Modules\Database\VideoDb;
 use Plex\Template\Functions\Functions;
 use Plex\Template\HTML\Elements;
 use Plex\Template\Render;
@@ -27,6 +28,7 @@ class VideoPlayer
     public $prevVideo;
     public $nextSequence;
     public $prevSequence;
+    public $VideoDb;
 
     public function __construct()
     {
@@ -35,6 +37,7 @@ class VideoPlayer
         $this->js_params['COMMENT'] = '//';
         $this->videoId();
         $this->playlistId();
+        $this->VideoDb = new VideoDb();
     }
 
     public function getCurrentVideoid()
@@ -49,7 +52,6 @@ class VideoPlayer
     public function getVideoSeq($type)
     {
         $user = $this->db->rawQueryOne('select '.$type.'(seq_id) as cnt from '.Db_TABLE_SEQUENCE.' where Library = ?', [$_SESSION['library']]);
-
         return $user['cnt'];
     }
 
@@ -80,6 +82,7 @@ class VideoPlayer
         $min = $this->getVideoSeq('MIN');
         $max = $this->getVideoSeq('MAX');
         $res = null;
+
         do {
             ++$seq;
             $this->db->where('seq_id', $seq);
@@ -107,9 +110,10 @@ class VideoPlayer
 
     public function videoInfo()
     {
-        $fileList = (new FileListing(new Request()));
+        // $fileList = (new FileListing(new Request()));
 
-        $res = $fileList->getVideoDetails($this->id);
+        $res = $this->VideoDb->getVideoDetails($this->id);
+        dump($res);
 
         if (!isset($this->playlist_id)) {
             $this->js_params['NEXT_VIDEO_ID'] = $this->getNextVideo();
@@ -120,7 +124,7 @@ class VideoPlayer
             $txt .= 'Current: '.$this->id.':'.$this->sequence.' -- ';
             $txt .= 'Next: '.$this->nextVideo.':'.$this->nextSequence.'  ';
 
-              // $this->params['nextprevIds'] =  $txt;
+            
         }
 
         $result = $res[0];
@@ -154,7 +158,6 @@ class VideoPlayer
         $this->js_params['VideoStudio'] = $result['studio'];
         $this->js_params['VideoTitle'] = $active_title;
         $this->js_params['VideoArtist'] = $result['artist'];
-        dump($this->js_params);
     }
 
     public function videoId()
@@ -234,20 +237,8 @@ class VideoPlayer
 
     public function getPlaylist()
     {
-        $sql = 'select
-                    f.thumbnail,f.filename,p.playlist_video_id,
-                    m.title,
-                    m.genre,
-                    m.studio,
-                    m.artist
-                    from
-                    '.Db_TABLE_VIDEO_FILE.' as f,
-                    '.Db_TABLE_PLAYLIST_VIDEOS.' as p,
-                    '.Db_TABLE_VIDEO_TAGS.' as m where (
-                    p.playlist_id = '.$this->playlist_id.' and
-                    p.playlist_video_id = f.id  and
-                    f.video_key = m.video_key);';
-        $results = $this->db->query($sql);
+
+      $results = $this->VideoDb->getPlaylistVideos($this->playlist_id);
         $newArray = [];
         $test = $results;
         foreach ($test as $index => $row) {
@@ -259,17 +250,18 @@ class VideoPlayer
         }
 
         $results = array_merge($test, $newArray);
+        $max = count($results);
 
-        for ($i = 0; $i < \count($results); ++$i) {
+        for ($i = 0; $i < $max; ++$i) {
             $class = '';
             if ($this->id == $results[$i]['playlist_video_id']) {
                 $class = ' active';
             }
 
-            $this->carousel_item .= $this->getPlaylistItem($results[$i], $class, 'carousel');
             $this->canvas_item .= $this->getPlaylistItem($results[$i], $class, 'canvas');
 
             if (' active' == $class) {
+
                 $indx = $i + 1;
                 if (\array_key_exists($indx, $results)) {
                     $next_video_id = $results[$indx]['playlist_video_id'];
@@ -277,20 +269,12 @@ class VideoPlayer
                     $next_video_id = $results[0]['playlist_video_id'];
                 }
 
-                $pndx = $i - 1;
-                if (\array_key_exists($pndx, $results)) {
-                    $prev_video_id = $results[$pndx]['playlist_video_id'];
-                } else {
-                    $prev_video_id = $results[0]['playlist_video_id'];
-                }
+                $prev_video_id = $results[$max -1]['playlist_video_id'];
             }
+
         }
         $this->params['RemoveVideo'] = $this->getRemoveVideo();
-        // $this->params['PLAYLIST_HEIGHT'] = $playlist_height;
-
-        // $this->params['CAROUSEL_HTML' => $this->getCarousel();
         $this->params['CANVAS_HTML'] = $this->getCanvas();
-        $this->params['CAROUSEL_JS'] = $this->getCarouselScript();
 
         $this->js_params['PLAYLIST_ID'] = $this->playlist_id;
         $this->js_params['NEXT_VIDEO_ID'] = $next_video_id;
@@ -298,16 +282,7 @@ class VideoPlayer
         $this->js_params['COMMENT'] = '';
     }
 
-    public function getCarousel()
-    {
-        
-        return Render::html(Functions::$PlaylistDir.'/carousel/block', ['CAROUSEL_INNER_HTML' => $this->carousel_item]);
-    }
 
-    public function getCarouselScript()
-    {
-        return Render::html(Functions::$PlaylistDir.'/carousel/js', ['PLAYLIST_ID' => $this->playlist_id]);
-    }
 
     public function getCanvas()
     {

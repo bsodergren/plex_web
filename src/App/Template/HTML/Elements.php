@@ -2,14 +2,13 @@
 
 namespace Plex\Template\HTML;
 
-use Plex\Template\Render;
-use Plex\Template\HTML\Elements;
 use Plex\Modules\Database\PlexSql;
+use Plex\Template\Render;
 
 class Elements
 {
-
     public static $ElementsDir = 'elements/html';
+
     public static function template($template)
     {
         return Render::return($template, []);
@@ -50,7 +49,7 @@ class Elements
         ]);
     }
 
-    public static function SelectOptions($array, $selected = '', $blank = null,$class="filter-option text-bg-primary")
+    public static function SelectOptions($array, $selected = '', $blank = null, $class = 'filter-option text-bg-primary')
     {
         $html = '';
         $default_option = '';
@@ -59,11 +58,9 @@ class Elements
         foreach ($array as $val) {
             $checked = '';
 
-            if(is_array($val))
-            {
+            if (\is_array($val)) {
                 $text = $val['text'];
                 $value = $val['value'];
-
             } else {
                 $text = $val;
                 $value = $val;
@@ -72,7 +69,7 @@ class Elements
             if ($text == $selected) {
                 $checked = ' selected';
             }
-            
+
             $html .= '<option class="'.$class.'" value="'.$value.'" '.$checked.'>'.$text.'</option>'."\n";
         }
         if (null !== $blank) {
@@ -141,18 +138,49 @@ class Elements
         $where = str_replace('AND', 'WHERE', $where);
         $where = str_replace('m.library', 'library', $where);
 
-        $sql = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
- 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
- ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit '.$where.' ORDER BY `val` ASC';
-        $list = $db->query($sql);
+        //         $sql = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val
+        //         FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
+        //  1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
+        //  ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit '.$where.' ORDER BY `val` ASC';
+
+        $sql = "SELECT DISTINCT m.genre,c.genre FROM metatags_video_custom c, metatags_video_metadata m WHERE (m.genre is not null and c.genre is not null) and  m.Library = 'Studios'";
+
+        dump($sql);
+
+        $qlist = $db->query($sql);
+        foreach ($qlist as $k => $val) {
+            $tagArray[] = $val['genre'];
+        }
+        $tagArray = array_unique($tagArray, \SORT_STRING);
+        $key = '';
+
+        foreach ($tagArray as $v => $value) {
+            $vArray = explode(',', $value);
+
+            foreach ($vArray as $x => $val) {
+                $val = trim($val);
+                if ('' != $val) {
+                    if ($key == $val) {
+                        // dd([$val,$key]);
+                        continue;
+                    }
+                    $list[] = $val;
+                    $key = $val;
+                }
+            }
+        }
+
+        $list = array_unique($list);
+       // dd(\count($list));
         $tag_links = '';
+
         if (0 == \count($list)) {
             return false;
         }
 
         if (\is_array($list)) {
             foreach ($list as $key => $keyword) {
-                $list_array[] = $keyword['val'];
+                $list_array[] = $keyword;
             }
         } else {
             $list_array = explode(',', $list);

@@ -12,6 +12,7 @@ define('TITLE', 'View Genres');
 $null        = '';
 $null_req    = '&';
 $sql_studio  = 'library';
+ dump($_REQUEST);
 
 if (isset($_REQUEST['allfiles'])) {
 } else {
@@ -30,8 +31,8 @@ if (isset($_REQUEST['allfiles'])) {
 
         $studio_key       = 'studio';
         $studio_text      = $_REQUEST['studio'];
-
         $studio           = urldecode($studio_text);
+       
         $studio_sql_query = $studio_key." = '".$studio."' ";
 
         if ('NULL' == $_REQUEST['studio']) {
@@ -44,7 +45,7 @@ if (isset($_REQUEST['allfiles'])) {
 
     $sql_studio  = $studio_sql_query.$null;
 
-    $request_key = $studio_key.'='.$studio_text.$null_req;
+    $request_key = $studio_key.'='.urlencode($studio_text).$null_req;
 }
 $order       = 'genre ASC';
 $sql         = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
@@ -54,7 +55,7 @@ $sql         = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
     $order
 );
 $genre_array = [];
-logger('qyefasd', $sql);
+dump('qyefasd', $sql);
 $result      = $db->query($sql);
 
 

@@ -70,19 +70,19 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     }
 
     $playlist_ids_str = implode(',', $playlist_ids);
-    // $msg              = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);
+    //  $msg              = 'Showing '.$pageObj->totalRecords.' results for for '.implode(',, ', $keys);
     $view = 'Grid';
     if (array_key_exists('view', $_REQUEST)) {
         $view = $_REQUEST['view'];
     }
-    $msg = 'Showing '.count($results).' results for for '.$_REQUEST['query'];
+    $msg = 'Showing '.$pageObj->totalRecords.' results for for '.$_REQUEST['query'];
     $msg = strtolower(str_replace('-', '.', $msg));
     $msg = strtolower(str_replace('_', ' ', $msg));
     $html_msg = Render::html('search/search_msg', ['MSG' => $msg]);
     //  $html_msg .= Render::html("search/search_msg", [   'MSG' => $sql] );
 
     $grid = (new VideoDisplay($view))->init();
-    $search_results = $grid->Display($results, ['total_files' => count($results)]);
+    $search_results = $grid->Display($results, ['total_files' => $pageObj->totalRecords]);
 
     //   $search_results =     display_filelist($results, '', $page_array);
 }
