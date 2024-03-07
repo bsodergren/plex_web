@@ -44,12 +44,13 @@ jQuery(document).ready(function () {
             success: function (data) {
                 let close = document.getElementById('close_window')
                 if (window.opener != null) {
+                    window.opener.location.reload(true)
                     if (close == null) {
-                        window.opener.location.reload(true)
+                        
                         window.close()
                     }
                 } else {
-                    window.location.reload(true)
+               //     window.location.reload(true)
                 }
                 //
             }

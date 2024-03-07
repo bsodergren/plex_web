@@ -29,12 +29,16 @@
             <video controls autoplay crossorigin playsinline poster="{$thumbnail}">
                 <source src="{$VIDEO_URL}" type="video/mp4"  />
             </video>
+         
             <div class="d-flex flex-row justify-content-center">
                 <div>{{function=videoButton|template=prev,prev_id={$nextprevIds},pl_id={$PLAYLIST_ID}}}</div>
                 <div>{{function=videoButton|template=backward}}</div>
                 <div>{{function=videoButton|template=forward}}</div>
                 <div>{{function=videoButton|template=next,pl_id={$PLAYLIST_ID}}}</div>
             </div>
+               <div class="d-flex flex-row justify-content-end">
+                {{function=videoRating|id={$VideoId},rating={$STAR_RATING},close=1}}
+                </div>
             <div class="d-flex flex-row justify-content-start">{$ChapterButtons}</div>
             <div class="d-flex flex-column justify-content-start">
                 <div onclick="popup('http://10.0.0.101/plex/videoinfo.php?id={$VideoId}', 'videoinfo_popup')">
@@ -50,5 +54,6 @@
     {$VIDEOINFO_EDIT_JS} {$VIDEO_JS}
 
  </body>
+ {{javascript=footer.js}}
 
 </html>

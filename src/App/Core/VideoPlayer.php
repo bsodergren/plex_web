@@ -127,7 +127,7 @@ class VideoPlayer
         }
 
         $result = $res[0];
-        $active_title = null;
+        $active_title = $result['title'];
 
         if (null === $active_title) {
             $active_title = $result['filename'];
@@ -157,6 +157,7 @@ class VideoPlayer
         $this->js_params['VideoStudio'] = $result['studio'];
         $this->js_params['VideoTitle'] = $active_title;
         $this->js_params['VideoArtist'] = $result['artist'];
+
     }
 
     public function videoId()

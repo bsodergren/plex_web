@@ -30,5 +30,5 @@ const VideoCard_Delete_Btn = 'Delete';
 // elements/Chapters/addChapter.html
 const Chapter_Timestap_Label = 'Chapter Name';
 // elements/Playlist/canvas/block.html
-const Playlist_Queue_Btn = 'Queue';
+const Playlist_Queue_Btn = 'Playlist';
 const Playlist_Queue_Form_Btn = 'New Playlist';
