@@ -24,7 +24,7 @@ $main_links = '';
 $playlist = new Playlist();
 if (null === $playlist_id) {
    $results = $playlist->showPlaylists();
-    // dump($sql);
+    utmdump($sql);
     $total = count($results);
     for ($i = 0; $i < count($results); ++$i) {
         $library = $results[$i]['library'];

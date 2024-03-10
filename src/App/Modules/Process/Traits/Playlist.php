@@ -144,7 +144,7 @@ trait Playlist
 
     public function deletePlaylist()
     {
-        // dump([__METHOD__,$this->playlist_id]);
+        utmdump([__METHOD__,$this->playlist_id]);
 
         $sql = 'delete d,v from '.Db_TABLE_PLAYLIST_DATA.'  d join '.Db_TABLE_PLAYLIST_VIDEOS.' v on d.id = v.playlist_id where d.id = '.$this->playlist_id.'';
         $results = $this->query($sql);
@@ -155,7 +155,7 @@ trait Playlist
 
     public function savePlaylist()
     {
-        // dump([__METHOD__,$this->postArray]);
+        utmdump([__METHOD__,$this->postArray]);
         if (isset($this->postArray['playlist_name'])) {
             $playlist_name = $this->postArray['playlist_name'];
             if ('' != $playlist_name) {

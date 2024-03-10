@@ -25,9 +25,12 @@ require_once __COMPOSER_LIB__.'/autoload.php';
 // Debugger::$showLocation = false; // Hides additional location information
 // Debugger::$showLocation = true; // Shows all additional location information
 
+//require_once __PHP_CONFIG_DIR__.'/MyDumper.php';
 $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
 EnvLoader::LoadEnv($config['path']['mediatag'])->load();
+
+(new \UTM\Utm);
 
 require_once __PHP_CONFIG_DIR__.'/Language.php';
 require_once __PHP_CONFIG_DIR__.'/paths.php';

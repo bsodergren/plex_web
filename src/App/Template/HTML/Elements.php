@@ -3,10 +3,14 @@
 namespace Plex\Template\HTML;
 
 use Plex\Modules\Database\PlexSql;
+use Plex\Template\Functions\Traits\TagCloud;
 use Plex\Template\Render;
 
 class Elements
 {
+
+    use TagCloud;
+    
     public static $ElementsDir = 'elements/html';
 
     public static function template($template)
@@ -127,133 +131,6 @@ class Elements
         logger('Looking for redirect', $html);
 
         echo $html;
-    }
-
-    public static function keyword_cloud($field = 'keyword')
-    {
-        global $db;
-        global $_SESSION;
-
-        $where = PlexSql::getLibrary();
-        $where = str_replace('AND', 'WHERE', $where);
-        $where = str_replace('m.library', 'library', $where);
-
-                $sql_meta = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val
-                FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
-         1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
-         ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit '.$where.' ORDER BY `val` ASC';
-
-         $sql_custom = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val
-         FROM ".Db_TABLE_VIDEO_CUSTOM.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
-  1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
-  ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit  ORDER BY `val` ASC';
-       // $sql = "SELECT DISTINCT m.genre,c.genre FROM metatags_video_custom c, metatags_video_metadata m WHERE (m.genre is not null and c.genre is not null) and  m.Library = 'Studios'";
-        $qlist_meta = $db->query($sql_meta);
-        $qlist_custom = $db->query($sql_custom);
-$list = array_merge($qlist_custom,$qlist_meta);
-
-        // foreach ($qlist as $k => $val) {
-        //     $tagArray[] = $val['genre'];
-        // }
-        // $tagArray = array_unique($tagArray, \SORT_STRING);
-        // $key = '';
-        // dd([$tagArray]);
-
-        // foreach ($tagArray as $v => $value) {
-        //     $vArray = explode(',', $value);
-
-        //     foreach ($vArray as $x => $val) {
-        //         $val = trim($val);
-        //         if ('' != $val) {
-        //             if ($key == $val) {
-        //                 // dd([$val,$key]);
-        //                 continue;
-        //             }
-        //             $list[] = $val;
-        //             $key = $val;
-        //         }
-        //     }
-        // }
-
-        // $list = array_unique($list);
-       // dd(\count($list));
-        $tag_links = '';
-        if (0 == \count($list)) {
-            return false;
-        }
-
-        if (\is_array($list)) {
-            foreach ($list as $key => $keyword) {
-                if($keyword['val'] != ""){
-                $list_array[] = $keyword['val'];
-                }
-            }
-        } else {
-            $list_array = explode(',', $list);
-        }
-        $list_array = array_unique($list_array);
-
-        foreach ($list_array as $k => $keyword) {
-            $letter = substr($keyword, 0, 1);
-            if (!isset($last_letter)) {
-                $last_letter = $letter;
-            }
-            if ($letter != $last_letter) {
-                $last_letter = $letter;
-                // $link_array[] = '</div>    <div class="'.__TAG_CAT_CLASS__.' ">';
-                // $index=0;
-            }
-            $keyword_array[$last_letter][] = $keyword;
-            // if ($max <= $index) {
-            //     $link_array[] = '</div>    <div class="">';
-            //     $index=0;
-            // }
-            // $index++;
-            // $link_array[] = Render::html(
-            //     'cloud/tag',
-            //     [
-            //         'KEY'      => $field,
-            //         'QUERY'    => urlencode($keyword),
-            //         'URL_TEXT' => $keyword,
-            //         // 'CLASS'    => ' badge fs-6 blueTable-thead ',
-            //     ]
-            // );
-        }
-        $max = 10;
-        $keyword_box_class = '<div class="">';
-        foreach ($keyword_array as $letter => $keywordArray) {
-            $index = 0;
-            $total = \count($keywordArray);
-            if ($total >= $max) {
-                $link_array[] = $keyword_box_class;
-            }
-            foreach ($keywordArray as $k => $keyword) {
-                if ($max <= $index) {
-                    $link_array[] = '</div>'.$keyword_box_class;
-                    $index = 0;
-                }
-                ++$index;
-                $link_array[] = Render::html(
-                    'cloud/tag',
-                    [
-                        'KEY' => $field,
-                        'QUERY' => urlencode($keyword),
-                        'URL_TEXT' => $keyword,
-                        // 'CLASS'    => ' badge fs-6 blueTable-thead ',
-                    ]
-                );
-            }
-            if ($total >= $max) {
-                $link_array[] = '</div>';
-            }
-
-            $link_array[] = '</div>    <div class="'.__TAG_CAT_CLASS__.' ">';
-        }
-
-        $tag_links = implode('  ', $link_array);
-        //  return $value;
-
-        return $tag_links;
     }
 
     public static function Comment($text)

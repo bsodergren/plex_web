@@ -60,7 +60,7 @@ class Forms
             if (method_exists($this, $method)) {
                 $this->{$method}();
             } else {
-                dd('No Method for '.$method.' Found');
+                utmdd('No Method for '.$method.' Found');
             }
             $redirect = true;
         }
@@ -70,13 +70,13 @@ class Forms
                 if (method_exists($this, $method)) {
                     $this->{$method}();
                 } else {
-                    dd('No Method for '.$method.' Found in playlist');
+                    utmdd('No Method for '.$method.' Found in playlist');
                 }
             } else {
                 if (method_exists($this, $method)) {
                     $this->{$method}();
                 } else {
-                    dd('No Method for '.$method.' Found in this');
+                    utmdd('No Method for '.$method.' Found in this');
                 }
             }
             $redirect = true;
@@ -95,7 +95,7 @@ class Forms
 
     public function update_file()
     {
-        dd($this->postArray);
+        utmdd($this->postArray);
     }
 
     public function updateVideoCard()
@@ -131,7 +131,7 @@ class Forms
         $path = __PLEX_LIBRARY__.\DIRECTORY_SEPARATOR.$_SESSION['library'];
 
         $process = new Process([$mediaupdate, '--path', $path, '-q']);
-        // dump( $process->getCommandLine());
+        utmdump( $process->getCommandLine());
         $process->setTimeout(60000);
         $process->start();
         $process->wait($callback);
@@ -140,24 +140,24 @@ class Forms
 
         $process = new Process([$mediadb, '--path', $path]);
         $process->setTimeout(60000);
-        // dump( $process->getCommandLine());
+        utmdump( $process->getCommandLine());
         $process->start();
         $process->wait($callback);
         unset($process);
         $process = new Process([$mediadb, '--path', $path, '-tDi']);
         $process->setTimeout(60000);
-        // dump( $process->getCommandLine());
+        utmdump( $process->getCommandLine());
         $process->start();
         $process->wait($callback);
         unset($process);
 
         $process = new Process([$mediadb, '--path', $path, '-u']);
         $process->setTimeout(60000);
-        // dump( $process->getCommandLine());
+        utmdump( $process->getCommandLine());
         $process->start();
         $process->wait($callback);
         Template::ProgressBar(5);
-        //  dd($_SESSION['library']);
+        //  utmdd($_SESSION['library']);
         $this->myHeader('home.php', 5);
 
         return 0;

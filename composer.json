@@ -56,7 +56,8 @@
     "paquettg/php-html-parser": "^2.2",
     "nette/robot-loader": "^4.0",
     "kub-at/php-simple-html-dom-parser": "^1.9",
-    "gajus/dindent": "^2.0"  },
+    "gajus/dindent": "^2.0",
+    "bsodergren/utm": "dev-main"  },
   "require-dev": {
     "symfony/var-dumper": "^6.2"
   },

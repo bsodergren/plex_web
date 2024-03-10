@@ -114,7 +114,7 @@ class PlexSql extends \MysqliDb
 
     //     $query = PlexSql::query_builder('metatags_video_file','select', "`f.".$column."` = '".$value."' ");
     //     //$query = "SELECT * FROM `metatags_video_file` WHERE `".$column."` = '".$value."' ".  $library;
-    //     dd($query);
+    //     utmdd($query);
     //     return $db->query($query);
     // }
     public static function getLibrary($prefix = 'm.', $useAnd = 'AND')

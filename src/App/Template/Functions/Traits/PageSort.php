@@ -59,7 +59,7 @@ trait PageSort
                     'A_HREF' => $url_array['url'].$request_string,
                     'A_TEXT' => $key]);
         }
-        //  dump($html);
+        utmdump($html);
 
         return $html;
     } // end sort_options()

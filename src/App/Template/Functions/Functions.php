@@ -52,7 +52,7 @@ class Functions extends Render
     public function __call($name, $arguments)
     {
         if (\in_array($name, $this->iconList)) {
-            //dump([__METHOD__,$arguments[0]]);
+            utmdump([__METHOD__,$arguments[0]]);
             return $this->getIcon($name, $arguments[0]);
         }
         return false;
@@ -109,7 +109,7 @@ class Functions extends Render
         //$params['CANVAS_BODY'] = Render::html('elements/Playlist/canvas_body', []);
 
         return Render::html(self::$ButtonDir.'/Playlist/canvas', $params);
-        // dump($html);
+        utmdump($html);
     }
 
     public function AlphaBlock($match)

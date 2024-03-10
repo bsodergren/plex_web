@@ -53,7 +53,7 @@ class FileListing
             ];
 
             $id = $db->insert(Db_TABLE_SEARCH_DATA, $data);
-            //   dump("new index " . $id);
+            utmdump("new index " . $id);
             self::$searchId = $id;
 
             return $id;
@@ -174,7 +174,7 @@ class FileListing
                     $value = null;
                     $comp = ' IS';
                 }
-                //  dump(['m.'.$tag, $value, $comp]);
+                utmdump(['m.'.$tag, $value, $comp]);
                 $tag_query = '(m.'.$tag.' '.$comp.' \''.$value.'\' OR c.'.$tag.' '.$comp.' \''.$value.'\')';
                 $this->db->where($tag_query);
                 // $this->db->orwhere('c.'.$tag, $value, $comp);

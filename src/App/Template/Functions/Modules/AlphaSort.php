@@ -80,7 +80,7 @@ class AlphaSort extends Render
             }
             $class = 'btn btn-sm '.$bg.$pill;
             $url = $url_array['url'].'?alpha='.urlencode($char).$sep;
-            //  dump($request_string);
+            utmdump($request_string);
             $html .=
             Display::directory_navlinks($url, $char, $request_string, $class, 'role="button" aria-pressed="true"  ');
         }

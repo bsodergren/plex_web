@@ -69,7 +69,7 @@ foreach ($sortedArray as $num => $artistArray) {
 
     //    //$artist_links .= Render::html("artist/artist_link",['ARTIST'=>$artist,'ARTIST_NAME'=>$name]);
     //    //$artist_links .= Elements::keyword_cloud($name,'artist');
-    //  //dump( [ $num ,$artist]);
+    utmdump( [ $num ,$artist]);
     // }
     $field                      = 'artist';
     $search_url                 = 'search.php?field='.$field.'&query=';
@@ -97,7 +97,7 @@ foreach ($sortedArray as $num => $artistArray) {
     }
     unset($last_letter);
     $artist_links               = implode('  ', $link_array);
-    // dd($link_array);
+    // utmdd($link_array);
     $artist_box['ARTIST_LINKS'] = $artist_links;
 
     $artist_html .= Render::html('artist/artist_box', $artist_box);
@@ -125,7 +125,7 @@ foreach ($results as $num => $artistArray) {
             'TITLE'            => $title,
         ]
     );
-    //  dd($artistArray);
+    //  utmdd($artistArray);
 }
 
 Render::Display(Render::html('artist/cloud', $params));

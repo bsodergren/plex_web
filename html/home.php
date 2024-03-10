@@ -14,7 +14,6 @@ const TITLE = 'Home';
 $subLibraries = [];
 $sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'DISTINCT(subLibrary) as subLibrary ', 'library');
 $result = $db->query($sql);
-// dump($result);
 if (count($result) > 0) {
     foreach ($result as $_ => $value) {
         $subLibraries[] = $value['subLibrary'];
@@ -65,8 +64,8 @@ foreach ($studioArray as $subLibrary => $studioArr) {
 
         $substudio_sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'count(substudio) as cnt, substudio', ' studio  '.$sql_studio, 'substudio', 'substudio ASC ');
         $ss_result = $db->query($substudio_sql);
-        // dump(count($ss_result));
         if (count($ss_result) >= 2) {
+
             $accordian = [];
             $accordian['ACCORDIAN_ID'] = Display::RandomId('accordian_');
             $accordian['ACCORDIAN_HEADER'] = $name['studio'];

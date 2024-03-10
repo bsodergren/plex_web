@@ -138,7 +138,7 @@ class Request
             $query_string_no_current = '&'.urlQuerystring($_SERVER['QUERY_STRING'], 'current');
 
             $query_string_no_current = '&'.urlQuerystring($query_string_no_current, 'itemsPerPage');
-            // dd([$_SERVER['QUERY_STRING'],$query_string_no_current]);
+            // utmdd([$_SERVER['QUERY_STRING'],$query_string_no_current]);
         }
 
         $this->urlPattern = $_SERVER['PHP_SELF'].'?current=(:num)'.$query_string_no_current;
@@ -192,7 +192,7 @@ class Request
             || 'keyword' == $key
             || 'artist' == $key) {
                 $uri_array[] = $key." like '%{$value}%'";
-                //            dd($key,$value);
+                //            utmdd($key,$value);
                 continue;
             }
 
@@ -268,10 +268,10 @@ class Request
             } else {
                 $parts = array_reverse($parts);
                 array_pop($parts);
-                //   dd($query_parts);
+                //   utmdd($query_parts);
 
                 $query_string = uri_SQLQuery($parts);
-                // dd($query_string);
+                // utmdd($query_string);
             }
         }
 
@@ -280,13 +280,13 @@ class Request
 
     public static function uri_String($request_array, $start = '?')
     {
-        // dd($request_array);
+        // utmdd($request_array);
         foreach ($request_array as $key => $value) {
             if ('direction' == $key) {
                 continue;
             }
             if (\is_array($value)) {
-                // dd($key);
+                // utmdd($key);
                 // foreach ($value as $n => $v) {
                 $uri_array[] = $key.'='.urlencode(implode(',', $value));
                 // }

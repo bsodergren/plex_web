@@ -17,7 +17,7 @@ $main_links = '';
 $sql = 'SELECT * FROM '.Db_TABLE_SMARTLIST_DATA;
 $results = $db->query($sql);
 
-// dump($results);
+utmdump($results);
 
 define('TITLE', 'Home');
 define('GRID_VIEW', 1);

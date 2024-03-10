@@ -48,7 +48,7 @@ class Player
             $PlayerClass = new videoJs();
         }
        /// $this->PlayerClass->videoId();
-        //dump($this->id);
+        utmdump($this->id);
             $PlayerClass->ShowVideoPlayer();
     }
 
@@ -127,7 +127,7 @@ public function getPlayerTemplate()
         if (\array_key_exists('id', $_REQUEST)) {
             $this->id = $_REQUEST['id'];
         }
-        // dump($this->id);
+        utmdump($this->id);
         return $this->id;
     }
 

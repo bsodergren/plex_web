@@ -36,14 +36,14 @@ $sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
 
 $request_key = $studio_key.'='.$studio_text;
 
-// dump($sql);
+utmdump($sql);
 
 $result = $db->query($sql);
 $rows = count($result);
 
 $all_url = 'files.php?'.$request_key.'&allfiles=1';
 
-// dump([$studio,$studio_field,$studio_key]);
+utmdump([$studio,$studio_field,$studio_key]);
 foreach ($result as $k => $v) {
     $len = strlen($studio) * 2;
     // $v["cnt"]=1; ".$v["cnt"]."

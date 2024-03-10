@@ -72,7 +72,7 @@ $html = Render::html('editor/main', ['TextBlocks' => $TextRow,
     'Javascript' => $javascript,
     'Stylesheet' => $stylesheet,
     'FormAction' => $url]);
-// dump($html);
+utmdump($html);
 // $html = Render::html('editor/main', [ 'WordMap' => $text]);
 
 Render::Display($html);
