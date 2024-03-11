@@ -72,7 +72,6 @@ trait Breadcrumbs
                 }
             }
 
-            utmdump([$request_string,$request_tag]);
 
             if (\array_key_exists('genre', $request_tag)) {
                 $url = 'genre.php';
@@ -97,7 +96,6 @@ trait Breadcrumbs
                     $parts[$key] = $value;
                     $crumbs[$value] = $crumb_url.$sep.http_build_query($parts);
                     $last = $value;
-                    utmdump($key);
                 }
 
                 if ('genre' == $key) {
@@ -108,7 +106,6 @@ trait Breadcrumbs
             }
         }
 
-        utmdump($crumbs);
         $req = '';
         if (__THIS_FILE__ == 'genre.php') {
             $req = '&'.http_build_query($parts);

@@ -24,19 +24,26 @@ $main_links = '';
 $playlist = new Playlist();
 if (null === $playlist_id) {
    $results = $playlist->showPlaylists();
-    utmdump($sql);
+  // UtmDump($results);
     $total = count($results);
     for ($i = 0; $i < count($results); ++$i) {
+        $playlist_image = '';
         $library = $results[$i]['library'];
 
         if (0 == $i) {
             $prev = $library;
         }
+       $preview= $playlist->showPlaylistPreview($results[$i]['playlist_id']);
+       foreach($preview as $r => $row){
+            $playlist_image .= Render::html('playlist/thumbnail/image', ['image' =>__URL_HOME__. $row['thumbnail']]);
+       // UtmDump($row);
+       }
 
         $params = [
             'PLAYLIST_ID' => $results[$i]['playlist_id'],
             'PLAYLIST_NAME' => $results[$i]['name'],
             'PLAYLIST_COUNT' => $results[$i]['count'],
+            'ThumbnailPreview' =>Render::html('playlist/thumbnail/thumbnail', ['PlaylistPreviewImage' => $playlist_image]),
         ];
         if ($library == $prev) {
             $playlist_links .= Render::html('playlist/playlist_link', $params);

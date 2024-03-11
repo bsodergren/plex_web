@@ -53,7 +53,6 @@ class FileListing
             ];
 
             $id = $db->insert(Db_TABLE_SEARCH_DATA, $data);
-            utmdump("new index " . $id);
             self::$searchId = $id;
 
             return $id;

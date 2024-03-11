@@ -40,6 +40,11 @@ class Playlist
         return $results;
     }
 
+    public function showPlaylistPreview($playlist_id){
+        $res = $this->getPlaylist($playlist_id, "limit 4");
+        return $res;
+    }
+
     public function getPlaylistSelectOptions()
     {
         $res = $this->showPlaylists();
@@ -58,12 +63,12 @@ class Playlist
         return $results;
     }
     
-    public function getPlaylist($playlist_id)
+    public function getPlaylist($playlist_id, $limit= '')
     {
 
         $sql = 'select f.thumbnail,f.id,d.name,d.genre,p.id as playlist_video_id,m.title from  '.Db_TABLE_PLAYLIST_DATA.' as d,
         '.Db_TABLE_VIDEO_FILE.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p, '.Db_TABLE_VIDEO_TAGS.' as m
-         where (p.playlist_id = '.$playlist_id.' and p.playlist_video_id = f.id and d.id = p.playlist_id and f.video_key = m.video_key);';
+         where (p.playlist_id = '.$playlist_id.' and p.playlist_video_id = f.id and d.id = p.playlist_id and f.video_key = m.video_key) '.$limit.';';
        $results = $this->db->query($sql);
        return $results;
 
