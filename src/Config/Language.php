@@ -7,11 +7,8 @@ const NavBar_Text_Playist = 'Playlist';
 const NavBar_Text_Tags = 'Tags';
 const NavBar_Text_Artists = 'Arists';
 const NavBar_Text_Search = 'Search';
+const NavBar_Text_Recent = 'Latest';
 // const NavBar_Text_Tags = 'Tags';
-// const NavBar_Text_Tags = 'Tags';
-
-
-
 
 const Play_Video_Text = 'Play_Video';
 const Video_Info_Text = 'Video_Info';

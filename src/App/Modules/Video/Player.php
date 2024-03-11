@@ -8,6 +8,7 @@ use Plex\Modules\Video\Chapter;
 use UTMTemplate\HTML\Elements;
 use Plex\Modules\Video\Player\Plyr;
 use Plex\Modules\Database\FileListing;
+use Plex\Modules\Database\VideoDb;
 use Plex\Modules\Video\Player\VideoJs;
 
 class Player
@@ -43,13 +44,13 @@ class Player
     {
               
         if($this->options['usePlyr'] == true){
-            $PlayerClass = new Plyr();
+            $this->PlayerClass = new Plyr($this);
         } elseif($this->options['useVideoJs'] == true) {
-            $PlayerClass = new videoJs();
+            $this->PlayerClass = new videoJs();
         }
        /// $this->PlayerClass->videoId();
-        utmdump($this->id);
-            $PlayerClass->ShowVideoPlayer();
+        utmdump($this->PlayerClass);
+            $this->VideoDetails();
     }
 
     public function options($options = [])
@@ -61,9 +62,9 @@ class Player
 
     }
 
-public function getPlayerTemplate()
+public function getPlayerTemplate($template)
 {
-
+    return  $this->PlayerClass->templatePlayer. '/' . $template;
 }
     public function getVideoURL($video_id)
     {
@@ -90,7 +91,8 @@ public function getPlayerTemplate()
 
     public function VideoDetails()
     {
-        $res = (new FileListing(new Request()))->getVideoDetails($this->id);
+        $res = (new VideoDb())->getVideoDetails($this->videoId());
+        UtmDump($res);
         $result = $res[0];
         $active_title = null;
         if (null === $active_title) {

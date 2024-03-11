@@ -2,11 +2,19 @@
 
 use Plex\Template\Render;
 use Plex\Modules\Video\Player;
+use UTMTemplate\Template;
 
 require_once '_config.inc.php';
 define('SHOW_RATING', true);
 
 $videoPlayer = new Player();
-$videoPlayer->PlayVideo();
+if (isset($videoPlayer->playlist_id))
+{
+    $videoPlayer->getPlaylist();
+}
 
-//Render::echo($videoPlayer->getPlayerTemplate(), $videoPlayer->params);
+$videoPlayer->PlayVideo();
+utmdump($videoPlayer->params);
+Template::$params =  $videoPlayer->params;
+Render::echo($videoPlayer->getPlayerTemplate('main'));
+

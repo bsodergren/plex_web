@@ -5,10 +5,34 @@
         <button class="btn btn-outline-primary btn-lg px-3 text-bg-primary" id="RefreshBtn" 
         onclick="clickButton(this);" type="submit" name="submit" 
         value="update_file">{L VideoCard_Refresh_Btn}</button>
-        <button class="btn btn-outline-danger btn-lg px-3 text-bg-danger" id="Closebtn" 
-        onclick="clickButton(this);" type="submit" name="submit" 
-        value="delete_file">{L VideoCard_Delete_Btn}</button>
+        
+        <button onclick="document.getElementById('id01').style.display='block'"
+        class="btn btn-outline-danger btn-lg px-3 text-bg-danger">{L VideoCard_Delete_Btn}</button>
+
     </form>
+
+
+
+    <div id="id01" class="modal">
+        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <form  class="modal-content" id="videoRefreshOrDelete" onsubmit="return false;">
+                {$DELETE_ID}
+
+          <div class="container">
+            <h1>Delete Account</h1>
+            <p>Are you sure you want to delete your account?</p>
+      
+            <div class="clearfix">
+              <button type="button" onclick="document.getElementById('id01').style.display='none'"  class="cancelbtn">Cancel</button>
+              <button class="btn btn-outline-danger btn-lg px-3 text-bg-danger deletebtn" id="Closebtn" 
+              onclick="clickButton(this);" type="submit" name="submit" 
+              value="delete_file">Delete</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+
 </div>
 <script>
     function clickButton(e) {

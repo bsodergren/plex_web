@@ -24,7 +24,14 @@ class VideoDb
         global $db;
         $this->db = $db;
     }
+    public function videoId()
+    {
+        if (\array_key_exists('id', $_REQUEST)) {
+            $this->id = $_REQUEST['id'];
+        }
 
+        return $this->id;
+    }
     public static function getVideoJoins()
     {
 
@@ -44,7 +51,7 @@ class VideoDb
         $sql .= ' LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
         $sql .= ' LEFT OUTER JOIN metatags_video_info i on f.video_key=i.video_key ';
         $sql .= " WHERE f.id = '".$id."'";
-
+        UtmDump($sql);
         return $this->db->query($sql);
     }
 

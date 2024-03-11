@@ -1,5 +1,6 @@
 <?php
 
+use UTMTemplate\Template;
 use Plex\Template\Display\Display;
 /**
  * plex web viewer
@@ -9,10 +10,7 @@ if (!defined('APP_AUTHENTICATION')) {
     define('APP_AUTHENTICATION', false);
 }
 
-
-
 define('__MAX_PAGES_TO_SHOW__', 8);
-
 define('ALLOWED_INACTIVITY_TIME', time() + 1 * 60);
 
 define('SESSION_VARS',
@@ -81,3 +79,4 @@ const __DISPLAY_PAGES__ = [
 Display::Random();
 define('__RANDOM__', Display::$Random);
 
+Template::$registeredCallbacks = ['\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK'=>'callback_parse_function'];

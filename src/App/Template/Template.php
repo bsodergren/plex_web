@@ -19,7 +19,7 @@ class Template extends UTMTemplateTemplate
     public function __construct()
     {
         parent::__construct();
-        $this->registerCallback('\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK','callback_parse_function');
+//        $this->registerCallback();
     }
 
    

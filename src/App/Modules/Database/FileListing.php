@@ -3,7 +3,6 @@
 namespace Plex\Modules\Database;
 
 use Plex\Core\Request;
-use Plex\Modules\Database\VideoDb;
 use Plex\Template\Pageinate\Pageinate;
 
 class FileListing
@@ -88,6 +87,33 @@ class FileListing
         return [$results, $pageObj];
     }
 
+    public function getLatest()
+    {
+        if (isset($_SESSION['sort'])) {
+            $uri['sort'] = $_SESSION['sort'];
+            $this->request['sort'] = $_SESSION['sort'];
+        }
+        if (isset($_SESSION['direction'])) {
+            $uri['direction'] = $_SESSION['direction'];
+            $this->request['direction'] = $_SESSION['direction'];
+        }
+        if (isset($uri)) {
+        $uri['allfiles'] = $this->request['allfiles'];
+
+            
+        }
+
+        $pageObj = new Pageinate(false, $this->currentpage, $this->urlPattern);
+
+        if (isset($this->request['sort'], $this->request['direction'])) {
+            $this->db->orderBy($this->request['sort'], $this->request['direction']);
+        }
+
+        $results = $this->buildSQL([0,25]);
+
+        return [$results, $pageObj, $uri];
+    }
+
     public function getVideoArray()
     {
         global $_SESSION;
@@ -114,6 +140,7 @@ class FileListing
             $uri['sort'] = $_SESSION['sort'];
             $this->request['sort'] = $_SESSION['sort'];
         }
+
         if (isset($_SESSION['direction'])) {
             $uri['direction'] = $_SESSION['direction'];
             $this->request['direction'] = $_SESSION['direction'];
@@ -192,7 +219,7 @@ class FileListing
 
     private function buildSQL($limit = null)
     {
-       // $fieldArray = VideoDb::$VideoMetaFields;
+        // $fieldArray = VideoDb::$VideoMetaFields;
 
         $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'f.video_key=m.video_key', 'INNER');
 
@@ -208,7 +235,7 @@ class FileListing
         // if()
         // $fieldArray[] = 'm.library';
 
-        $fieldArray = array_merge(VideoDb::$VideoMetaFields,VideoDb::$VideoInfoFields,VideoDb::$VideoFileFields);
+        $fieldArray = array_merge(VideoDb::$VideoMetaFields, VideoDb::$VideoInfoFields, VideoDb::$VideoFileFields);
         // ,VideoDb::$PlayListFields );
         //  $dbcount = $this->db;
 
@@ -223,23 +250,26 @@ class FileListing
             null,
             $num_rows
         );
-        $this->saveSearch($joinQuery);
-        $joinQuery = str_replace($num_rows, implode(',', $fieldArray), $joinQuery);
-
         if (null !== $limit) {
             $limitQuery .= ' LIMIT '.$limit[0].','.$limit[1].'';
         }
 
-        if(str_contains($joinQuery,"ORDER BY")){
-            $joinQuery = str_replace("ORDER BY ", " GROUP BY f.id  ORDER BY ", $joinQuery);
+        if (str_contains($joinQuery, 'ORDER BY')) {
+            $joinQuery = str_replace('ORDER BY ', ' GROUP BY f.id  ORDER BY ', $joinQuery);
         } else {
-            $joinQuery .= " GROUP BY f.id ";
+            $joinQuery .= ' GROUP BY f.id ';
         }
 
         $joinQuery .= $limitQuery;
-        $joinQuery = str_replace("SELECT ", "SELECT count(DISTINCT p.playlist_video_id) as totalRecords, ", $joinQuery);
-        
+
+        UtmDump($joinQuery);
+        $this->saveSearch($joinQuery);
+        $joinQuery = str_replace('SELECT   f.id','SELECT ' . implode(',', $fieldArray), $joinQuery);
+
+        $joinQuery = str_replace('SELECT ', 'SELECT count(DISTINCT p.playlist_video_id) as totalRecords, ', $joinQuery);
+
         $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
+      UtmDump($query);
 
         $results = $this->db->rawQuery($query);
 

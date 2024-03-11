@@ -1,4 +1,9 @@
 <?php
+$recent_page = 'files';
+
+if(    __THIS_PAGE__ == 'files' || __THIS_PAGE__ == 'gridview' ){
+    $recent_page = __THIS_PAGE__;
+}
 
 $navigation_link_array = [
     /*
@@ -27,6 +32,12 @@ $navigation_link_array = [
         'text' => NavBar_Text_Home,
         'icon' => 'home',
         'studio' => false,
+    ],
+    'recent' => [
+        'url' =>  $recent_page .'.php?sort=f.added&direction=ASC',
+        'text' => NavBar_Text_Recent,
+        'icon' => 'list',
+        'studio' => true,
     ],
     'files' => [
         'url' => 'files.php',
