@@ -4,7 +4,7 @@ namespace Plex\Template\Functions;
 
 use Plex\Core\RoboLoader;
 use Plex\Template\Render;
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
 use Plex\Modules\Playlist\Playlist;
@@ -16,6 +16,7 @@ use Plex\Template\Functions\Traits\PageSort;
 use Plex\Template\Functions\Modules\AlphaSort;
 use Plex\Template\Functions\Traits\Breadcrumbs;
 use Plex\Template\Functions\Modules\metaFilters;
+use Plex\Template\Functions\Traits\TagCloud;
 use Plex\Template\Functions\Traits\ThemeSwitcher;
 
 class Functions extends Render
@@ -26,7 +27,7 @@ class Functions extends Render
     use PageSort;
     use ThemeSwitcher;
     use Video;
-
+    use TagCloud;
 
     public static $ElementsDir = 'elements';
     public static $PlaylistDir = 'elements/Playlist';
@@ -52,7 +53,7 @@ class Functions extends Render
     public function __call($name, $arguments)
     {
         if (\in_array($name, $this->iconList)) {
-            utmdump([__METHOD__,$arguments[0]]);
+        //    utmdump([__METHOD__,$arguments[0]]);
             return $this->getIcon($name, $arguments[0]);
         }
         return false;

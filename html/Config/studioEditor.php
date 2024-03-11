@@ -3,7 +3,7 @@
 use Plex\Template\Render;
 
 use Plex\Template\Pageinate\ConfigPagenate;
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 
 require_once '../_config.inc.php';
 

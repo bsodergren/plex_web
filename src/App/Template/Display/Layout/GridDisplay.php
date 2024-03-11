@@ -3,7 +3,7 @@ namespace Plex\Template\Display\Layout;
 
 use Plex\Modules\VideoCard\VideoCard;
 use Plex\Template\Render;
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 use Plex\Template\Display\VideoDisplay;
 use Plex\Template\Functions\Traits\Video;
 

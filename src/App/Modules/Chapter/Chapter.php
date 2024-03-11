@@ -3,7 +3,7 @@
 namespace Plex\Modules\Chapter;
 
 use Plex\Template\Render;
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 use Plex\Template\Functions\Functions;
 
 class Chapter

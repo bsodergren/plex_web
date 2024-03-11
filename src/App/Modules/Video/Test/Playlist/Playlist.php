@@ -4,7 +4,7 @@ namespace Plex\Modules\Video\Playlist;
 
 use Plex\Modules\Video\Player;
 use Plex\Template\Functions\Functions;
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 use Plex\Template\Render;
 
 class Playlist extends Player

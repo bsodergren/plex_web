@@ -9,7 +9,7 @@ trait TagCloud
 {
 
 
-    private static function getKeywordSQL($table,$field,$where = '')
+    private  function getKeywordSQL($table,$field,$where = '')
     {
     
 
@@ -17,18 +17,18 @@ trait TagCloud
        $sql .= ", ',', n.digit+1), ',', -1) val FROM ".$table;
        $sql .= ' INNER JOIN (SELECT 0 digit UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n';
        $sql .= ' ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit '.$where.' ORDER BY `val` ASC';
-       MyDump($sql);
+       UtmDump($sql);
                  return $sql;
     }
-    private static function getKeywordList($field = 'keyword')
+    private  function getKeywordList($field = 'keyword')
     {
         global $db;
         global $_SESSION;
         $where = PlexSql::getLibrary();
         $where = str_replace('AND', 'WHERE', $where);
         $where = str_replace('m.library', 'library', $where);
-        $sql_meta =self::getKeywordSQL(Db_TABLE_VIDEO_TAGS,$field,$where);
-        $sql_custom = self::getKeywordSQL(Db_TABLE_VIDEO_CUSTOM,$field);
+        $sql_meta =$this->getKeywordSQL(Db_TABLE_VIDEO_TAGS,$field,$where);
+        $sql_custom = $this->getKeywordSQL(Db_TABLE_VIDEO_CUSTOM,$field);
 
         // $sql = "SELECT DISTINCT m.genre,c.genre FROM metatags_video_custom c, metatags_video_metadata m WHERE (m.genre is not null and c.genre is not null) and  m.Library = 'Studios'";
         $qlist_meta = $db->query($sql_meta);
@@ -36,8 +36,12 @@ trait TagCloud
         return array_merge($qlist_custom, $qlist_meta);
 
     }
-    public static function keyword_cloud($field = 'keyword')
+    public function tagCloud($matches)
     {
+
+        $var = $this->parseVars($matches);
+        $field = $var['field'];
+
         global $db;
         global $_SESSION;
 
@@ -65,7 +69,7 @@ trait TagCloud
         //     }
         // }
 
-        $list = self::getKeywordList($field);
+        $list = $this->getKeywordList($field);
         // utmdd(\count($list));
         $tag_links = '';
         if (0 == \count($list)) {

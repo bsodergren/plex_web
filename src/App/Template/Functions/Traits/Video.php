@@ -4,7 +4,7 @@ namespace Plex\Template\Functions\Traits;
 
 use Plex\Modules\Playlist\Playlist;
 use Plex\Template\Functions\Functions;
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 use Plex\Template\Render;
 
 trait Video

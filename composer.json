@@ -57,7 +57,8 @@
     "nette/robot-loader": "^4.0",
     "kub-at/php-simple-html-dom-parser": "^1.9",
     "gajus/dindent": "^2.0",
-    "bsodergren/utm": "dev-main"  },
+    "bsodergren/utm": "dev-main",
+    "bsodergren/utmtemplate": "dev-main"  },
   "require-dev": {
     "symfony/var-dumper": "^6.2"
   },

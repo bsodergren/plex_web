@@ -3,7 +3,7 @@
 use Plex\Core\Request;
 use Plex\Modules\Database\FileListing;
 use Plex\Template\Display\VideoDisplay;
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 use Plex\Template\Render;
 
 require_once '_config.inc.php';

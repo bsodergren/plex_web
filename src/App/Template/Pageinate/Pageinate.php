@@ -7,7 +7,7 @@ namespace Plex\Template\Pageinate;
  */
 
 use JasonGrimes\Paginator;
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 use Plex\Template\Render;
 
 class Pageinate extends Paginator

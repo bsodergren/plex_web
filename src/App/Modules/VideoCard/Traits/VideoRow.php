@@ -3,7 +3,7 @@
 namespace Plex\Modules\VideoCard\Traits;
 
 use Plex\Template\Render;
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 
 
 trait VideoRow

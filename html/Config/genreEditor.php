@@ -2,7 +2,7 @@
 use Plex\Template\Render;
 
 use Plex\Template\Pageinate\GenrePagenate;
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 
 require_once '../_config.inc.php';
 define('TITLE', 'Home');

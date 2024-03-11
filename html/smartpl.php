@@ -1,7 +1,7 @@
 <?php
 
 use Plex\Template\Functions\Functions;
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 use Plex\Template\Render;
 
 

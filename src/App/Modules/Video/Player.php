@@ -5,7 +5,7 @@ namespace Plex\Modules\Video;
 use Plex\Core\Request;
 use Plex\Template\Render;
 use Plex\Modules\Video\Chapter;
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 use Plex\Modules\Video\Player\Plyr;
 use Plex\Modules\Database\FileListing;
 use Plex\Modules\Video\Player\VideoJs;

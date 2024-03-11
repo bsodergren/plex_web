@@ -2,7 +2,7 @@
 
 namespace Plex\Modules\Playlist;
 
-use Plex\Template\HTML\Elements;
+use UTMTemplate\HTML\Elements;
 
 /**
  * plex web viewer.
