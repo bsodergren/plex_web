@@ -27,7 +27,30 @@ const writeLog = function (msg) {
 }
 
 
+function clickButton(e,close) {
+    let video_id = document.getElementById("DorRvideoId");
 
+    console.log(e.value + ", " + video_id.value);
+    $.ajax({
+        type: "post",
+        url: "process.php",
+        data: {
+            submit: e.value,
+            id: video_id.value,
+        },
+        cache: false,
+        success: function (data) {
+            if(close == true) {
+                window.opener.location.reload(true);
+                window.close();
+            } else {
+                window.location.reload(true);
+            }
+        },
+    });
+
+    return false;
+}
 
 
 jQuery(document).ready(function () {

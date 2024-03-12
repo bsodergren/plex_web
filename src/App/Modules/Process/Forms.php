@@ -7,11 +7,13 @@ namespace Plex\Modules\Process;
  */
 
 use Nette\Utils\Callback;
-use Plex\Modules\Process\Traits\DbWrapper;
-use Plex\Modules\Process\Traits\Playlist;
-use UTMTemplate\HTML\Elements;
 use Plex\Template\Template;
+use UTMTemplate\HTML\Elements;
+use Plex\Modules\Database\VideoDb;
 use Symfony\Component\Process\Process;
+use Plex\Modules\Process\Traits\Playlist;
+use Plex\Modules\Process\Traits\DbWrapper;
+use Plex\Modules\Process\Traits\Mediatag;
 
 class Forms
 {
@@ -95,7 +97,19 @@ class Forms
 
     public function update_file()
     {
-        utmdd($this->postArray);
+        $videoDb = new VideoDb();
+        $file = $videoDb->getVideoPath($this->postArray['id']);
+
+        $mediatag = new Mediatag();
+        $mediatag->addFile($file);
+        $mediatag->refreshFile();
+        $this->myHeader($this->redirect."&jo");
+
+        exit;
+//        return $this->redirect;
+
+
+  //      utmdd([__METHOD__,$this->postArray]);
     }
 
     public function updateVideoCard()
@@ -107,61 +121,7 @@ class Forms
         $this->VideoInfo->{$method}($tagValue, $video_key);
     }
 
-    public function ProcessOutput($type, $buffer)
-    {
-        $buffer = str_replace('\n\n', '\n', $buffer);
-        echo Template::put($buffer);
-    }
-
-    public function ProcessProgressBar($type, $buffer)
-    {
-        $timeout = $buffer / 60;
-        echo Template::ProgressBar($timeout, 'UpdateBar');
-    }
-
-    public function refresh()
-    {
-        $this->myHeader('home.php', 0);
-
-        return 0;
-        $callback = Callback::check([$this, 'ProcessProgressBar']);
-
-        $mediaupdate = '/home/bjorn/scripts/Mediatag/bin/mediaupdate';
-        $mediadb = '/home/bjorn/scripts/Mediatag/bin/mediadb';
-        $path = __PLEX_LIBRARY__.\DIRECTORY_SEPARATOR.$_SESSION['library'];
-
-        $process = new Process([$mediaupdate, '--path', $path, '-q']);
-        utmdump( $process->getCommandLine());
-        $process->setTimeout(60000);
-        $process->start();
-        $process->wait($callback);
-        unset($process);
-        $callback = Callback::check([$this, 'ProcessOutput']);
-
-        $process = new Process([$mediadb, '--path', $path]);
-        $process->setTimeout(60000);
-        utmdump( $process->getCommandLine());
-        $process->start();
-        $process->wait($callback);
-        unset($process);
-        $process = new Process([$mediadb, '--path', $path, '-tDi']);
-        $process->setTimeout(60000);
-        utmdump( $process->getCommandLine());
-        $process->start();
-        $process->wait($callback);
-        unset($process);
-
-        $process = new Process([$mediadb, '--path', $path, '-u']);
-        $process->setTimeout(60000);
-        utmdump( $process->getCommandLine());
-        $process->start();
-        $process->wait($callback);
-        Template::ProgressBar(5);
-        //  utmdd($_SESSION['library']);
-        $this->myHeader('home.php', 5);
-
-        return 0;
-    }
+  
 
     public function GenreConfigSave()
     {
@@ -212,6 +172,7 @@ class Forms
         if ('' != $redirect) {
             $this->redirect = $redirect;
         }
+        // UtmDump($this->redirect);
         echo Elements::javaRefresh($this->redirect, $timeout);
 
         exit;

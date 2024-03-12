@@ -1,58 +1,44 @@
 <div class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary text-end" style="max-width: 230px">
     <form id="videoRefreshOrDelete" onsubmit="return false;">
         {$DELETE_ID}
-
-        <button class="btn btn-outline-primary btn-lg px-3 text-bg-primary" id="RefreshBtn" 
-        onclick="clickButton(this);" type="submit" name="submit" 
-        value="update_file">{L VideoCard_Refresh_Btn}</button>
-        
-        <button onclick="document.getElementById('id01').style.display='block'"
-        class="btn btn-outline-danger btn-lg px-3 text-bg-danger">{L VideoCard_Delete_Btn}</button>
-
+        <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
+            <button type="button" class="btn text-bg-primary" id="RefreshBtn" data-bs-toggle="modal" data-bs-target="#exampleModal2" onclick="clickButton(this,false);" name="submit" value="update_file">{L VideoCard_Refresh_Btn}</button>
+            <button type="button" class="btn text-bg-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">{L VideoCard_Delete_Btn}</button>
+        </div>
     </form>
-
-
-
-    <div id="id01" class="modal">
-        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-            <form  class="modal-content" id="videoRefreshOrDelete" onsubmit="return false;">
-                {$DELETE_ID}
-
-          <div class="container">
-            <h1>Delete Account</h1>
-            <p>Are you sure you want to delete your account?</p>
-      
-            <div class="clearfix">
-              <button type="button" onclick="document.getElementById('id01').style.display='none'"  class="cancelbtn">Cancel</button>
-              <button class="btn btn-outline-danger btn-lg px-3 text-bg-danger deletebtn" id="Closebtn" 
-              onclick="clickButton(this);" type="submit" name="submit" 
-              value="delete_file">Delete</button>
-            </div>
-          </div>
-        </form>
-      </div>
-
-
 </div>
-<script>
-    function clickButton(e) {
-        let video_id = document.getElementById("DorRvideoId");
 
-        console.log(e.value + ", " + video_id.value);
-        $.ajax({
-            type: "post",
-            url: "process.php",
-            data: {
-                submit: e.value,
-                id: video_id.value,
-            },
-            cache: false,
-            success: function () {
-                window.opener.location.reload(true);
-                window.close();
-            },
-        });
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Video File</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this file from the server?</p>
+            </div>
+            <div class="modal-footer">
+                <form id="videoRefreshOrDelete" onsubmit="return false;">
+                    {$DELETE_ID}
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-danger" onclick="clickButton(this,true);" type="button" name="submit" value="delete_file">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-        return false;
-    }
-</script>
+<div class="modal fade" id="exampleModal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel2">Updating Video File</h1>
+            </div>
+            <div class="modal-body">
+                <p>Will reload automagicly</p>
+            </div>
+        </div>
+    </div>
+</div>

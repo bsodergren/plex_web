@@ -51,7 +51,7 @@ class VideoDb
         $sql .= ' LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
         $sql .= ' LEFT OUTER JOIN metatags_video_info i on f.video_key=i.video_key ';
         $sql .= " WHERE f.id = '".$id."'";
-        UtmDump($sql);
+        // UtmDump($sql);
         return $this->db->query($sql);
     }
 
@@ -69,4 +69,13 @@ class VideoDb
 
         return $this->db->query($sql);
     }
+
+    public function getVideoPath($id)
+    {
+        $sql = 'SELECT concat(fullpath,"/",filename) as file FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$id;
+        $results = $this->db->query($sql);
+        return $results[0]['file'];
+
+    }
+
 }
