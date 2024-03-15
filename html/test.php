@@ -11,6 +11,22 @@ define('VIDEOINFO', true);
 define('SHOW_RATING', true);
 require_once '_config.inc.php';
 
+use Spatie\Url\Url;
+
+$url = Url::fromString($_SERVER['REQUEST_URI']);
+$newLink = Url::create()
+->withScheme($_SERVER['REQUEST_SCHEME'])
+->withHost($_SERVER['SERVER_NAME'])
+->withPath($url->getpath())
+->withQuery($url->getQuery());
+
+dump($url->getQuery());
+// echo $url->getPath();
+
+echo $newLink;
+//$url->withoutQueryParameter('Studio'); // 'https://spatie.be/opensource?utm_source=github'
+//echo $url->withQueryParameters(['utm_campaign' => 'packages']); 
+
 
 $test_link = [
     'home' => [
@@ -118,7 +134,7 @@ $test_link = [
    
 
     foreach ($test_link as $name => $link_array) {
-        dump($link_array);
+        utmdump($link_array);
         $is_active = '';
         if ($link_array['dropdown'] == true) {
             $dropdown_html = '';
