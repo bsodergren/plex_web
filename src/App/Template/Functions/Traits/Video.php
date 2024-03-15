@@ -116,6 +116,7 @@ trait Video
         ];
         if (__SHOW_THUMBNAILS__ == true) {
             $thumbnail = $this->fileThumbnail($row_id);
+    
             $row_preview_image = $this->filePreview($row_id);
             $params['width'] = 325;
             $params['Thumbnail_html'] = Render::html(
@@ -137,6 +138,9 @@ trait Video
     public function fileThumbnail($row_id, $extra = '')
     {
         global $db;
+        if($row_id == ''){
+            return null;
+        }
         $query = 'SELECT thumbnail FROM metatags_video_file WHERE id = '.$row_id;
         $result = $db->query($query);
         if (\defined('NOTHUMBNAIL')) {
@@ -150,6 +154,9 @@ trait Video
     public function filePreview($row_id, $extra = '')
     {
         global $db;
+        if($row_id == ''){
+            return null;
+        }
         $query = 'SELECT preview FROM metatags_video_file WHERE id = '.$row_id;
         $result = $db->query($query);
 

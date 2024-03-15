@@ -38,7 +38,7 @@ const __DISPLAY_PAGES__ = [
         'sort'  => 1,
         'pages' => 1,
     ],
-    'files.php'        => [
+    'list.php'        => [
         'sort'  => 1,
         'pages' => 1,
     ],
@@ -66,7 +66,7 @@ const __DISPLAY_PAGES__ = [
         'sort'  => 1,
         'pages' => 1,
     ],
-    'gridview.php'     => [
+    'grid.php'     => [
         'sort'  => 1,
         'pages' => 1,
     ],

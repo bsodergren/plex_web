@@ -2,44 +2,48 @@
 
 use Plex\Core\Request;
 use Plex\Template\Render;
-
-use Plex\Template\Layout\Footer;
-use Plex\Template\Layout\Header;
-use Plex\Template\Display\Display;
 use Plex\Modules\Database\FileListing;
+use Plex\Template\Display\Display;
 use Plex\Template\Display\VideoDisplay;
+
+/**
+ * plex web viewer.
+ */
 
 require_once '_config.inc.php';
 
 define('TITLE', 'Home');
+define('GRID_VIEW', true);
 define('__SHOW_SORT__', true);
-
-define('ALPHA_SORT', true);
 define('SHOW_RATING', true);
 
+define('ALPHA_SORT', true);
 $fileinfo = new FileListing(new Request);
 [$results,$pageObj,$uri] = $fileinfo->getVideoArray();
 
 $request_key = uri_String($uri);
-$redirect_string = __THIS_FILE__.$request_key;
 
-if (array_key_exists('genre', $_REQUEST)) {
-    $studio_url = urlQuerystring($redirect_string, 'genre');
-}
+$redirect_string = __THIS_FILE__.$request_key;
 
 $referer_url = '';
 if ('home.php' != basename($_SERVER['HTTP_REFERER'])) {
     $referer_url = $_SERVER['HTTP_REFERER'];
 }
-Display::$CrubURL['grid'] = 'gridview.php';
 
-$vidInfo = (new VideoDisplay('List'))->init('filelist');
-$body = $vidInfo->Display($results, [
+$res = count($results);
+if (0 == $res) {
+    $redirect_string = urlQuerystring($redirect_string, 'alpha');
+    echo Elements::javaRefresh($redirect_string, 0);
+    exit;
+}
+
+Display::$CrubURL['list'] = 'list.php'; // .$request_key;
+
+//    echo display_filelist($results, '', $page_array);
+$grid = (new VideoDisplay('Grid'))->init();
+
+$table_body_html = $grid->Display($results, [
     'total_files' => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
 ]);
-
-
-// Header::Display();
-Render::Display($body);
-// Footer::Display();
+Render::Display($table_body_html);

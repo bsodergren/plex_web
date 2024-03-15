@@ -1,7 +1,7 @@
 <?php
-$recent_page = 'files';
+$recent_page = 'list';
 
-if(    __THIS_PAGE__ == 'files' || __THIS_PAGE__ == 'gridview' ){
+if(    __THIS_PAGE__ == 'list' || __THIS_PAGE__ == 'grid' ){
     $recent_page = __THIS_PAGE__;
 }
 
@@ -39,15 +39,22 @@ $navigation_link_array = [
         'icon' => 'list',
         'studio' => true,
     ],
-    'files' => [
-        'url' => 'files.php',
+    'list' => [
+        'url' => 'list.php',
         'text' => NavBar_Text_List,
         'icon' => 'list',
         'studio' => true,
     ],
-    'gridview' => [
-        'url' => 'gridview.php',
+    'grid' => [
+        'url' => 'grid.php',
         'text' => NavBar_Text_Grid,
+        'icon' => 'grid',
+       
+        'studio' => true,
+    ],
+    'folder' => [
+        'url' => 'file.php',
+        'text' => NavBar_Text_Filebrowser,
         'icon' => 'grid',
        
         'studio' => true,
@@ -82,7 +89,7 @@ $navigation_link_array = [
 
     'dropdown' => [
         'Extra' => [
-            'smartlist' => 'smartpl.php',
+            'file' => 'file.php',
             'Duplicates' => 'dupes.php',
             'Divider_1'=>1,
 

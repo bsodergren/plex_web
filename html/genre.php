@@ -88,7 +88,7 @@ foreach ($genre_array as $k => $v) {
         }
         $count = $db->getOne(Db_TABLE_VIDEO_TAGS, 'count(*) as cnt');
 
-        echo $studio." <a href='files.php?".$request_key.'genre='.urlencode($v)."'>".$v.'</a> '.$count['cnt'].' <br>';
+        echo $studio." <a href='list.php?".$request_key.'genre='.urlencode($v)."'>".$v.'</a> '.$count['cnt'].' <br>';
     }
 }
 

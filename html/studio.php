@@ -41,7 +41,7 @@ utmdump($sql);
 $result = $db->query($sql);
 $rows = count($result);
 
-$all_url = 'files.php?'.$request_key.'&allfiles=1';
+$all_url = 'list.php?'.$request_key.'&allfiles=1';
 
 utmdump([$studio,$studio_field,$studio_key]);
 foreach ($result as $k => $v) {

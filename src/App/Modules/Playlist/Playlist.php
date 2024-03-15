@@ -58,6 +58,9 @@ class Playlist
         
     }
     public static function getVideoPlaylists($id){
+        if($id == ''){
+            return null;
+        }
         $sql = 'SELECT * FROM '.Db_TABLE_PLAYLIST_VIDEOS.' WHERE playlist_video_id = '.$id;
         $results = (new Playlist())->db->query($sql);
         return $results;

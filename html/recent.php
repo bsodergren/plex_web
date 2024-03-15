@@ -30,7 +30,7 @@ $referer_url = '';
 if ('home.php' != basename($_SERVER['HTTP_REFERER'])) {
     $referer_url = $_SERVER['HTTP_REFERER'];
 }
-Display::$CrubURL['grid'] = 'gridview.php';
+Display::$CrubURL['grid'] = 'grid.php';
 
 $vidInfo = (new VideoDisplay('List'))->init('filelist');
 $body = $vidInfo->Display($results, [

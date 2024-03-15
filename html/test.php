@@ -20,15 +20,15 @@ $test_link = [
         'dropdown' => false,
     ],
 
-    'files' => [
-        'url' => 'files.php',
+    'list' => [
+        'url' => 'list.php',
         'text' => 'List  Display',
         'icon' => 'list',
         'dropdown' => false,
     ],
 
-    'gridview' => [
-        'url' => 'gridview.php',
+    'grid' => [
+        'url' => 'grid.php',
         'text' => 'Grid Display',
         'icon' => 'grid',
         'dropdown' => false,

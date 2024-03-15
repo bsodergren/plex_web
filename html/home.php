@@ -26,7 +26,7 @@ $rar = $db->rawQueryOne($sql);
 $sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'studio,subLibrary,count(video_key) as cnt', 'library', 'studio,subLibrary', 'studio,subLibrary ASC');
 $result = $db->query($sql);
 
-$all_url = 'files.php?allfiles=1';
+$all_url = 'list.php?allfiles=1';
 
 // DEFINE('BREADCRUMB', [$in_directory => "", 'all' => $all_url]);
 //  \Plex\Template\Layout\Header::Display();
