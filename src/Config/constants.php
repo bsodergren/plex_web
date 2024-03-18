@@ -19,6 +19,7 @@ define('SESSION_VARS',
         'library'      => 'Studios',
         'sort'         => 'f.added',
         'direction'    => 'DESC',
+        'days' => 1,
         // 'alpha' => '',
     ]);
 

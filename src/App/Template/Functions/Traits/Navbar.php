@@ -4,6 +4,7 @@ namespace Plex\Template\Functions\Traits;
 
 use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
+use Symfony\Component\Yaml\Yaml;
 
 trait Navbar
 {
@@ -13,15 +14,12 @@ trait Navbar
     {
         $html = '';
         $dropdown_html = '';
-        global $navigation_link_array,$login_link_array;
         global $_REQUEST;
 
-        if (!isset($_SESSION['auth'])
-        || 'verified' != $_SESSION['auth']) {
-            $navigation_link_array = $login_link_array;
-        }
+        $navigation_link_array = Yaml::parseFile(__ROUTE_NAV__, Yaml::PARSE_CONSTANT);
 
         foreach ($navigation_link_array as $name => $link_array) {
+            $day_text = '';
             $is_active = '';
             if ('dropdown' == $name) {
                 $dropdown_html = '';
@@ -64,6 +62,7 @@ trait Navbar
                         $link_array['url'] = $link_array['url'].'?substudio='.$_REQUEST['substudio'];
                     }
                 }
+              
 
                 if (__THIS_PAGE__ == basename($link_array['url'], '.php')) {
                     $is_active = ' active';
@@ -75,8 +74,16 @@ trait Navbar
                     'MENULINK_ICON' => self::navbarIcon($link_array),
                     'ACTIVE' => $is_active,
                 ];
-
                 $url_text = Render::html('base/navbar/menu_link', $array);
+
+                if (true == $link_array['days']) {
+                    if (__THIS_PAGE__ == 'recent') {
+
+                    //$url_text = str_replace("</li>",'',$url_text);
+                    $url_text .= (new Functions)->displayDayList();
+                    }
+                   // $url_text .= '</li>';
+                }
 
                 if (true == $link_array['secure'] && 'bjorn' != $_SERVER['REMOTE_USER']) {
                     $html = $html.$url_text."\n";

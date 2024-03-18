@@ -47,7 +47,8 @@ class FolderListing
         $url_array = $this->ReqObj->url_array();
         $currentpage = $this->ReqObj->currentPage;
         // $this->db           = new PlexSql('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $this->db = new PlexSql();
+        $this->db = PlexSql::$DB;
+        
         $this->currentpage = $currentpage;
         $this->request = $this->ReqObj->http_request;
         $this->urlPattern = $urlPattern;

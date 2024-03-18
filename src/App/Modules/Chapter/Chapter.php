@@ -1,6 +1,7 @@
 <?php
 
 namespace Plex\Modules\Chapter;
+use Plex\Modules\Database\PlexSql;
 
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
@@ -17,9 +18,9 @@ class Chapter
 
     public function __construct($data)
     {
-        global $db,$_SESSION;
+        global $_SESSION;
         $this->data = $data;
-        $this->db = $db;
+        $this->db = PlexSql::$DB;
         $this->library = $_SESSION['library'];
         if (isset($data['playlist_id'])) {
             $this->playlist_id = $data['playlist_id'];

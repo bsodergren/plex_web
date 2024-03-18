@@ -5,7 +5,7 @@ use Plex\Modules\Database\PlexSql;
 require_once '_config.inc.php';
 
 
-$results               = (new PlexSql())->getArtists();
+$results               = PlexSql::$DB->getArtists();
 $AristArray            = [];
 // $sortedArray[0]      = [];
 function compareArtist(&$array, $artist)

@@ -9,11 +9,12 @@ namespace Plex\Modules\Process;
 use Nette\Utils\Callback;
 use Plex\Template\Template;
 use UTMTemplate\HTML\Elements;
+use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\VideoDb;
 use Symfony\Component\Process\Process;
+use Plex\Modules\Process\Traits\Mediatag;
 use Plex\Modules\Process\Traits\Playlist;
 use Plex\Modules\Process\Traits\DbWrapper;
-use Plex\Modules\Process\Traits\Mediatag;
 
 class Forms
 {
@@ -31,8 +32,7 @@ class Forms
 
     public function __construct($postArray)
     {
-        global $db;
-        $this->db = $db;
+        $this->db = PlexSql::$DB;
         $this->postArray = $postArray;
 
         $this->redirect = $_SERVER['HTTP_REFERER'];
@@ -180,7 +180,7 @@ class Forms
 
     public static function StaticGenreConfigSave($data_array, $redirect, $timeout = 0)
     {
-        global $db;
+        $db = PlexSql::$DB;
 
         $__output = '';
 
@@ -215,8 +215,7 @@ class Forms
 
     public static function StaticArtistConfigSave($data_array, $redirect, $timeout = 0)
     {
-        global $db;
-
+        $db = PlexSql::$DB;
         $__output = '';
         foreach ($data_array as $key => $val) {
             if (true == str_contains($key, '_')) {
@@ -249,8 +248,7 @@ class Forms
 
     public static function StaticsaveStudioConfig($data_array, $redirect, $timeout = 0)
     {
-        global $db;
-
+        $db = PlexSql::$DB;
         $__output = '';
 
         foreach ($data_array as $key => $val) {

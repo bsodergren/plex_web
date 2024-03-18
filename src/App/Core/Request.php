@@ -3,6 +3,7 @@
 namespace Plex\Core;
 
 use Plex\Core\Utilities\PlexArray;
+use Plex\Modules\Database\PlexSql;
 
 class Request
 {
@@ -165,6 +166,7 @@ class Request
                 'current' => $_SESSION['sort'],
                 'direction' => $_SESSION['direction'],
                 'sort_types' => self::$sort_types,
+                'days' =>  $_SESSION['days'],
             ];
         } else {
             self::$url_array = $url_array;

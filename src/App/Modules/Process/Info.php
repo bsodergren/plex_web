@@ -4,6 +4,7 @@ namespace Plex\Modules\Process;
 
 use Nette\Utils\FileSystem;
 use Plex\Modules\Process\Traits\DbWrapper;
+use Plex\Modules\Database\PlexSql;
 
 class Info
 {
@@ -14,8 +15,7 @@ class Info
 
     public function __construct($req)
     {
-        global $db;
-        $this->db = $db;
+        $this->db = PlexSql::$DB;
         $this->postArray = $req;
     }
 

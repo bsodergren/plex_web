@@ -18,7 +18,7 @@ trait Breadcrumbs
         $request_tag = [];
         $crumbs['Home'] = 'home.php';
 
-        $url = 'files.php';
+        $url = 'list.php';
         if (__THIS_FILE__ == 'search.php') {
             $url = 'search.php';
         

@@ -2,6 +2,8 @@
 
 namespace Plex\Modules\Database;
 
+use Plex\Modules\Database\PlexSql;
+
 class VideoDb
 {
     public static $VideoMetaFields =
@@ -21,8 +23,7 @@ class VideoDb
 
     public function __construct()
     {
-        global $db;
-        $this->db = $db;
+        $this->db = PlexSql::$DB;
     }
     public function videoId()
     {
@@ -51,7 +52,7 @@ class VideoDb
         $sql .= ' LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.' c on m.video_key=c.video_key ';
         $sql .= ' LEFT OUTER JOIN '.Db_TABLE_VIDEO_INFO.' i on f.video_key=i.video_key ';
         $sql .= " WHERE f.id = '".$id."'";
-        // UtmDump($sql);
+         UtmDump($sql);
         return $this->db->query($sql);
     }
 

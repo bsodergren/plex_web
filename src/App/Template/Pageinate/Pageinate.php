@@ -6,9 +6,10 @@ namespace Plex\Template\Pageinate;
  * plex web viewer
  */
 
+use Plex\Template\Render;
 use JasonGrimes\Paginator;
 use UTMTemplate\HTML\Elements;
-use Plex\Template\Render;
+use Plex\Modules\Database\PlexSql;
 
 class Pageinate extends Paginator
 {
@@ -18,7 +19,7 @@ class Pageinate extends Paginator
     public $limit_array = [];
     public $offset;
     public $library = true;
-    public $table = Db_TABLE_VIDEO_TAGS;
+    public $table = Db_TABLE_VIDEO_FILE;
     public $results;
     public $paginator;
     public $itemsSelection = [10, 25, 50, 100, 250, 500, 1500];
@@ -26,14 +27,13 @@ class Pageinate extends Paginator
 
     public function __construct($query, $currentPage, $urlPattern)
     {
-        global $db;
         global $_SESSION;
-
+        $db = PlexSql::$DB;
         $this->itemsPerPage = $_SESSION['itemsPerPage'];
         $this->urlPattern = $urlPattern;
 
         $this->currentPage = $currentPage;
-
+utmdump($query);
          if (false != $query) {
             $table = $this->table.' f ';
             $libraryField = 'f.library';
@@ -47,11 +47,19 @@ class Pageinate extends Paginator
             }
         } else {
             $libraryField = 'library';
-            $query = urlQuerystring($urlPattern, ['current', 'allfiles', 'sec'], true);
+            
+            $query = urlQuerystring($urlPattern, ['current', 'allfiles', 'sec','days'], true);
             $table = $this->table;
             if (\count($query) > 0) {
                 $q = trim(str_replace('m.', '', $query['sql']));
                 $db->where($q);
+            }
+        }
+        if($_SESSION['sort'] == 'f.added')
+        {
+            if (__THIS_FILE__ == 'recent.php') {
+           
+                $db->where(PlexSQL::getLastest('added',$_SESSION['days']));
             }
         }
 
@@ -61,6 +69,7 @@ class Pageinate extends Paginator
             }
         }
 
+        //$this->results = $db->getQuery($table);
         $this->results = $db->withTotalCount()->get($table);
 
         $this->totalRecords = $db->totalCount;

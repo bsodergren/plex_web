@@ -3,53 +3,69 @@
 use Nette\Utils\FileSystem;
 use Plex\Core\Request;
 use Plex\Core\Utilities\Logger;
+use Plex\Core\RoboLoader;
+use Plex\Template\Template;
+use Plex\Modules\Database\PlexSql;
 
+global $_SESSION;
 
-function chk_file($value, $command = 'delete', $options = '')
-{
-    switch ($command) {
-        case 'rename':
-            if (is_file($value)) {
-                if (is_file($options)) {
-                    chk_file($options, 'delete');
-                }
+// $include_array =  RoboLoader::get_filelist(__PHP_INC_CORE_DIR__, 'php', 1);
+// foreach ($include_array as $required_file) {
+//     require_once $required_file;
+// }
 
-                logger("Renaming {$value} to {$options}");
-                rename($value, $options);
-            }
+$r = new Request();
+$uri = $r->getURI();
+$urlPattern = $r->geturlPattern();
+$url_array = $r->url_array();
+$currentPage = $r->currentPage;
+$template       = new Template();
 
-            break;
+// function chk_file($value, $command = 'delete', $options = '')
+// {
+//     switch ($command) {
+//         case 'rename':
+//             if (is_file($value)) {
+//                 if (is_file($options)) {
+//                     chk_file($options, 'delete');
+//                 }
 
-        case 'delete':
-            if (is_file($value)) {
-                logger("deleting {$value}");
-                $e = unlink($value);
-                // utmdd($e);
-            }
+//                 logger("Renaming {$value} to {$options}");
+//                 rename($value, $options);
+//             }
 
-            break;
-    }
-}// end chk_file()
+//             break;
 
-function deleteFile($array)
-{
-    global $db;
-    $id = $array['id'];
+//         case 'delete':
+//             if (is_file($value)) {
+//                 logger("deleting {$value}");
+//                 $e = unlink($value);
+//                 // utmdd($e);
+//             }
 
-    $videoInfo = $db->where('id', $id)->getone(Db_TABLE_VIDEO_FILE);
-    $file = $videoInfo['fullpath'].\DIRECTORY_SEPARATOR.$videoInfo['filename'];
-    $thumbnail = APP_HTML_ROOT.$videoInfo['thumbnail'];
+//             break;
+//     }
+// }// end chk_file()
 
-    // chk_file($file, 'delete');
-    rename_file($file);
-    chk_file($thumbnail, 'delete');
+// function deleteFile($array)
+// {
+//      $db = PlexSql::$DB;
+//     $id = $array['id'];
 
-    $res = $db->where('id', $id)->delete(Db_TABLE_VIDEO_FILE);
-    //    $res       =  $db->where('video_key', $videoInfo['video_key'])->delete(Db_TABLE_VIDEO_INFO);
-    $res = $db->where('playlist_video_id', $id)->delete(Db_TABLE_PLAYLIST_VIDEOS);
+//     $videoInfo = $db->where('id', $id)->getone(Db_TABLE_VIDEO_FILE);
+//     $file = $videoInfo['fullpath'].\DIRECTORY_SEPARATOR.$videoInfo['filename'];
+//     $thumbnail = APP_HTML_ROOT.$videoInfo['thumbnail'];
 
-    // echo '<script type="text/javascript">   window.opener.location.reload(true); window.close(); </script>';
-}
+//     // chk_file($file, 'delete');
+//     rename_file($file);
+//     chk_file($thumbnail, 'delete');
+
+//     $res = $db->where('id', $id)->delete(Db_TABLE_VIDEO_FILE);
+//     //    $res       =  $db->where('video_key', $videoInfo['video_key'])->delete(Db_TABLE_VIDEO_INFO);
+//     $res = $db->where('playlist_video_id', $id)->delete(Db_TABLE_PLAYLIST_VIDEOS);
+
+//     // echo '<script type="text/javascript">   window.opener.location.reload(true); window.close(); </script>';
+// }
 
 function rename_file($file)
 {
@@ -65,8 +81,9 @@ function logger($text, $var = '', $logfile = 'default.log')
 function getErrorLogs()
 {
     return Logger::getErrorLogs();
-}
-function urlQuerystring($input_string, $exclude = '', $query = false)
+ }
+
+ function urlQuerystring($input_string, $exclude = '', $query = false)
 {
     return Request::urlQuerystring($input_string, $exclude, $query);
 }

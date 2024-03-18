@@ -1,11 +1,14 @@
 <?php
-/**
- * plex web viewer
- */
 define('__THIS_FILE__', basename($_SERVER['SCRIPT_FILENAME']));
 define('__THIS_PAGE__', basename($_SERVER['SCRIPT_FILENAME'], '.php'));
 
+$recent_page = 'list';
 
+if (__THIS_PAGE__ == 'list' || __THIS_PAGE__ == 'grid') {
+    $recent_page = __THIS_PAGE__;
+}
+
+define('__RECENT_PAGE__', $recent_page.'.php?sort=f.added&direction=ASC');
 define('__PHP_ASSETS_DIR__', $_ENV['WEB_HOME'].'/assets');
 define('__PHP_INC_CORE_DIR__', __PLEX_APP_DIR__.'/Includes');
 
@@ -27,3 +30,4 @@ define('__LAYOUT_PATH__', __PHP_ASSETS_DIR__);
 define('__HTML_TEMPLATE__', __PLEX_APP_DIR__.'/Layout/template');
 define('__METADB_HASH', __CACHE_DIR.'/'.$cache_directory.'/metadb.hash');
 
+define('__ROUTE_NAV__', __PHP_YAML_DIR__.'/navigation.yaml');

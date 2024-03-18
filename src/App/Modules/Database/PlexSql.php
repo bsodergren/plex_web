@@ -17,12 +17,24 @@ class PlexSql extends \MysqliDb
     public $where = '';
     public $groupBy = '';
     public $orderBy = '';
+    public static $DB;
 
     public function __construct()
     {
-        global $_SESSION,$db;
-        parent::__construct('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+        $db = parent::getInstance();
+        if($db === null){
+            parent::__construct('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+            $db = parent::getInstance();
+        }
         $this->db = $db;
+
+         self::$DB = $db;
+        // return $this->db;
+    }
+
+    public static function getLastest($field,$days=1){
+
+        return $field.' > Today() - interval '.$days.' day ';
     }
 
     public static function getAlphaKey($field, $key)
@@ -55,7 +67,6 @@ class PlexSql extends \MysqliDb
 
     public static function getFilterList($field)
     {
-        global $_SESSION,$db;
         $tag_array = ['studio', 'substudio', 'genre', 'artist'];
         $query = [];
         foreach ($tag_array as $tag) {
@@ -80,7 +91,7 @@ class PlexSql extends \MysqliDb
     1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
     ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit  '.$querySQl.'  ORDER BY `val` ASC';
 
-        $res = $db->query($sql);
+        $res = $this->db->query($sql);
         foreach ($res as $k => $g) {
             $array[] = $g['val'];
         }
@@ -90,7 +101,6 @@ class PlexSql extends \MysqliDb
 
     public function getDuplicates($column)
     {
-        global $db;
         global $_SESSION;
 
         $library = '';
@@ -101,7 +111,7 @@ class PlexSql extends \MysqliDb
         by '.$column.' having COUNT('.$column.') > 1;';
 
         // echo $query;
-        return $db->query($query);
+        return $this->db->query($query);
     }
 
     // public function showDupes($column,$value)
@@ -177,7 +187,6 @@ class PlexSql extends \MysqliDb
 
     public function getArtists()
     {
-        global $db;
 
         $sql = 'SELECT ';
 
@@ -187,7 +196,7 @@ class PlexSql extends \MysqliDb
         $sql .= 'LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.' c on m.video_key=c.video_key ';
 
         // $where = $this->pwhere("(artist is not null and artist != 'Missing')");
-        return $db->query($sql.$where);
+        return $this->db->query($sql.$where);
     }
 
     public function getQuery($tableName, $numRows = null, $columns = '*')
@@ -211,7 +220,6 @@ class PlexSql extends \MysqliDb
         if ($this->isSubQuery) {
             return $this;
         }
-
         return $this->_lastQuery;
     }
     // public $fieldList ='id, video_key,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added,filename ,fullpath,library,filesize';

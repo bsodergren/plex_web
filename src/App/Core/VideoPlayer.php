@@ -2,11 +2,12 @@
 
 namespace Plex\Core;
 
-use Plex\Modules\Database\FileListing;
-use Plex\Modules\Database\VideoDb;
-use Plex\Template\Functions\Functions;
-use UTMTemplate\HTML\Elements;
 use Plex\Template\Render;
+use UTMTemplate\HTML\Elements;
+use Plex\Modules\Database\PlexSql;
+use Plex\Modules\Database\VideoDb;
+use Plex\Modules\Database\FileListing;
+use Plex\Template\Functions\Functions;
 
 class VideoPlayer
 {
@@ -32,8 +33,7 @@ class VideoPlayer
 
     public function __construct()
     {
-        global $db;
-        $this->db = $db;
+        $this->db = PlexSql::$DB;
         $this->js_params['COMMENT'] = '//';
         $this->videoId();
         $this->playlistId();
@@ -45,7 +45,6 @@ class VideoPlayer
         $this->db->where('video_id', $this->id);
         $user = $this->db->getOne(Db_TABLE_SEQUENCE);
         $this->sequence = $user['seq_id'];
-
         return $user['seq_id'];
     }
 
@@ -115,6 +114,7 @@ class VideoPlayer
         $res = $this->VideoDb->getVideoDetails($this->id);
 
         if (!isset($this->playlist_id)) {
+            if(PlexSql::getLibrary() !== null){
             $this->js_params['NEXT_VIDEO_ID'] = $this->getNextVideo();
             $this->js_params['PREV_VIDEO_ID'] = $this->getPrevVideo();
             $this->js_params['COMMENT'] = '';
@@ -123,7 +123,7 @@ class VideoPlayer
             $txt .= 'Current: '.$this->id.':'.$this->sequence.' -- ';
             $txt .= 'Next: '.$this->nextVideo.':'.$this->nextSequence.'  ';
 
-            
+            }
         }
 
         $result = $res[0];
@@ -179,6 +179,7 @@ class VideoPlayer
 
                 $playlist_result = $this->db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
                 $query = $this->db->getLastQuery();
+                UtmDump($query);
                 $id = $playlist_result['playlist_video_id'];
                 $this->id = $id;
             }

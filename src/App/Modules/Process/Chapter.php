@@ -3,6 +3,7 @@
 namespace Plex\Modules\Process;
 
 use Plex\Modules\Process\Traits\DbWrapper;
+use Plex\Modules\Database\PlexSql;
 
 class Chapter
 {
@@ -16,9 +17,9 @@ class Chapter
 
     public function __construct($data)
     {
-        global $db,$_SESSION;
+        global $_SESSION;
         $this->data = $data;
-        $this->db = $db;
+        $this->db = PlexSql::$DB;
         $this->library = $_SESSION['library'];
         if (isset($data['playlist_id'])) {
             $this->playlist_id = $data['playlist_id'];

@@ -6,6 +6,7 @@ use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
 use Plex\Modules\Chapter\Chapter;
 use Plex\Modules\VideoCard\Traits\VideoRow;
+use Plex\Modules\Database\PlexSql;
 
 /**
  * plex web viewer.
@@ -35,7 +36,7 @@ class VideoCard
 
     public function VideoInfo($fileInfoArray, $total_files)
     {
-        global $db;
+        $db = PlexSql::$DB;
         $this->fileInfoArray = $fileInfoArray;
         $this->params = [];
         $table_body_html = [];

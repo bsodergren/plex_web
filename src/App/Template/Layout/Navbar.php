@@ -14,7 +14,7 @@ class Navbar
 {
     public static function Display($params)
     {
-        global $db;
+        $db = PlexSql::$DB;
         $params['__LAYOUT_URL__'] = __LAYOUT_URL__;
         $params['APP_NAME'] = APP_NAME;
 

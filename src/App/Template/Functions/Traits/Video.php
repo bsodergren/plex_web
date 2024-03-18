@@ -6,6 +6,8 @@ use Plex\Modules\Playlist\Playlist;
 use Plex\Template\Functions\Functions;
 use UTMTemplate\HTML\Elements;
 use Plex\Template\Render;
+use Plex\Modules\Database\PlexSql;
+
 
 trait Video
 {
@@ -14,7 +16,19 @@ trait Video
     public function videoButton($matches)
     {
         $var = $this->parseVars($matches);
-
+        UtmDump($var);
+        // if(array_key_exists('prev_id',$var))
+        // {
+        //     if($var['prev_id'] == ""){
+        //         return null;
+        //     }
+        // }
+        // if(array_key_exists('pl_id',$var))
+        // {
+        //     if($var['pl_id'] == ""){
+        //         return null;
+        //     }
+        // }
         return Render::html(Functions::$ButtonDir.'/'.$var['template'], $var);
     }
 
@@ -137,7 +151,7 @@ trait Video
 
     public function fileThumbnail($row_id, $extra = '')
     {
-        global $db;
+        $db = PlexSql::$DB;
         if($row_id == ''){
             return null;
         }
@@ -153,7 +167,7 @@ trait Video
 
     public function filePreview($row_id, $extra = '')
     {
-        global $db;
+        $db = PlexSql::$DB;
         if($row_id == ''){
             return null;
         }

@@ -4,11 +4,12 @@ namespace Plex\Modules\Video;
 
 use Plex\Core\Request;
 use Plex\Template\Render;
-use Plex\Modules\Video\Chapter;
 use UTMTemplate\HTML\Elements;
+use Plex\Modules\Video\Chapter;
+use Plex\Modules\Database\PlexSql;
+use Plex\Modules\Database\VideoDb;
 use Plex\Modules\Video\Player\Plyr;
 use Plex\Modules\Database\FileListing;
-use Plex\Modules\Database\VideoDb;
 use Plex\Modules\Video\Player\VideoJs;
 
 class Player
@@ -36,8 +37,7 @@ class Player
 
     public function __construct()
     {
-        global $db;
-        $this->db = $db;
+        $this->db = PlexSql::$DB;
     }
 
     public function PlayVideo()

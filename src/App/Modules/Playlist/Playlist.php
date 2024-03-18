@@ -3,6 +3,7 @@
 namespace Plex\Modules\Playlist;
 
 use UTMTemplate\HTML\Elements;
+use Plex\Modules\Database\PlexSql;
 
 /**
  * plex web viewer.
@@ -21,9 +22,9 @@ class Playlist
 
     public function __construct($data = [])
     {
-        global $db,$_SESSION;
+        global $_SESSION;
         $this->data = $data;
-        $this->db = $db;
+        $this->db = PlexSql::$DB;
         $this->library = $_SESSION['library'];
         if (isset($data['playlist_id'])) {
             $this->playlist_id = $data['playlist_id'];

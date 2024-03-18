@@ -19,7 +19,7 @@ if (isset($_GET['sort'])) {
     }
 }
 
-$psql = new PlexSql();
+$psql = PlexSql::$DB;
 $results = $psql->getDuplicates($column);
 if (count($results) > 0) {
     foreach ($results as $k => $value) {

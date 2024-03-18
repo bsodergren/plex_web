@@ -1,0 +1,61 @@
+home:
+    url: home.php
+    text:  !php/const NavBar_Text_Home
+    icon: home
+    studio: false
+recent:
+    url: recent.php?direction=ASC&sort=f.added
+    text: !php/const NavBar_Text_Recent
+    icon: list
+    studio: true
+    days: true
+list:
+    url: list.php
+    text: !php/const NavBar_Text_List
+    icon: list
+    studio: true
+grid:
+    url: grid.php
+    text: !php/const NavBar_Text_Grid
+    icon: grid
+    studio: true
+folder:
+    url: file.php
+    text: !php/const NavBar_Text_Filebrowser
+    icon: grid
+    studio: true
+playlist:
+    url: playlist.php
+    text: !php/const NavBar_Text_Playist
+    icon: playlist
+    studio: true
+tag:
+    url: tags.php
+    text: !php/const NavBar_Text_Tags
+    icon: ""
+    studio: false
+artist:
+    url: artist.php
+    text: !php/const NavBar_Text_Artists
+    icon: ""
+    studio: false
+search:
+    url: search.php
+    text: !php/const NavBar_Text_Search
+    icon: ""
+    studio: false
+dropdown:
+    Extra: {
+        Duplicates: dupes.php, 
+        Divider_1: 1, 
+        artistEditor: Config/artistEditor.php, 
+        studioEditor: Config/studioEditor.php, 
+        genreEditor: Config/genreEditor.php, 
+        Divider_2: 1, 
+        wordMap: editor.php, 
+        "File Browser": filebrowser.php, 
+        test: test.php, 
+        Divider_3: 1, 
+        refresh: "process.php?action=refresh", 
+        settings: settings.php 
+    }

@@ -7,6 +7,9 @@ use UTMTemplate\HTML\Elements;
 use Plex\Template\Display\VideoDisplay;
 use Plex\Template\Functions\Traits\Video;
 
+use Plex\Modules\Database\PlexSql;
+
+
 /**
  * plex web viewer
  */
@@ -27,8 +30,8 @@ class GridDisplay extends VideoDisplay
     public function display($results, $page_array = [])
     {
         global $_SESSION,$_REQUEST;
-        global $db,$sort_type_map;
-
+        global $sort_type_map;
+$db = PlexSql::$DB;
         if (isset($page_array['total_files'])) {
             $totalRecords = $page_array['total_files'];
         }

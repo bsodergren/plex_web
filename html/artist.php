@@ -15,7 +15,7 @@ define('TITLE', 'artist Page');
 
 // define('BREADCRUMB', ['home' => "home.php"]);
 
-$results               = (new PlexSql())->getArtists();
+$results               =PlexSql::$DB->getArtists();
 
 $VideoDisplay          = new Functions();
 $AristArray            = [];

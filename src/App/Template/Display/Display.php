@@ -17,21 +17,19 @@ class Display
     public $_SERVER;
     public $_SESSION;
     public $_REQUEST;
-    public $navigation_link_array;
     public static $CSS_THEMES = [];
     public static $CrubURL = [];
     private $model_popup = '';
     private $model_buttons = [];
     public static $Random;
 
-    public function __construct($navigation_link_array = '')
+    public function __construct()
     {
         global $_SESSION;
         global $_REQUEST;
         global $_SERVER;
 
         $this->_SESSION = $_SESSION;
-        $this->navigation_link_array = $navigation_link_array;
         $this->_REQUEST = $_REQUEST;
         $this->_SERVER = $_SERVER;
     }

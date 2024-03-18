@@ -22,7 +22,8 @@ class FileListing
         $url_array = $this->ReqObj->url_array();
         $currentpage = $this->ReqObj->currentPage;
         // $this->db           = new PlexSql('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $this->db = new PlexSql();
+         $this->db = PlexSql::$DB;
+        // Utmdd($this->db->getlastquery());
         $this->currentpage = $currentpage;
         $this->request = $this->ReqObj->http_request;
         $this->urlPattern = $urlPattern;
@@ -30,7 +31,7 @@ class FileListing
 
     public function saveSearch($query)
     {
-        $db = new PlexSql();
+        $db = PlexSql::$DB;
         $res = $db->rawQuery($query);
         if (\count($res) > 0) {
             foreach ($res as $k => $row) {
@@ -97,11 +98,15 @@ class FileListing
             $uri['direction'] = $_SESSION['direction'];
             $this->request['direction'] = $_SESSION['direction'];
         }
-        if (isset($uri)) {
-        $uri['allfiles'] = $this->request['allfiles'];
-
-            
+        if (isset($_SESSION['days'])) {
+            $uri['days'] = $_SESSION['days'];
+            $this->request['days'] = $_SESSION['days'];
+            $days =  $_SESSION['days'];
         }
+
+        if (isset($uri)) {
+            $uri['allfiles'] = $this->request['allfiles'];
+       }
 
         $pageObj = new Pageinate(false, $this->currentpage, $this->urlPattern);
 
@@ -109,7 +114,8 @@ class FileListing
             $this->db->orderBy($this->request['sort'], $this->request['direction']);
         }
 
-        $results = $this->buildSQL([0,25]);
+        $this->db->where(PlexSQL::getLastest('f.added',$days));
+        $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
 
         return [$results, $pageObj, $uri];
     }
@@ -126,14 +132,15 @@ class FileListing
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
                 ${$tag} = urldecode($this->request[$tag]);
                 $uri[$tag] = ${$tag};
-                if ('studio' == $tag || 'substudio' == $tag) {
-                    $studio_key = $tag;
-                }
+                if ('studio' == $tag || 'substudio' == $tag
+                || 'genre' == $tag || 'artist' == $tag || 'keyword' == $tag) {
+                    $key = $tag;
+                } 
             }
         }
 
-        if (!isset($studio_key)) {
-            $studio_key = 'studio';
+        if (!isset($key)) {
+            $key = 'studio';
         }
 
         if (isset($_SESSION['sort'])) {
@@ -147,9 +154,8 @@ class FileListing
         }
 
         if (isset($this->request['alpha'])) {
-            $key = $this->request['alpha'];
-            $field = $this->request['sort'];
-            $query = PlexSql::getAlphaKey($field, $key);
+        
+            $query = PlexSql::getAlphaKey($this->request['sort'], $this->request['alpha']);
             if (null === $query) {
                 unset($this->request['alpha']);
             } else {
@@ -163,6 +169,7 @@ class FileListing
             if (isset($this->request['alpha'])) {
                 $uri['alpha'] = $this->request['alpha'];
             }
+            unset($query);
         }
 
         if (isset($uri)) {
@@ -176,20 +183,28 @@ class FileListing
                 $sql_studio = $res_array['sql'];
             }
 
-            if (isset($this->request['genre'])) {
-                $where = str_replace("genre  = '".$this->request['genre']."'", 'genre like \'%'.$this->request['genre'].'%\'', $sql_studio);
-            }
-            if (!isset($this->request['allfiles']) && '' != $sql_studio) {
-                $where = str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
-            } else {
-                $studio_key = '';
+            // if (isset($this->request['genre'])) {
+            //     $key = 'genre';
+            // }
+            // if (isset($this->request['artist'])) {
+            //     $key = 'artist';
+            // }
+    
+            // $where = str_replace($key."  = '".$this->request[$key]."'", $key.' like \'%'.$this->request[$key].'%\'',
+            //  $sql_studio);
+            
+            
+            if (isset($this->request['allfiles'])) {
+            //     $where = str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
+            // } else {
+            //     //$studio_key = '';
                 $uri['allfiles'] = $this->request['allfiles'];
                 $where = $sql_studio;
                 $genre = '';
-            }
+             }
         }
 
-        $pageObj = new Pageinate(false, $this->currentpage, $this->urlPattern);
+        $pageObj = new Pageinate([['field'=>$key,'search'=>$this->request[$key]]], $this->currentpage, $this->urlPattern);
 
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
@@ -262,14 +277,14 @@ class FileListing
 
         $joinQuery .= $limitQuery;
 
-        // UtmDump($joinQuery);
+         UtmDump($joinQuery);
         //$this->saveSearch($joinQuery);
         $joinQuery = str_replace('SELECT   f.id','SELECT ' . implode(',', $fieldArray), $joinQuery);
 
         $joinQuery = str_replace('SELECT ', 'SELECT count(DISTINCT p.playlist_video_id) as totalRecords, ', $joinQuery);
 
         $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
-    //   UtmDump($query);
+       UtmDump($query);
 
         $results = $this->db->rawQuery($query);
 

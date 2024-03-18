@@ -1,5 +1,8 @@
 <?php
 
+use Plex\Modules\Database\PlexSql;
+
+
 define('DB_DATABASE', $_ENV['DB_DATABASE']);
 
 define('DB_HOST', $_ENV['DB_HOST']);
@@ -29,3 +32,9 @@ define('Db_TABLE_PLAYLIST_VIDEOS', Db_PLEXWEB_PREFIX.'playlist_videos');
 define('Db_TABLE_PLAYLIST_DATA', Db_PLEXWEB_PREFIX.'playlist_data');
 define('Db_TABLE_SMARTLIST_DATA', Db_PLEXWEB_PREFIX.'smartlist_data');
 define('Db_TABLE_WORDMAP', Db_PLEXWEB_PREFIX.'wordMap');
+
+
+$db = new PlexSql(); // ('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+
+$sql = 'DELETE FROM '.Db_TABLE_SEARCH_DATA.' WHERE updatedAt < NOW() - INTERVAL 8 HOUR';
+$res = $db->rawQuery($sql);

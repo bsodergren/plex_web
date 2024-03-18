@@ -16,6 +16,7 @@ use Plex\Template\Functions\Traits\PageSort;
 use Plex\Template\Functions\Modules\AlphaSort;
 use Plex\Template\Functions\Traits\Breadcrumbs;
 use Plex\Template\Functions\Modules\metaFilters;
+use Plex\Template\Functions\Traits\RecentDays;
 use Plex\Template\Functions\Traits\TagCloud;
 use Plex\Template\Functions\Traits\ThemeSwitcher;
 
@@ -28,6 +29,7 @@ class Functions extends Render
     use ThemeSwitcher;
     use Video;
     use TagCloud;
+    use RecentDays;
 
     public static $ElementsDir = 'elements';
     public static $PlaylistDir = 'elements/Playlist';

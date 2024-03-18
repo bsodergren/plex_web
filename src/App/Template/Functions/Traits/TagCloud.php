@@ -22,7 +22,7 @@ trait TagCloud
     }
     private  function getKeywordList($field = 'keyword')
     {
-        global $db;
+         $db = PlexSql::$DB;
         global $_SESSION;
         $where = PlexSql::getLibrary();
         $where = str_replace('AND', 'WHERE', $where);
@@ -42,7 +42,7 @@ trait TagCloud
         $var = $this->parseVars($matches);
         $field = $var['field'];
 
-        global $db;
+        
         global $_SESSION;
 
        
