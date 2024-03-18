@@ -97,7 +97,7 @@ class PlexSql extends \MysqliDb
         if ('All' != $_SESSION['library']) {
             $library = " WHERE library = '".$_SESSION['library']."' ";
         }
-        $query = 'SELECT '.$column.',count('.$column.') FROM `metatags_video_file` '.$library.' group
+        $query = 'SELECT '.$column.',count('.$column.') FROM `'.Db_TABLE_VIDEO_FILE.'` '.$library.' group
         by '.$column.' having COUNT('.$column.') > 1;';
 
         // echo $query;
@@ -112,8 +112,8 @@ class PlexSql extends \MysqliDb
     //         $library = "  AND library = '".$_SESSION['library']."' ";
     //     }
 
-    //     $query = PlexSql::query_builder('metatags_video_file','select', "`f.".$column."` = '".$value."' ");
-    //     //$query = "SELECT * FROM `metatags_video_file` WHERE `".$column."` = '".$value."' ".  $library;
+    //     $query = PlexSql::query_builder(''.Db_TABLE_VIDEO_FILE.'','select', "`f.".$column."` = '".$value."' ");
+    //     //$query = "SELECT * FROM `'.Db_TABLE_VIDEO_FILE.'` WHERE `".$column."` = '".$value."' ".  $library;
     //     utmdd($query);
     //     return $db->query($query);
     // }
@@ -182,9 +182,9 @@ class PlexSql extends \MysqliDb
         $sql = 'SELECT ';
 
         $sql .= 'COALESCE (c.artist,m.artist) as artist, ';
-        $sql .= 'f.video_key FROM metatags_video_file f ';
-        $sql .= 'INNER JOIN metatags_video_metadata m on f.video_key=m.video_key '.self::getLibrary();
-        $sql .= 'LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
+        $sql .= 'f.video_key FROM '.Db_TABLE_VIDEO_FILE.' f ';
+        $sql .= 'INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on f.video_key=m.video_key '.self::getLibrary();
+        $sql .= 'LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.' c on m.video_key=c.video_key ';
 
         // $where = $this->pwhere("(artist is not null and artist != 'Missing')");
         return $db->query($sql.$where);
@@ -218,7 +218,7 @@ class PlexSql extends \MysqliDb
 
     //  SELECT
     // m.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.filename ,f.fullpath,m.library,f.filesize
-    // FROM metatags_video_file f INNER JOIN metatags_video_metadata m on m.video_key=f.video_key
+    // FROM '.Db_TABLE_VIDEO_FILE.' f INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on m.video_key=f.video_key
     // AND m.studio = 'Brazzers' AND m.library = 'Pornhub' AND m.genre like '%MMF%' ORDER BY m.title ASC LIMIT 0, 5
     public function pselect($table, $fields = 'select')
     {

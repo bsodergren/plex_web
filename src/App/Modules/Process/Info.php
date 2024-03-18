@@ -33,8 +33,8 @@ class Info
         if ('NULL' == $this->tagValue) {
             $data[$tag] = null;
 
-            $query = 'UPDATE `metatags_video_custom` SET ';
-            $query .= ' `'.$tag."` = NULL WHERE `metatags_video_custom`.`video_key` = '".$this->video_key."'";
+            $query = 'UPDATE `'.Db_TABLE_VIDEO_CUSTOM.'` SET ';
+            $query .= ' `'.$tag."` = NULL WHERE `'.Db_TABLE_VIDEO_CUSTOM.'`.`video_key` = '".$this->video_key."'";
 
             $this->rawQuery($query);
         } else {

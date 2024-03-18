@@ -141,7 +141,7 @@ trait Video
         if($row_id == ''){
             return null;
         }
-        $query = 'SELECT thumbnail FROM metatags_video_file WHERE id = '.$row_id;
+        $query = 'SELECT thumbnail FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$row_id;
         $result = $db->query($query);
         if (\defined('NOTHUMBNAIL')) {
             return null;
@@ -157,7 +157,7 @@ trait Video
         if($row_id == ''){
             return null;
         }
-        $query = 'SELECT preview FROM metatags_video_file WHERE id = '.$row_id;
+        $query = 'SELECT preview FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$row_id;
         $result = $db->query($query);
 
         if (\defined('NOTHUMBNAIL')) {

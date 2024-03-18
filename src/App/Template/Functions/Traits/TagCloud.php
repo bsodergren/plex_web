@@ -30,7 +30,7 @@ trait TagCloud
         $sql_meta =$this->getKeywordSQL(Db_TABLE_VIDEO_TAGS,$field,$where);
         $sql_custom = $this->getKeywordSQL(Db_TABLE_VIDEO_CUSTOM,$field);
 
-        // $sql = "SELECT DISTINCT m.genre,c.genre FROM metatags_video_custom c, metatags_video_metadata m WHERE (m.genre is not null and c.genre is not null) and  m.Library = 'Studios'";
+        // $sql = "SELECT DISTINCT m.genre,c.genre FROM '.Db_TABLE_VIDEO_CUSTOM.' c, '.Db_TABLE_VIDEO_TAGS.' m WHERE (m.genre is not null and c.genre is not null) and  m.Library = 'Studios'";
         $qlist_meta = $db->query($sql_meta);
         $qlist_custom = $db->query($sql_custom);
         return array_merge($qlist_custom, $qlist_meta);

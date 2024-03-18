@@ -46,10 +46,10 @@ class VideoDb
         $sql = 'SELECT ';
         $sql .= implode(',', $fieldArray);
 
-        $sql .= ' FROM metatags_video_file f ';
-        $sql .= ' INNER JOIN metatags_video_metadata m on f.video_key=m.video_key '; // .PlexSql::getLibrary();
-        $sql .= ' LEFT JOIN metatags_video_custom c on m.video_key=c.video_key ';
-        $sql .= ' LEFT OUTER JOIN metatags_video_info i on f.video_key=i.video_key ';
+        $sql .= ' FROM '.Db_TABLE_VIDEO_FILE.' f ';
+        $sql .= ' INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on f.video_key=m.video_key '; // .PlexSql::getLibrary();
+        $sql .= ' LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.' c on m.video_key=c.video_key ';
+        $sql .= ' LEFT OUTER JOIN '.Db_TABLE_VIDEO_INFO.' i on f.video_key=i.video_key ';
         $sql .= " WHERE f.id = '".$id."'";
         // UtmDump($sql);
         return $this->db->query($sql);

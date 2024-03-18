@@ -12,7 +12,7 @@ if (true == $_GET['q']) {
     $q = $_GET['q'];
 
     $db->where('tag_name', '%'.$q.'%', 'like');
-    $tags = $db->get('tags');
+    $tags = $db->get(Db_TABLE_TAGS);
 
     if ($db->count > 0) {
         foreach ($tags as $tag) {
