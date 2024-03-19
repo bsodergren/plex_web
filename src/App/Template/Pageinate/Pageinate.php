@@ -23,7 +23,7 @@ class Pageinate extends Paginator
     public $results;
     public $paginator;
     public $itemsSelection = [10, 25, 50, 100, 250, 500, 1500];
-    private $maxRecordsToShow = __MAX_PAGES_TO_SHOW__;
+    private $maxRecordsToShow = 6;
 
     public function __construct($query, $currentPage, $urlPattern)
     {
@@ -33,7 +33,6 @@ class Pageinate extends Paginator
         $this->urlPattern = $urlPattern;
 
         $this->currentPage = $currentPage;
-utmdump($query);
          if (false != $query) {
             $table = $this->table.' f ';
             $libraryField = 'f.library';

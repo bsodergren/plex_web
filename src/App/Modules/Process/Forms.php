@@ -146,6 +146,7 @@ class Forms
     public function playlist()
     {
         $url = $this->createPlaylist();
+        utmdump([__METHOD__,$url]);
         echo $url;
         //  echo $this->myHeader($url);
         exit;

@@ -23,12 +23,12 @@ trait Video
         //         return null;
         //     }
         // }
-        // if(array_key_exists('pl_id',$var))
-        // {
-        //     if($var['pl_id'] == ""){
-        //         return null;
-        //     }
-        // }
+         if(array_key_exists('pl_id',$var))
+         {
+             if($var['pl_id'] == "null"){
+                 return null;
+             }
+         }
         return Render::html(Functions::$ButtonDir.'/'.$var['template'], $var);
     }
 

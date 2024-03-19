@@ -18,6 +18,7 @@ trait Playlist
     public function addAllPlaylist()
     {
         $url = $this->createPlaylist();
+        utmdump([__METHOD__,$url]);
         echo $this->myHeader($url);
     }
 
@@ -50,6 +51,7 @@ trait Playlist
            return $this->postArray['PlaylistID'];
 
         }
+        utmdump([__METHOD__,"gfdg",$this->postArray]);
 
         if (\array_key_exists('PlayAll', $this->postArray)) {
             if (\array_key_exists('search_id', $this->postArray)) {
@@ -92,7 +94,6 @@ trait Playlist
 
 
         $playlist_id = $this->addPlaylistData();
-
         if (!\array_key_exists('playlist', $this->postArray)) {
             return $playlist_id;
         }

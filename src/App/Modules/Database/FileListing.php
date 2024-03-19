@@ -278,7 +278,7 @@ class FileListing
         $joinQuery .= $limitQuery;
 
          UtmDump($joinQuery);
-        //$this->saveSearch($joinQuery);
+        $this->saveSearch($joinQuery);
         $joinQuery = str_replace('SELECT   f.id','SELECT ' . implode(',', $fieldArray), $joinQuery);
 
         $joinQuery = str_replace('SELECT ', 'SELECT count(DISTINCT p.playlist_video_id) as totalRecords, ', $joinQuery);

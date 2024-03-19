@@ -11,7 +11,7 @@ use Plex\Template\Functions\Functions;
 
 class VideoPlayer
 {
-    public $playlist_id;
+    public $playlist_id = null;
     public $id;
     public $db;
     public $playlistName;
@@ -115,14 +115,13 @@ class VideoPlayer
 
         if (!isset($this->playlist_id)) {
             if(PlexSql::getLibrary() !== null){
-            $this->js_params['NEXT_VIDEO_ID'] = $this->getNextVideo();
-            $this->js_params['PREV_VIDEO_ID'] = $this->getPrevVideo();
-            $this->js_params['COMMENT'] = '';
+                $this->js_params['NEXT_VIDEO_ID'] = $this->getNextVideo();
+                $this->js_params['PREV_VIDEO_ID'] = $this->getPrevVideo();
+                $this->js_params['COMMENT'] = '';
 
-            $txt = 'Prev: '.$this->prevVideo.':'.$this->prevSequence.' -- ';
-            $txt .= 'Current: '.$this->id.':'.$this->sequence.' -- ';
-            $txt .= 'Next: '.$this->nextVideo.':'.$this->nextSequence.'  ';
-
+                $txt = 'Prev: '.$this->prevVideo.':'.$this->prevSequence.' -- ';
+                $txt .= 'Current: '.$this->id.':'.$this->sequence.' -- ';
+                $txt .= 'Next: '.$this->nextVideo.':'.$this->nextSequence.'  ';
             }
         }
 

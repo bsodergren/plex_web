@@ -5,7 +5,8 @@ use Plex\Template\Display\VideoDisplay;
 use Plex\Template\Render;
 
 define('TITLE', 'Home');
-define('__SHOW_SORT__', true);
+define('__SHOW_SORT__', false);
+define('__BOTTOM_NAV__', false);
 require_once '_config.inc.php';
 
 $column = 'duration';

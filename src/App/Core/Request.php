@@ -61,6 +61,15 @@ class Request
     public $session;
 
     public $uri;
+    public const SESSION_VARS =
+    [
+        'itemsPerPage' => '100',
+        'library' => 'Studios',
+        'sort' => 'f.added',
+        'direction' => 'DESC',
+        'days' => 1,
+        // 'alpha' => '',
+    ];
 
     public function __construct()
     {
@@ -73,7 +82,7 @@ class Request
         $this->http_request = $_REQUEST;
         $this->session = $_SESSION;
 
-        foreach (SESSION_VARS as $key => $default) {
+        foreach (self::SESSION_VARS as $key => $default) {
             if (!isset($_SESSION[$key])) {
                 $_SESSION[$key] = $default;
             }
@@ -166,7 +175,7 @@ class Request
                 'current' => $_SESSION['sort'],
                 'direction' => $_SESSION['direction'],
                 'sort_types' => self::$sort_types,
-                'days' =>  $_SESSION['days'],
+                'days' => $_SESSION['days'],
             ];
         } else {
             self::$url_array = $url_array;

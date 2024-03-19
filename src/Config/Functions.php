@@ -2,10 +2,11 @@
 
 use Nette\Utils\FileSystem;
 use Plex\Core\Request;
-use Plex\Core\Utilities\Logger;
 use Plex\Core\RoboLoader;
-use Plex\Template\Template;
+use Plex\Core\Utilities\Logger;
 use Plex\Modules\Database\PlexSql;
+use Plex\Template\Display\Display;
+use UTMTemplate\Template;
 
 global $_SESSION;
 
@@ -14,12 +15,16 @@ global $_SESSION;
 //     require_once $required_file;
 // }
 
+Display::Random();
+define('__RANDOM__', Display::$Random);
+
+Template::$registeredCallbacks = ['\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK' => 'callback_parse_function'];
+
 $r = new Request();
 $uri = $r->getURI();
 $urlPattern = $r->geturlPattern();
 $url_array = $r->url_array();
 $currentPage = $r->currentPage;
-$template       = new Template();
 
 // function chk_file($value, $command = 'delete', $options = '')
 // {
@@ -81,9 +86,9 @@ function logger($text, $var = '', $logfile = 'default.log')
 function getErrorLogs()
 {
     return Logger::getErrorLogs();
- }
+}
 
- function urlQuerystring($input_string, $exclude = '', $query = false)
+function urlQuerystring($input_string, $exclude = '', $query = false)
 {
     return Request::urlQuerystring($input_string, $exclude, $query);
 }
