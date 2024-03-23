@@ -115,7 +115,13 @@ trait Playlist
         ) {
             return __URL_HOME__.'/video.php?playlist_id='.$playlist_id.'';
         }
-      
+     
+        if (\array_key_exists('VideoPlayer', $this->postArray)) {
+            
+          return __URL_HOME__.'/video.php?id='. $id.'&playlist_id='.$playlist_id.'';
+      }
+        
+      utmdump("here we are agin on the road");
 
         return __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
     }

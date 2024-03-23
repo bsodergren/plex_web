@@ -71,6 +71,7 @@ foreach ($studioArray as $subLibrary => $studioArr) {
             $accordian['ACCORDIAN_HEADER'] = $name['studio'];
 
             $accordian['STUDIO_LINK'] = Render::html('home/studio/link', [
+                'url' => 'studio',
                 'GET_REQUEST' => 'studio='.$studio,
                 'NAME' => $name['studio'],
                 'COUNT' => $cnt,
@@ -84,6 +85,7 @@ foreach ($studioArray as $subLibrary => $studioArr) {
                 $ssCnt = ' ('.$ssName['cnt'].')';
                 $substudio = urlencode($ssName['substudio']);
                 $accordian['STUDIO_LINK'] .= Render::html('home/studio/link', [
+                    'url' => 'genre',
                     'GET_REQUEST' => 'substudio='.$substudio,
                     'NAME' => $ssName['substudio'],
                     'COUNT' => $ssCnt,
@@ -95,6 +97,7 @@ foreach ($studioArray as $subLibrary => $studioArr) {
         } else {
             $studio_links .= Render::html('home/studio/group', [
                 'STUDIO_LINK' => Render::html('home/studio/link', [
+                    'url' => 'genre',
                     'GET_REQUEST' => 'studio='.$studio,
                     'NAME' => $name['studio'],
                     'COUNT' => $cnt,

@@ -22,7 +22,7 @@ if (isset($_REQUEST['substudio'])) {
 }
 
 $studio = str_replace('-', ' ', $studio_text);
-$studio = str_replace('_', '/', $studio);
+$studio = str_replace('_', '_', $studio);
 $order = $studio_field.' ASC';
 
 $sql_studio = $studio_key." = '".$studio."'";

@@ -246,7 +246,7 @@ if (defined('FM_EMBED')) {
         }
     }
     set_error_handler('session_error_handling_function');
-    session_start();
+   // session_start();
     restore_error_handler();
 }
 

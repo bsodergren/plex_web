@@ -2,12 +2,11 @@
 
 namespace Plex\Template\Functions\Traits;
 
+use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Playlist\Playlist;
 use Plex\Template\Functions\Functions;
-use UTMTemplate\HTML\Elements;
 use Plex\Template\Render;
-use Plex\Modules\Database\PlexSql;
-
+use UTMTemplate\HTML\Elements;
 
 trait Video
 {
@@ -23,12 +22,12 @@ trait Video
         //         return null;
         //     }
         // }
-         if(array_key_exists('pl_id',$var))
-         {
-             if($var['pl_id'] == "null"){
-                 return null;
-             }
-         }
+        if (\array_key_exists('pl_id', $var)) {
+            if ('null' == $var['pl_id']) {
+                return null;
+            }
+        }
+
         return Render::html(Functions::$ButtonDir.'/'.$var['template'], $var);
     }
 
@@ -65,6 +64,35 @@ trait Video
         }
 
         return Elements::addButton($text, 'button', $class, $extra, $javascript);
+    }
+
+    public function videoAddToPlaylist($matches)
+    {
+        $var = $this->parseVars($matches);
+        $results = Playlist::getVideoPlaylists($var['id']);
+        $playlist_id = null;
+        if ('' != $var['pl_id']) {
+            $playlist_id = $var['pl_id'];
+        } 
+
+        foreach($results as $k => $row)
+        {
+            if($playlist_id === null){
+                if (\array_key_exists('playlist_id', $row)) {
+                    $playlist_id = $row['playlist_id'];
+                }
+            } else {
+                $disabled_id[] = $row['playlist_id'];
+            }
+        }
+        $disabled_id_list = implode(",",$disabled_id);
+        $playlists = (new Playlist())->getPlaylistSelectOptions($playlist_id,$disabled_id_list);
+        
+
+        return Render::html(Functions::$PlaylistDir.'/VideoPlayer/PlaylistForm', [
+            'SelectPlaylists' => $playlists,
+            'Videoid' => $var['id'],
+        ]);
     }
 
     public function videoPlaylistBtn($matches)
@@ -130,7 +158,7 @@ trait Video
         ];
         if (__SHOW_THUMBNAILS__ == true) {
             $thumbnail = $this->fileThumbnail($row_id);
-    
+
             $row_preview_image = $this->filePreview($row_id);
             $params['width'] = 325;
             $params['Thumbnail_html'] = Render::html(
@@ -152,7 +180,7 @@ trait Video
     public function fileThumbnail($row_id, $extra = '')
     {
         $db = PlexSql::$DB;
-        if($row_id == ''){
+        if ('' == $row_id) {
             return null;
         }
         $query = 'SELECT thumbnail FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$row_id;
@@ -168,7 +196,7 @@ trait Video
     public function filePreview($row_id, $extra = '')
     {
         $db = PlexSql::$DB;
-        if($row_id == ''){
+        if ('' == $row_id) {
             return null;
         }
         $query = 'SELECT preview FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$row_id;

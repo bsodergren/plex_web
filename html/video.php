@@ -3,18 +3,19 @@
 use Plex\Core\VideoPlayer;
 use Plex\Template\Render;
 
+define('SHOW_RATING', true);
+
 require_once '_config.inc.php';
-// define('SHOW_RATING', true);
 
 $videoPlayer = new VideoPlayer();
 
-$videoPlayer->videoTemplate = "videoPlyr";
-//$videoPlayer->videoTemplate = "video";
+$videoPlayer->videoTemplate = 'videoPlyr';
+// $videoPlayer->videoTemplate = "video";
+
 
 $videoPlayer->videoInfo();
 
-if (isset($videoPlayer->playlist_id))
-{
+if (isset($videoPlayer->playlist_id)) {
     $videoPlayer->getPlaylist();
 }
 

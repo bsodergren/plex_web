@@ -46,16 +46,28 @@ class Playlist
         return $res;
     }
 
-    public function getPlaylistSelectOptions()
+    public function getPlaylistSelectOptions($playlist_id = null,$disabled_id = null)
     {
+        $selected = [];
+
+
+        if($playlist_id !== null){
+            $selected =  ['value'=>$playlist_id];
+        }
         $res = $this->showPlaylists();
-        foreach($res as $i => $row){
+        foreach($res as $i => $row)
+        {
             if($row['library'] == $this->library){
-                $plArray[] = ['value' => $row['playlist_id'],
-                'text' => $row['name']];
+             
+                $plArray[] = [
+                    'value' => $row['playlist_id'],
+                    'text' => $row['name'],
+            ];
             }
         }
-        return Elements::SelectOptions($plArray,'','');
+       
+        return Elements::SelectOptions(array: $plArray,selected: $selected,
+         disabled: $disabled_id);
         
     }
     public static function getVideoPlaylists($id){
