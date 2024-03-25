@@ -15,7 +15,10 @@ trait RecentDays
     {
 
         return Render::return(self::$RecentDaysDir.'/select',
-        ['Options' => Elements::SelectOptions([1,2,4,6,8], $_SESSION['days'])]);
+        ['Options' => Elements::SelectOptions(
+            array: [1,2,4,6,8], 
+            selected: $_SESSION['days']
+        ), 'Class' => ' recent-days-select']);
        
     }
 }

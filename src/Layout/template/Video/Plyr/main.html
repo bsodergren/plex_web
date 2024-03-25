@@ -27,7 +27,10 @@
     </head>
 <body>
         
-  <header>
+ 
+    {{template=Video/Plyr/container/container}} 
+
+ <!-- <header>
     <div class="menu-container">
       <div class="row">
         <div class="row-inner">
@@ -35,10 +38,10 @@
         </div>
       </div>
     </div>
-  </header>
-  {$VideoContainer}
-    {{template=Video/Plyr/container/container}} 
+  </header> -->
     {{javascript=plyr/app.js}} 
     {{javascript=plyr/simplebar.js}}
+
     </body>
+    {$VIDEO_JS}
 </html>

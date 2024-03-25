@@ -5,6 +5,7 @@ body {
 footer {
     margin-top: 50px;
 }
+
 /* 
 .fileList {
     margin-right: 10px;
@@ -46,7 +47,8 @@ footer {
 
 .vertical-text {
     transform-origin: center;
-    transform: rotate(90deg);}
+    transform: rotate(90deg);
+}
 
 /* .blueTable-thead-th {
     font-size: 18px;
@@ -221,11 +223,30 @@ button[type="submit"]:hover {
 }
 
 .list-group.list-group-studio {
-    --bs-list-group-action-hover-color: ; 
-    --bs-list-group-action-hover-bg: ; 
+    --bs-list-group-action-hover-color: ;
+    --bs-list-group-action-hover-bg: ;
     --bs-list-group-action-active-color: var(--bs-body-color);
     --bs-list-group-action-active-bg: var(--bs-secondary-bg);
---bs-list-group-border-width: 0px;
---bs-list-group-border-radius: var(--bs-border-radius);
+    --bs-list-group-border-width: 0px;
+    --bs-list-group-border-radius: var(--bs-border-radius);
 }
 
+.dropdown-divider-settings {
+    height: 2px;
+    margin: var(--bs-dropdown-divider-margin-y) 0;
+    overflow: hidden;
+    border-top: 5px solid var(--bs-dropdown-divider-bg);
+    opacity: 1;
+}
+
+.recent-days-link {
+    border-right: 0px !important; 
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+.recent-days-select {
+    border-left: 0px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}

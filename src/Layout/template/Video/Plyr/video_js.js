@@ -89,6 +89,8 @@ windowWidth = videoWidth * 0.75
 windowHeight = videoHeight * .90
 window.resizeTo(windowWidth, windowHeight)
 
+
+
 function nextVideo() {
     setTimeout(function () { window.location.href = '!!__URL_HOME__!!/video.php?id=!!NEXT_VIDEO_ID!!&playlist_id=!!PLAYLIST_ID!!&r=true'; }, 0);
 }

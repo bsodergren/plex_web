@@ -54,8 +54,16 @@ seek.addEventListener('contextmenu', rightClickSeekTooltip);
 var modal = document.getElementById('info')
 
 window.addEventListener('keydown', function (event) {
+
+    console.log(event.key);
   if (event.key === 'Escape') {
     modal.style.display = 'none'
+  }
+  if (event.key === 'n') {
+    nextVideo()
+  }
+  if (event.key === 'b') {
+    prevVideo()
   }
 })
 // 

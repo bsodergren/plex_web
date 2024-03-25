@@ -44,18 +44,23 @@ search:
     text: !php/const NavBar_Text_Search
     icon: ""
     studio: false
-dropdown:
-    Extra: {
-        Duplicates: dupes.php, 
-        Divider_1: 1, 
-        artistEditor: Config/artistEditor.php, 
-        studioEditor: Config/studioEditor.php, 
-        genreEditor: Config/genreEditor.php, 
-        Divider_2: 1, 
-        wordMap: editor.php, 
-        "File Browser": filebrowser.php, 
-        test: test.php, 
-        Divider_3: 1, 
-        refresh: "process.php?action=refresh", 
-        settings: settings.php 
-    }
+extra:
+    text: "Settings"
+    dropdown: [{
+            Duplicates: dupes.php},
+        {
+            artistEditor: Config/artistEditor.php, 
+            studioEditor: Config/studioEditor.php, 
+            genreEditor: Config/genreEditor.php
+        },
+        {
+            wordMap: editor.php, 
+            "File Browser": filebrowser.php, 
+            test: test.php
+        },
+        {
+            refresh: "process.php?action=refresh", 
+            settings: settings.php 
+        }
+    ]
+    

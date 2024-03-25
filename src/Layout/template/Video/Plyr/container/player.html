@@ -1,4 +1,6 @@
-<div class="col col-sm-12 left   {if="{$hasPlaylist}=false"} alt {/if}">
+<!-- {$self} -->
+
+<div class="col col-sm-12   {if="{$hasPlaylist}=true"} left  {/if}">
     <div class="player_container">
         <a class="player_text" href="" target="_blank">
           <span class="text_title"></span>
@@ -6,7 +8,8 @@
         </a>
         
         {if="{$hasPlaylist}=true"}
-        {{template=Video/Plyr/playlist/icon}}
+    
+          {{template=Video/Plyr/playlist/icon}}
         {/if}
         <video class="plyr__video-wrapper js-playerx" poster="{$thumbnail}">
             <source src="{$VIDEO_URL}" type="video/mp4" size="{$height}"/>

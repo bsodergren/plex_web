@@ -244,8 +244,8 @@ const PlayerApp = {
 
     this.player.on('controlshidden', () => {
       //this.player.play();
-      playlistIcon.classList.add('hidden');
-      playlerText.classList.add('hidden');
+      playlistIcon.classList.remove('hidden');
+      playlerText.classList.remove('hidden');
     });
     this.player.on('controlsshown', () => {
       //this.player.play();

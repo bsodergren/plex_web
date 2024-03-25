@@ -16,7 +16,9 @@ define('__SHOW_SORT__', true);
 define('ALPHA_SORT', true);
 define('SHOW_RATING', true);
 
+/*
 $fileinfo = new FileListing(new Request());
+
 [$results,$pageObj,$uri] = $fileinfo->getLatest();
 
 $request_key = uri_String($uri);
@@ -37,7 +39,7 @@ $body = $vidInfo->Display($results, [
     'total_files' => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
 ]);
-
+*/
 // Header::Display();
 Render::Display($body);
 // Footer::Display();

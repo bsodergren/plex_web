@@ -15,7 +15,6 @@ trait Video
     public function videoButton($matches)
     {
         $var = $this->parseVars($matches);
-        UtmDump($var);
         // if(array_key_exists('prev_id',$var))
         // {
         //     if($var['prev_id'] == ""){
@@ -68,6 +67,7 @@ trait Video
 
     public function videoAddToPlaylist($matches)
     {
+        $disabled_id=[] ;
         $var = $this->parseVars($matches);
         $results = Playlist::getVideoPlaylists($var['id']);
         $playlist_id = null;
@@ -90,6 +90,7 @@ trait Video
         
 
         return Render::html(Functions::$PlaylistDir.'/VideoPlayer/PlaylistForm', [
+            'playlistId' =>  $playlist_id ,
             'SelectPlaylists' => $playlists,
             'Videoid' => $var['id'],
         ]);

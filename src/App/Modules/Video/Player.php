@@ -2,15 +2,14 @@
 
 namespace Plex\Modules\Video;
 
-use Plex\Core\Request;
-use Plex\Template\Render;
-use UTMTemplate\HTML\Elements;
-use Plex\Modules\Video\Chapter;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\VideoDb;
+use Plex\Modules\Playlist\Playlist;
 use Plex\Modules\Video\Player\Plyr;
-use Plex\Modules\Database\FileListing;
 use Plex\Modules\Video\Player\VideoJs;
+use Plex\Modules\Video\Playlist\PlyrList;
+use Plex\Template\Render;
+use UTMTemplate\HTML\Elements;
 
 class Player
 {
@@ -27,45 +26,55 @@ class Player
     // public $params = [
     // ];
 
+    public $VideoTemplate = 'Video/Plyr';
+    public static $PlayerTemplate = '';
     public $options = [
         'usePlyr' => true,
         'useCanvas' => false,
         'useCarousel' => false,
         'usePlyrPlaylist' => true,
         'useVideoJs' => false,
-    ]; 
+    ];
 
     public function __construct()
     {
+        self::$PlayerTemplate = $this->VideoTemplate;
         $this->db = PlexSql::$DB;
+        $this->playlistId();
+        utmdump('this->playlist  ID '.$this->playlist_id);
     }
 
     public function PlayVideo()
     {
-              
-        if($this->options['usePlyr'] == true){
+        if (true == $this->options['usePlyr']) {
             $this->PlayerClass = new Plyr($this);
-        } elseif($this->options['useVideoJs'] == true) {
+        } elseif (true == $this->options['useVideoJs']) {
             $this->PlayerClass = new videoJs();
         }
-       /// $this->PlayerClass->videoId();
-        utmdump($this->PlayerClass);
-            $this->VideoDetails();
+        // / $this->PlayerClass->videoId();
+
+        $this->VideoDetails();
+       if (\is_object($this->playlist)) {
+            $this->params = array_merge($this->params, $this->playlist->params);
+            $this->js_params = array_merge($this->js_params, $this->playlist->js_params);
+       }
+
+        $this->getVideo();
+
     }
 
     public function options($options = [])
     {
-        foreach ($options as $key => $value)
-        {
+        foreach ($options as $key => $value) {
             $this->options[$key] = $value;
         }
-
     }
 
-public function getPlayerTemplate($template)
-{
-    return  $this->PlayerClass->templatePlayer. '/' . $template;
-}
+    public function getPlayerTemplate($template)
+    {
+        return $this->PlayerClass->templatePlayer.'/'.$template;
+    }
+
     public function getVideoURL($video_id)
     {
         $cols = ['fullpath', 'filename'];
@@ -81,7 +90,11 @@ public function getPlayerTemplate($template)
     public function getVideo()
     {
         $this->params['VIDEO_ID'] = $this->id;
-        $this->params['PLAYLIST_ID'] = $this->playlist_id;
+        if (null === $this->playlist_id) {
+            $this->params['hasPlaylist'] = false;
+        } else {
+            $this->params['PLAYLIST_ID'] = $this->playlist_id;
+        }
         $this->params['__LAYOUT_URL__'] = __LAYOUT_URL__;
 
         $this->params['VIDEO_JS'] = $this->videoJs();
@@ -92,7 +105,6 @@ public function getPlayerTemplate($template)
     public function VideoDetails()
     {
         $res = (new VideoDb())->getVideoDetails($this->videoId());
-        UtmDump($res);
         $result = $res[0];
         $active_title = null;
         if (null === $active_title) {
@@ -129,13 +141,14 @@ public function getPlayerTemplate($template)
         if (\array_key_exists('id', $_REQUEST)) {
             $this->id = $_REQUEST['id'];
         }
-        utmdump($this->id);
+
         return $this->id;
     }
 
     public function videoJs()
     {
-        return Render::javascript($this->videoTemplate.'/video_js', $this->js_params);
+        // utmdump($this->VideoTemplate);
+        return Render::javascript($this->VideoTemplate.'/video_js', $this->js_params);
     }
 
     public function getRemoveVideo()
@@ -144,5 +157,39 @@ public function getPlayerTemplate($template)
         $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
 
         return Render::html($this->videoTemplate.'/buttons/remove', ['HIDDEN_VIDEO_ID' => $videoId]);
+    }
+
+    public function getPlaylist()
+    {
+        $this->playlist = new PlyrList();
+        $this->playlist->playlist_id = $this->playlist_id;
+        $this->playlist->getPlaylist();
+
+    }
+
+    public function playlistId()
+    {
+        if (\array_key_exists('playlist_id', $_REQUEST)) {
+            $playlist_id = $_REQUEST['playlist_id'];
+            if (!\array_key_exists('id', $_REQUEST)) {
+                $cols = ['playlist_id', 'playlist_video_id'];
+                $this->db->where('playlist_id', $playlist_id);
+
+                $playlist_result = $this->db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
+                $query = $this->db->getLastQuery();
+                $id = $playlist_result['playlist_video_id'];
+                $this->id = $id;
+            }
+            $this->playlist_id = $playlist_id;
+        } else {
+            $pl = (new Playlist())->getVideoPlaylists($this->videoId());
+            foreach ($pl as $k => $row) {
+                if (\array_key_exists('playlist_id', $row)) {
+                    $this->playlist_id = $row['playlist_id'];
+                }
+            }
+        }
+
+        return $this->playlist_id;
     }
 }

@@ -117,7 +117,11 @@ trait Playlist
         }
      
         if (\array_key_exists('VideoPlayer', $this->postArray)) {
-            
+            if (\array_key_exists('currentPl', $this->postArray)) {
+                if ('' != $this->postArray['currentPl']) {
+                    $playlist_id = $this->postArray['currentPl'];
+                }
+            }
           return __URL_HOME__.'/video.php?id='. $id.'&playlist_id='.$playlist_id.'';
       }
         

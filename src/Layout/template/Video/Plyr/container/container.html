@@ -1,4 +1,8 @@
 <div class="container row">
 {{template=Video/Plyr/container/player}}
-{{template=Video/Plyr/container/playlist}}
+
+{if="{$hasPlaylist}=true"}
+    {{template=Video/Plyr/container/playlist}}
+
+{/if}
 </div>

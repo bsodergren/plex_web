@@ -277,14 +277,12 @@ class FileListing
 
         $joinQuery .= $limitQuery;
 
-         UtmDump($joinQuery);
         $this->saveSearch($joinQuery);
         $joinQuery = str_replace('SELECT   f.id','SELECT ' . implode(',', $fieldArray), $joinQuery);
 
         $joinQuery = str_replace('SELECT ', 'SELECT count(DISTINCT p.playlist_video_id) as totalRecords, ', $joinQuery);
 
         $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
-       UtmDump($query);
 
         $results = $this->db->rawQuery($query);
 

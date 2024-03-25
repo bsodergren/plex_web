@@ -32,11 +32,16 @@ class Playlist
 
     }
 
-    public function showPlaylists()
+    public function showPlaylists($library = false)
     {
+        $where = '';
+        if($library !== false ) {
+            $where = ' and d.Library = "'.$this->library.'"';
+        }
+
         $sql = 'select count(p.playlist_video_id) as count, p.playlist_id, d.name,
         d.library from '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_PLAYLIST_VIDEOS.' as 
-        p where (p.playlist_id = d.id) and d.hide = 0 group by p.playlist_id ORDER BY library ASC;';
+        p where (p.playlist_id = d.id) and d.hide = 0 '.$where.' group by p.playlist_id ORDER BY library ASC;';
         $results = $this->db->query($sql);
         return $results;
     }
@@ -67,6 +72,7 @@ class Playlist
         }
        
         return Elements::SelectOptions(array: $plArray,selected: $selected,
+        blank: '',
          disabled: $disabled_id);
         
     }

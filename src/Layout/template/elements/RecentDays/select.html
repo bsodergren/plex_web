@@ -1,8 +1,11 @@
-
-<form method="GET" class="d-flex" >
-    <input type="submit" style="display: none" />
-    <select class="nav-link form-control" name="days" id="recentDays" onchange="this.form.submit()">
+<li class="nav-item">
+<form method="GET">
+    <select class="form-control {$Class} nav-link" name="days" id="recentDays" onchange="this.form.submit()">
         {$Options}
     </select>
 </form>
+</li>
+
+
+
 
