@@ -1,39 +1,3 @@
-function updateVideoPlayer (video_id, pl_id) {
-    setTimeout(function () {
-        window.location.href =
-            '{$__URL_HOME__}/video.php?id=' +
-            video_id +
-            '&playlist_id=' +
-            pl_id +
-            '&r=true'
-    }, 0)
-}
-
-function getElementsStartsWithId( id ) {
-    if (document.getElementsByClassName)
-    {
-        children = document.getElementsByClassName("plyr__progress");
-     
-
-
-    }
-
-    var elements = [], child;
-
-      child = children[0];
-      return child.querySelector('input').id; 
-  }
-  document.addEventListener('DOMContentLoaded', () => {
-
-const seekid = getElementsStartsWithId('plyr-seek');
-const seek = document.getElementById(seekid);
-seek.addEventListener('contextmenu', rightClickSeekTooltip);
-  });
-//child = seek.child;
-//
-
-// 
-
 function rightClickSeekTooltip (event) {
     console.log("Width " + event.target.clientWidth)
     console.log("offset " + event.offsetX )
@@ -60,41 +24,87 @@ function formatTime (timeInSeconds) {
     }
 }
 
-const player = new Plyr('video', {
-    captions: { active: true },
-    keyboard: { focused: true, global: true },
-    hideControls: false,
-    disableContextMenu: true,
-    seekTime: 30,
+// const player = new Plyr('video', {
+//     captions: { active: true },
+//     keyboard: { focused: true, global: true },
+//     hideControls: false,
+//     disableContextMenu: true,
+//     seekTime: 30,
 
-    markers: { enabled: true, points: !!ChapterIndex!! }
-})
-window.player = player
+//     markers: { enabled: true, points: !!ChapterIndex!! }
+// })
+// window.player = player
 
 
 function setPlayerTime(time){
     player.currentTime = time;
 }
 
-videoWidth = !!width!!
-videoHeight = !!height!!
-if (videoHeight > 1080) {
-    videoHeight = 1080
+
+function resizeWindow(small)
+{
+
+    videoWidth = !!width!!
+    videoHeight = !!height!!
+    if (videoHeight > 1080) {
+        videoHeight = 1080
+    }
+    if (videoWidth > 1920) {
+        videoWidth = 1920
+    }
+    if(small == false) {
+        windowWidth = videoWidth * 0.75
+        windowHeight = videoHeight * .70
+    } else {
+        windowWidth = videoWidth
+        windowHeight = videoHeight * 1.1
+    
+    }
+
+    console.log("Width:"+windowWidth + " Height:" + windowHeight);
+
+    window.resizeTo(windowWidth, windowHeight)
 }
-if (videoWidth > 1920) {
-    videoWidth = 1920
+
+resizeWindow(false)
+
+
+function addChapter(event, timeCode) {
+    let x = event.clientX;
+    let y = event.clientY;
+
+    txtField = document.getElementById("info");
+    txtField.style.left = x + "px";
+    txtField.style.top = y + "px";
+    txtField.style.display = "block";
+
+    var hiddenAction = document.getElementById("timeCodeInput");
+    hiddenAction.value = timeCode;
+
+    // form.submit();
 }
 
-windowWidth = videoWidth * 0.75
-windowHeight = videoHeight * .90
-window.resizeTo(windowWidth, windowHeight)
+$("#addChapter").submit(function (e) {
+    var postData = $(this).serializeArray();
+    console.info(postData);
+    $.ajax({
+        url: "process.php",
+        type: "POST",
+        data: postData,
+        success: function (data) {
+        //    window.location.href = data;
+        var form = $('#addChapter')
+        console.log(data)
+        return false;
+        setPlayerTime(data)
+        },
+    });
+});
 
 
 
-function nextVideo() {
-    setTimeout(function () { window.location.href = '!!__URL_HOME__!!/video.php?id=!!NEXT_VIDEO_ID!!&playlist_id=!!PLAYLIST_ID!!&r=true'; }, 0);
-}
-
-function prevVideo() {
-    setTimeout(function () { window.location.href = '!!__URL_HOME__!!/video.php?id=!!PREV_VIDEO_ID!!&playlist_id=!!PLAYLIST_ID!!'+ '&r=true'; }, 0);
-}
+// var newOutletOptions = [
+//   ['option name 1', 'firstValue'],
+//   ['option name 2', 'secondValue']
+// ]
+// console.log(newOutletOptions)

@@ -6,7 +6,7 @@
 .accordion,
 .col-sm-12.right,
 .menu-container {
-  background-color: #fff;
+  background-color: #141618;
 }
 
 .accordion-button,
@@ -81,7 +81,7 @@ body {
 
 .accordion-button,
 .filter-button {
-  color: #303133;
+  color: #d8d8d9;
   cursor: pointer;
 }
 
@@ -93,13 +93,13 @@ body {
 
 .item_wrapper {
   display: flex !important;
-  align-items: center;
+  align-items: center !important;
 }
 
 .playlist .playlist_item.watched:hover,
 .playlist .playlist_item:hover,
 .playlist_item:hover {
-  background-color: #e1e1e1;
+  background-color: #d87777;
 }
 
 .playlist_item.hidden {
@@ -113,7 +113,8 @@ body {
   color: #303133;
 }
 
-.item_director,
+.item_artist,
+.item_studio,
 .item_text,
 .item_title {
   display: -webkit-box;
@@ -128,12 +129,17 @@ body {
   font-size: 18px;
 }
 
-.item_director {
+.item_artist {
   margin-top: 0;
   -webkit-line-clamp: 1;
   font-size: 13px;
 }
 
+.item_studio {
+  margin-top: 0;
+  -webkit-line-clamp: 1;
+  font-size: 13px;
+}
 .item_text {
   -webkit-line-clamp: 2;
 }
@@ -223,7 +229,7 @@ body {
 }
 
 .playlist .playlist_item.watched {
-  background-color: #f9f9f9;
+  background-color: #3e3c3c;
 }
 
 .playlist .playlist_item.watched .item_details {
@@ -250,7 +256,7 @@ body {
   overflow: initial;
   z-index: 100;
   position: relative;
-  background-color: #fff;
+  background-color: #141618;
 }
 
 .filter-button.active,
@@ -283,11 +289,32 @@ body {
   line-height: 1.5;
 }
 
+.filter-select {
+  text-align-last: center;
+  padding: 0px 20px;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: left 1rem;
+  background-size: 1.5em;
+}
+
+.filter-option {
+  text-align: center;
+  padding: 0px 20px;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: left 1rem;
+  background-size: 1.5em;
+}
+
+
 .search-container {
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: #fff;
+  background-color: #141618;
   overflow: auto;
   max-height: 100%;
   z-index: 99;
@@ -314,7 +341,7 @@ body {
 }
 
 #searchInput {
-  background-color: #fff;
+  background-color: #141618;
   border: none;
   outline: 0;
   width: 100%;
@@ -332,6 +359,34 @@ body {
   left: 10px;
   z-index: 99;
   font-size: 24px;
+}
+
+
+
+.col-sm-12.bottomleft {
+  width: 100%;
+    margin-right: 313px;
+  display: block;
+  transition: 0.3s ease-in-out;
+}
+
+.col-sm-12.bottomright {
+min-width: 313px;
+width: 18%;
+position: absolute;
+top: 0;
+right: 0;
+bottom: 0;
+transition: 0.3s ease-in-out;
+}
+
+
+.video_info_text {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding-left: 6px;
+  font-size: 16px;
 }
 
 
@@ -377,6 +432,39 @@ body {
 .player_container.loading .plyr__control.plyr__control--overlaid:after {
   display: block;
 }
+
+
+.form-check-inline {
+  display: inline-block;
+  margin-right: 1rem;
+}
+.page-link {
+  position: relative;
+  display: block;
+  /* padding: var(--bs-pagination-padding-y) var(--bs-pagination-padding-x);
+  font-size: var(--bs-pagination-font-size); */
+  /* color: var(--bs-pagination-color); */
+  text-decoration: none;
+  /* background-color: var(--bs-pagination-bg); */
+  /* border: var(--bs-pagination-border-width) solid var(--bs-pagination-border-color); */
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.bg-opacity-25 {
+  --bs-bg-opacity: 0.25;
+}
+
+.text-bg-danger {
+  color: #fff !important;
+  background-color: #ee605bd8 !important;
+}
+
+label {
+  display: inline-block;
+}
+
+
+
+
 @keyframes spin {
   to { -webkit-transform: rotate(360deg); }
 }

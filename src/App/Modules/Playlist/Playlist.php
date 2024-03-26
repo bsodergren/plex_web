@@ -50,7 +50,44 @@ class Playlist
         $res = $this->getPlaylist($playlist_id, "limit 4");
         return $res;
     }
+    public function getPlaylistJsonOptions($playlist_id = null,$disabled_id = null)
+    {
+        $selected = [];
 
+        utmdump($playlist_id,$disabled_id);
+        if($playlist_id !== null){
+            $selected =  ['value'=>$playlist_id];
+        }
+        $res = $this->showPlaylists();
+        foreach($res as $i => $row)
+        {
+            $selected = false;
+            $optionDisabled = false;
+            if($row['library'] == $this->library){
+                if (str_contains($disabled_id, $row['playlist_id'])) {
+                    $optionDisabled = true;
+                }
+             if($row['playlist_id'] == $playlist_id){
+                $selected = true;
+                $optionDisabled = false;
+             }
+                $plArray[] = [
+                    $row['playlist_id'],
+                     $row['name'],
+                     $selected,
+                     $optionDisabled,
+    
+            ];
+            }
+        }
+       utmdump($plArray);
+        return json_encode($plArray);
+
+        // return Elements::SelectOptions(array: $plArray,selected: $selected,
+        // blank: '',
+        //  disabled: $disabled_id);
+        
+    }
     public function getPlaylistSelectOptions($playlist_id = null,$disabled_id = null)
     {
         $selected = [];

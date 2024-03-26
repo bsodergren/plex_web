@@ -112,7 +112,6 @@ class Functions extends Render
         //$params['CANVAS_BODY'] = Render::html('elements/Playlist/canvas_body', []);
 
         return Render::html(self::$ButtonDir.'/Playlist/canvas', $params);
-        utmdump($html);
     }
 
     public function AlphaBlock($match)

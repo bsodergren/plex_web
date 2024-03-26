@@ -15,6 +15,7 @@ use Symfony\Component\Process\Process;
 use Plex\Modules\Process\Traits\Mediatag;
 use Plex\Modules\Process\Traits\Playlist;
 use Plex\Modules\Process\Traits\DbWrapper;
+use Plex\Template\Functions\Functions;
 
 class Forms
 {
@@ -86,6 +87,14 @@ class Forms
         if (true === $redirect) {
             $this->myHeader($this->redirect);
         }
+    }
+
+    public function jquery()
+    {
+        $out = (new Functions)->getVideoPlaylistJson($this->postArray['id']);
+        echo $out;
+        exit;
+
     }
 
     public function rating()

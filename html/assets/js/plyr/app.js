@@ -5,34 +5,32 @@ const PlayerApp = {
   tracks: [],
   player: null,
 
-
   /**
    * Initializes the player application.
    */
-  initialize() {
+  initialize () {
     // Get the DOM element
-    this.playlist = document.getElementById('playlist');
-    this.playerContainer = document.getElementById('player_container');
+    this.playlist = document.getElementById('playlist')
+    this.playerContainer = document.getElementById('player_container')
 
     // prepare objects
-    this.createPlayer();
-    this.initializePlaylistItems();
-    this.populateAccordionContent();
-    this.initializeEventListeners();
-    this.showAllPlaylistItems();
-    this.initializePlayerEventListeners();
-    this.initializePlaylistIcon();
-    this.initializeSearch();
-    this.playVisibleItem();
-    this.initialiseSimpleBar();
-    this.selectFirstVisibleItem();
+    this.createPlayer()
+    this.initializePlaylistItems()
+    this.populateAccordionContent()
+    this.initializeEventListeners()
+    this.showAllPlaylistItems()
+    this.initializePlayerEventListeners()
+    this.initializePlaylistIcon()
+    this.initializeSearch()
+    this.playVisibleItem()
+    this.initialiseSimpleBar()
+    this.selectFirstVisibleItem()
   },
-
 
   /**
    * Creates the Plyr player with the specified controls.
    */
-  createPlayer() {
+  createPlayer () {
     const controls = `
     <!-- Player controls HTML -->
     <button type="button" class="plyr__control plyr__control--overlaid" data-plyr="play">
@@ -111,7 +109,7 @@ const PlayerApp = {
           <span class="label--not-pressed plyr__tooltip" role="tooltip">Enter fullscreen</span>
         </button>
       </div>
-    `;
+    `
 
     /**
      * Initializes the playlist items by extracting data from the DOM.
@@ -128,15 +126,16 @@ const PlayerApp = {
       i18n: {
         restart: 'Restart'
       },
-      tooltips: {
-        controls: true,
-        seek: true
-      },
+      // tooltips: {
+      //   controls: true,
+      //   seek: true
+      // },
       autoplay: true,
       seekTime: 30,
       volume: 1,
       clickToPlay: true,
       hideControlsOnPause: false,
+      hideControls: true,
       disableContextMenu: true,
       storage: {
         enabled: false
@@ -149,22 +148,24 @@ const PlayerApp = {
           enabled: true
         }
       }
-
-    });
-
+    })
   },
 
   /**
    * Initializes the playlist items by extracting data from the DOM.
    */
-  initializePlaylistItems() {
-    this.playlistItems = Array.from(this.playlist.getElementsByClassName('playlist_item'));
-    this.tracks = this.playlistItems.map(item => this.createTrackFromPlaylistItem(item));
+  initializePlaylistItems () {
+    this.playlistItems = Array.from(
+      this.playlist.getElementsByClassName('playlist_item')
+    )
+    this.tracks = this.playlistItems.map(item =>
+      this.createTrackFromPlaylistItem(item)
+    )
 
     // Add 'hidden' class to each playlist item
     this.playlistItems.forEach(item => {
-      item.classList.add('hidden');
-    });
+      item.classList.add('hidden')
+    })
   },
 
   /**
@@ -172,126 +173,120 @@ const PlayerApp = {
    * @param {HTMLElement} item - The playlist item element.
    * @returns {Object} - The created track object.
    */
-  createTrackFromPlaylistItem(item) {
-    const type = item.getAttribute('data-type');
-    const videoUrl = item.getAttribute('data-video');
-    const category = item.getAttribute('data-category');
+  createTrackFromPlaylistItem (item) {
+    const type = item.getAttribute('data-type')
+    const videoUrl = item.getAttribute('data-video')
+    const category = item.getAttribute('data-category')
 
-    let source;
+    let source
     if (type === 'youtube') {
-      source = { src: videoUrl, provider: 'youtube' };
+      source = { src: videoUrl, provider: 'youtube' }
     } else if (type === 'vimeo') {
-      source = { src: videoUrl, provider: 'vimeo' };
+      source = { src: videoUrl, provider: 'vimeo' }
     } else {
-      source = { src: videoUrl, provider: 'html5' };
+      source = { src: videoUrl, provider: 'html5' }
     }
 
     return {
       title: item.getAttribute('data-title'),
-      artist: item.getAttribute('data-author'),
+      artist: item.getAttribute('data-artist'),
+      studio: item.getAttribute('data-studio'),
+      videoid: item.getAttribute('data-videoid'),
       sources: [source],
       poster: item.getAttribute('data-poster'),
       category
-    };
+    }
   },
 
   /**
    * Initializes event listeners for filter buttons and accordion button.
    */
-  initializeEventListeners() {
-    const filterButtons = this.playlist.getElementsByClassName('filter-button');
+  initializeEventListeners () {
+    const filterButtons = this.playlist.getElementsByClassName('filter-button')
     Array.from(filterButtons).forEach(button => {
       button.addEventListener('click', event => {
-        const selectedCategory = event.target.getAttribute('data-category');
-        this.updateAccordionButtonText(selectedCategory);
-        this.toggleAccordion();
-        this.filterPlaylist(selectedCategory);
-      });
-    });
+        const selectedCategory = event.target.getAttribute('data-category')
+        this.updateAccordionButtonText(selectedCategory)
+        this.toggleAccordion()
+        this.filterPlaylist(selectedCategory)
+      })
+    })
 
-    const accordionButton = document.querySelector('.accordion-button');
-    accordionButton.addEventListener('click', this.toggleAccordion);
+    const accordionButton = document.querySelector('.accordion-button')
+    accordionButton.addEventListener('click', this.toggleAccordion)
   },
 
   /**
    * Initializes event listeners for the Plyr player.
    */
-  initializePlayerEventListeners() {
-
+  initializePlayerEventListeners () {
     // begin player Ready Count
-    var readyCount = 0;
+    var readyCount = 0
 
     // Get the currently playing track
-    const playlistIcon = document.querySelector('.playlist-icon');
+    const playlistIcon = document.querySelector('.playlist-icon')
 
-    var playlerText = document.querySelector('.player_container .player_text');
-
+    var playlerText = document.querySelector('.player_container .player_text')
 
     this.player.on('ready', () => {
-      this.player.play();
-
-    });
+      this.player.play()
+    })
 
     this.player.on('ready', () => {
       if (readyCount == 0) {
-        const firstPlaylistItem = this.playlistItems[0];
-        const firstTrack = this.tracks[0];
-        this.handlePlaylistItemClick(firstPlaylistItem, firstTrack);
-        this.handlePlaylistItemClick(firstPlaylistItem, firstTrack);
+        const firstPlaylistItem = this.playlistItems[0]
+        const firstTrack = this.tracks[0]
+        this.handlePlaylistItemClick(firstPlaylistItem, firstTrack)
+        this.handlePlaylistItemClick(firstPlaylistItem, firstTrack)
       }
-      readyCount++;
-    });
+      readyCount++
+    })
 
     this.player.on('controlshidden', () => {
       //this.player.play();
-      playlistIcon.classList.remove('hidden');
-      playlerText.classList.remove('hidden');
-    });
+      playlistIcon.classList.add('hidden')
+      playlerText.classList.add('hidden')
+    })
     this.player.on('controlsshown', () => {
       //this.player.play();
-      playlistIcon.classList.remove('hidden');
-      playlerText.classList.remove('hidden');
-
-    });
+      playlistIcon.classList.remove('hidden')
+      playlerText.classList.remove('hidden')
+    })
 
     this.player.on('ended', () => {
-      this.playVisibleItem('next');
-    });
+      this.playVisibleItem('next')
+    })
 
     this.player.on('progress', () => {
-      document.querySelector('.player_container').classList.add('loading');
-    });
+      document.querySelector('.player_container').classList.add('loading')
+    })
 
     this.player.off('canplaythrough', () => {
-
-      document.querySelector('.player_container').classList.remove('loading');
-    });
+      document.querySelector('.player_container').classList.remove('loading')
+    })
 
     this.player.off('canplay', () => {
-      document.querySelector('.player_container').classList.remove('loading');
-    });
-
-
+      document.querySelector('.player_container').classList.remove('loading')
+    })
 
     this.playlistItems.forEach(item => {
       item.addEventListener('click', () => {
-        const index = this.playlistItems.indexOf(item);
-        const track = this.tracks[index];
-        this.handlePlaylistItemClick(item, track);
+        const index = this.playlistItems.indexOf(item)
+        const track = this.tracks[index]
+        this.handlePlaylistItemClick(item, track)
+      })
+    })
 
-      });
-    });
-
-    const parentElement = document.querySelector('.player_container');
-    parentElement.addEventListener('click', (event) => {
+    const parentElement = document.querySelector('.player_container')
+    parentElement.addEventListener('click', event => {
       if (event.target.matches('button[data-plyr="next"]')) {
-        this.playVisibleItem('next');
+        this.playVisibleItem('next')
       }
 
       if (event.target.matches('button[data-plyr="prev"]')) {
-        this.playVisibleItem('prev');
+        this.playVisibleItem('prev')
       }
-    });
+    })
   },
 
   /**
@@ -299,252 +294,341 @@ const PlayerApp = {
    * @param {HTMLElement} item track - The playlist item element.
    * @returns {Object} - The created track object.
    */
-  handlePlaylistItemClick(item, track) {
+  handlePlaylistItemClick (item, track) {
     this.playlistItems.forEach(item => {
       if (item.classList.contains('active')) {
-        item.classList.remove('active');
-        item.classList.add('watched');
+        item.classList.remove('active')
+        item.classList.add('watched')
       }
-    });
+    })
 
-    item.classList.add('active');
+    item.classList.add('active')
 
     // Get the text-title span element
-    const textTitle = document.querySelector('.text_title');
+    const textTitle = document.querySelector('.text_title')
     // Set the data-title attribute as the innerText of the playlist_item
-    textTitle.textContent = item.getAttribute('data-title');
+    textTitle.textContent = item.getAttribute('data-title')
+
+    const textartist = document.querySelector('.text_artist')
+    // Set the data-title attribute as the innerText of the playlist_item
+    textartist.textContent = item.getAttribute('data-artist')
+
+    const textstudio = document.querySelector('.text_studio')
+    // Set the data-title attribute as the innerText of the playlist_item
+    textstudio.textContent = item.getAttribute('data-studio')
+
+    const textvideoid = document.querySelector('#videoPlaylistVideoId')
+    // Set the data-title attribute as the innerText of the playlist_item
+    textvideoid.value = item.getAttribute('data-videoid')
 
     // Get the player_text anchor element
-    const playerText = document.querySelector('.player_text');
+    const playerText = document.querySelector('.player_text')
     // Set the href attribute as the data-pUrl attribute of the playlist_item
-    playerText.setAttribute('href', item.getAttribute('data-pUrl'));
-
+    playerText.setAttribute('href', item.getAttribute('data-pUrl'))
+    updateOptions(item.getAttribute('data-videoid'))
     this.player.source = {
       type: 'video',
       title: track.title,
       sources: track.sources,
       poster: track.poster
-    };
-    this.player.play();
+    }
+    this.player.play()
   },
 
   /**
    * Fetch Categories from plalsit items and add them to Accordian
    */
-  populateAccordionContent() {
-    const accordionContent = document.querySelector('.accordion-content');
-    accordionContent.innerHTML = ''; // Clear the content before populating
+  populateAccordionContent () {
+    const accordionContent = document.querySelector('.accordion-content')
+    accordionContent.innerHTML = '' // Clear the content before populating
 
     // Create <div> element for the "All" category
-    const allDiv = document.createElement('div');
-    allDiv.classList.add('filter-button');
-    allDiv.setAttribute('data-category', 'All');
-    allDiv.textContent = 'All';
+    const allDiv = document.createElement('div')
+    allDiv.classList.add('filter-button')
+    allDiv.setAttribute('data-category', 'All')
+    allDiv.textContent = 'All'
 
-    accordionContent.appendChild(allDiv);
+    accordionContent.appendChild(allDiv)
 
     // Create <div> elements for each category
-    const categories = new Set();
+    const categories = new Set()
     this.playlistItems.forEach(item => {
-      const category = item.getAttribute('data-category');
-      if (category && category.trim() !== '') { // Check if category is not empty or null
-        const categoryList = category.split(';');
+      const category = item.getAttribute('data-category')
+      if (category && category.trim() !== '') {
+        // Check if category is not empty or null
+        const categoryList = category.split(';')
 
         categoryList.forEach(categoryItem => {
-          const trimmedCategoryItem = categoryItem.trim();
-          if (trimmedCategoryItem !== '' && !categories.has(trimmedCategoryItem)) { // Check if categoryItem is not empty and not already added
-            categories.add(trimmedCategoryItem);
+          const trimmedCategoryItem = categoryItem.trim()
+          if (
+            trimmedCategoryItem !== '' &&
+            !categories.has(trimmedCategoryItem)
+          ) {
+            // Check if categoryItem is not empty and not already added
+            categories.add(trimmedCategoryItem)
 
-            const div = document.createElement('div');
-            div.classList.add('filter-button');
-            div.setAttribute('data-category', trimmedCategoryItem);
-            div.textContent = trimmedCategoryItem;
+            const div = document.createElement('div')
+            div.classList.add('filter-button')
+            div.setAttribute('data-category', trimmedCategoryItem)
+            div.textContent = trimmedCategoryItem
 
-            accordionContent.appendChild(div);
+            accordionContent.appendChild(div)
           }
-        });
+        })
       }
-    });
+    })
 
     // Add click event listeners to the new filter buttons
-    const filterButtons = accordionContent.getElementsByClassName('filter-button');
+    const filterButtons =
+      accordionContent.getElementsByClassName('filter-button')
     Array.from(filterButtons).forEach(button => {
       button.addEventListener('click', event => {
-        const selectedCategory = event.target.getAttribute('data-category');
-        this.updateAccordionButtonText(selectedCategory);
-        this.toggleAccordion();
-        this.filterPlaylist(selectedCategory);
-      });
-    });
+        const selectedCategory = event.target.getAttribute('data-category')
+        this.updateAccordionButtonText(selectedCategory)
+        this.toggleAccordion()
+        this.filterPlaylist(selectedCategory)
+      })
+    })
   },
 
   /**
    * Filters the playlist by the selected category.
    * @param {string} category - The selected category.
    */
-  filterPlaylist(category) {
+  filterPlaylist (category) {
     // Remove "active" class from all playlist items
     this.playlistItems.forEach(item => {
-      item.classList.remove('active');
-    });
+      item.classList.remove('active')
+    })
 
     this.playlistItems.forEach(item => {
-      const itemCategories = item.getAttribute('data-category');
+      const itemCategories = item.getAttribute('data-category')
       if (category === 'All' || itemCategories.includes(category)) {
-        item.classList.remove('hidden'); // Remove 'hidden' class
+        item.classList.remove('hidden') // Remove 'hidden' class
       } else {
-        item.classList.add('hidden'); // Add 'hidden' class
+        item.classList.add('hidden') // Add 'hidden' class
       }
-    });
+    })
 
-    const visibleItems = this.playlist.querySelectorAll('.playlist_item:not(.hidden)[data-category]');
+    const visibleItems = this.playlist.querySelectorAll(
+      '.playlist_item:not(.hidden)[data-category]'
+    )
     if (visibleItems.length > 0) {
-      const firstVisibleItem = visibleItems[0];
-      const index = this.playlistItems.indexOf(firstVisibleItem);
-      const selectedTrack = this.tracks[index];
+      const firstVisibleItem = visibleItems[0]
+      const index = this.playlistItems.indexOf(firstVisibleItem)
+      const selectedTrack = this.tracks[index]
 
       // Add "active" class to the first visible playlist item
-      firstVisibleItem.classList.add('active');
+      firstVisibleItem.classList.add('active')
 
       this.player.source = {
         type: 'video',
         title: selectedTrack.title,
         sources: selectedTrack.sources,
         poster: selectedTrack.poster
-      };
-      this.player.play();
+      }
+      this.player.play()
     }
   },
 
-
-
-  showAllPlaylistItems() {
+  showAllPlaylistItems () {
     this.playlistItems.forEach(item => {
-      item.classList.remove('hidden');
-    });
+      item.classList.remove('hidden')
+    })
   },
 
   /**
-  * Toggles the accordion to show/hide the category list
-  */
-  toggleAccordion() {
-    const accordion = document.querySelector('.accordion');
-    accordion.classList.toggle('active');
+   * Toggles the accordion to show/hide the category list
+   */
+  toggleAccordion () {
+    const accordion = document.querySelector('.accordion')
+    accordion.classList.toggle('active')
   },
 
   /**
    * Updates the text of the accordion button.
    * @param {string} category - The selected category.
    */
-  updateAccordionButtonText(category) {
-    const accordionButton = document.querySelector('.accordion-button');
-    accordionButton.textContent = category;
+  updateAccordionButtonText (category) {
+    const accordionButton = document.querySelector('.accordion-button')
+    accordionButton.textContent = category
   },
-
 
   /**
    * Initializes the playlist icon and sets up the click event listener.
    */
-  initializePlaylistIcon() {
+  initializePlaylistIcon () {
     // Get playlist icon and columns
-    const playlistIcon = document.querySelector('.playlist-icon');
-    const leftColumn = document.querySelector('.col-sm-12.left');
-    const rightColumn = document.querySelector('.col-sm-12.right');
-
-    // Add click event listener to playlist icon
+    const playlistIcon = document.querySelector('.playlist-icon')
+    const leftColumn = document.querySelector('.col-sm-12.left')
+    const rightColumn = document.querySelector('.col-sm-12.right')
     playlistIcon.addEventListener('click', () => {
-      leftColumn.classList.toggle('expanded');
-      rightColumn.classList.toggle('hidden');
-    });
+      leftColumn.classList.toggle('expanded')
+      rightColumn.classList.toggle('hidden')
+      resizeWindow(leftColumn.classList.contains('expanded'))
+    })
   },
 
   /**
    * Initializes the search functionality and sets up the input event listener.
    */
-  initializeSearch() {
-    const searchInput = document.getElementById('searchInput');
-    const playlistItems = this.playlist.getElementsByClassName('playlist_item');
+  initializeSearch () {
+    const searchInput = document.getElementById('searchInput')
+    const playlistItems = this.playlist.getElementsByClassName('playlist_item')
 
     searchInput.addEventListener('input', function (event) {
-      const searchString = event.target.value.toLowerCase();
+      const searchString = event.target.value.toLowerCase()
 
       Array.from(playlistItems).forEach(function (item) {
-        const title = item.querySelector('.item_title').textContent.toLowerCase();
-        const director = item.querySelector('.item_director').textContent.toLowerCase();
+        const title = item
+          .querySelector('.item_title')
+          .textContent.toLowerCase()
+        const studio = item
+          .querySelector('.item_studio')
+          .textContent.toLowerCase()
+        const artist = item
+          .querySelector('.item_artist')
+          .textContent.toLowerCase()
 
-        if (title.includes(searchString) || director.includes(searchString)) {
-          item.classList.remove('hidden');
+        if (
+          title.includes(searchString) ||
+          artist.includes(searchString) ||
+          studio.includes(searchString)
+        ) {
+          item.classList.remove('hidden')
         } else {
-          item.classList.add('hidden');
+          item.classList.add('hidden')
         }
-      });
-    });
+      })
+    })
   },
 
   /**
    * Plays the visible playlist item.
    */
-  playVisibleItem(direction) {
-    const visibleItems = Array.from(this.playlist.querySelectorAll('.playlist_item:not(.hidden)[data-category]'));
-    const activeVisibleItem = visibleItems.find(item => item.classList.contains('active'));
-
+  playVisibleItem (direction) {
+    const visibleItems = Array.from(
+      this.playlist.querySelectorAll(
+        '.playlist_item:not(.hidden)[data-category]'
+      )
+    )
+    const activeVisibleItem = visibleItems.find(item =>
+      item.classList.contains('active')
+    )
 
     if (visibleItems.length > 0) {
-      let visibleIndex;
+      let visibleIndex
       if (activeVisibleItem) {
-        const activeVisibleIndex = visibleItems.indexOf(activeVisibleItem);
+        const activeVisibleIndex = visibleItems.indexOf(activeVisibleItem)
         if (direction === 'next') {
-          visibleIndex = (activeVisibleIndex + 1) % visibleItems.length;
+          visibleIndex = (activeVisibleIndex + 1) % visibleItems.length
         } else {
-          visibleIndex = (activeVisibleIndex - 1 + visibleItems.length) % visibleItems.length;
+          visibleIndex =
+            (activeVisibleIndex - 1 + visibleItems.length) % visibleItems.length
         }
       } else {
-        visibleIndex = 0;
+        visibleIndex = 0
       }
 
-      const visibleItem = visibleItems[visibleIndex];
-      const index = this.playlistItems.indexOf(visibleItem);
-      const track = this.tracks[index];
+      const visibleItem = visibleItems[visibleIndex]
+      const index = this.playlistItems.indexOf(visibleItem)
+      const track = this.tracks[index]
 
-      this.handlePlaylistItemClick(visibleItem, track);
+      this.handlePlaylistItemClick(visibleItem, track)
       // Scroll to the active visible item
-      visibleItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      visibleItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
   },
 
   /**
    * Initializes the SimpleBar for the playlist.
    */
-  initialiseSimpleBar() {
-
-    const simpleBar_1 = document.getElementById('playlist');
-    new SimpleBar(simpleBar_1, { autoHide: true });
-    const simpleBar_2 = document.getElementById('acc-content');
-    new SimpleBar(simpleBar_2, { autoHide: true });
+  initialiseSimpleBar () {
+    const simpleBar_1 = document.getElementById('playlist')
+    new SimpleBar(simpleBar_1, { autoHide: true })
+    const simpleBar_2 = document.getElementById('acc-content')
+    new SimpleBar(simpleBar_2, { autoHide: true })
   },
-
 
   /**
    * Selects the first visible playlist item.
    */
-  selectFirstVisibleItem() {
-    const activeItem = this.playlist.querySelector('.playlist_item.active');
+  selectFirstVisibleItem () {
+    const activeItem = this.playlist.querySelector('.playlist_item.active')
     if (!activeItem) {
-      const visibleItems = Array.from(this.playlist.querySelectorAll('.playlist_item:not(.hidden)[data-category]'));
+      const visibleItems = Array.from(
+        this.playlist.querySelectorAll(
+          '.playlist_item:not(.hidden)[data-category]'
+        )
+      )
       if (visibleItems.length > 0) {
-        const firstVisibleItem = visibleItems[0];
-        const index = this.playlistItems.indexOf(firstVisibleItem);
-        const track = this.tracks[index];
+        const firstVisibleItem = visibleItems[0]
+        const index = this.playlistItems.indexOf(firstVisibleItem)
+        const track = this.tracks[index]
 
         this.player.on('ready', () => {
-          this.handlePlaylistItemClick(firstVisibleItem, track);
-        });
+          this.handlePlaylistItemClick(firstVisibleItem, track)
+        })
       }
     }
-  },
-
-};
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  PlayerApp.initialize();
-});
+  PlayerApp.initialize()
+
+ 
+
+})
+
+function updateOptions (id) {
+  $.ajax({
+    url: 'process.php',
+    type: 'POST',
+    data: {
+      submit: 'jquery',
+      id: id
+    },
+    success: function (data) {
+        var outletOptions = document.querySelector('.videoPlaylistButton')
+        Array.from(outletOptions).forEach(option => {
+          outletOptions.removeChild(option)
+        })
+      
+      var myArray = JSON.parse(data);
+      console.log(myArray)
+      var opt = document.createElement('option')
+
+      opt.appendChild(document.createTextNode("Select from List"))
+      opt.classList.add('filter-option')
+      opt.disabled = true
+      outletOptions.appendChild(opt)
+
+      myArray.map((optionData)  => {
+        var opt = document.createElement('option')
+
+            opt.appendChild(document.createTextNode(optionData[1]))
+            opt.classList.add('filter-option')
+            opt.value = optionData[0]
+            if(optionData[2] == true){
+                opt.classList.add('selected')
+            }
+            if(optionData[3] == true){
+                opt.classList.add('disabled')
+            }
+
+            opt.selected = optionData[2]
+            opt.disabled = optionData[3]
+            outletOptions.appendChild(opt)
+    })
+    }
+  })
+}
+
+
+
+//   var opt = document.createElement('option')
+//   opt.appendChild(document.createTextNode(optionData[0]))
+//   opt.value = optionData[1]
+//   outletOptions.appendChild(opt)
+

@@ -8,6 +8,7 @@ use Plex\Modules\Playlist\Playlist;
 use Plex\Modules\Video\Player\Plyr;
 use Plex\Modules\Video\Player\VideoJs;
 use Plex\Modules\Video\Playlist\PlyrList;
+use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
 
@@ -54,12 +55,13 @@ class Player
         // / $this->PlayerClass->videoId();
 
         $this->VideoDetails();
-       if (\is_object($this->playlist)) {
+        if (\is_object($this->playlist)) {
             $this->params = array_merge($this->params, $this->playlist->params);
             $this->js_params = array_merge($this->js_params, $this->playlist->js_params);
-       }
+        }
 
         $this->getVideo();
+        utmdump($this->params);
 
     }
 
@@ -72,7 +74,7 @@ class Player
 
     public function getPlayerTemplate($template)
     {
-        return $this->PlayerClass->templatePlayer.'/'.$template;
+        return self::$PlayerTemplate.DIRECTORY_SEPARATOR.$template; 
     }
 
     public function getVideoURL($video_id)
@@ -129,9 +131,7 @@ class Player
         $this->params['VIDEO_URL'] = $video_file;
         $this->params['height'] = $result['height'];
         $this->params['VIDEO_TITLE'] = $active_title;
-        // $this->params['AddChapter'] = $this->addChapter();
-        // $this->params['ChapterButtons'] = $this->Chapters->getChapterButtons();
-        // $this->js_params['ChapterIndex'] = $this->getChapterJson();
+
         $this->js_params['height'] = $result['height'];
         $this->js_params['width'] = $result['width'];
     }
@@ -164,7 +164,6 @@ class Player
         $this->playlist = new PlyrList();
         $this->playlist->playlist_id = $this->playlist_id;
         $this->playlist->getPlaylist();
-
     }
 
     public function playlistId()
@@ -191,5 +190,62 @@ class Player
         }
 
         return $this->playlist_id;
+    }
+
+    public function addChapter()
+    {
+        $videoId = Elements::add_hidden('videoId', $this->id);
+        if (null != $this->playlist_id) {
+            $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
+        }
+
+        return Render::html(Functions::$ChapterDir.'/addChapter', ['HIDDEN_VIDEO_ID' => $videoId]);
+    }
+
+    public function getChapterButtons()
+    {
+        $index = $this->getChapters();
+        foreach ($index as $i => $row) {
+            // $editableClass = 'edit'.$row['time'];
+            // $functionName = 'make'.$row['time'].'Editable';
+
+            // $row['EDITABLE'] = $editableClass;
+
+            // $this->params['VIDEOINFO_EDIT_JS'] .= Render::javascript(
+            //     Functions::$ChapterDir.'/chapter',
+            //     [
+            //         'ID_NAME' => $row['time'],
+            //         'EDITABLE' => $editableClass,
+            //         'FUNCTION' => $functionName,
+            //         'VIDEO_KEY' => $this->id,
+            //     ]
+            // );
+            $html .= Render::html(Functions::$ChapterDir.'/chapter', $row);
+        }
+
+        return $html;
+    }
+
+    public function getChapterJson()
+    {
+        return json_encode($this->getChapters());
+    }
+
+    public function getChapters()
+    {
+        if (null == $this->chapterIndex) {
+            $this->db->where('video_id', $this->id);
+            $this->db->orderBy('timeCode', 'ASC');
+            $search_result = $this->db->get(Db_TABLE_VIDEO_CHAPTER);
+            foreach ($search_result as $i => $row) {
+                if (null === $row['name']) {
+                    $row['name'] = 'Timestamp';
+                }
+
+                $this->chapterIndex[] = ['time' => $row['timeCode'], 'label' => $row['name']];
+            }
+        }
+
+        return $this->chapterIndex;
     }
 }

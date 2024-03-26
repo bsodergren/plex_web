@@ -24,9 +24,10 @@ $('.videoPlaylistButton').on('change', function (e) {
       success: function (data) {
         const element = document.getElementById('VideoPlaylistLabel');
         element.textContent = 'Added !';
+        element.style.display = "block";
         setTimeout(function() {
           $("#VideoPlaylistLabel").fadeOut(400);
-         // element.style.display = "none";
+          element.style.display = "none";
       }, 2000);
 
     //    window.location.href = data        

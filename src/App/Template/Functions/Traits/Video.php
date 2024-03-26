@@ -65,15 +65,10 @@ trait Video
         return Elements::addButton($text, 'button', $class, $extra, $javascript);
     }
 
-    public function videoAddToPlaylist($matches)
-    {
+
+    public function getPlaylistsfromId($id,$playlist_id){
+        $results = Playlist::getVideoPlaylists($id);
         $disabled_id=[] ;
-        $var = $this->parseVars($matches);
-        $results = Playlist::getVideoPlaylists($var['id']);
-        $playlist_id = null;
-        if ('' != $var['pl_id']) {
-            $playlist_id = $var['pl_id'];
-        } 
 
         foreach($results as $k => $row)
         {
@@ -86,14 +81,42 @@ trait Video
             }
         }
         $disabled_id_list = implode(",",$disabled_id);
-        $playlists = (new Playlist())->getPlaylistSelectOptions($playlist_id,$disabled_id_list);
-        
 
+        return [$playlist_id,$disabled_id_list];
+    }
+
+    public function getVideoPlaylistJson($id,$playlist_id=null)
+    {
+        list($playlist_id,$disabled_id_list) = $this->getPlaylistsfromId($id,$playlist_id);
+        $playlists = (new Playlist())->getPlaylistJsonOptions($playlist_id,$disabled_id_list);
+        $this->playlist_id = $playlist_id;
+        return $playlists;
+    }
+
+    public  function getVideoPlaylists($id,$playlist_id=null)
+    {
+        list($playlist_id,$disabled_id_list) = $this->getPlaylistsfromId($id,$playlist_id);
+        $playlists = (new Playlist())->getPlaylistSelectOptions($playlist_id,$disabled_id_list);
+        $this->playlist_id = $playlist_id;
+        return $playlists;
+   
+    }
+
+
+
+    public function videoAddToPlaylist($matches)
+    {
+        $var = $this->parseVars($matches);
+        $id = $var['id'];
+        $playlist_id = $var['pl_id'];
+
+        $playlisthtml = $this->getVideoPlaylists($id,$playlist_id);
         return Render::html(Functions::$PlaylistDir.'/VideoPlayer/PlaylistForm', [
-            'playlistId' =>  $playlist_id ,
-            'SelectPlaylists' => $playlists,
+            'playlistId' =>  $this->playlist_id ,
+            'SelectPlaylists' => $playlisthtml,
             'Videoid' => $var['id'],
         ]);
+
     }
 
     public function videoPlaylistBtn($matches)

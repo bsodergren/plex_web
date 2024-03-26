@@ -1,19 +1,18 @@
 <!-- {$self} -->
-
 <div class="col col-sm-12   {if="{$hasPlaylist}=true"} left  {/if}">
     <div class="player_container">
         <a class="player_text" href="" target="_blank">
-          <span class="text_title"></span>
-          <span class="text_group"></span>
-        </a>
-        
+        <span class="text_title"></span><br>
+        <span class="text_artist"></span><br>
+        <span class="text_studio"></span>
+    </a>
+
         {if="{$hasPlaylist}=true"}
-    
-          {{template=Video/Plyr/playlist/icon}}
+            {{template=Video/Plyr/container/icon}}
         {/if}
-        <video class="plyr__video-wrapper js-playerx" poster="{$thumbnail}">
-            <source src="{$VIDEO_URL}" type="video/mp4" size="{$height}"/>
-            </video>
-            
-      </div>
+        <video class="plyr__video-wrapper js-playerx" poster="{$thumbnail}" >
+            <source  src="{$VIDEO_URL}" type="video/mp4" size="{$height}"/>
+        </video>
+    </div>
 </div>
+<!-- end {$self} -->
