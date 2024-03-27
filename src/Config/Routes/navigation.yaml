@@ -19,11 +19,11 @@ grid:
     text: !php/const NavBar_Text_Grid
     icon: grid
     studio: true
-folder:
-    url: file.php
-    text: !php/const NavBar_Text_Filebrowser
-    icon: grid
-    studio: true
+# folder:
+#     url: file.php
+#     text: !php/const NavBar_Text_Filebrowser
+#     icon: grid
+#     studio: true
 playlist:
     url: playlist.php
     text: !php/const NavBar_Text_Playist

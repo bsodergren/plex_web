@@ -1,19 +1,42 @@
 <?php
+
 namespace Plex\Core;
-/**
+
+/*
  * plex web viewer
  */
 
-use Nette\Utils\FileSystem;
 use Nette\Loaders\RobotLoader;
+use Nette\Utils\FileSystem;
+use Symfony\Component\Yaml\Yaml;
 
 class RoboLoader extends RobotLoader
 {
     public $refresh = false;
     protected $conn;
 
-    public function __construct()
+    public function __construct() {}
+
+    public static function loadPage()
     {
+        $page_config = Yaml::parseFile(__PAGE_CONFIG__, Yaml::PARSE_CONSTANT);
+        $current_page = [];
+        if (\array_key_exists(__THIS_PAGE__, $page_config)) {
+            $current_page = $page_config[__THIS_PAGE__];
+        }
+        $default = $page_config['default'];
+        foreach ($default as $key => $value) {
+            if (\array_key_exists($key, $current_page)) {
+                $page_setting = $current_page[$key];
+                $defaults[__THIS_PAGE__]['Config'][$key] = $current_page[$key];
+            } else {
+                $page_setting = $default[$key];
+                $defaults[__THIS_PAGE__]['default'][$key] = $default[$key];
+            }
+            \define($key, $page_setting);
+        }
+
+        utmdump($defaults);
     }
 
     public static function echo($value, $exit = 0)
@@ -62,14 +85,12 @@ class RoboLoader extends RobotLoader
 
     public static function skipFile($filename)
     {
-        $f    = fopen($filename, 'r');
+        $f = fopen($filename, 'r');
         $line = fgets($f);
         fclose($f);
 
         return strpos($line, '#skip');
     }
-
-  
 
     public static function setSkipFile($filename)
     {
@@ -77,7 +98,7 @@ class RoboLoader extends RobotLoader
             $replacement = '<?php';
             $replacement .= ' #skip';
             $__db_string = FileSystem::read($filename);
-            $__db_write  = str_replace('<?php', $replacement, $__db_string);
+            $__db_write = str_replace('<?php', $replacement, $__db_string);
             FileSystem::write($filename, $__db_write);
         }
     }

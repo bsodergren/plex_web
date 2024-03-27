@@ -4,6 +4,7 @@ namespace Plex\Template\Functions\Modules;
 
 use Plex\Modules\Database\PlexSql;
 use Plex\Template\Render;
+use UTM\Utilities\Option;
 use UTMTemplate\HTML\Elements;
 
 /**
@@ -28,10 +29,10 @@ class metaFilters extends Render
 
     public function displayFilters()
     {
-        if (true == \defined('USE_FILTER')) {
-            if (USE_FILTER == true) {
+        
+            if (OptionIsTrue(USE_FILTER)) {
                 return Render::html($this->templateDir.'/block', []);
-            }
+        
         }
     }
 

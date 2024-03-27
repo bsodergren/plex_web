@@ -6,6 +6,7 @@ use Plex\Core\Request;
 use Plex\Core\Utilities\PlexArray;
 use Plex\Template\Display\Display;
 use Plex\Template\Render;
+use UTM\Utilities\Option;
 
 /**
  * plex web viewer.
@@ -100,7 +101,7 @@ class AlphaSort extends Render
 
     public function displayAlphaBlock()
     {
-        if (true == \defined('ALPHA_SORT')) {
+        if (OptionIsTrue(ALPHA_SORT)) {
             return Render::html($this->templateDir.'/block', ['ALPHA_BLOCK' => $this->display_AlphaRow()]);
         }
 

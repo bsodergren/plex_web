@@ -156,6 +156,8 @@ class FileListing
         if (isset($this->request['alpha'])) {
         
             $query = PlexSql::getAlphaKey($this->request['sort'], $this->request['alpha']);
+            utmdump($query);
+
             if (null === $query) {
                 unset($this->request['alpha']);
             } else {
@@ -216,6 +218,7 @@ class FileListing
                     $comp = ' IS';
                 }
                 $tag_query = '(m.'.$tag.' '.$comp.' \''.$value.'\' OR c.'.$tag.' '.$comp.' \''.$value.'\')';
+                utmdump($tag_query);
                 $this->db->where($tag_query);
                 // $this->db->orwhere('c.'.$tag, $value, $comp);
             }

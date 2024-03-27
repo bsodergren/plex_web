@@ -3,7 +3,6 @@
 use Plex\Core\VideoPlayer;
 use Plex\Template\Render;
 
-define('SHOW_RATING', true);
 
 require_once '_config.inc.php';
 

@@ -9,7 +9,6 @@ use Plex\Template\Render;
  */
 
 require_once '_config.inc.php';
-const TITLE = 'Home';
 
 $subLibraries = [];
 $sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'DISTINCT(subLibrary) as subLibrary ', 'library');

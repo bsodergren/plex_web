@@ -13,12 +13,6 @@ use Plex\Template\Display\VideoDisplay;
 
 require_once '_config.inc.php';
 
-define('TITLE', 'Home');
-define('__SHOW_SORT__', true);
-
-define('ALPHA_SORT', true);
-define('SHOW_RATING', true);
-
 $folderList = new FolderListing(new Request);
 
 $folders = $folderList -> getCurrentFolderList();

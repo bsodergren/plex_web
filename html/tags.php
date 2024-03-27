@@ -12,7 +12,6 @@ define('__TAG_CAT_CLASS__', 'border border-2 border-dark  mx-2 d-flex');
 
 require_once '_config.inc.php';
 
-define('TITLE', 'tags');
 
 if (isset($_SESSION['sort'])) {
     $uri['sort'] = $_SESSION['sort'];

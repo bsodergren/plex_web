@@ -4,7 +4,6 @@ use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
 require_once '_config.inc.php';
 
-define('TITLE', 'Verify Email');
 Header::Display();
 
 ?>

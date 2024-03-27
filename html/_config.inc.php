@@ -1,8 +1,9 @@
 <?php
 
-use Camoo\Config\Config;
 use Plex\EnvLoader;
 use Tracy\Debugger;
+use Camoo\Config\Config;
+use Plex\Core\RoboLoader;
 
 session_start();
 
@@ -35,7 +36,7 @@ foreach ($config['constants'] as $name => $value) {
     define($name, $value);
 }
 
-new \UTM\Utm();
+// new \UTM\Utm();
 
 require_once __PHP_CONFIG_DIR__.'/Language.php';
 require_once __PHP_CONFIG_DIR__.'/paths.php';
@@ -44,6 +45,7 @@ require_once __PHP_CONFIG_DIR__.'/urlpaths.php';
 require_once __PHP_CONFIG_DIR__.'/database.php';
 require_once __PHP_CONFIG_DIR__.'/Functions.php';
 
+RoboLoader::loadPage();
 
 $const_keys = array_keys(get_defined_constants(true)['user']);
 define('__TEMPLATE_CONSTANTS__', $const_keys);

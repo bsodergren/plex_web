@@ -1,17 +1,10 @@
 <?php
 
-
 use Plex\Template\Render;
-
 use Plex\Modules\Database\PlexSql;
 use Plex\Template\Functions\Functions;
 
-/**
- * plex web viewer
- */
-
 require_once '_config.inc.php';
-define('TITLE', 'artist Page');
 
 // define('BREADCRUMB', ['home' => "home.php"]);
 

@@ -2,7 +2,6 @@
 
 require_once '../_config.inc.php';
 
-define('TITLE', 'Home');
 
  \Plex\Template\Layout\Header::Display();
 

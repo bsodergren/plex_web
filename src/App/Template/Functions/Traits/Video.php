@@ -6,6 +6,7 @@ use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Playlist\Playlist;
 use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
+use UTM\Utilities\Option;
 use UTMTemplate\HTML\Elements;
 
 trait Video
@@ -34,10 +35,9 @@ trait Video
     {
         $var = $this->parseVars($matches);
 
-        if (\defined('NONAVBAR')) {
+        if (OptionIsTrue(NAVBAR)) {
             $page = strtolower(str_replace('_', '', $var['text']));
-            if (NONAVBAR == true
-             && __THIS_PAGE__ == $page) {
+            if (__THIS_PAGE__ == $page) {
                 return '';
             }
         }
@@ -52,7 +52,8 @@ trait Video
         $extra = ' style="--bs-bg-opacity: .5;"';
         $javascript = " onclick=\"popup('".$url."', '".$window."')\"";
         $text = str_replace('_', ' ', $var['text']);
-        if (__SHOW_THUMBNAILS__ == false) {
+        
+        if (OptionIsFalse(SHOW_THUMBNAILS)) {
             $class .= ' position-absolute vertical-text text-nowrap';
             if ('Play Video' == $text) {
                 $extra = ' style="left: -25px; top:40px"';
@@ -145,8 +146,7 @@ trait Video
     public function videoRating($matches)
     {
         $hidden = null;
-        if (true == \defined('SHOW_RATING')) {
-            if (SHOW_RATING == true) {
+            if (OptionIsTrue(SHOW_RATING)) {
                 $var = $this->parseVars($matches);
                 $params = [
                     'ROW_ID' => $var['id'],
@@ -159,16 +159,15 @@ trait Video
 
                 return Render::html(Functions::$RatingsDir.'/rating', $params);
             }
-        }
+        
     }
 
     public function ratingInclude($matches)
     {
-        if (true == \defined('SHOW_RATING')) {
-            if (SHOW_RATING == true) {
+            if (OptionIsTrue(SHOW_RATING)) {
                 return Render::html(Functions::$RatingsDir.'/header', []);
             }
-        }
+        
     }
 
     public function Thumbnail($matches)
@@ -180,7 +179,7 @@ trait Video
             'NEXT_ID' => $next_id,
             'width' => 60,
         ];
-        if (__SHOW_THUMBNAILS__ == true) {
+        if (OptionIsTrue(SHOW_THUMBNAILS)) {
             $thumbnail = $this->fileThumbnail($row_id);
 
             $row_preview_image = $this->filePreview($row_id);
@@ -209,7 +208,7 @@ trait Video
         }
         $query = 'SELECT thumbnail FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$row_id;
         $result = $db->query($query);
-        if (\defined('NOTHUMBNAIL')) {
+        if (OptionIsFalse(SHOW_THUMBNAILS)) {
             return null;
         }
 
@@ -226,7 +225,7 @@ trait Video
         $query = 'SELECT preview FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$row_id;
         $result = $db->query($query);
 
-        if (\defined('NOTHUMBNAIL')) {
+        if (OptionIsFalse(SHOW_THUMBNAILS)) {
             return null;
         }
         if (null === $result[0]['preview']) {

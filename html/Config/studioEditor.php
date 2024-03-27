@@ -7,7 +7,6 @@ use UTMTemplate\HTML\Elements;
 
 require_once '../_config.inc.php';
 
-define('TITLE', 'Home');
 
 $pageObj          = new ConfigPagenate("library = 'Studios'", $currentPage, $urlPattern);
 
@@ -105,7 +104,6 @@ Render::echo(
 </main>
 
 <?php
-define('__SHOW_PAGES__', 1);
 
  \Plex\Template\Layout\Footer::Display();
 ?>

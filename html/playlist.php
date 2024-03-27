@@ -99,7 +99,7 @@ if (null === $playlist_id) {
 
     for ($i = 0; $i < count($results); ++$i) {
         $thumbnail = '';
-        if (__SHOW_THUMBNAILS__ == true) {
+        if (OptionIsTrue(SHOW_THUMBNAILS)) {
             $thumbnail = Render::html(
                 'playlist/thumbnail',
                 [
@@ -140,6 +140,4 @@ if (null === $playlist_id) {
     define('PLAYLIST_DROPDOWN', $playlist_LinkArray);
 }
 
-define('TITLE', 'Home');
-define('GRID_VIEW', 1);
 Render::Display($table_body_html);

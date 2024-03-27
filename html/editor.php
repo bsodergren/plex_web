@@ -2,7 +2,6 @@
 
 use Plex\Template\Render;
 
-define('TITLE', 'Home');
 require_once '_config.inc.php';
 
 // configuration

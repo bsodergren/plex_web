@@ -2,7 +2,6 @@
 
 use Plex\Core\Request;
 use Plex\Template\Render;
-
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
 use Plex\Template\Display\Display;
@@ -10,12 +9,6 @@ use Plex\Modules\Database\FileListing;
 use Plex\Template\Display\VideoDisplay;
 
 require_once '_config.inc.php';
-
-define('TITLE', 'Home');
-define('__SHOW_SORT__', true);
-
-define('ALPHA_SORT', true);
-define('SHOW_RATING', true);
 
 $fileinfo = new FileListing(new Request);
 [$results,$pageObj,$uri] = $fileinfo->getVideoArray();

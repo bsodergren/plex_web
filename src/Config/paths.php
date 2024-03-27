@@ -31,3 +31,5 @@ define('__HTML_TEMPLATE__', __PLEX_APP_DIR__.'/Layout/template');
 define('__METADB_HASH', __CACHE_DIR.'/'.$cache_directory.'/metadb.hash');
 
 define('__ROUTE_NAV__', __PHP_YAML_DIR__.'/navigation.yaml');
+define('__PAGE_CONFIG__', __PHP_YAML_DIR__.'/Pages.yaml');
+

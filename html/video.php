@@ -5,7 +5,6 @@ use Plex\Template\Render;
 use UTMTemplate\Template;
 
 require_once '_config.inc.php';
-define('SHOW_RATING', true);
 
 $videoPlayer = new Player();
 if (isset($videoPlayer->playlist_id)) {

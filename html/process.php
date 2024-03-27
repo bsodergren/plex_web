@@ -26,7 +26,6 @@ if (true == $_GET['q']) {
 $t = new Template();
 if (array_key_exists('action', $_REQUEST)) {
     if ('refresh' == $_REQUEST['action']) {
-        define('TITLE', 'Home');
 
         Header::Display();
     }

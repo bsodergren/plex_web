@@ -4,7 +4,6 @@
  */
 
 exit;
-define('TITLE', 'Signup');
 require_once '_config.inc.php';
 check_logged_out();
 

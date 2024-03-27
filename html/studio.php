@@ -9,7 +9,6 @@ use Plex\Template\Render;
 
 require_once '_config.inc.php';
 
-define('TITLE', 'View Studios');
 
 if (isset($_REQUEST['substudio'])) {
     $studio_key = 'substudio';

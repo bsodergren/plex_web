@@ -5,7 +5,6 @@ use Plex\Template\Render;
 
 require_once '_config.inc.php';
 
-define('TITLE', 'Login');
 
 $selector  = $_GET['selector'];
 $validator = $_GET['validator'];

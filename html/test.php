@@ -2,11 +2,6 @@
 
 use Plex\Template\Render;
 
-define('__SHOW_SORT__', true);
-define('TITLE', 'Home');
-define('NONAVBAR', true);
-define('VIDEOINFO', true);
-define('SHOW_RATING', true);
 require_once '_config.inc.php';
 
 /*

@@ -4,9 +4,6 @@ use Plex\Modules\Database\PlexSql;
 use Plex\Template\Display\VideoDisplay;
 use Plex\Template\Render;
 
-define('TITLE', 'Home');
-define('__SHOW_SORT__', false);
-define('__BOTTOM_NAV__', false);
 require_once '_config.inc.php';
 
 $column = 'duration';
@@ -22,6 +19,7 @@ if (isset($_GET['sort'])) {
 
 $psql = PlexSql::$DB;
 $results = $psql->getDuplicates($column);
+
 if (count($results) > 0) {
     foreach ($results as $k => $value) {
         $dup_result[] = $psql->showDupes($column, $value[$column]);
@@ -31,13 +29,13 @@ if (count($results) > 0) {
             $fileresults[] = $row;
         }
     }
-    // define('NONAVBAR',true);
+    // define('NAVBAR',true);
     $vidInfo = (new VideoDisplay('List'))->init('videoinfo');
     // $vidInfo->showVideoDetails = true;
 
     $body = $vidInfo->Display($fileresults);
 } else {
-    $body['BODY'] = 'No duplicates Found';
+    $body = 'No duplicates Found';
 }
 $pageObj = true;
 

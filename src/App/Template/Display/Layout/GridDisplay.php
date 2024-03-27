@@ -98,7 +98,7 @@ $db = PlexSql::$DB;
                 // }
             }
             $thumbnail     = '';
-            if (__SHOW_THUMBNAILS__ == true) {
+            if (OptionIsTrue(SHOW_THUMBNAILS)) {
                 $thumbnail = Render::html(
                     'grid/thumbnail',
                     ['PLAYLIST_LINKS' => str_replace('VIDEO_ID', $results[$i]['id'], $playlist_html),

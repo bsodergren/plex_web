@@ -2,7 +2,6 @@
 
 require_once '../_config.inc.php';
 
-define('TITLE', 'Home');
 
 $redirect_string            = __THIS_FILE__.'?genre='.$_REQUEST['genre'];
 $studio_key                 = '';

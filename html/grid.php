@@ -12,12 +12,6 @@ use Plex\Template\Display\VideoDisplay;
 
 require_once '_config.inc.php';
 
-define('TITLE', 'Home');
-define('GRID_VIEW', true);
-define('__SHOW_SORT__', true);
-define('SHOW_RATING', true);
-
-define('ALPHA_SORT', true);
 $fileinfo = new FileListing(new Request);
 [$results,$pageObj,$uri] = $fileinfo->getVideoArray();
 

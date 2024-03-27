@@ -10,12 +10,6 @@ use Plex\Template\Render;
 
 require_once '_config.inc.php';
 
-define('TITLE', 'Home');
-define('__SHOW_SORT__', true);
-
-define('ALPHA_SORT', true);
-define('SHOW_RATING', true);
-
 /*
 $fileinfo = new FileListing(new Request());
 

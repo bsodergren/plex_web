@@ -1,0 +1,74 @@
+default:
+    PAGE_TITLE: "Default Page"
+    NAVBAR: true
+    ALPHA_SORT: false
+    SHOW_RATING: false
+    SHOW_THUMBNAILS: true
+    USE_FILTER: false
+    BOTTOM_NAV: true
+    SHOW_SORT: false
+    SHOW_PAGES: false
+    GRID_VIEW: false
+    # LIST_VIEW: false
+    # VIDEOINFO: true
+home:
+    PAGE_TITLE: "Home Page"
+    BOTTOM_NAV: false
+
+artist:
+    PAGE_TITLE: "Artist Selection"
+file:
+    PAGE_TITLE: "File Listing"
+list:
+    PAGE_TITLE: "List view"
+    SHOW_SORT: true
+    SHOW_PAGES: true
+    ALPHA_SORT: true
+    SHOW_RATING: true
+    
+grid:
+    PAGE_TITLE: "Grid View"
+    SHOW_SORT: true
+    SHOW_PAGES: true
+    ALPHA_SORT: true
+    SHOW_RATING: true
+editor:
+    PAGE_TITLE: "Wordmap Editor"
+search:
+    PAGE_TITLE: "Search"
+    # SEARCH: true
+    # ALPHA_SORT: true
+genre:
+    PAGE_TITLE: "Genre Selection"
+    BOTTOM_NAV: false
+
+    # SHOW_SORT: true
+playlist:
+    PAGE_TITLE: "Playlist Selection"
+    BOTTOM_NAV: false
+
+recent:
+    PAGE_TITLE: "Recent Videos"
+    BOTTOM_NAV: false
+settings:
+    PAGE_TITLE: "Settings Page"
+    BOTTOM_NAV: false
+test:
+    PAGE_TITLE: "Test Page"
+studio:
+    PAGE_TITLE: "Studio Page"
+    BOTTOM_NAV: false
+tags:
+    PAGE_TITLE: "Tags Page"
+    BOTTOM_NAV: false
+video:
+    PAGE_TITLE: "Video Page"
+    BOTTOM_NAV: false
+    NAVBAR: false
+videoinfo:
+    PAGE_TITLE: "Video Page"
+    BOTTOM_NAV: false
+    NAVBAR: false
+filebrowser:
+    PAGE_TITLE: "File Browser"
+    BOTTOM_NAV: false

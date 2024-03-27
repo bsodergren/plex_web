@@ -57,7 +57,7 @@ class VideoCard
             $this->params['VIDEO_TITLE'] = $fileInfoArray['title'];
         }
         $this->params['ROW_ID'] = '';
-        if (!\defined('NONAVBAR')) {
+        if (OptionIsTrue(NAVBAR)) {
             $this->params['VERTICAL_TEXT'] = Render::html(
                 $this->template_base.'/vertical',
                 ['ROW_ID' => '&nbsp;&nbsp;&nbsp;'.$result_number.' of '.$total_files]
@@ -77,7 +77,7 @@ class VideoCard
         //         ['PlaylistId' => $fileInfoArray['playlist_id']]);
         // }
 
-        if (\defined('NONAVBAR')) {
+        if (OptionIsFalse(NAVBAR)) {
             $this->params['WRAPPER_CLASS'] = 'm-0';
             $this->params['RATING_WIDTH'] = 175;
             $this->params['DELETE_BUTTONS'] = Render::html(

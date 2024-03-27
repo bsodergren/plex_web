@@ -5,9 +5,7 @@ use Plex\Template\Pageinate\GenrePagenate;
 use UTMTemplate\HTML\Elements;
 
 require_once '../_config.inc.php';
-define('TITLE', 'Home');
-define('ALPHA_SORT', true);
- define('__SHOW_SORT__',true);
+
 
 if (isset($_SESSION['direction'])) {
     $direction = $_SESSION['direction'];

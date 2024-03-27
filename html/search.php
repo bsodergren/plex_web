@@ -7,12 +7,9 @@ use UTMTemplate\HTML\Elements;
 use Plex\Template\Render;
 
 require_once '_config.inc.php';
-define('GRID_VIEW', true);
 $playlist_ids = [];
 $queries = [];
-define('TITLE', 'search');
-define('USE_FILTER', false);
-define('ALPHA_SORT', true);
+
 foreach (Request::$tag_array as $tag) {
     if (isset($_REQUEST[$tag])) {
         if (is_array($_REQUEST[$tag])) {

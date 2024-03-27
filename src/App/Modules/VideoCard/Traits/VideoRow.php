@@ -79,7 +79,7 @@ trait VideoRow
         $value = trim($value);
         $value = str_replace(__PLEX_LIBRARY__.'/', '', $value);
         
-        if (!\defined('NONAVBAR')) {
+        if (OptionIsTrue(NAVBAR)) {
             if($cloud === true){
                 $value = $this->keyword_list($key, $value);
             }
@@ -93,7 +93,7 @@ trait VideoRow
     {
         $editableClass = '';
         $editableBorder = '';
-        if (\defined('NONAVBAR')) {
+        if (OptionIsFalse(NAVBAR)) {
             if ('' != $id) {
                 if ($editable === true) {
                     $id = ucfirst($id);
@@ -220,7 +220,7 @@ trait VideoRow
 
     public function Title($key)
     {
-        if (\defined('NONAVBAR')) {
+        if (OptionIsTrue(NAVBAR)) {
 
         $this->metaRow($key);
         }

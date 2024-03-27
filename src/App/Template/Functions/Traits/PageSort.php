@@ -66,7 +66,7 @@ trait PageSort
     public function displayPageSorter()
     {
         global $pageObj,$url_array;
-        if (__SHOW_SORT__ == true && isset($pageObj)) {
+        if (OptionIsTrue(SHOW_SORT) && isset($pageObj)) {
             return Render::return(self::$PageSortDir.'/sort',
                 ['SORT_HTML' => self::sort_options()]);
         }

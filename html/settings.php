@@ -11,7 +11,6 @@ if ($form->submitted()) {
     echo (new Settings($_REQUEST))->proccess_settings('home.php');
 }
 
-define('TITLE', 'Test Page');
 
 Header::Display();
 ?>

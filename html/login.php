@@ -5,7 +5,6 @@
 use Plex\Template\Render;
 require_once '_config.inc.php';
 
-define('TITLE', 'Login');
 
 $body = Render::html('auth/login', [
     'CSRF_TOKEN'       => insert_csrf_token(),

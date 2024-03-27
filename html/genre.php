@@ -7,7 +7,6 @@ use Plex\Template\Layout\Header;
 use Plex\Modules\Database\PlexSql;
 use Plex\Template\Render;
 require_once '_config.inc.php';
-define('TITLE', 'View Genres');
 
 $null        = '';
 $null_req    = '&';
