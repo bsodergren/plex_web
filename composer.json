@@ -58,10 +58,12 @@
     "kub-at/php-simple-html-dom-parser": "^1.9",
     "gajus/dindent": "^2.0",
     "bsodergren/utm": "dev-main",
-    "bsodergren/utmtemplate": "dev-main",
     "nette/http": "^3.3",
     "spatie/url": "^2.4",
-    "symfony/yaml": "^5.4"  },
+    "symfony/yaml": "^5.4",
+    "tracy/tracy": "^2.10",
+    "bsodergren/utmtemplate": "dev-master"
+    },
   "require-dev": {
     "symfony/var-dumper": "^6.2"
   },

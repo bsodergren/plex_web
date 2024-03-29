@@ -1,18 +1,13 @@
 function rightClickSeekTooltip (event) {
-    console.log("Width " + event.target.clientWidth)
-    console.log("offset " + event.offsetX )
-
     const skipTo = Math.round(
         // (event.offsetX / event.target.clientWidth) *
             parseInt(event.target.getAttribute('aria-valuenow'), 10)
     )
-    console.log(skipTo)
 
     addChapter(skipTo)
     const t = formatTime(skipTo)
 
     time = `${t.minutes}:${t.seconds}`
-    console.log(time)
 }
 
 function formatTime (timeInSeconds) {
@@ -41,8 +36,16 @@ function setPlayerTime(time){
 }
 
 
-function resizeWindow(small)
+function resizeWindow(large)
 {
+    if(large == null)
+    {
+        large = false
+    }
+
+    if(typeof large == "object"){
+        large = true
+    }
 
     videoWidth = !!width!!
     videoHeight = !!height!!
@@ -52,21 +55,20 @@ function resizeWindow(small)
     if (videoWidth > 1920) {
         videoWidth = 1920
     }
-    if(small == false) {
-        windowWidth = videoWidth * 0.75
-        windowHeight = videoHeight * .70
-    } else {
-        windowWidth = videoWidth
-        windowHeight = videoHeight * 1.1
+    windowWidth = videoWidth * 0.75
+    heightMulti = .68
+    if(large == false) {
+        heightMulti = .85
+    }        
+        windowHeight = videoHeight * heightMulti
     
-    }
-
-    console.log("Width:"+windowWidth + " Height:" + windowHeight);
+    text= "Resising Window to W:"+windowWidth + " H:" + windowHeight + ", x"+heightMulti+" Playlist:"+large;
+    console.log(text)
 
     window.resizeTo(windowWidth, windowHeight)
 }
 
-resizeWindow(false)
+resizeWindow(document.querySelector('.playlist-icon'))
 
 
 function addChapter(event, timeCode) {
@@ -86,7 +88,6 @@ function addChapter(event, timeCode) {
 
 $("#addChapter").submit(function (e) {
     var postData = $(this).serializeArray();
-    console.info(postData);
     $.ajax({
         url: "process.php",
         type: "POST",
@@ -94,17 +95,8 @@ $("#addChapter").submit(function (e) {
         success: function (data) {
         //    window.location.href = data;
         var form = $('#addChapter')
-        console.log(data)
         return false;
         setPlayerTime(data)
         },
     });
 });
-
-
-
-// var newOutletOptions = [
-//   ['option name 1', 'firstValue'],
-//   ['option name 2', 'secondValue']
-// ]
-// console.log(newOutletOptions)

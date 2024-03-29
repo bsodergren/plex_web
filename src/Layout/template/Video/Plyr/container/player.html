@@ -1,12 +1,11 @@
 
-<div class="col col-sm-12   {if="{$hasPlaylist}=true"} left  {/if}">
+<div class="col col-sm-12 left {if="{$hasPlaylist}=false"} expanded  {/if}">
     <div class="player_container">
         <a class="player_text" href="" target="_blank">
         <span class="text_title"></span><br>
         <span class="text_artist"></span><br>
         <span class="text_studio"></span>
     </a>
-
         {if="{$hasPlaylist}=true"}
             {{template=Video/Plyr/container/icon}}
         {/if}

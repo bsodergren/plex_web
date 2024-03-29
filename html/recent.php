@@ -10,7 +10,7 @@ use Plex\Template\Render;
 
 require_once '_config.inc.php';
 
-/*
+
 $fileinfo = new FileListing(new Request());
 
 [$results,$pageObj,$uri] = $fileinfo->getLatest();
@@ -33,7 +33,7 @@ $body = $vidInfo->Display($results, [
     'total_files' => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
 ]);
-*/
+
 // Header::Display();
 Render::Display($body);
 // Footer::Display();

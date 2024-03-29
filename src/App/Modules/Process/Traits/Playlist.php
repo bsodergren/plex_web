@@ -2,6 +2,9 @@
 
 namespace Plex\Modules\Process\Traits;
 
+use Plex\Modules\Database\VideoDb;
+use Plex\Template\Display\VideoDisplay;
+
 
 
 /**
@@ -51,7 +54,7 @@ trait Playlist
            return $this->postArray['PlaylistID'];
 
         }
-        utmdump([__METHOD__,"gfdg",$this->postArray]);
+        utmdump([__METHOD__,$this->postArray]);
 
         if (\array_key_exists('PlayAll', $this->postArray)) {
             if (\array_key_exists('search_id', $this->postArray)) {
@@ -92,7 +95,7 @@ trait Playlist
     public function createPlaylist()
     {
 
-
+utmdump([__METHOD__,$this->postArray]);
         $playlist_id = $this->addPlaylistData();
         if (!\array_key_exists('playlist', $this->postArray)) {
             return $playlist_id;
@@ -107,6 +110,7 @@ trait Playlist
                 'playlist_video_id' => $id,
                 'library' => $this->library,
             ];
+            utmdump($data);
             $ids[] = $this->db->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
         }
         if (\array_key_exists('PlayAll', $this->postArray) || 
@@ -117,15 +121,28 @@ trait Playlist
         }
      
         if (\array_key_exists('VideoPlayer', $this->postArray)) {
-            if (\array_key_exists('currentPl', $this->postArray)) {
-                if ('' != $this->postArray['currentPl']) {
-                    $playlist_id = $this->postArray['currentPl'];
+            if($this->postArray['VideoPlayer'] == 'video'){
+                if (\array_key_exists('currentPl', $this->postArray)) {
+                    if ('' != $this->postArray['currentPl']) {
+                        $playlist_id = $this->postArray['currentPl'];
+                    }
                 }
+                return __URL_HOME__.'/video.php?id='. $id.'&playlist_id='.$playlist_id.'';
             }
-          return __URL_HOME__.'/video.php?id='. $id.'&playlist_id='.$playlist_id.'';
+            if($this->postArray['VideoPlayer'] == 'grid')
+            {
+                $videoInfo = (new VideoDb)->getVideoDetails($this->postArray['Video_ID']);
+                $videoInfo[0]['rownum'] = $this->postArray["currentId"];
+            
+                $grid = (new VideoDisplay('Grid'))->init();
+                $grid->totalRecords = $this->postArray["total"];
+                $html = $grid->videoCell($videoInfo[0]);
+                utmdump($videoInfo[0]);
+                return $html;
+            }
+
       }
         
-      utmdump("here we are agin on the road");
 
         return __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
     }

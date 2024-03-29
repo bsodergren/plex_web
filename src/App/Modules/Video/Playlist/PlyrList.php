@@ -34,7 +34,7 @@ class PlyrList extends Player
                 'GENRE' => $row['genre'],
                 'PLAYLIST_ID' => $this->playlist_id,
                 'CLASS_ACTIVE' => $class,
-                'VIDEO_ID' => $row['playlist_video_id'],
+                'Videoid' => $row['playlist_video_id'],
                 'VIDEO_URL' => $this->getVideoURL($row['playlist_video_id']),
                 'TITLE' => $title,
             ]

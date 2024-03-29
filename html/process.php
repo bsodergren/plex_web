@@ -1,8 +1,9 @@
 <?php
 
+use UTMTemplate\Template;
 use Plex\Modules\Process\Forms;
 use Plex\Template\Layout\Header;
-use Plex\Template\Template;
+use Plex\Modules\Database\VideoDb;
 
 require_once '_config.inc.php';
 
@@ -23,7 +24,7 @@ if (true == $_GET['q']) {
 
     exit;
 }
-$t = new Template();
+// $t = new Template();
 if (array_key_exists('action', $_REQUEST)) {
     if ('refresh' == $_REQUEST['action']) {
 

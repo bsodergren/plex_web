@@ -42,7 +42,6 @@ class Player
         self::$PlayerTemplate = $this->VideoTemplate;
         $this->db = PlexSql::$DB;
         $this->playlistId();
-        utmdump('this->playlist  ID '.$this->playlist_id);
     }
 
     public function PlayVideo()
@@ -61,7 +60,6 @@ class Player
         }
 
         $this->getVideo();
-        utmdump($this->params);
 
     }
 
@@ -91,7 +89,7 @@ class Player
 
     public function getVideo()
     {
-        $this->params['VIDEO_ID'] = $this->id;
+        $this->params['Videoid'] = $this->id;
         if (null === $this->playlist_id) {
             $this->params['hasPlaylist'] = false;
         } else {

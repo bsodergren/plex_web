@@ -8,8 +8,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <title>{$PAGE_TITLE}</title>
-        {{javascript=external/popper.min.js}} {{javascript=external/bootstrap.min.js}} {{javascript=external/jquery.min.js}} {{javascript=external/jquery.editable.min.js}} {{javascript=app.js}}
-        <!-- {{stylesheet=themes/slate/bootstrap.min.css}} -->
+        {{javascript=external/popper.min.js}} {{javascript=external/bootstrap.min.js}} {{javascript=external/jquery.min.js}} {{javascript=external/jquery.editable.min.js}}
+         {{javascript=app.js}}
+
         {{stylesheet=plyr/style.css}} {{stylesheet=plyr/simplebar.css}} {{function=ratingInclude}}
 
         <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
@@ -20,24 +21,26 @@
     <body>
         <div class="container row">
             {{template=Video/Plyr/container/player}}
-             {if="{$hasPlaylist}=true"}
-              {{template=Video/Plyr/container/playlist}}
-               {/if}</div>
+            
+            {if="{$hasPlaylist}=true"}
+                {{template=Video/Plyr/container/playlist}}
+            {/if}
+        </div>
 
         <div class="container row">
-            <div class="col-sm-12 bottomleft">
-                <div class="col">{{function=videoAddToPlaylist|id={$VideoId},pl_id={$PLAYLIST_ID},close=0}}</div>
-
-                <!-- <div class="p-2 video_info_text" id="videoTitle">&nbsp;</div>
-                <div class="p-2 video_info_text" id="videoStudio">&nbsp;</div>
-                <div class="p-2 video_info_text" id="videoGenre">&nbsp;</div>
-            </div> -->
-            <div class="col-sm-12 bottomright">
-                <div class="col">{{function=videoRating|id={$VideoId},rating={$STAR_RATING},close=1}}</div>
-            </div>
+            <!-- <div class="col-sm-12 bottomleft"> -->
+                <div class="col-auto me-auto">
+                    {{function=videoAddToPlaylist|id={$VideoId},pl_id={$PLAYLIST_ID},close=0}}
+            </div> 
+            <!-- <div class="col-sm-12 bottomright">  -->
+                <div class="col-auto">
+                    {{function=videoRating|id={$VideoId},rating={$STAR_RATING},close=1}}</div>
+            <!-- </div> -->
         </div>
 
         {{javascript=plyr/app.js}} {{javascript=plyr/simplebar.js}}
     </body>
     {$VIDEO_JS}
+    {{javascript=videoPlayer.js}}
+
 </html>

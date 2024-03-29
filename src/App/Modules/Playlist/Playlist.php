@@ -54,7 +54,6 @@ class Playlist
     {
         $selected = [];
 
-        utmdump($playlist_id,$disabled_id);
         if($playlist_id !== null){
             $selected =  ['value'=>$playlist_id];
         }
@@ -80,7 +79,6 @@ class Playlist
             ];
             }
         }
-       utmdump($plArray);
         return json_encode($plArray);
 
         // return Elements::SelectOptions(array: $plArray,selected: $selected,

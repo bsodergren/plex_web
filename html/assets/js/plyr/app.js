@@ -13,18 +13,27 @@ const PlayerApp = {
     this.playlist = document.getElementById('playlist')
     this.playerContainer = document.getElementById('player_container')
 
+    var hasPlaylist = document.getElementById('playlist')
+
     // prepare objects
     this.createPlayer()
-    this.initializePlaylistItems()
-    this.populateAccordionContent()
-    this.initializeEventListeners()
-    this.showAllPlaylistItems()
-    this.initializePlayerEventListeners()
-    this.initializePlaylistIcon()
-    this.initializeSearch()
-    this.playVisibleItem()
-    this.initialiseSimpleBar()
-    this.selectFirstVisibleItem()
+   
+
+    if (hasPlaylist != null) {
+      this.initializePlaylistItems()
+      this.populateAccordionContent()
+      this.initializeEventListeners()
+      this.showAllPlaylistItems()
+      this.initializePlayerEventListeners()
+      this.initializePlaylistIcon()
+      this.initializeSearch()
+      this.playVisibleItem()
+      this.initialiseSimpleBar()
+      this.selectFirstVisibleItem()
+    } else{
+      const leftColumn = document.querySelector('.col-sm-12.left')
+      leftColumn.classList.toggle('expanded')
+    }
   },
 
   /**
@@ -465,7 +474,7 @@ const PlayerApp = {
     playlistIcon.addEventListener('click', () => {
       leftColumn.classList.toggle('expanded')
       rightColumn.classList.toggle('hidden')
-      resizeWindow(leftColumn.classList.contains('expanded'))
+      resizeWindow(!leftColumn.classList.contains('expanded'))
     })
   },
 
@@ -576,9 +585,7 @@ const PlayerApp = {
 
 document.addEventListener('DOMContentLoaded', () => {
   PlayerApp.initialize()
-
- 
-
+  // resizeWindow(false)
 })
 
 function updateOptions (id) {
@@ -590,45 +597,41 @@ function updateOptions (id) {
       id: id
     },
     success: function (data) {
-        var outletOptions = document.querySelector('.videoPlaylistButton')
-        Array.from(outletOptions).forEach(option => {
-          outletOptions.removeChild(option)
-        })
-      
-      var myArray = JSON.parse(data);
-      console.log(myArray)
+      var outletOptions = document.querySelector('.videoPlaylistButton')
+      Array.from(outletOptions).forEach(option => {
+        outletOptions.removeChild(option)
+      })
+
+      var myArray = JSON.parse(data)
       var opt = document.createElement('option')
 
-      opt.appendChild(document.createTextNode("Select from List"))
+      opt.appendChild(document.createTextNode('Select from List'))
       opt.classList.add('filter-option')
       opt.disabled = true
       outletOptions.appendChild(opt)
 
-      myArray.map((optionData)  => {
+      myArray.map(optionData => {
         var opt = document.createElement('option')
 
-            opt.appendChild(document.createTextNode(optionData[1]))
-            opt.classList.add('filter-option')
-            opt.value = optionData[0]
-            if(optionData[2] == true){
-                opt.classList.add('selected')
-            }
-            if(optionData[3] == true){
-                opt.classList.add('disabled')
-            }
+        opt.appendChild(document.createTextNode(optionData[1]))
+        opt.classList.add('filter-option')
+        opt.value = optionData[0]
+        if (optionData[2] == true) {
+          opt.classList.add('selected')
+        }
+        if (optionData[3] == true) {
+          opt.classList.add('disabled')
+        }
 
-            opt.selected = optionData[2]
-            opt.disabled = optionData[3]
-            outletOptions.appendChild(opt)
-    })
+        opt.selected = optionData[2]
+        opt.disabled = optionData[3]
+        outletOptions.appendChild(opt)
+      })
     }
   })
 }
-
-
 
 //   var opt = document.createElement('option')
 //   opt.appendChild(document.createTextNode(optionData[0]))
 //   opt.value = optionData[1]
 //   outletOptions.appendChild(opt)
-

@@ -1,17 +1,3 @@
-<div style="width:320px" class="border p-2 categories-wrapper {$FILE_MISSING}">
-    <div class="flex-shrink-0">
-        <div class="custom-control custom-checkbox image-checkbox">
-            <input type="checkbox" class="category-input playlist_selector custom-control-input" id="ck1a_{$ROW_ID}" name="playlist[]" value="{$ROW_ID}">
-            {$THUMBNAIL}
-            <br>
-            {{function=videoPlayer|query?id={$ROW_ID},href=video.php,text={L Play_Video_Text}}}
-            {{function=videoPlayer|query?id={$ROW_ID},href=videoinfo.php,text={L Video_Info_Text}}}
-            {{function=videoPlaylistBtn|query?id={$ROW_ID},query?playlist_id={$PlaylistId},href=video.php}}
-        </div>
-        <div class="container text-start" >
-
-            {$VIDEO_DATA}
-        </div>
-        {{function=videoRating|id={$ROW_ID},rating={$STAR_RATING}}}
-    </div>
+<div style="width:320px" class="border p-2 categories-wrapper " id="Video_{$ROW_ID}">
+{$VIDEO_CELL}
 </div>

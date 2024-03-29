@@ -67,7 +67,7 @@ class Functions extends Render
             return '';
         }
 
-        return Elements::add_hidden('search_id', FileListing::$searchId);
+        return Elements::add_hidden('search_id', FileListing::$searchId, 'id="searchId"');
     }
 
     private function parseVars($matches)

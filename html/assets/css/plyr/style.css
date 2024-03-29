@@ -30,7 +30,13 @@ body {
   position: relative;
   overflow: hidden;
 }
-
+.me-auto {
+  margin-right: auto!important;
+}
+.col-auto {
+  flex: 0 0 auto;
+  width: auto;
+}
 .col-sm-12.left {
     width: 100%;
       margin-right: 313px;
@@ -441,11 +447,12 @@ transition: 0.3s ease-in-out;
 .page-link {
   position: relative;
   display: block;
+  font-size: x-large;
   /* padding: var(--bs-pagination-padding-y) var(--bs-pagination-padding-x);
   font-size: var(--bs-pagination-font-size); */
   /* color: var(--bs-pagination-color); */
   text-decoration: none;
-  /* background-color: var(--bs-pagination-bg); */
+  background-color: rgb(39, 43, 48);
   /* border: var(--bs-pagination-border-width) solid var(--bs-pagination-border-color); */
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }

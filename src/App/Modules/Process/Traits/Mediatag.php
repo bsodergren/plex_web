@@ -3,7 +3,7 @@
 namespace Plex\Modules\Process\Traits;
 
 use Nette\Utils\Callback;
-use Plex\Template\Template;
+use UTMTemplate\Template;
 use Symfony\Component\Process\Process;
 
 class Mediatag

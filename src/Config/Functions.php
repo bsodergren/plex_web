@@ -18,9 +18,9 @@ global $_SESSION;
 Display::Random();
 define('__RANDOM__', Display::$Random);
 
-Template::$registeredCallbacks = [
-    '\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK' => 'callback_parse_function',
-'\Plex\Template\Callbacks\FunctionCallback::SCRIPTINCLUDE_CALLBACK' => 'callback_script_include'];
+// Template::$registeredCallbacks = [
+//     '\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK' => 'callback_parse_function',
+// '\Plex\Template\Callbacks\FunctionCallback::SCRIPTINCLUDE_CALLBACK' => 'callback_script_include'];
 
 $r = new Request();
 $uri = $r->getURI();

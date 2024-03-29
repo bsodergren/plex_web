@@ -2,15 +2,17 @@
 
 use Plex\Template\Render;
 
-use Plex\Template\Pageinate\ConfigPagenate;
 use UTMTemplate\HTML\Elements;
+use Plex\Modules\Config\StudioConfigSave;
+use Plex\Template\Pageinate\ConfigPagenate;
 
 require_once '../_config.inc.php';
 
 
 $pageObj          = new ConfigPagenate("library = 'Studios'", $currentPage, $urlPattern);
 
-$sql              = 'SELECT * FROM '.Db_TABLE_STUDIO." WHERE library = 'Studios' ORDER BY studio,path,name";
+$sql              = 'SELECT * FROM '.Db_TABLE_STUDIO."
+ WHERE library = 'Studios' ORDER BY studio,path,name";
 
 $limit            = $pageObj->itemsPerPage;
 $offset           = $pageObj->offset;
@@ -37,23 +39,11 @@ $redirect_string  = __THIS_FILE__;
 	<br>
 	<?php
 
-    $hidden       = Elements::add_hidden('library', 'Amateur');
-$hidden .= Elements::add_hidden('submit', 'addNewEntry');
-$hidden .= Elements::add_hidden('redirect', $redirect_string);
-$lib_name         = 'Add Amateur entry';
+$studio_main_html = StudioConfigSave::displayAddStudioForm('Amateur', 'Add Amateur entry',$redirect_string);
+$studio_main_html .= StudioConfigSave::displayAddStudioForm('Models', 'Add Models entry',$redirect_string);
+$studio_main_html .= StudioConfigSave::displayAddStudioForm('Animation', 'Add Animation entry',$redirect_string);
 
-$studio_add_entry = Render::html('config/studio/studio_row', ['STUDIO_ID' => 'studio', 'PATH_ID' => 'path', 'STUDIO_NAME' => '<input type="text" name="name">']);
-$studio_add_entry = Render::html('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' => $studio_add_entry]);
-$studio_main_html = Render::html('config/studio/form_wrapper', ['HIDDEN' => $hidden, 'STUDIO_FORM_HTML' => $studio_add_entry]);
-
-$hidden           = Elements::add_hidden('library', 'Studios');
-$hidden .= Elements::add_hidden('submit', 'addNewEntry');
-$hidden .= Elements::add_hidden('redirect', $redirect_string);
-$lib_name         = 'Add Studios entry';
-
-$studio_add_entry = Render::html('config/studio/studio_row', ['STUDIO_ID' => 'studio', 'PATH_ID' => 'path', 'STUDIO_NAME' => '<input type="text" name="name">']);
-$studio_add_entry = Render::html('config/studio/studios', ['STUDIO_LIBRARY' => $lib_name, 'STUDIO_ROWS' => $studio_add_entry]);
-$studio_main_html .= Render::html('config/studio/form_wrapper', ['HIDDEN' => $hidden, 'STUDIO_FORM_HTML' => $studio_add_entry]);
+$studio_main_html .= StudioConfigSave::displayAddStudioForm('Studios', 'Add Studios entry',$redirect_string);
 
 foreach ($results as $key => $row) {
     $studio_rows[$row['studio']][] = $row;

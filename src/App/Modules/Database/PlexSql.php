@@ -215,6 +215,7 @@ class PlexSql extends \MysqliDb
 
         $this->_query = 'SELECT '.implode(' ', $this->_queryOptions).' '.
             $column.' FROM '.$this->_tableName;
+
         $stmt = $this->_buildQuery($numRows);
 
         if ($this->isSubQuery) {

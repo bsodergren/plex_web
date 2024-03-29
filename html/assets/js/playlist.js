@@ -67,7 +67,9 @@ $(document).ready(function () {
             playlistSubmit(text)
         }
         if (text == 'AddToPlaylist') {
-            playlistSubmit(text)
+            var playlistid = document.getElementById('PlaylistSelectID').value
+            console.log(playlistid)
+            playlistSubmit(text,playlistid)
         }
     })
 })
@@ -89,21 +91,63 @@ $(document).ready(function () {
     })
 })
 
-function playlistSubmit (action) {
-    // let mybutton = document.getElementById('ajaxform')
-    var form = $('#ajaxform')
 
-    var hiddenAction = document.createElement('input')
-    hiddenAction.value = 'true'
-    hiddenAction.name = action
-    hiddenAction.type = 'hidden'
-    form.append(hiddenAction)
+function playlistSubmit (action,playlistid = null) {
+    var searchId = document.getElementById('searchId').value
 
-    var playlist = document.createElement('input')
-    playlist.value = 'playlist'
-    playlist.name = 'submit'
-    playlist.type = 'submit'
+    var linkList = document.querySelectorAll('.playlist_selector')
+    const videoidList = []
+    for (var i = 0; i < linkList.length; i++) {
+        if (linkList[i].checked == true) {
+            videoidList.push(linkList[i].value)
+        }
+    }
+    console.log(videoidList)
 
-    form.append(playlist)
-    form.submit()
+   const postData = {
+           
+            search_id: searchId,
+            submit: "playlist",
+            // action: action,
+            playlist: videoidList,
+
+   }
+   postData.push(action, true)
+if(playlistid != null){
+    postData.push(PlaylistID, playlistid)
+    
 }
+    $.ajax({
+        url: "process.php",
+        type: "POST",
+        data: postData,
+        cache: false,
+        success: function (data) {
+            console.log(data)           
+        },
+    });
+ 
+
+
+//    form.submit()
+}
+
+
+// function playlistSubmit (action) {
+//     // let mybutton = document.getElementById('ajaxform')
+//     var form = $('#ajaxform')
+
+//     var hiddenAction = document.createElement('input')
+//     hiddenAction.value = 'true'
+//     hiddenAction.name = action
+//     hiddenAction.type = 'hidden'
+//     form.append(hiddenAction)
+
+//     var playlist = document.createElement('input')
+//     playlist.value = 'playlist'
+//     playlist.name = 'submit'
+//     playlist.type = 'submit'
+
+//     form.append(playlist)
+//    form.submit()
+// }

@@ -68,7 +68,6 @@ class Pageinate extends Paginator
             }
         }
 
-        //$this->results = $db->getQuery($table);
         $this->results = $db->withTotalCount()->get($table);
 
         $this->totalRecords = $db->totalCount;

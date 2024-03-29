@@ -65,10 +65,14 @@ video:
     PAGE_TITLE: "Video Page"
     BOTTOM_NAV: false
     NAVBAR: false
+    SHOW_RATING: true
+
 videoinfo:
     PAGE_TITLE: "Video Page"
     BOTTOM_NAV: false
     NAVBAR: false
+    SHOW_RATING: true
+
 filebrowser:
     PAGE_TITLE: "File Browser"
     BOTTOM_NAV: false
