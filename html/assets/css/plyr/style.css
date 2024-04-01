@@ -94,7 +94,7 @@ body {
 .filter-button:focus,
 .filter-button:hover {
   background-color: #e1e1e1;
-  color: #303133;
+  /* color: #303133; */
 }
 
 .item_wrapper {
@@ -105,7 +105,8 @@ body {
 .playlist .playlist_item.watched:hover,
 .playlist .playlist_item:hover,
 .playlist_item:hover {
-  background-color: #d87777;
+  background-color: #6d6d6d;
+  color: #ffffff;
 }
 
 .playlist_item.hidden {
@@ -116,7 +117,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: #303133;
+  /* color: #6c6c6c; */
 }
 
 .item_artist,
@@ -133,6 +134,11 @@ body {
   margin: 0;
   -webkit-line-clamp: 1;
   font-size: 18px;
+}
+.item_genre {
+  margin: 0;
+  -webkit-line-clamp: 1;
+  font-size: 13px;
 }
 
 .item_artist {
@@ -244,11 +250,12 @@ body {
 
 .filter-button.active,
 .playlist .playlist_item.active .item_details {
+
   color: #fff;
 }
 
 .playlist .playlist_item.watched:hover .item_details {
-  color: #303133;
+  color: #95a0b8;
 }
 
 .playlist .playlist_item img {
@@ -358,6 +365,8 @@ body {
 
 .player_text {
   color: #fff;
+  background-color: #3e3c3ccb;
+  border-radius: 15px;
   text-decoration: none;
   display: block;
   position: absolute;
@@ -365,6 +374,7 @@ body {
   left: 10px;
   z-index: 99;
   font-size: 24px;
+  padding: 10px;
 }
 
 

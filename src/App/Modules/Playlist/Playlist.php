@@ -115,7 +115,10 @@ class Playlist
         if($id == ''){
             return null;
         }
-        $sql = 'SELECT * FROM '.Db_TABLE_PLAYLIST_VIDEOS.' WHERE playlist_video_id = '.$id;
+
+        $sql = 'SELECT * FROM '.Db_TABLE_PLAYLIST_VIDEOS.' v, '.Db_TABLE_PLAYLIST_DATA.' as d WHERE
+         v.playlist_video_id = '.$id.' and v.playlist_id = d.id and d.hide = 0';
+        //$sql = 'SELECT * FROM '.Db_TABLE_PLAYLIST_VIDEOS.' WHERE playlist_video_id = '.$id;
         $results = (new Playlist())->db->query($sql);
         return $results;
     }

@@ -36,8 +36,9 @@ editor:
     PAGE_TITLE: "Wordmap Editor"
 search:
     PAGE_TITLE: "Search"
-    # SEARCH: true
-    # ALPHA_SORT: true
+    BOTTOM_NAV: true
+    SHOW_SORT: true
+    SHOW_PAGES: true
 genre:
     PAGE_TITLE: "Genre Selection"
     BOTTOM_NAV: false

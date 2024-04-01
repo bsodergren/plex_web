@@ -1,11 +1,13 @@
 
 <div class="col col-sm-12 left {if="{$hasPlaylist}=false"} expanded  {/if}">
     <div class="player_container">
-        <a class="player_text" href="" target="_blank">
-        <span class="text_title"></span><br>
-        <span class="text_artist"></span><br>
-        <span class="text_studio"></span>
-    </a>
+        <span class="player_text" 
+        onclick="videoCard({$Videoid})" data-videoId>
+        <div class="text_title">{$VIDEO_TITLE}</div>
+        <div class="text_genre">{$Video_Genre}</div>
+        <div class="text_artist">{$Video_Artist}</div>
+        <div class="text_studio">{$Video_studio}</div>
+        </span>
         {if="{$hasPlaylist}=true"}
             {{template=Video/Plyr/container/icon}}
         {/if}

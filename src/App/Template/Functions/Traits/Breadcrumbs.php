@@ -107,7 +107,7 @@ trait Breadcrumbs
         }
 
         $req = '';
-        if (__THIS_FILE__ == 'genre.php') {
+        if (__THIS_FILE__ == 'genre.php' || __THIS_FILE__ == 'studio.php') {
             $req = '&'.http_build_query($parts);
         }
 

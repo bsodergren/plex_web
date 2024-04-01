@@ -125,11 +125,12 @@ class Player
         $this->params['Video_studio'] = $result['studio'];
         $this->params['Video_substudio'] = $result['substudio'];
         $this->params['Video_Genre'] = $result['genre'];
+        $this->params['Video_Artist'] = $result['artist'];
         $this->params['STAR_RATING'] = $result['rating'];
         $this->params['VIDEO_URL'] = $video_file;
         $this->params['height'] = $result['height'];
         $this->params['VIDEO_TITLE'] = $active_title;
-
+        $this->params['Videoid'] = $result['id'];
         $this->js_params['height'] = $result['height'];
         $this->js_params['width'] = $result['width'];
     }

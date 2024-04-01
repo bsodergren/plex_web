@@ -17,20 +17,21 @@ const PlayerApp = {
 
     // prepare objects
     this.createPlayer()
-   
 
     if (hasPlaylist != null) {
       this.initializePlaylistItems()
       this.populateAccordionContent()
       this.initializeEventListeners()
       this.showAllPlaylistItems()
-      this.initializePlayerEventListeners()
+      this.initializePlPlayerEventListeners()
       this.initializePlaylistIcon()
       this.initializeSearch()
       this.playVisibleItem()
       this.initialiseSimpleBar()
       this.selectFirstVisibleItem()
-    } else{
+    } else {
+      this.initializePlayerEventListeners()
+
       const leftColumn = document.querySelector('.col-sm-12.left')
       leftColumn.classList.toggle('expanded')
     }
@@ -75,6 +76,10 @@ const PlayerApp = {
           <span class="label--pressed plyr__tooltip">Pause</span>
           <span class="label--not-pressed plyr__tooltip">Play</span>
         </button>
+        <button type="button" class="plyr__control" data-plyr="fast-forward">
+        <svg role="presentation"><use xlink:href="#plyr-fast-forward"></use></svg>
+        <span class="plyr__tooltip" role="tooltip">Forward {seektime} secs</span>
+    </button>
         <button class="plyr__controls__item plyr__control" data-plyr="next">
           <svg fill="#ffffff" viewBox="-0.5 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -94,7 +99,8 @@ const PlayerApp = {
         </div>
         <div class="plyr__controls__item plyr__time plyr__time--current" aria-label="Current time">00:00</div>
         <div class="plyr__controls__item plyr__time plyr__time--duration" aria-label="Duration">00:00</div>
-        <button type="button" plyr__controls__item class="plyr__control" aria-label="Mute" data-plyr="mute">
+        <button type="button" plyr__controls__item class="plyr__control" 
+        aria-label="Mute" data-plyr="mute">
           <svg class="icon--pressed" role="presentation">
               <use xlink:href="#plyr-muted"></use>
           </svg>
@@ -107,6 +113,7 @@ const PlayerApp = {
         <div class="plyr__controls__item plyr__volume">
           <input data-plyr="volume" type="range" min="0" max="1" step="0.05" value="1" autocomplete="off" aria-label="Volume">
         </div>
+
         <button type="button" class="plyr__controls__item plyr__control" data-plyr="fullscreen">
           <svg class="icon--pressed" role="presentation">
               <use xlink:href="#plyr-exit-fullscreen"></use>
@@ -198,6 +205,7 @@ const PlayerApp = {
 
     return {
       title: item.getAttribute('data-title'),
+      genre: item.getAttribute('data-genre'),
       artist: item.getAttribute('data-artist'),
       studio: item.getAttribute('data-studio'),
       videoid: item.getAttribute('data-videoid'),
@@ -224,11 +232,10 @@ const PlayerApp = {
     const accordionButton = document.querySelector('.accordion-button')
     accordionButton.addEventListener('click', this.toggleAccordion)
   },
-
   /**
    * Initializes event listeners for the Plyr player.
    */
-  initializePlayerEventListeners () {
+  initializePlPlayerEventListeners () {
     // begin player Ready Count
     var readyCount = 0
 
@@ -240,13 +247,28 @@ const PlayerApp = {
     this.player.on('ready', () => {
       this.player.play()
     })
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+    const videoid = urlParams.get('id')
 
     this.player.on('ready', () => {
+      itemIndex = 0
       if (readyCount == 0) {
-        const firstPlaylistItem = this.playlistItems[0]
-        const firstTrack = this.tracks[0]
+        if (videoid != null) {
+          this.playlistItems.forEach(item => {
+            const tindex = this.playlistItems.indexOf(item)
+            const playlistItem =  this.playlistItems[tindex]
+            var plVideoId = playlistItem.getAttribute('data-videoid')
+            if (plVideoId == videoid) {
+              itemIndex = tindex
+              playlistItem.classList.add('active')
+            }
+          })
+        }
+        const firstPlaylistItem = this.playlistItems[itemIndex]
+        const firstTrack = this.tracks[itemIndex]
         this.handlePlaylistItemClick(firstPlaylistItem, firstTrack)
-        this.handlePlaylistItemClick(firstPlaylistItem, firstTrack)
+        // this.handlePlaylistItemClick(firstPlaylistItem, firstTrack)
       }
       readyCount++
     })
@@ -299,6 +321,39 @@ const PlayerApp = {
   },
 
   /**
+   * Initializes event listeners for the Plyr player.
+   */
+  initializePlayerEventListeners () {
+    // Get the currently playing track
+    var playlerText = document.querySelector('.player_container .player_text')
+
+    this.player.on('ready', () => {
+      this.player.play()
+    })
+
+    this.player.on('controlshidden', () => {
+      //this.player.play();
+      playlerText.classList.add('hidden')
+    })
+    this.player.on('controlsshown', () => {
+      //this.player.play();
+      playlerText.classList.remove('hidden')
+    })
+
+    this.player.on('progress', () => {
+      document.querySelector('.player_container').classList.add('loading')
+    })
+
+    this.player.off('canplaythrough', () => {
+      document.querySelector('.player_container').classList.remove('loading')
+    })
+
+    this.player.off('canplay', () => {
+      document.querySelector('.player_container').classList.remove('loading')
+    })
+  },
+
+  /**
    * Creates a track object from a playlist item.
    * @param {HTMLElement} item track - The playlist item element.
    * @returns {Object} - The created track object.
@@ -312,27 +367,31 @@ const PlayerApp = {
     })
 
     item.classList.add('active')
-
     // Get the text-title span element
     const textTitle = document.querySelector('.text_title')
-    // Set the data-title attribute as the innerText of the playlist_item
     textTitle.textContent = item.getAttribute('data-title')
-
     const textartist = document.querySelector('.text_artist')
-    // Set the data-title attribute as the innerText of the playlist_item
-    textartist.textContent = item.getAttribute('data-artist')
+
+    if (item.getAttribute('data-artist') == '') {
+      textartist.classList.add('hidden') // Add 'hidden' class
+      textartist.textContent = ''
+    } else {
+      textartist.textContent = item.getAttribute('data-artist')
+    }
+
+    const textgenre = document.querySelector('.text_genre')
+    textgenre.textContent = item.getAttribute('data-genre')
 
     const textstudio = document.querySelector('.text_studio')
-    // Set the data-title attribute as the innerText of the playlist_item
     textstudio.textContent = item.getAttribute('data-studio')
 
     const textvideoid = document.querySelector('#videoPlaylistVideoId')
-    // Set the data-title attribute as the innerText of the playlist_item
     textvideoid.value = item.getAttribute('data-videoid')
 
     // Get the player_text anchor element
     const playerText = document.querySelector('.player_text')
-    // Set the href attribute as the data-pUrl attribute of the playlist_item
+
+    playerText.setAttribute('onclick', 'videoCard(' + textvideoid.value + ')')
     playerText.setAttribute('href', item.getAttribute('data-pUrl'))
     updateOptions(item.getAttribute('data-videoid'))
     this.player.source = {
@@ -426,9 +485,8 @@ const PlayerApp = {
       const firstVisibleItem = visibleItems[0]
       const index = this.playlistItems.indexOf(firstVisibleItem)
       const selectedTrack = this.tracks[index]
-
       // Add "active" class to the first visible playlist item
-      firstVisibleItem.classList.add('active')
+      //firstVisibleItem.classList.add('active')
 
       this.player.source = {
         type: 'video',
@@ -516,11 +574,20 @@ const PlayerApp = {
    * Plays the visible playlist item.
    */
   playVisibleItem (direction) {
+
+
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+    const videoid = urlParams.get('id')
+
     const visibleItems = Array.from(
       this.playlist.querySelectorAll(
         '.playlist_item:not(.hidden)[data-category]'
       )
     )
+
+
+
     const activeVisibleItem = visibleItems.find(item =>
       item.classList.contains('active')
     )
@@ -537,12 +604,22 @@ const PlayerApp = {
         }
       } else {
         visibleIndex = 0
+
+    if (videoid != null) {
+        visibleItems.forEach(item => {
+            const tindex = visibleItems.indexOf(item)
+            const playlistItem =  visibleItems[tindex]
+            var plVideoId = playlistItem.getAttribute('data-videoid')
+            if (plVideoId == videoid) {
+              visibleIndex = tindex
+            }
+          })
+        }
       }
 
       const visibleItem = visibleItems[visibleIndex]
       const index = this.playlistItems.indexOf(visibleItem)
       const track = this.tracks[index]
-
       this.handlePlaylistItemClick(visibleItem, track)
       // Scroll to the active visible item
       visibleItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
@@ -564,12 +641,14 @@ const PlayerApp = {
    */
   selectFirstVisibleItem () {
     const activeItem = this.playlist.querySelector('.playlist_item.active')
+
     if (!activeItem) {
       const visibleItems = Array.from(
         this.playlist.querySelectorAll(
           '.playlist_item:not(.hidden)[data-category]'
         )
       )
+
       if (visibleItems.length > 0) {
         const firstVisibleItem = visibleItems[0]
         const index = this.playlistItems.indexOf(firstVisibleItem)

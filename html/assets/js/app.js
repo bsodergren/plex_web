@@ -57,6 +57,12 @@ function openOnce (url, target) {
     return winref
 }
 
+function videoCard(id)
+{
+    popup('http://plexmedia/plex/videoinfo.php?id=' + id, 'videoinfo_popup')
+    
+}
+
 function popup (mylink, windowname, width = 1028, height = 800) {
     //console.log(width + ' ' + height);
 

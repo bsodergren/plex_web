@@ -17,7 +17,21 @@ use Plex\Template\Display\VideoDisplay;
 trait Playlist 
 {
 
+public function getExistingVidsFromPl($playlist_id){
+    $existingIds=[];
+    if($playlist_id != ''){
+    $this->db->where('playlist_id', $playlist_id);
+    $pl_search = $this->db->get(Db_TABLE_PLAYLIST_VIDEOS,null,['playlist_video_id']);
+    if ($this->db->count > 0){
 
+            foreach($pl_search as $k => $row){
+                $existingIds[$row['playlist_video_id']] = true ;
+            }
+        }
+    }
+        return $existingIds;
+    
+}
     public function addAllPlaylist()
     {
         $url = $this->createPlaylist();
@@ -64,6 +78,7 @@ trait Playlist
 
                 if (null === $pl_search) {
                     $hide = true;
+                    $name = 'Play All List';
                     $this->db->where('id', $search_id);
                     $search_data = $this->db->getOne(Db_TABLE_SEARCH_DATA);
 
@@ -104,7 +119,12 @@ utmdump([__METHOD__,$this->postArray]);
         if (!\is_array($this->postArray['playlist'])) {
             $this->postArray['playlist'] = explode(',', $this->postArray['playlist']);
         }
+
+        $existingIds = $this->getExistingVidsFromPl($playlist_id);
         foreach ($this->postArray['playlist'] as $_ => $id) {
+            if(array_key_exists($id,$existingIds)) {
+                continue;
+            }
             $data = [
                 'playlist_id' => $playlist_id,
                 'playlist_video_id' => $id,
