@@ -49,7 +49,9 @@ playlist:
 
 recent:
     PAGE_TITLE: "Recent Videos"
-    BOTTOM_NAV: false
+    BOTTOM_NAV: true
+    SHOW_SORT: true
+    SHOW_PAGES: true
 settings:
     PAGE_TITLE: "Settings Page"
     BOTTOM_NAV: false

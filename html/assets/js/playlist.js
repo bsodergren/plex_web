@@ -103,18 +103,18 @@ function playlistSubmit (action,playlistid = null) {
         }
     }
     console.log(videoidList)
-
-   const postData = {
+    var postData = []
+   postData = {
            
             search_id: searchId,
             submit: "playlist",
             // action: action,
-            playlist: videoidList,
+            playlist: videoidList
+        }
 
-   }
-   postData.push(action, true)
+            postData[action] = true
 if(playlistid != null){
-    postData.push(PlaylistID, playlistid)
+    postData['PlaylistID']=playlistid
     
 }
     $.ajax({
