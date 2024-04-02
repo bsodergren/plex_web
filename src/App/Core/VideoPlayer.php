@@ -2,16 +2,16 @@
 
 namespace Plex\Core;
 
-use Plex\Template\Render;
-use UTMTemplate\HTML\Elements;
+use Plex\Modules\Database\FileListing;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\VideoDb;
-use Plex\Modules\Database\FileListing;
 use Plex\Template\Functions\Functions;
+use Plex\Template\Render;
+use UTMTemplate\HTML\Elements;
 
 class VideoPlayer
 {
-    public $playlist_id = null;
+    public $playlist_id;
     public $id;
     public $db;
     public $playlistName;
@@ -45,12 +45,14 @@ class VideoPlayer
         $this->db->where('video_id', $this->id);
         $user = $this->db->getOne(Db_TABLE_SEQUENCE);
         $this->sequence = $user['seq_id'];
+
         return $user['seq_id'];
     }
 
     public function getVideoSeq($type)
     {
         $user = $this->db->rawQueryOne('select '.$type.'(seq_id) as cnt from '.Db_TABLE_SEQUENCE.' where Library = ?', [$_SESSION['library']]);
+
         return $user['cnt'];
     }
 
@@ -114,7 +116,7 @@ class VideoPlayer
         $res = $this->VideoDb->getVideoDetails($this->id);
 
         if (!isset($this->playlist_id)) {
-            if(PlexSql::getLibrary() !== null){
+            if (null !== PlexSql::getLibrary()) {
                 $this->js_params['NEXT_VIDEO_ID'] = $this->getNextVideo();
                 $this->js_params['PREV_VIDEO_ID'] = $this->getPrevVideo();
                 $this->js_params['COMMENT'] = '';
@@ -156,7 +158,6 @@ class VideoPlayer
         $this->js_params['VideoStudio'] = $result['studio'];
         $this->js_params['VideoTitle'] = $active_title;
         $this->js_params['VideoArtist'] = $result['artist'];
-
     }
 
     public function videoId()
@@ -237,8 +238,7 @@ class VideoPlayer
 
     public function getPlaylist()
     {
-
-      $results = $this->VideoDb->getPlaylistVideos($this->playlist_id);
+        $results = $this->VideoDb->getPlaylistVideos($this->playlist_id);
         $newArray = [];
         $test = $results;
         foreach ($test as $index => $row) {
@@ -250,7 +250,7 @@ class VideoPlayer
         }
 
         $results = array_merge($test, $newArray);
-        $max = count($results);
+        $max = \count($results);
 
         for ($i = 0; $i < $max; ++$i) {
             $class = '';
@@ -261,7 +261,6 @@ class VideoPlayer
             $this->canvas_item .= $this->getPlaylistItem($results[$i], $class, 'canvas');
 
             if (' active' == $class) {
-
                 $indx = $i + 1;
                 if (\array_key_exists($indx, $results)) {
                     $next_video_id = $results[$indx]['playlist_video_id'];
@@ -269,9 +268,8 @@ class VideoPlayer
                     $next_video_id = $results[0]['playlist_video_id'];
                 }
 
-                $prev_video_id = $results[$max -1]['playlist_video_id'];
+                $prev_video_id = $results[$max - 1]['playlist_video_id'];
             }
-
         }
         $this->params['RemoveVideo'] = $this->getRemoveVideo();
         $this->params['CANVAS_HTML'] = $this->getCanvas();
@@ -281,8 +279,6 @@ class VideoPlayer
         $this->js_params['PREV_VIDEO_ID'] = $prev_video_id;
         $this->js_params['COMMENT'] = '';
     }
-
-
 
     public function getCanvas()
     {
@@ -333,7 +329,7 @@ class VideoPlayer
             //         'VIDEO_KEY' => $this->id,
             //     ]
             // );
-             $html .= Render::html(Functions::$ChapterDir.'/chapter', $row);
+            $html .= Render::html(Functions::$ChapterDir.'/chapter', $row);
         }
 
         return $html;

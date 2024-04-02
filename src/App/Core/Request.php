@@ -53,8 +53,7 @@ class Request
         'Date Added' => 'f.added',
         'Rating' => 'f.rating',
     ];
-    public static $url_array = [
-    ];
+    public static $url_array = [];
     public static $tag_array = ['genre', 'artist', 'keyword'];
     public static $tag_types = ['studio', 'substudio', 'artist', 'title', 'genre'];
 
@@ -199,9 +198,11 @@ class Request
             if ('direction' == $key) {
                 continue;
             }
-            if ('genre' == $key
-            || 'keyword' == $key
-            || 'artist' == $key) {
+            if (
+                'genre' == $key
+                || 'keyword' == $key
+                || 'artist' == $key
+            ) {
                 $uri_array[] = $key." like '%{$value}%'";
                 //            utmdd($key,$value);
                 continue;
@@ -236,8 +237,10 @@ class Request
             $uri_query['sql'] = implode(' AND ', $uri_array);
         }
 
-        if (\array_key_exists('sort', $request_array)
-         && \array_key_exists('direction', $request_array)) {
+        if (
+            \array_key_exists('sort', $request_array)
+            && \array_key_exists('direction', $request_array)
+        ) {
             if (false === PlexArray::matcharray(self::$sort_types, $request_array['sort'])) {
                 $_SESSION['sort'] = 'm.title';
                 $request_array['sort'] = 'm.title';

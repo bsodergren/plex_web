@@ -15,7 +15,9 @@ class RoboLoader extends RobotLoader
     public $refresh = false;
     protected $conn;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public static function loadPage()
     {
