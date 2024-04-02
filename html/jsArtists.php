@@ -4,7 +4,6 @@ use Plex\Modules\Database\PlexSql;
 
 require_once '_config.inc.php';
 
-
 $results               = PlexSql::$DB->getArtists();
 $AristArray            = [];
 // $sortedArray[0]      = [];
@@ -12,7 +11,7 @@ function compareArtist(&$array, $artist)
 {
     $keyName = strtolower(str_replace('.', '-', $artist));
     $keyName = strtolower(str_replace(' ', ' ', $keyName));
-$keyName = ucwords($keyName);
+    $keyName = ucwords($keyName);
     if (array_key_exists($keyName, $array)) {
         ++$array[$keyName];
     } else {
@@ -35,11 +34,10 @@ foreach ($AristArray as $artist => $num) {
     $sortedArray[] = $artist;
 }
 $array = array_unique($sortedArray);
-sort($array,SORT_REGULAR);
-//$array                 = rsort());
-foreach($array as $k => $value){
-    $list[] = '{ "text": "'.$value.'", "value": "'.$value.'" }';// . '<br>';
-    
+sort($array, \SORT_REGULAR);
+// $array                 = rsort());
+foreach ($array as $k => $value) {
+    $list[] = '{ "text": "'.$value.'", "value": "'.$value.'" }'; // . '<br>';
 }
 
-echo '['. implode(",",$list) . ']';
+echo '['.implode(',', $list).']';

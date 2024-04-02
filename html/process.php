@@ -1,14 +1,11 @@
 <?php
 
-use UTMTemplate\Template;
 use Plex\Modules\Process\Forms;
-use Plex\Template\Layout\Header;
-use Plex\Modules\Database\VideoDb;
+use UTMTemplate\Template;
 
 require_once '_config.inc.php';
 
- utmdump([__METHOD__,$_REQUEST]);
-
+utmdump([__METHOD__, $_REQUEST]);
 
 if (true == $_GET['q']) {
     $q = $_GET['q'];
@@ -27,7 +24,6 @@ if (true == $_GET['q']) {
 // $t = new Template();
 if (array_key_exists('action', $_REQUEST)) {
     if ('refresh' == $_REQUEST['action']) {
-
         Layout::Header();
     }
 }

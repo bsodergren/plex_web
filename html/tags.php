@@ -1,17 +1,15 @@
 <?php
 
-use UTMTemplate\HTML\Elements;
 use Plex\Template\Render;
+use UTMTemplate\HTML\Elements;
+
 /*
  * plex web viewer
  */
 
-
-
 define('__TAG_CAT_CLASS__', 'border border-2 border-dark  mx-2 d-flex');
 
 require_once '_config.inc.php';
-
 
 if (isset($_SESSION['sort'])) {
     $uri['sort'] = $_SESSION['sort'];
@@ -30,7 +28,7 @@ if (isset($uri)) {
 }
 
 $redirect_string = 'search.php'.$request_key;
-$field = 'genre';
+$field           = 'genre';
 
 define('__TAG_CAT_CLASS__', ''); // border border-1 border-black');
 

@@ -1,7 +1,4 @@
 <?php
-/**
- * plex web viewer
- */
 
 require_once '_config.inc.php';
 

@@ -6,7 +6,7 @@ use Plex\Template\Render;
 
 require_once '_config.inc.php';
 
-$column = 'duration';
+$column                         = 'duration';
 $url_array['sort_types']['Key'] = 'f.video_key';
 unset($url_array['sort_types']['Genre'], $url_array['sort_types']['Title'], $url_array['sort_types']['Studio'], $url_array['sort_types']['Sub Studio'], $url_array['sort_types']['Artist']);
 
@@ -17,7 +17,7 @@ if (isset($_GET['sort'])) {
     }
 }
 
-$psql = PlexSql::$DB;
+$psql    = PlexSql::$DB;
 $results = $psql->getDuplicates($column);
 
 if (count($results) > 0) {

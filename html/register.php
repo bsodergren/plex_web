@@ -1,12 +1,7 @@
 <?php
-/**
- * plex web viewer
- */
-
 exit;
 require_once '_config.inc.php';
 check_logged_out();
-
 
 $body = Render::html('auth/register', [
     'CSRF_TOKEN'        => insert_csrf_token(),
@@ -17,4 +12,3 @@ $body = Render::html('auth/register', [
     'STATUS_PASSERROR'  => $_SESSION['ERRORS']['passworderror'],
 ]);
 Render::Display($body);
-

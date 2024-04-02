@@ -1,8 +1,7 @@
 <?php
 
 use Plex\Modules\Process\Settings;
-use Plex\Template\Layout\Footer;
-use Plex\Template\Layout\Header;
+
 require_once '_config.inc.php';
 
 $form = new Formr\Formr('bootstrap4');
@@ -10,7 +9,6 @@ $form = new Formr\Formr('bootstrap4');
 if ($form->submitted()) {
     echo (new Settings($_REQUEST))->proccess_settings('home.php');
 }
-
 
 Layout::Header();
 ?>
@@ -116,4 +114,4 @@ $form->close();
 ?>
  </main>
  <?php Layout::Footer();
- ?>
+?>

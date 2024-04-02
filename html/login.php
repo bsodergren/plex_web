@@ -1,10 +1,7 @@
 <?php
-/**
- * plex web viewer
- */
 use Plex\Template\Render;
-require_once '_config.inc.php';
 
+require_once '_config.inc.php';
 
 $body = Render::html('auth/login', [
     'CSRF_TOKEN'       => insert_csrf_token(),
@@ -13,4 +10,3 @@ $body = Render::html('auth/login', [
     'STATUS_WRONGPASS' => $_SESSION['ERRORS']['wrongpassword'],
 ]);
 Render::Display($body);
-

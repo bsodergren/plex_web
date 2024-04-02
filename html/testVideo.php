@@ -3,14 +3,12 @@
 use Plex\Core\VideoPlayer;
 use Plex\Template\Render;
 
-
 require_once '_config.inc.php';
 
 $videoPlayer = new VideoPlayer();
 
 $videoPlayer->videoTemplate = 'videoPlyr';
 // $videoPlayer->videoTemplate = "video";
-
 
 $videoPlayer->videoInfo();
 

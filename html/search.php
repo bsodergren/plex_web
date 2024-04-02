@@ -3,12 +3,12 @@
 use Plex\Core\Request;
 use Plex\Modules\Database\FileListing;
 use Plex\Modules\Display\VideoDisplay;
-use UTMTemplate\HTML\Elements;
 use Plex\Template\Render;
+use UTMTemplate\HTML\Elements;
 
 require_once '_config.inc.php';
 $playlist_ids = [];
-$queries = [];
+$queries      = [];
 
 foreach (Request::$tag_array as $tag) {
     if (isset($_REQUEST[$tag])) {
@@ -21,7 +21,7 @@ foreach (Request::$tag_array as $tag) {
 }
 
 if (!is_array($_REQUEST['field'])) {
-    $fieldArray[] = $_REQUEST['field'];
+    $fieldArray[]      = $_REQUEST['field'];
     $_REQUEST['field'] = $fieldArray;
 }
 
@@ -72,13 +72,13 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     if (array_key_exists('view', $_REQUEST)) {
         $view = $_REQUEST['view'];
     }
-    $msg = 'Showing '.$pageObj->totalRecords.' results for for '.$_REQUEST['query'];
-    $msg = strtolower(str_replace('-', '.', $msg));
-    $msg = strtolower(str_replace('_', ' ', $msg));
+    $msg      = 'Showing '.$pageObj->totalRecords.' results for for '.$_REQUEST['query'];
+    $msg      = strtolower(str_replace('-', '.', $msg));
+    $msg      = strtolower(str_replace('_', ' ', $msg));
     $html_msg = Render::html('search/search_msg', ['MSG' => $msg]);
     //  $html_msg .= Render::html("search/search_msg", [   'MSG' => $sql] );
 
-    $grid = (new VideoDisplay($view))->init();
+    $grid           = (new VideoDisplay($view))->init();
     $search_results = $grid->Display($results, ['total_files' => $pageObj->totalRecords]);
 
     //   $search_results =     display_filelist($results, '', $page_array);
@@ -98,11 +98,11 @@ foreach ($search_types as $key) {
 }
 
 $body = Render::html('search/search', [
-    'HIDDEN_IDS' => Elements::add_hidden('playlist', $playlist_ids_str),
-    'HIDDEN_STUDIO' => Elements::add_hidden('studio', $_REQUEST['query'].' Search'),
+    'HIDDEN_IDS'     => Elements::add_hidden('playlist', $playlist_ids_str),
+    'HIDDEN_STUDIO'  => Elements::add_hidden('studio', $_REQUEST['query'].' Search'),
     'SEARCH_RESULTS' => $search_results,
-    'CHECKBOXES' => $checkboxes,
-    'HTML_MSG' => $html_msg,
+    'CHECKBOXES'     => $checkboxes,
+    'HTML_MSG'       => $html_msg,
 ]);
 
 Render::Display($body);

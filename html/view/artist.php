@@ -3,8 +3,7 @@
 require_once '../_config.inc.php';
 use Plex\Modules\Display\Layout;
 
-
- Layout::Header();
+Layout::Header();
 
 $sql             = 'select  artist from '.Db_TABLE_VIDEO_FILE." WHERE library = '".$in_directory."' and artist is not null GROUP by artist ORDER BY `artist` ASC;";
 $result          = $db->query($sql);
@@ -37,4 +36,4 @@ print_r2($new_names);
 ?>
  </ul>
  </main>
- <?php  Layout::Footer(); ?>
+ <?php Layout::Footer(); ?>

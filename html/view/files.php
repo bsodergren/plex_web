@@ -3,7 +3,6 @@ use Plex\Modules\Display\Layout;
 
 require_once '../_config.inc.php';
 
-
 $redirect_string            = __THIS_FILE__.'?genre='.$_REQUEST['genre'];
 $studio_key                 = '';
 
@@ -46,7 +45,7 @@ $request_key                = uri_String($uri);
 $total_results              = $pageObj->totalRecords;
 
 logger('total_results', $total_results);
- Layout::Header();
+Layout::Header();
 
 ?>
 

@@ -1,10 +1,10 @@
 <?php
 
 use Plex\Core\Request;
-use Plex\Template\Render;
 use Plex\Modules\Database\FileListing;
 use Plex\Modules\Display\Display;
 use Plex\Modules\Display\VideoDisplay;
+use Plex\Template\Render;
 
 /**
  * plex web viewer.
@@ -12,7 +12,7 @@ use Plex\Modules\Display\VideoDisplay;
 
 require_once '_config.inc.php';
 
-$fileinfo = new FileListing(new Request);
+$fileinfo                = new FileListing(new Request());
 [$results,$pageObj,$uri] = $fileinfo->getVideoArray();
 
 $request_key = uri_String($uri);
@@ -37,7 +37,7 @@ Display::$CrubURL['list'] = 'list.php'; // .$request_key;
 $grid = (new VideoDisplay('Grid'))->init();
 
 $table_body_html = $grid->Display($results, [
-    'total_files' => $pageObj->totalRecords,
+    'total_files'     => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
 ]);
 Render::Display($table_body_html);

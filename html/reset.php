@@ -2,9 +2,7 @@
 
 use Plex\Template\Render;
 
-
 require_once '_config.inc.php';
-
 
 $selector  = $_GET['selector'];
 $validator = $_GET['validator'];

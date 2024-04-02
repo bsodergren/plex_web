@@ -9,23 +9,22 @@ use Plex\Template\Render;
 
 require_once '_config.inc.php';
 
-
 if (isset($_REQUEST['substudio'])) {
-    $studio_key = 'substudio';
+    $studio_key   = 'substudio';
     $studio_field = 'studio';
-    $studio_text = $_REQUEST['substudio'];
+    $studio_text  = $_REQUEST['substudio'];
 } else {
-    $studio_key = 'studio';
+    $studio_key   = 'studio';
     $studio_field = 'substudio';
-    $studio_text = $_REQUEST['studio'];
+    $studio_text  = $_REQUEST['studio'];
 }
 
 $studio = str_replace('-', ' ', $studio_text);
 $studio = str_replace('_', '_', $studio);
-$order = $studio_field.' ASC';
+$order  = $studio_field.' ASC';
 
 $sql_studio = $studio_key." = '".$studio."'";
-$sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
+$sql        = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
     'DISTINCT('.$studio_field.') as '.$studio_field.' ',
     $sql_studio,
     $studio_field,
@@ -38,11 +37,11 @@ $request_key = $studio_key.'='.$studio_text;
 utmdump($sql);
 
 $result = $db->query($sql);
-$rows = count($result);
+$rows   = count($result);
 
 $all_url = 'list.php?'.$request_key.'&allfiles=1';
 
-utmdump([$studio,$studio_field,$studio_key]);
+utmdump([$studio, $studio_field, $studio_key]);
 foreach ($result as $k => $v) {
     $len = strlen($studio) * 2;
     // $v["cnt"]=1; ".$v["cnt"]."
