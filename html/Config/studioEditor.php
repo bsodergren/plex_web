@@ -1,13 +1,12 @@
 <?php
 
-use Plex\Template\Render;
-
-use UTMTemplate\HTML\Elements;
 use Plex\Modules\Config\StudioConfigSave;
+use Plex\Modules\Display\Layout;
 use Plex\Template\Pageinate\ConfigPagenate;
+use Plex\Template\Render;
+use UTMTemplate\HTML\Elements;
 
 require_once '../_config.inc.php';
-
 
 $pageObj          = new ConfigPagenate("library = 'Studios'", $currentPage, $urlPattern);
 
@@ -28,7 +27,7 @@ $results          = $db->query($sql);
 
 $redirect_string  = __THIS_FILE__;
 
-\Plex\Template\Layout\Header::Display();
+Layout::Header();
 
 ?>
 
@@ -39,11 +38,11 @@ $redirect_string  = __THIS_FILE__;
 	<br>
 	<?php
 
-$studio_main_html = StudioConfigSave::displayAddStudioForm('Amateur', 'Add Amateur entry',$redirect_string);
-$studio_main_html .= StudioConfigSave::displayAddStudioForm('Models', 'Add Models entry',$redirect_string);
-$studio_main_html .= StudioConfigSave::displayAddStudioForm('Animation', 'Add Animation entry',$redirect_string);
+$studio_main_html = StudioConfigSave::displayAddStudioForm('Amateur', 'Add Amateur entry', $redirect_string);
+$studio_main_html .= StudioConfigSave::displayAddStudioForm('Models', 'Add Models entry', $redirect_string);
+$studio_main_html .= StudioConfigSave::displayAddStudioForm('Animation', 'Add Animation entry', $redirect_string);
 
-$studio_main_html .= StudioConfigSave::displayAddStudioForm('Studios', 'Add Studios entry',$redirect_string);
+$studio_main_html .= StudioConfigSave::displayAddStudioForm('Studios', 'Add Studios entry', $redirect_string);
 
 foreach ($results as $key => $row) {
     $studio_rows[$row['studio']][] = $row;
@@ -95,5 +94,5 @@ Render::echo(
 
 <?php
 
- \Plex\Template\Layout\Footer::Display();
+ Layout::Footer();
 ?>

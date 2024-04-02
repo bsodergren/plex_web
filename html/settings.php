@@ -12,7 +12,7 @@ if ($form->submitted()) {
 }
 
 
-Header::Display();
+Layout::Header();
 ?>
 
 <main role="main" class="container">
@@ -115,5 +115,5 @@ $form->close();
 
 ?>
  </main>
- <?php Footer::Display();
+ <?php Layout::Footer();
  ?>

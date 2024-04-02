@@ -2,8 +2,8 @@
 
 use Plex\Core\Request;
 use Plex\Modules\Database\FileListing;
-use Plex\Template\Display\Display;
-use Plex\Template\Display\VideoDisplay;
+use Plex\Modules\Display\Display;
+use Plex\Modules\Display\VideoDisplay;
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
 use Plex\Template\Render;
@@ -34,6 +34,6 @@ $body = $vidInfo->Display($results, [
     'redirect_string' => $redirect_string,
 ]);
 
-// Header::Display();
+// Layout::Header();
 Render::Display($body);
-// Footer::Display();
+// Layout::Footer();

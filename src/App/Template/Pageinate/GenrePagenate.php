@@ -1,10 +1,10 @@
 <?php
+
 namespace Plex\Template\Pageinate;
-/**
+
+/*
  * plex web viewer
  */
-
-use Plex\Template\Pageinate\Pageinate;
 
 class GenrePagenate extends Pageinate
 {

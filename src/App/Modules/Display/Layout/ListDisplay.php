@@ -1,10 +1,10 @@
 <?php
 
-namespace Plex\Template\Display\Layout;
+namespace Plex\Modules\Display\Layout;
 
 use Plex\Template\Render;
 use Plex\Modules\VideoCard\VideoCard;
-use Plex\Template\Display\VideoDisplay;
+use Plex\Modules\Display\VideoDisplay;
 
 class ListDisplay extends VideoDisplay
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Plex\Template\Display\Layout;
+namespace Plex\Modules\Display\Layout;
 
 use Plex\Core\Request;
 use Plex\Template\Render;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\Traits\FolderFunc;
 use Plex\Modules\VideoCard\VideoCard;
-use Plex\Template\Display\VideoDisplay;
+use Plex\Modules\Display\VideoDisplay;
 
 class FolderDisplay extends VideoDisplay
 {

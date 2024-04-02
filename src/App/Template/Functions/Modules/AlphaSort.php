@@ -4,7 +4,7 @@ namespace Plex\Template\Functions\Modules;
 
 use Plex\Core\Request;
 use Plex\Core\Utilities\PlexArray;
-use Plex\Template\Display\Display;
+use Plex\Modules\Display\Display;
 use Plex\Template\Render;
 use UTM\Utilities\Option;
 

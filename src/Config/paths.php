@@ -1,4 +1,5 @@
 <?php
+
 define('__THIS_FILE__', basename($_SERVER['SCRIPT_FILENAME']));
 define('__THIS_PAGE__', basename($_SERVER['SCRIPT_FILENAME'], '.php'));
 
@@ -32,4 +33,3 @@ define('__METADB_HASH', __CACHE_DIR.'/'.$cache_directory.'/metadb.hash');
 
 define('__ROUTE_NAV__', __PHP_YAML_DIR__.'/navigation.yaml');
 define('__PAGE_CONFIG__', __PHP_YAML_DIR__.'/Pages.yaml');
-

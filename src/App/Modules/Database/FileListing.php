@@ -218,7 +218,6 @@ class FileListing
                     $comp = ' IS';
                 }
                 $tag_query = '(m.'.$tag.' '.$comp.' \''.$value.'\' OR c.'.$tag.' '.$comp.' \''.$value.'\')';
-                utmdump($tag_query);
                 $this->db->where($tag_query);
                 // $this->db->orwhere('c.'.$tag, $value, $comp);
             }

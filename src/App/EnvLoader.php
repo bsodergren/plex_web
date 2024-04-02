@@ -1,9 +1,6 @@
 <?php
-/**
- * Command like Metatag writer for video files.
- */
-
 namespace Plex;
+
 
 use Dotenv\Dotenv;
 

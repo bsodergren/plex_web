@@ -1,11 +1,10 @@
 <?php
-use Plex\Template\Render;
-
+use Plex\Modules\Display\Layout;
 use Plex\Template\Pageinate\GenrePagenate;
+use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
 
 require_once '../_config.inc.php';
-
 
 if (isset($_SESSION['direction'])) {
     $direction = $_SESSION['direction'];
@@ -33,7 +32,7 @@ if (isset($_SESSION['sort'])) {
 $url_array          = [
     'url'          => $_SERVER['SCRIPT_NAME'],
     'query_string' => $query_string,
-    'sortDefault' => 'genre',
+    'sortDefault'  => 'genre',
 
     'current'      => $_SESSION['sort'],
     'direction'    => $_SESSION['direction'],
@@ -41,7 +40,6 @@ $url_array          = [
         'Genre' => 'genre',
     ],
 ];
-
 
 $pageObj            = new GenrePagenate($currentPage, $urlPattern);
 $where              = '';
@@ -67,7 +65,7 @@ $results            = $db->query($sql);
 
 $redirect_string    = 'Config/'.__THIS_FILE__.$request_string_query;
 
- Header::Display();
+Layout::Header();
 
 ?>
 
@@ -110,5 +108,5 @@ Render::echo(
 
 <?php
 
- Footer::Display();
+ Layout::Footer();
 ?>

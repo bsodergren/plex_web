@@ -1,11 +1,11 @@
 <?php
 
-namespace Plex\Template\Display\Layout;
+namespace Plex\Modules\Display\Layout;
 
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Playlist\Playlist;
 use Plex\Modules\VideoCard\VideoCard;
-use Plex\Template\Display\VideoDisplay;
+use Plex\Modules\Display\VideoDisplay;
 use Plex\Template\Functions\Traits\Video;
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
@@ -25,7 +25,7 @@ class GridDisplay extends VideoDisplay
         $db = PlexSql::$DB;
 
         $this->template_base = $template_base;
-        $this->VideoPlaylists = (new Playlist)->showPlaylists(true);
+        $this->VideoPlaylists = (new Playlist())->showPlaylists(true);
     }
 
     public function gridPlaylistDropdown($playlists, $video_id)
@@ -110,20 +110,21 @@ class GridDisplay extends VideoDisplay
                     'ROW_TOTAL' => $this->totalRecords, ]);
         }
 
+        $params = [
+            'FILE_MISSING' => $class_missing,
+
+            'PLAYLIST_LINKS' => str_replace('VIDEO_ID', $videoInfo['id'], $playlist_html),
+            'THUMBNAIL' => $thumbnail,
+            'ROW_ID' => $videoInfo['id'],
+            'VIDEO_DATA' => $videoFields,
+            'ROWNUM' => $videoInfo['rownum'],
+            'ROW_TOTAL' => $this->totalRecords,
+            'STAR_RATING' => $videoInfo['rating'],
+        ];
+
         // THUMB_EXTRA = ' alt="#" class="img-fluid" '
         return Render::html(
-            'grid/cell/video',
-            [
-                'FILE_MISSING' => $class_missing,
-
-                'PLAYLIST_LINKS' => str_replace('VIDEO_ID', $videoInfo['id'], $playlist_html),
-                'THUMBNAIL' => $thumbnail,
-                'ROW_ID' => $videoInfo['id'],
-                'VIDEO_DATA' => $videoFields,
-                'ROWNUM' => $videoInfo['rownum'],
-                'ROW_TOTAL' => $this->totalRecords,
-                'STAR_RATING' => $videoInfo['rating'],
-            ]
+            'grid/cell/video', $params
         );
     }
 
@@ -145,15 +146,12 @@ class GridDisplay extends VideoDisplay
             return 'No results';
         }
 
-            foreach($results as $k=>$videoRow)
-            {
-
+        foreach ($results as $k => $videoRow) {
             $cell_html .= Render::html('grid/cell', [
                 'VIDEO_CELL' => $this->videoCell($videoRow),
                 'ROW_ID' => $videoRow['id']]
             );
         }
-
 
         $table_body_html = Render::html('grid/table', [
             'HIDDEN_STUDIO_NAME' => Elements::add_hidden('studio', $studio).Elements::add_hidden('substudio', $substudio),

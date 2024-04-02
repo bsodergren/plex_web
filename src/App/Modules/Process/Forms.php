@@ -96,6 +96,7 @@ class Forms
     {
         $out = (new Functions)->getVideoPlaylistJson($this->postArray['id']);
         echo $out;
+        utmdump([$out,$this->postArray]);
         exit;
 
     }

@@ -3,7 +3,7 @@
 namespace Plex\Template\Functions\Traits;
 
 use Plex\Core\Request;
-use Plex\Template\Display\Display;
+use Plex\Modules\Display\Display;
 use Plex\Template\Render;
 
 trait Breadcrumbs

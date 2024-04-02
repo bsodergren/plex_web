@@ -3,7 +3,7 @@
 namespace Plex\Modules\Process\Traits;
 
 use Plex\Modules\Database\VideoDb;
-use Plex\Template\Display\VideoDisplay;
+use Plex\Modules\Display\VideoDisplay;
 
 
 

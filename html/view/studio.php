@@ -2,8 +2,9 @@
 
 require_once '../_config.inc.php';
 
+use Plex\Modules\Display\Layout;
 
- \Plex\Template\Layout\Header::Display();
+Layout::Header();
 
 $sql    = PlexSql::query_builder(
     Db_TABLE_VIDEO_FILE,
@@ -19,7 +20,7 @@ $result = $db->query($sql);
 
 <main role="main" class="container">
 
-	<?php
+    <?php
 
     echo "<ul> \n";
 foreach ($result as $k => $v) {
@@ -57,6 +58,6 @@ foreach ($result as $k => $v) {
 echo "</ul><li><a href='".__THIS_FILE__."?studio=NULL'>Studio not Set</a><br>";
 
 ?>
-	</ul>
+    </ul>
 </main>
-<?php  \Plex\Template\Layout\Footer::Display(); ?>
+<?php Layout::Footer(); ?>

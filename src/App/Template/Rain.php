@@ -1,7 +1,4 @@
 <?php
-/**
- * plex web viewer
- */
 
 namespace Plex\Template;
 

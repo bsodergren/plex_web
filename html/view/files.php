@@ -1,4 +1,5 @@
 <?php
+use Plex\Modules\Display\Layout;
 
 require_once '../_config.inc.php';
 
@@ -45,7 +46,7 @@ $request_key                = uri_String($uri);
 $total_results              = $pageObj->totalRecords;
 
 logger('total_results', $total_results);
- \Plex\Template\Layout\Header::Display();
+ Layout::Header();
 
 ?>
 
@@ -64,4 +65,4 @@ include __PHP_TEMPLATE__.'main_form.php'; ?>
 
       </main>
       <?php
-       \Plex\Template\Layout\Footer::Display();
+       Layout::Footer();

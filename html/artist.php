@@ -1,8 +1,8 @@
 <?php
 
-use Plex\Template\Render;
 use Plex\Modules\Database\PlexSql;
 use Plex\Template\Functions\Functions;
+use Plex\Template\Render;
 
 require_once '_config.inc.php';
 
@@ -37,10 +37,10 @@ foreach ($results as $k => $value) {
 }
 
 foreach ($AristArray as $artist => $num) {
-    if($artist == "") {
+    if ('' == $artist) {
         continue;
     }
-    if($artist == "missing") {
+    if ('missing' == $artist) {
         continue;
     }
     $sortedArray[$num][] = $artist;
@@ -62,7 +62,7 @@ foreach ($sortedArray as $num => $artistArray) {
 
     //    //$artist_links .= Render::html("artist/artist_link",['ARTIST'=>$artist,'ARTIST_NAME'=>$name]);
     //    //$artist_links .= Elements::keyword_cloud($name,'artist');
-    utmdump( [ $num ,$artist]);
+    utmdump([$num, $artist]);
     // }
     $field                      = 'artist';
     $search_url                 = 'search.php?field='.$field.'&query=';
@@ -107,7 +107,7 @@ foreach ($results as $num => $artistArray) {
     $titleBg   = '';
     if ('' == $artistArray['title']) {
         $title   = str_replace('_', ' ', $artistArray['filename']);
-       // $titleBg = ' bg-info ';
+        // $titleBg = ' bg-info ';
     }
     $params['THUMBNAIL_HTML'] .= Render::html(
         'artist/artist_thumbnail',
@@ -123,4 +123,3 @@ foreach ($results as $num => $artistArray) {
 
 Render::Display(Render::html('artist/cloud', $params));
 // Render::echo("artist/main",$PARAMS);
-

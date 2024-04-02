@@ -9,29 +9,29 @@ EOF;
 
 return (new PhpCsFixer\Config())->setRules([
     'array_syntax' => ['syntax' => 'short'],
-    'binary_operator_spaces' => [
-        'default' => 'single_space',
-        'operators' => ['=>' => null],
-    ],
-    'blank_line_after_namespace' => true,
+    // 'binary_operator_spaces' => [
+    //     'default' => 'single_space',
+    //     'operators' => ['=>' => null],
+    // ],
+    'blank_line_after_namespace'   => true,
     'blank_line_after_opening_tag' => true,
-    'blank_line_before_statement' => [
+    'blank_line_before_statement'  => [
         'statements' => ['return'],
     ],
-    'braces' => true,
-    'cast_spaces' => true,
+    'braces'                      => true,
+    'cast_spaces'                 => true,
     'class_attributes_separation' => [
         'elements' => [
-            'const' => 'one',
-            'method' => 'one',
-            'property' => 'one',
+            'const'        => 'one',
+            'method'       => 'one',
+            'property'     => 'one',
             'trait_import' => 'none',
         ],
     ],
     'class_definition' => [
         'multi_line_extends_each_single_line' => true,
-        'single_item_single_line' => true,
-        'single_line' => true,
+        'single_item_single_line'             => true,
+        'single_line'                         => true,
     ],
     // 'concat_space'                                => [
     //     'spacing' => 'none',
@@ -147,15 +147,15 @@ return (new PhpCsFixer\Config())->setRules([
         'elements' => ['method', 'property'],
     ],
     'whitespace_after_comma_in_array' => true,
-    '@PhpCsFixer' => true,
-    '@PSR12:risky' => true,
-    '@PER-CS1.0' => true,
-    '@PER-CS1.0:risky' => true,
+    '@PhpCsFixer'                     => true,
+    '@PSR12:risky'                    => true,
+    '@PER-CS1.0'                      => true,
+    '@PER-CS1.0:risky'                => true,
 
-    '@PHP71Migration' => true,
+    '@PHP71Migration'           => true,
     '@PHPUnit75Migration:risky' => true,
-    '@Symfony' => true,
-    '@Symfony:risky' => true,
+    '@Symfony'                  => true,
+    '@Symfony:risky'            => true,
 
     // 'protected_to_private' => false,
     // 'native_constant_invocation' => ['strict' => false],
@@ -172,13 +172,13 @@ return (new PhpCsFixer\Config())->setRules([
     // ],
     'no_unused_imports' => true,
 
-    // 'binary_operator_spaces'                      => [
-    //     'operators' => [
-    //         '=>'  => 'single_space',
-    //         '='   => 'single_space',
-    //         '===' => 'single_space',
-    //     ],
-    // ],
+    'binary_operator_spaces' => [
+        'operators' => [
+            '=>'  => 'align',
+            '='   => 'align',
+            '===' => 'align',
+        ],
+    ],
 ])
     ->setRiskyAllowed(true)
     ->setCacheFile('.php-cs-fixer.cache')

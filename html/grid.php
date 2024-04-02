@@ -3,8 +3,8 @@
 use Plex\Core\Request;
 use Plex\Template\Render;
 use Plex\Modules\Database\FileListing;
-use Plex\Template\Display\Display;
-use Plex\Template\Display\VideoDisplay;
+use Plex\Modules\Display\Display;
+use Plex\Modules\Display\VideoDisplay;
 
 /**
  * plex web viewer.

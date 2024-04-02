@@ -1,9 +1,10 @@
 <?php
 
 require_once '../_config.inc.php';
+use Plex\Modules\Display\Layout;
 
 
- \Plex\Template\Layout\Header::Display();
+ Layout::Header();
 
 $sql            = PlexSql::query_builder(Db_TABLE_VIDEO_FILE, 'count(genre) as cnt, genre',
     "library = '".$in_directory."'",
@@ -46,4 +47,4 @@ foreach ($allgenre_array as $x => $g) {
 ?>
  </ul>
  </main>
- <?php  \Plex\Template\Layout\Footer::Display(); ?>
+ <?php  Layout::Footer(); ?>

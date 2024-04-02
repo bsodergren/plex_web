@@ -5,7 +5,7 @@ use Plex\Core\Request;
 use Plex\Core\RoboLoader;
 use Plex\Core\Utilities\Logger;
 use Plex\Modules\Database\PlexSql;
-use Plex\Template\Display\Display;
+use Plex\Modules\Display\Display;
 use UTMTemplate\Template;
 
 global $_SESSION;
@@ -22,10 +22,10 @@ define('__RANDOM__', Display::$Random);
 //     '\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK' => 'callback_parse_function',
 // '\Plex\Template\Callbacks\FunctionCallback::SCRIPTINCLUDE_CALLBACK' => 'callback_script_include'];
 
-$r = new Request();
-$uri = $r->getURI();
-$urlPattern = $r->geturlPattern();
-$url_array = $r->url_array();
+$r           = new Request();
+$uri         = $r->getURI();
+$urlPattern  = $r->geturlPattern();
+$url_array   = $r->url_array();
 $currentPage = $r->currentPage;
 
 // function chk_file($value, $command = 'delete', $options = '')

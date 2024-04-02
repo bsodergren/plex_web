@@ -1,13 +1,11 @@
 <?php
 
-use Plex\Template\Render;
-
+use Plex\Modules\Display\Layout;
 use Plex\Template\Pageinate\ArtistPagenate;
+use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
 
 require_once '../_config.inc.php';
-
-
 
 if (isset($_SESSION['direction'])) {
     $direction = $_SESSION['direction'];
@@ -39,8 +37,8 @@ $url_array           = [
     ],
 ];
 $pageObj             = new ArtistPagenate($currentPage, $urlPattern);
-$where              = '';
-$query              = urlQuerystring($urlPattern, ['current', 'allfiles'], true);
+$where               = '';
+$query               = urlQuerystring($urlPattern, ['current', 'allfiles'], true);
 if (count($query) > 0) {
     $where = ' WHERE '.$query['sql'];
 }
@@ -59,7 +57,7 @@ if (false != $limit && false != $offset) {
 $results             = $db->query($sql);
 
 $redirect_string     = 'Config/'.__THIS_FILE__.$request_string_query;
- \Plex\Template\Layout\Header::Display();
+Layout::Header();
 
 ?>
 
@@ -103,7 +101,5 @@ Render::echo(
 
 <?php
 
-
-
- \Plex\Template\Layout\Footer::Display();
+ Layout::Footer();
 ?>

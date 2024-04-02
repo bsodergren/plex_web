@@ -2,8 +2,7 @@
 
 namespace Plex\Template;
 
-use Plex\Template\Layout\Footer;
-use Plex\Template\Layout\Header;
+use Plex\Modules\Display\Layout;
 use UTMTemplate\Render as UTMTemplateRender;
 
 class Render extends UTMTemplateRender
@@ -12,9 +11,8 @@ class Render extends UTMTemplateRender
 
     public static function Display($array = '')
     {
-        Header::Display();
+        Layout::Header();
         self::echo('base/page', ['BODY' => $array]);
-        Footer::Display();
+        Layout::Footer();
     }
-
 }

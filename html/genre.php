@@ -1,11 +1,8 @@
 <?php
 
-use Plex\Template\Display\Display;
-use Plex\Template\Display\VideoDisplay;
-use Plex\Template\Layout\Footer;
-use Plex\Template\Layout\Header;
 use Plex\Modules\Database\PlexSql;
-use Plex\Template\Render;
+use Plex\Modules\Display\Layout;
+
 require_once '_config.inc.php';
 
 $null        = '';
@@ -30,7 +27,7 @@ if (isset($_REQUEST['allfiles'])) {
         $studio_key       = 'studio';
         $studio_text      = $_REQUEST['studio'];
         $studio           = urldecode($studio_text);
-       
+
         $studio_sql_query = $studio_key." = '".$studio."' ";
 
         if ('NULL' == $_REQUEST['studio']) {
@@ -55,7 +52,6 @@ $sql         = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
 $genre_array = [];
 $result      = $db->query($sql);
 
-
 $rows        = count($result);
 
 if ($rows <= 1) {
@@ -69,11 +65,11 @@ foreach ($result as $k => $v) {
 
 $genre_array = array_unique($genre_array);
 $studio_url  = 'studio.php?studio='.$_REQUEST['prev'];
-Header::Display();
+Layout::Header();
 ?>
 <main role="main" class="container">
 
-<?php
+    <?php
 asort($genre_array);
 foreach ($genre_array as $k => $v) {
     // $v["cnt"]=1; ".$v["cnt"]."
@@ -95,4 +91,5 @@ foreach ($genre_array as $k => $v) {
 </main>
 <?php
 
-Footer::Display();
+Layout::Footer();
+?>

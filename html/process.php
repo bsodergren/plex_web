@@ -9,7 +9,7 @@ require_once '_config.inc.php';
 
  utmdump([__METHOD__,$_REQUEST]);
 
- 
+
 if (true == $_GET['q']) {
     $q = $_GET['q'];
 
@@ -28,7 +28,7 @@ if (true == $_GET['q']) {
 if (array_key_exists('action', $_REQUEST)) {
     if ('refresh' == $_REQUEST['action']) {
 
-        Header::Display();
+        Layout::Header();
     }
 }
 

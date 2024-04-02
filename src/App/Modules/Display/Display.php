@@ -1,6 +1,6 @@
 <?php
 
-namespace Plex\Template\Display;
+namespace Plex\Modules\Display;
 
 use Plex\Core\Utilities\Colors;
 use Plex\Template\Render;

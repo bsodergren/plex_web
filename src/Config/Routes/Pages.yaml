@@ -79,3 +79,5 @@ videoinfo:
 filebrowser:
     PAGE_TITLE: "File Browser"
     BOTTOM_NAV: false
+process:
+    SHOW_RATING: true

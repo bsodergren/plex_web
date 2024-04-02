@@ -67,6 +67,7 @@ if (null === $playlist_id) {
 
     $results = $playlist->getPlaylist($playlist_id);
     $list = $playlist->showPlaylists(true);
+    $playlist_LinkArray['All'] = __URL_HOME__.'/playlist.php';
 
     foreach ($list as $l => $plRow) {
         $plCanvas_image = '';

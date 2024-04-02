@@ -4,7 +4,7 @@ use Plex\Core\Request;
 use Plex\Template\Render;
 use Plex\Modules\Database\FileListing;
 use Plex\Modules\Database\VideoDb;
-use Plex\Template\Display\VideoDisplay;
+use Plex\Modules\Display\VideoDisplay;
 
 require_once '_config.inc.php';
 

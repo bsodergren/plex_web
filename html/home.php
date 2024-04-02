@@ -1,7 +1,7 @@
 <?php
 
 use Plex\Modules\Database\PlexSql;
-use Plex\Template\Display\Display;
+use Plex\Modules\Display\Display;
 use Plex\Template\Render;
 
 /**
@@ -28,7 +28,7 @@ $result = $db->query($sql);
 $all_url = 'list.php?allfiles=1';
 
 // DEFINE('BREADCRUMB', [$in_directory => "", 'all' => $all_url]);
-//  \Plex\Template\Layout\Header::Display();
+//  Layout::Header();
 
 foreach ($result as $r => $row) {
     if (null === $row['subLibrary']) {

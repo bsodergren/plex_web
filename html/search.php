@@ -2,7 +2,7 @@
 
 use Plex\Core\Request;
 use Plex\Modules\Database\FileListing;
-use Plex\Template\Display\VideoDisplay;
+use Plex\Modules\Display\VideoDisplay;
 use UTMTemplate\HTML\Elements;
 use Plex\Template\Render;
 

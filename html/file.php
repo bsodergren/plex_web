@@ -5,11 +5,11 @@ use Plex\Template\Render;
 
 use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
-use Plex\Template\Display\Display;
+use Plex\Modules\Display\Display;
 use Plex\Modules\Database\FileListing;
 use Plex\Modules\Database\FolderListing;
-use Plex\Template\Display\Layout\FolderDisplay;
-use Plex\Template\Display\VideoDisplay;
+use Plex\Modules\Display\Layout\FolderDisplay;
+use Plex\Modules\Display\VideoDisplay;
 
 require_once '_config.inc.php';
 
@@ -25,7 +25,7 @@ if(count($files) > 0 ) {
     foreach($files as $filename){
         $vInfo = $folderList->getVideoDetails($filename);
         $results[] = $vInfo[0];
-       
+
     }
 }
 
@@ -55,6 +55,6 @@ $body = $vidInfo->Display($folders,$results, []);
 // ]);
 
 
-// Header::Display();
+// Layout::Header();
 Render::Display($body);
-// Footer::Display();
+// Layout::Footer();

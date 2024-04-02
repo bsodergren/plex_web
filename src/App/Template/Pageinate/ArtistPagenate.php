@@ -1,8 +1,6 @@
 <?php
+
 namespace Plex\Template\Pageinate;
-
-use Plex\Template\Pageinate\Pageinate;
-
 
 class ArtistPagenate extends Pageinate
 {

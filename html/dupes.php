@@ -1,7 +1,7 @@
 <?php
 
 use Plex\Modules\Database\PlexSql;
-use Plex\Template\Display\VideoDisplay;
+use Plex\Modules\Display\VideoDisplay;
 use Plex\Template\Render;
 
 require_once '_config.inc.php';

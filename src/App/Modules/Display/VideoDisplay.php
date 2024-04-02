@@ -1,5 +1,5 @@
 <?php
-namespace Plex\Template\Display;
+namespace Plex\Modules\Display;
 
 
 class VideoDisplay
@@ -7,7 +7,7 @@ class VideoDisplay
 
     public function __construct($display = 'List')
     {
-        $this->class = 'Plex\\Template\\Display\\Layout\\'.$display.'Display';
+        $this->class = 'Plex\\Modules\\Display\\Layout\\'.$display.'Display';
     }
 
 
