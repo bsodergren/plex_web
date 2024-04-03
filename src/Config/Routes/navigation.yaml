@@ -49,18 +49,19 @@ extra:
     dropdown: [{
             Duplicates: dupes.php},
         {
-            artistEditor: Config/artistEditor.php, 
-            studioEditor: Config/studioEditor.php, 
+            artistEditor: Config/artistEditor.php,
+            studioEditor: Config/studioEditor.php,
             genreEditor: Config/genreEditor.php
         },
         {
-            wordMap: editor.php, 
-            "File Browser": filebrowser.php, 
+            wordMap: editor.php,
+            plEdit: pledit.php,
+            "File Browser": filebrowser.php,
             test: test.php
         },
         {
-            refresh: "process.php?action=refresh", 
-            settings: settings.php 
+            refresh: "process.php?action=refresh",
+            settings: settings.php
         }
     ]
-    
+
