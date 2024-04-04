@@ -1,6 +1,6 @@
 <?php
 
-use Plex\Modules\Process\Traits\Mediatag;
+use Plex\Modules\Process\Mediatag;
 use Plex\Template\Render;
 
 require_once '_config.inc.php';
@@ -8,7 +8,21 @@ require_once '_config.inc.php';
 // configuration
 $url = __URL_HOME__.'/pledit.php';
 $file = '/home/bjorn/plex/XXX/Playlists/plexplaylist.txt';
+ $pl = new Mediatag('Playlists');
+    UtmDump($_REQUEST);
 
+ if (isset($_REQUEST['download'])) {
+    if (file_exists($file)) {
+        $pl->playlistDownload($file);
+        echo "fadsfsda";
+    }
+//   header(sprintf('Location: %s', $url));
+    exit;
+}
+
+if (!file_exists($file)) {
+    touch($file);
+}
 // check if form has been submitted
 if (isset($_POST['text'])) {
     $text = $_POST['text'];
@@ -16,9 +30,19 @@ if (isset($_POST['text'])) {
     // save the text contents
     file_put_contents($file, $text);
 
-    $pl = new Mediatag('Playlists');
-    $pl->playlistClean($file);
+//    $pl->playlistClean($file);
+    if ('Download' == $_POST['submit']) {
+        $popurl = $url.'?download=true';
+        utmdump($popurl);
 
+        echo '<script>';
+        echo "window.open('$popurl','ff');".\PHP_EOL;
+        echo "window.location.href = '$url';".\PHP_EOL;
+        echo '</script>';
+        exit;
+       sleep(2);
+
+    }
     // redirect to form again
     header(sprintf('Location: %s', $url));
     printf('<a href="%s">Moved</a>.', htmlspecialchars($url));
@@ -30,7 +54,7 @@ $rows = 10;
 $text = file_get_contents($file);
 $array = explode("\n", $text);
 $lines = count($array);
-$cols = 0;
+$cols = 60;
 foreach ($array as $line) {
     $w = strlen($line);
     if ($w > $cols) {

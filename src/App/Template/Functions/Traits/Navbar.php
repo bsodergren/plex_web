@@ -2,9 +2,10 @@
 
 namespace Plex\Template\Functions\Traits;
 
-use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
+use UTMTemplate\Template;
 use Symfony\Component\Yaml\Yaml;
+use Plex\Template\Functions\Functions;
 
 trait Navbar
 {
@@ -113,7 +114,7 @@ trait Navbar
                 'MENULINK_ICON' => self::navbarIcon($link_array),
                 'ACTIVE' => $is_active,
             ];
-            
+
             $url_text = Render::html('base/navbar/menu_link', $array);
 
                 if (true == $link_array['days']) {
@@ -125,7 +126,7 @@ trait Navbar
                    // $url_text .= '</li>';
                 }
 
-          
+
             $html = $html.$url_text."\n";
         } // end foreach
 
@@ -137,7 +138,7 @@ trait Navbar
         $html = '';
         if (isset($link_array['icon'])) {
             $icon = $link_array['icon'];
-            $html = ' '.(new Functions())->{$icon}();
+            $html = ' '.Template::Icons($icon);
         }
 
         return $html;

@@ -19,11 +19,11 @@ use Plex\Template\Layout\Footer;
 use Plex\Template\Layout\Header;
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
+use  UTMTemplate\Functions\Traits\Parser;
 
 class Functions extends Render
 {
     use Breadcrumbs;
-    use Icons;
     use Navbar;
     use PageSort;
     use RecentDays;
@@ -31,30 +31,23 @@ class Functions extends Render
     use ThemeSwitcher;
     use Video;
 
+    use Parser;
+
     public static $ElementsDir = 'elements';
     public static $PlaylistDir = 'elements/Playlist';
     public static $ChapterDir = 'elements/Chapters';
     public static $ButtonDir = 'elements/Buttons';
     public static $RatingsDir = 'elements/Rating';
     public static $BreadcrumbsDir = 'elements/Breadcrumb';
-    public static $IconsDir = 'elements/Icons';
 
     public function __construct()
     {
-        $dir = __HTML_TEMPLATE__.'/'.$this->IconsDir;
-        $include_array = RoboLoader::get_filelist($dir, 'html', 1);
-        foreach ($include_array as $required_file) {
-            $this->iconList[] = basename($required_file, '.html');
-        }
+
     }
 
     public function __call($name, $arguments)
     {
-        if (\in_array($name, $this->iconList)) {
-            return $this->getIcon($name, $arguments[0]);
-        }
-
-        return false;
+        utmdump($name,$arguments);
     }
 
     public function hiddenSearch()
@@ -66,26 +59,7 @@ class Functions extends Render
         return Elements::add_hidden('search_id', FileListing::$searchId, 'id="searchId"');
     }
 
-    private function parseVars($matches)
-    {
-        $parts = explode(',', $matches[2]);
-        foreach ($parts as $value) {
-            if (str_contains($value, '=')) {
-                $v_parts = explode('=', $value);
-                if (str_contains($v_parts[0], '?')) {
-                    $q_parts = explode('?', $v_parts[0]);
 
-                    $values['query'][$q_parts[1]] = $v_parts[1];
-                    continue;
-                }
-                $values[$v_parts[0]] = $v_parts[1];
-                continue;
-            }
-            $values['var'][] = $value;
-        }
-
-        return $values;
-    }
 
     public function displayFilters()
     {
