@@ -61,7 +61,6 @@ class Forms
             $method = $this->postArray['submit'];
             unset($this->postArray['submit']);
             if (method_exists($this, $method)) {
-                UtmDump([__LINE__,'Method for '.$method.' Found']);
                 $this->{$method}();
             } else {
                 utmdd('No Method for '.$method.' Found');
@@ -72,14 +71,12 @@ class Forms
             $method = $this->postArray['action'];
             if (str_contains($method, 'Playlist')) {
                 if (method_exists($this, $method)) {
-                    UtmDump([__LINE__,'Method for '.$method.' Found']);
                     $this->{$method}();
                 } else {
                     utmdd('No Method for '.$method.' Found in playlist');
                 }
             } else {
                 if (method_exists($this, $method)) {
-                    UtmDump([__LINE__,'Method for '.$method.' Found']);
                     $this->{$method}();
                 } else {
                     utmdd('No Method for '.$method.' Found in this');
@@ -96,7 +93,7 @@ class Forms
     {
         $out = (new Functions)->getVideoPlaylistJson($this->postArray['id']);
         echo $out;
-        utmdump([$out,$this->postArray]);
+        // utmdump([$out,$this->postArray]);
         exit;
 
     }
@@ -134,7 +131,7 @@ class Forms
         $this->VideoInfo->{$method}($tagValue, $video_key);
     }
 
-  
+
 
     public function GenreConfigSave()
     {

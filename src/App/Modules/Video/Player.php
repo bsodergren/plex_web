@@ -72,7 +72,7 @@ class Player
 
     public function getPlayerTemplate($template)
     {
-        return self::$PlayerTemplate.DIRECTORY_SEPARATOR.$template; 
+        return self::$PlayerTemplate.DIRECTORY_SEPARATOR.$template;
     }
 
     public function getVideoURL($video_id)
@@ -121,6 +121,7 @@ class Player
 
         $this->params['PAGE_TITLE'] = $result['title'];
         $this->params['thumbnail'] = APP_HOME.$result['thumbnail'];
+        $this->params['RemoveVideo'] = $this->getRemoveVideo();
 
         $this->params['Video_studio'] = $result['studio'];
         $this->params['Video_substudio'] = $result['substudio'];
@@ -152,10 +153,12 @@ class Player
 
     public function getRemoveVideo()
     {
-        $videoId = Elements::add_hidden('videoId', $this->id);
+        $videoId = Elements::add_hidden('videoId', $this->id,'id="removeVideoId"');
         $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
 
-        return Render::html($this->videoTemplate.'/buttons/remove', ['HIDDEN_VIDEO_ID' => $videoId]);
+        return Render::html(Functions::$ButtonDir.'/remove', ['HIDDEN_VIDEO_ID' => $videoId]);
+
+//        return Render::html($this->videoTemplate.'/buttons/remove', ['HIDDEN_VIDEO_ID' => $videoId]);
     }
 
     public function getPlaylist()

@@ -7,7 +7,7 @@ recent:
     url: recent.php?direction=ASC&sort=f.added
     text: !php/const NavBar_Text_Recent
     icon: list
-    studio: true
+    studio: false
     days: true
 list:
     url: list.php
@@ -28,7 +28,7 @@ playlist:
     url: playlist.php
     text: !php/const NavBar_Text_Playist
     icon: playlist
-    studio: true
+    studio: false
 tag:
     url: tags.php
     text: !php/const NavBar_Text_Tags

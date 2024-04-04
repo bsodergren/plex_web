@@ -2,36 +2,33 @@
 
 namespace Plex\Template\Functions;
 
-use Plex\Core\RoboLoader;
 use Plex\Modules\Database\FileListing;
 use Plex\Modules\Playlist\Playlist;
 use Plex\Template\Functions\Modules\AlphaSort;
 use Plex\Template\Functions\Modules\metaFilters;
 use Plex\Template\Functions\Traits\Breadcrumbs;
-use Plex\Template\Functions\Traits\Icons;
 use Plex\Template\Functions\Traits\Navbar;
 use Plex\Template\Functions\Traits\PageSort;
 use Plex\Template\Functions\Traits\RecentDays;
 use Plex\Template\Functions\Traits\TagCloud;
 use Plex\Template\Functions\Traits\ThemeSwitcher;
 use Plex\Template\Functions\Traits\Video;
-use Plex\Template\Layout\Footer;
-use Plex\Template\Layout\Header;
 use Plex\Template\Render;
+use UTMTemplate\Functions\Traits\Parser;
 use UTMTemplate\HTML\Elements;
-use  UTMTemplate\Functions\Traits\Parser;
+use UTMTemplate\Template;
 
 class Functions extends Render
 {
     use Breadcrumbs;
     use Navbar;
     use PageSort;
+    use Parser;
     use RecentDays;
     use TagCloud;
     use ThemeSwitcher;
-    use Video;
 
-    use Parser;
+    use Video;
 
     public static $ElementsDir = 'elements';
     public static $PlaylistDir = 'elements/Playlist';
@@ -42,12 +39,11 @@ class Functions extends Render
 
     public function __construct()
     {
-
     }
 
     public function __call($name, $arguments)
     {
-        utmdump($name,$arguments);
+
     }
 
     public function hiddenSearch()
@@ -58,8 +54,6 @@ class Functions extends Render
 
         return Elements::add_hidden('search_id', FileListing::$searchId, 'id="searchId"');
     }
-
-
 
     public function displayFilters()
     {

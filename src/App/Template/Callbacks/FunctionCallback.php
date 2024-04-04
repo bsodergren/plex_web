@@ -6,7 +6,7 @@ use Plex\Template\Functions\Functions;
 
 class FunctionCallback
 {
-    public const FUNCTION_CALLBACK = '|{{function=([a-zA-Z_]+)\|?(.*)?}}|i';
+    public const FUNCTION_CALLBACK = '|{{function=([a-zA-Z_:]+)\|?(.*)?}}|i';
     public const SCRIPTINCLUDE_CALLBACK = '|{{(scriptinclude)=([a-zA-Z-_/\.]+)\|?([a-zA-Z=$,.\?\{\}]+)?}}|i';
 
     public function callback_parse_function($matches)

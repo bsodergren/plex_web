@@ -99,7 +99,7 @@ const PlayerApp = {
         </div>
         <div class="plyr__controls__item plyr__time plyr__time--current" aria-label="Current time">00:00</div>
         <div class="plyr__controls__item plyr__time plyr__time--duration" aria-label="Duration">00:00</div>
-        <button type="button" plyr__controls__item class="plyr__control" 
+        <button type="button" plyr__controls__item class="plyr__control"
         aria-label="Mute" data-plyr="mute">
           <svg class="icon--pressed" role="presentation">
               <use xlink:href="#plyr-muted"></use>
@@ -386,7 +386,11 @@ const PlayerApp = {
     textstudio.textContent = item.getAttribute('data-studio')
 
     const textvideoid = document.querySelector('#videoPlaylistVideoId')
+    const playervideoid = document.querySelector('.player_text')
     textvideoid.value = item.getAttribute('data-videoid')
+    playervideoid.setAttribute('data-videoid',item.getAttribute('data-videoid'))
+
+    console.log("data video id",item.getAttribute('data-videoid'))
 
     // Get the player_text anchor element
     const playerText = document.querySelector('.player_text')
