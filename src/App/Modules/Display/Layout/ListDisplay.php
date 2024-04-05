@@ -19,7 +19,7 @@ class ListDisplay extends VideoDisplay
 
     public function display($results, $page_array = [])
     {
-       
+        $videohtml = ['BODY'=>'','HIDDEN_STUDIO'=>''];
         $total_files     = '';
 
         if (isset($page_array['total_files'])) {

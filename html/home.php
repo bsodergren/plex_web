@@ -11,6 +11,8 @@ use Plex\Template\Render;
 require_once '_config.inc.php';
 
 $subLibraries = [];
+$studio_links = '';
+$studio_html = '';
 $sql          = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'DISTINCT(subLibrary) as subLibrary ', 'library');
 $result       = $db->query($sql);
 if (count($result) > 0) {

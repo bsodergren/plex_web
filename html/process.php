@@ -7,7 +7,7 @@ require_once '_config.inc.php';
 
 utmdump([__METHOD__, $_REQUEST]);
 
-if (true == $_GET['q']) {
+if (array_key_exists('q',$_GET)) {
     $q = $_GET['q'];
 
     $db->where('tag_name', '%'.$q.'%', 'like');

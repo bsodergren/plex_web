@@ -52,7 +52,7 @@ trait Video
         $extra = ' style="--bs-bg-opacity: .5;"';
         $javascript = " onclick=\"popup('".$url."', '".$window."')\"";
         $text = str_replace('_', ' ', $var['text']);
-        
+
         if (OptionIsFalse(SHOW_THUMBNAILS)) {
             $class .= ' position-absolute vertical-text text-nowrap';
             if ('Play Video' == $text) {
@@ -100,7 +100,7 @@ trait Video
         $playlists = (new Playlist())->getPlaylistSelectOptions($playlist_id,$disabled_id_list);
         $this->playlist_id = $playlist_id;
         return $playlists;
-   
+
     }
 
 
@@ -123,7 +123,7 @@ trait Video
     public function videoPlaylistBtn($matches)
     {
         $var = $this->parseVars($matches);
-
+        $buttons = '';
         $results = Playlist::getVideoPlaylists($var['query']['id']);
         foreach ($results as $n => $val) {
             if (\is_array($var['query'])) {
@@ -159,7 +159,7 @@ trait Video
 
                 return Render::html(Functions::$RatingsDir.'/rating', $params);
             }
-        
+
     }
 
     public function ratingInclude($matches)
@@ -167,11 +167,12 @@ trait Video
             if (OptionIsTrue(SHOW_RATING)) {
                 return Render::html(Functions::$RatingsDir.'/header', []);
             }
-        
+
     }
 
     public function Thumbnail($matches)
     {
+        $next_id = '';
         $var = $this->parseVars($matches);
         $row_id = $var['id'];
         $params = ['FILE_ID' => $row_id,

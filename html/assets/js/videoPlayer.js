@@ -37,9 +37,11 @@ function videoPlaylistButton(videoId, page) {
                 $("#VideoPlaylistLabel").fadeOut(400);
                 element.style.display = "none";
             }, 2000);
+            console.log(page)
             if (page == "grid") {
                 const videoCell = document.getElementById("Video_" + videoId);
                 videoCell.innerHTML = data;
+
             }
 
             //    window.location.href = data

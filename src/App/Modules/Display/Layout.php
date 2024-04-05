@@ -11,6 +11,7 @@ class Layout
 {
     public static function Header()
     {
+        $params = [];
         if (OptionIsTrue(GRID_VIEW)) {
             $params['SCRIPTS'] .= Render::html('base/header/header_grid', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
         }
@@ -42,6 +43,7 @@ class Layout
     public static function Footer()
     {
         global $pageObj;
+        $params = [];
         $page_html = '';
         $navbar = '';
         if (OptionIsTrue(BOTTOM_NAV)) {

@@ -23,6 +23,11 @@ class VideoCard
     private $template_base = 'VideoCard';
     public object $Chapters;
 
+    public $AltClass;
+    public $fileInfoArray;
+    public $params;
+
+
     public function __construct() {}
 
     public function __call($method, $args)
@@ -100,6 +105,8 @@ class VideoCard
             'added',
         ];
         $x = 0;
+        $this->params['FIELD_ROW_HTML'] = '';
+        $this->params['VIDEOINFO_EDIT_JS'] = '';
         foreach ($fileArray as $field) {
             if (\array_key_exists($field, $this->fileInfoArray)) {
                 if (null === $this->fileInfoArray[$field]) {
@@ -109,7 +116,10 @@ class VideoCard
                 $this->{$method}($field);
                 ++$x;
                 $this->AltClass = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
+                if($field == 'studio'){
+                    $row_studioy =  $this->fileInfoArray[$field];
 
+                }
             }
         }
         $this->ChapterRow();
@@ -117,7 +127,7 @@ class VideoCard
         // utmdd($this->params['HIDDEN_STUDIO']);
         $table_body_html['VIDEO'] = Render::html($this->template_base.'/Video', $this->params);
         $table_body_html['VIDEO_KEY'] = $row_video_key;
-
+        $table_body_html['HIDDEN_STUDIO'] = $row_studioy;
         return $table_body_html;
     }
 }

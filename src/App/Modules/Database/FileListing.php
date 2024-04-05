@@ -135,7 +135,7 @@ class FileListing
                 if ('studio' == $tag || 'substudio' == $tag
                 || 'genre' == $tag || 'artist' == $tag || 'keyword' == $tag) {
                     $key = $tag;
-                } 
+                }
             }
         }
 
@@ -154,7 +154,7 @@ class FileListing
         }
 
         if (isset($this->request['alpha'])) {
-        
+
             $query = PlexSql::getAlphaKey($this->request['sort'], $this->request['alpha']);
             utmdump($query);
 
@@ -191,11 +191,11 @@ class FileListing
             // if (isset($this->request['artist'])) {
             //     $key = 'artist';
             // }
-    
+
             // $where = str_replace($key."  = '".$this->request[$key]."'", $key.' like \'%'.$this->request[$key].'%\'',
             //  $sql_studio);
-            
-            
+
+
             if (isset($this->request['allfiles'])) {
             //     $where = str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
             // } else {
@@ -236,6 +236,7 @@ class FileListing
 
     private function buildSQL($limit = null)
     {
+        $limitQuery = '';
         // $fieldArray = VideoDb::$VideoMetaFields;
 
         $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'f.video_key=m.video_key', 'INNER');

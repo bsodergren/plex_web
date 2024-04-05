@@ -1,11 +1,10 @@
 <?php
 
 namespace Plex\Modules\Chapter;
-use Plex\Modules\Database\PlexSql;
 
-use Plex\Template\Render;
-use UTMTemplate\HTML\Elements;
+use Plex\Modules\Database\PlexSql;
 use Plex\Template\Functions\Functions;
+use Plex\Template\Render;
 
 class Chapter
 {
@@ -15,6 +14,7 @@ class Chapter
     public $library;
     public $playlist_id;
     public $id;
+    public $chapterIndex;
 
     public function __construct($data)
     {
@@ -37,7 +37,6 @@ class Chapter
 
     public function getChapters()
     {
-        
         if (null == $this->chapterIndex) {
             $this->db->where('video_id', $this->id);
             $this->db->orderBy('timeCode', 'ASC');
@@ -56,7 +55,11 @@ class Chapter
 
     public function getChapterButtons()
     {
+        $html = '';
         $index = $this->getChapters();
+        if (null === $index) {
+            return '';
+        }
         foreach ($index as $i => $row) {
             $editableClass = 'edit'.$row['time'];
             $functionName = 'make'.$row['time'].'Editable';

@@ -56,8 +56,11 @@ class Request
     public static $url_array = [];
     public static $tag_array = ['genre', 'artist', 'keyword'];
     public static $tag_types = ['studio', 'substudio', 'artist', 'title', 'genre'];
-
+    public $currentPage = '';
     public $session;
+    public $urlPattern;
+    public $query_string;
+
 
     public $uri;
     public const SESSION_VARS =
@@ -72,6 +75,8 @@ class Request
 
     public function __construct()
     {
+        $query_string_no_current = '';
+
         foreach ($_REQUEST as $key => $value) {
             if ('' == $value || null == $value) {
                 unset($_REQUEST[$key]);
@@ -151,7 +156,7 @@ class Request
         }
 
         $this->urlPattern = $_SERVER['PHP_SELF'].'?current=(:num)'.$query_string_no_current;
-        $this->uri = $uri;
+        // $this->uri = $uri;
     }
 
     public function getURI()

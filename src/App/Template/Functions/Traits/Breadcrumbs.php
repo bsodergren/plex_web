@@ -8,20 +8,20 @@ use Plex\Template\Render;
 
 trait Breadcrumbs
 {
-    
+
     public function createBreadcrumbs()
     {
         $tag_types = Request::$tag_types;
         $request_string = [];
         $parts = [];
-
+        $re_string = '';
         $request_tag = [];
         $crumbs['Home'] = 'home.php';
 
         $url = 'list.php';
         if (__THIS_FILE__ == 'search.php') {
             $url = 'search.php';
-        
+
         }
 
         // if (isset(self::$CrubURL['grid'])) {
@@ -32,7 +32,7 @@ trait Breadcrumbs
             $url = 'gridview.php';
         }
 
-        $crumbs[$in_directory] = '';
+        //$crumbs[$in_directory] = '';
         parse_str($_SERVER['QUERY_STRING'], $query_parts);
         if (\count($query_parts) > 0) {
             if (__THIS_FILE__ == 'search.php') {
@@ -63,9 +63,9 @@ trait Breadcrumbs
 
                             $request_string['view'] = $value;
                             continue;
-                         
-                              
-                        
+
+
+
                         }
                     }
                     $request_string[$key] = $value;

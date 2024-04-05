@@ -25,6 +25,8 @@ class Pageinate extends Paginator
     public $itemsSelection    = [10, 25, 50, 100, 250, 500, 1500];
     private $maxRecordsToShow = 6;
 
+
+
     public function __construct($query, $currentPage, $urlPattern)
     {
         global $_SESSION;
@@ -88,7 +90,9 @@ class Pageinate extends Paginator
         $link_list   = '';
         $hidden_text = '';
         $placeholder = '';
-
+        $next = '';
+        $current_url= '';
+        $previous= '';
         if ($this->paginator->numPages <= 1) {
             // $placeholder = '<li class="page-item page-link">Show</li>';
 

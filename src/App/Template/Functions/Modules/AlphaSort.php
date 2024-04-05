@@ -23,6 +23,7 @@ class AlphaSort extends Render
 
     public function display_alphaSort($offset = 0, $len = 13)
     {
+        $html = '';
         $url_array = Request::$url_array;
         $sep = '&';
         if ('' != $url_array['query_string']) {

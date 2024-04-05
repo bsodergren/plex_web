@@ -17,23 +17,24 @@ class PlexSql extends \MysqliDb
     public $where = '';
     public $groupBy = '';
     public $orderBy = '';
+    public $_tableName;
     public static $DB;
 
     public function __construct()
     {
         $db = parent::getInstance();
-        if($db === null){
+        if (null === $db) {
             parent::__construct('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
             $db = parent::getInstance();
         }
         $this->db = $db;
 
-         self::$DB = $db;
+        self::$DB = $db;
         // return $this->db;
     }
 
-    public static function getLastest($field,$days=1){
-
+    public static function getLastest($field, $days = 1)
+    {
         return $field.' > Today() - interval '.$days.' day ';
     }
 
@@ -187,7 +188,6 @@ class PlexSql extends \MysqliDb
 
     public function getArtists()
     {
-
         $sql = 'SELECT ';
 
         $sql .= 'COALESCE (c.artist,m.artist) as artist, ';
@@ -221,6 +221,7 @@ class PlexSql extends \MysqliDb
         if ($this->isSubQuery) {
             return $this;
         }
+
         return $this->_lastQuery;
     }
     // public $fieldList ='id, video_key,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added,filename ,fullpath,library,filesize';

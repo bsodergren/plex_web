@@ -12,16 +12,16 @@ trait VideoRow
 
    public static function videoDuration($duration)
     {
-        $seconds = round($duration / 1000);
-        $hours   = floor($seconds / 3600);
-    
-        $minutes = round((float) $seconds / 60 % 60);
-    
-        $sec     = round($seconds % 60);
-    
-        return sprintf('%02d:%02d:%02d', $hours, $minutes, $sec);
+        $seconds = intval(round($duration / 1000));
+        $secs = $seconds % 60;
+        $hrs = $seconds / 60;
+        $hrs = floor($hrs);
+        $mins = $hrs % 60;
+        $hrs = $hrs / 60;
+
+        return sprintf('%02d:%02d:%02d', $hrs, $mins, $secs);
     }
-    
+
    public static function display_size($bytes, $precision = 2)
     {
         $units = [
@@ -35,40 +35,40 @@ trait VideoRow
         $pow   = floor(($bytes ? log($bytes) : 0) / log(1024));
         $pow   = min($pow, count($units) - 1);
         $bytes /= (1 << (10 * $pow));
-    
+
         return round($bytes, $precision).'<span class="fs-0-8 bold">'.$units[$pow].'</span>';
     } // end display_size()
-    
+
     public static function byte_convert($size)
     {
         // size smaller then 1kb
         if ($size < 1024) {
             return $size.' Byte';
         }
-    
+
         // size smaller then 1mb
         if ($size < 1048576) {
             return sprintf('%4.2f KB', $size / 1024);
         }
-    
+
         // size smaller then 1gb
         if ($size < 1073741824) {
             return sprintf('%4.2f MB', $size / 1048576);
         }
-    
+
         // size smaller then 1tb
         if ($size < 1099511627776) {
             return sprintf('%4.2f GB', $size / 1073741824);
         }
         // size larger then 1tb
-    
+
         return sprintf('%4.2f TB', $size / 1073741824);
     } // end byte_convert()
 
 
     public function ChapterRow()
     {
-        $this->params['FIELD_ROW_HTML'] .= Render::html($this->template_base.'/Rows/Chapters', 
+        $this->params['FIELD_ROW_HTML'] .= Render::html($this->template_base.'/Rows/Chapters',
         ['ChapterButtons' => $this->Chapters->getChapterButtons()]);
     }
 
@@ -78,7 +78,7 @@ trait VideoRow
         $value = $this->fileInfoArray[$key];
         $value = trim($value);
         $value = str_replace(__PLEX_LIBRARY__.'/', '', $value);
-        
+
         if (OptionIsTrue(NAVBAR)) {
             if($cloud === true){
                 $value = $this->keyword_list($key, $value);
@@ -190,7 +190,7 @@ trait VideoRow
 
     public function Studio($key)
     {
-        
+
         $this->params['HIDDEN_STUDIO'] = Elements::add_hidden(strtolower($key), $this->metaValue($key));
 
         $this->cloudRow($key);
@@ -228,7 +228,7 @@ trait VideoRow
 
     public function Fullpath($key)
     {
-        
+
         $filename = $this->metaValue('filename');
         $fullpath = $this->metaValue('fullpath');
 

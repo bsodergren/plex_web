@@ -24,6 +24,7 @@ trait Navbar
     public static function dropdown($array)
     {
         $dropdown_link_html = [];
+        $badge = '';
         $pop = false;
         foreach ($array['dropdown'] as $d_name => $d_values) {
             $is_active = '';
@@ -50,7 +51,7 @@ trait Navbar
                 $is_active = ' active';
             }
 
-            $badge = '';
+
             $parts = explode('|', $d_values);
             $url = $parts[0];
 
@@ -89,10 +90,10 @@ trait Navbar
                 continue;
             }
             if (true == $link_array['studio']) {
-                if ($_REQUEST['studio']) {
+                if (@$_REQUEST['studio']) {
                     $link_array['url'] = $link_array['url'].'?studio='.$_REQUEST['studio'];
                 }
-                if ($_REQUEST['substudio']) {
+                if (@$_REQUEST['substudio']) {
                     $link_array['url'] = $link_array['url'].'?substudio='.$_REQUEST['substudio'];
                 }
             }
@@ -101,7 +102,7 @@ trait Navbar
                 $is_active = ' active';
             }
 
-            if (true == $link_array['days']) {
+            if (array_key_exists('days',$link_array)) {
                 if (__THIS_PAGE__ == 'recent') {
                     $is_active = $is_active . " recent-days-link";
                 }
@@ -109,7 +110,6 @@ trait Navbar
 
             $array = [
                 'MENULINK_URL' => $link_array['url'],
-                'MENULINK_JS' => $link_array['js'],
                 'MENULINK_TEXT' => $link_array['text'],
                 'MENULINK_ICON' => self::navbarIcon($link_array),
                 'ACTIVE' => $is_active,
@@ -117,7 +117,7 @@ trait Navbar
 
             $url_text = Render::html('base/navbar/menu_link', $array);
 
-                if (true == $link_array['days']) {
+                if (array_key_exists('days',$link_array)) {
                     if (__THIS_PAGE__ == 'recent') {
 
                     //$url_text = str_replace("</li>",'',$url_text);

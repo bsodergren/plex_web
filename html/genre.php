@@ -64,7 +64,7 @@ foreach ($result as $k => $v) {
 }
 
 $genre_array = array_unique($genre_array);
-$studio_url  = 'studio.php?studio='.$_REQUEST['prev'];
+// $studio_url  = 'studio.php?studio='.$_REQUEST['prev'];
 Layout::Header();
 ?>
 <main role="main" class="container">

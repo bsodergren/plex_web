@@ -20,7 +20,7 @@ class VideoDb
         'f.filename', 'f.fullpath', 'f.library',
         'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key', 'f.thumbnail', 'f.preview'];
     public static $PlayListFields = ['p.playlist_video_id', 'p.playlist_id'];
-
+public $db;
     public function __construct()
     {
         $this->db = PlexSql::$DB;
