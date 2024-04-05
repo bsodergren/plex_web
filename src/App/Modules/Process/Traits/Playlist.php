@@ -5,8 +5,6 @@ namespace Plex\Modules\Process\Traits;
 use Plex\Modules\Database\VideoDb;
 use Plex\Modules\Display\VideoDisplay;
 
-
-
 /**
  * plex web viewer.
  */
@@ -14,28 +12,28 @@ use Plex\Modules\Display\VideoDisplay;
 /**
  * plex web viewer.
  */
-trait Playlist 
+trait Playlist
 {
-
-public function getExistingVidsFromPl($playlist_id){
-    $existingIds=[];
-    if($playlist_id != ''){
-    $this->db->where('playlist_id', $playlist_id);
-    $pl_search = $this->db->get(Db_TABLE_PLAYLIST_VIDEOS,null,['playlist_video_id']);
-    if ($this->db->count > 0){
-
-            foreach($pl_search as $k => $row){
-                $existingIds[$row['playlist_video_id']] = true ;
+    public function getExistingVidsFromPl($playlist_id)
+    {
+        $existingIds = [];
+        if ('' != $playlist_id) {
+            $this->db->where('playlist_id', $playlist_id);
+            $pl_search = $this->db->get(Db_TABLE_PLAYLIST_VIDEOS, null, ['playlist_video_id']);
+            if ($this->db->count > 0) {
+                foreach ($pl_search as $k => $row) {
+                    $existingIds[$row['playlist_video_id']] = true;
+                }
             }
         }
-    }
+
         return $existingIds;
-    
-}
+    }
+
     public function addAllPlaylist()
     {
         $url = $this->createPlaylist();
-        utmdump([__METHOD__,$url]);
+        utmdump([__METHOD__, $url]);
         echo $this->myHeader($url);
     }
 
@@ -62,13 +60,10 @@ public function getExistingVidsFromPl($playlist_id){
             }
         }
 
-        if (\array_key_exists('AddToPlaylist', $this->postArray))
-        {
-
-           return $this->postArray['PlaylistID'];
-
+        if (\array_key_exists('AddToPlaylist', $this->postArray)) {
+            return $this->postArray['PlaylistID'];
         }
-        utmdump([__METHOD__,$this->postArray]);
+        utmdump([__METHOD__, $this->postArray]);
 
         if (\array_key_exists('PlayAll', $this->postArray)) {
             if (\array_key_exists('search_id', $this->postArray)) {
@@ -109,8 +104,7 @@ public function getExistingVidsFromPl($playlist_id){
 
     public function createPlaylist()
     {
-
-utmdump([__METHOD__,$this->postArray]);
+        utmdump([__METHOD__, $this->postArray]);
         $playlist_id = $this->addPlaylistData();
         if (!\array_key_exists('playlist', $this->postArray)) {
             return $playlist_id;
@@ -122,7 +116,7 @@ utmdump([__METHOD__,$this->postArray]);
 
         $existingIds = $this->getExistingVidsFromPl($playlist_id);
         foreach ($this->postArray['playlist'] as $_ => $id) {
-            if(array_key_exists($id,$existingIds)) {
+            if (\array_key_exists($id, $existingIds)) {
                 continue;
             }
             $data = [
@@ -133,41 +127,38 @@ utmdump([__METHOD__,$this->postArray]);
             utmdump($data);
             $ids[] = $this->db->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
         }
-        if (\array_key_exists('PlayAll', $this->postArray) || 
+        if (\array_key_exists('PlayAll', $this->postArray)
           //  \array_key_exists('AddToPlaylist', $this->postArray) ||
-            \array_key_exists('refresh', $this->postArray)
+            || \array_key_exists('refresh', $this->postArray)
         ) {
             return __URL_HOME__.'/video.php?playlist_id='.$playlist_id.'';
         }
-     
+
         if (\array_key_exists('VideoPlayer', $this->postArray)) {
-            if($this->postArray['VideoPlayer'] == 'video'){
+            if ('video' == $this->postArray['VideoPlayer']) {
                 if (\array_key_exists('currentPl', $this->postArray)) {
                     if ('' != $this->postArray['currentPl']) {
                         $playlist_id = $this->postArray['currentPl'];
                     }
                 }
-                return __URL_HOME__.'/video.php?id='. $id.'&playlist_id='.$playlist_id.'';
+
+                return __URL_HOME__.'/video.php?id='.$id.'&playlist_id='.$playlist_id.'';
             }
-            if($this->postArray['VideoPlayer'] == 'grid')
-            {
-                $videoInfo = (new VideoDb)->getVideoDetails($this->postArray['Video_ID']);
-                $videoInfo[0]['rownum'] = $this->postArray["currentId"];
-            
+            if ('grid' == $this->postArray['VideoPlayer']) {
+                $videoInfo = (new VideoDb())->getVideoDetails($this->postArray['Video_ID']);
+                $videoInfo[0]['rownum'] = $this->postArray['currentId'];
+
                 $grid = (new VideoDisplay('Grid'))->init();
-                $grid->totalRecords = $this->postArray["total"];
+                $grid->totalRecords = $this->postArray['total'];
                 $html = $grid->videoCell($videoInfo[0]);
                 utmdump($videoInfo[0]);
+
                 return $html;
             }
-
-      }
-        
+        }
 
         return __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
     }
-
-    
 
     public function addPlaylist()
     {
@@ -183,16 +174,30 @@ utmdump([__METHOD__,$this->postArray]);
 
     public function RemovePlaylistVideo()
     {
-        $sql = 'delete FROM '.Db_TABLE_PLAYLIST_VIDEOS.' WHERE playlist_id = '.$this->postArray['playlistid'].' and playlist_video_id = '.$this->postArray['videoId'].'';
+        $nextId = null;
+        $sql = 'delete FROM '.Db_TABLE_PLAYLIST_VIDEOS.'         WHERE playlist_id = '.$this->postArray['playlistid'].' and playlist_video_id = '.$this->postArray['videoId'].'';
+
+        $vidIds = $this->getExistingVidsFromPl($this->postArray['playlistid']);
+        foreach($vidIds as $k =>  $v)
+        {
+            if($k == $this->postArray['videoId']){
+                $nextId = $k;
+                continue;
+            }
+            if($nextId !== null){
+                $nextId = $k;
+                break;
+            }
+        }
+        utmdump($sql, $nextId);
         $results = $this->query($sql);
-
-        $this->myHeader(__URL_HOME__.'/video.php?playlist_id='.$this->postArray['playlistid'].'');
-
+        echo __URL_HOME__.'/video.php?playlist_id='.$this->postArray['playlistid'].'&r=true&id='.$nextId;
+        exit;
     }
 
     public function deletePlaylist()
     {
-        utmdump([__METHOD__,$this->playlist_id]);
+        utmdump([__METHOD__, $this->playlist_id]);
 
         $sql = 'delete d,v from '.Db_TABLE_PLAYLIST_DATA.'  d join '.Db_TABLE_PLAYLIST_VIDEOS.' v on d.id = v.playlist_id where d.id = '.$this->playlist_id.'';
         $results = $this->query($sql);
@@ -203,7 +208,7 @@ utmdump([__METHOD__,$this->postArray]);
 
     public function savePlaylist()
     {
-        utmdump([__METHOD__,$this->postArray]);
+        utmdump([__METHOD__, $this->postArray]);
         if (isset($this->postArray['playlist_name'])) {
             $playlist_name = $this->postArray['playlist_name'];
             if ('' != $playlist_name) {
@@ -237,6 +242,4 @@ utmdump([__METHOD__,$this->postArray]);
         $form_url = __URL_HOME__.'/playlist.php?playlist_id='.$this->playlist_id.'';
         $this->myHeader($form_url);
     }
-
-
 }

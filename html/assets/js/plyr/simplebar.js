@@ -5044,7 +5044,7 @@
 	    hover: 'simplebar-hover',
 	    dragging: 'simplebar-dragging'
 	  },
-	  scrollbarMinSize: 25,
+	  scrollbarMinSize: 125,
 	  scrollbarMaxSize: 0,
 	  timeout: 1000
 	};

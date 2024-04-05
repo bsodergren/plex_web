@@ -34,20 +34,21 @@
     $(document).ready(function () {
         $(".removeVideoBtn button").click(function () {
             var text = $(this).attr("id");
-            console.log(text);
+            // console.log(text);
             removeVideo(text);
         });
     });
 
     $("#removeVideo").submit(function (e) {
         var postData = $(this).serializeArray();
-        console.info(postData);
+        // console.info(postData);
         $.ajax({
             url: 'process.php',
             type: 'POST',
             data: postData,
             success: function (data) {
-            //    window.location.href = data
+                console.info(data);
+                window.location.href = data
             }
         })
     });
