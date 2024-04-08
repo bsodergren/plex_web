@@ -4,7 +4,7 @@ home:
     icon: home
     studio: false
 recent:
-    url: recent.php?direction=ASC&sort=f.added
+    url: recent.php?direction=ASC&sort=v.added
     text: !php/const NavBar_Text_Recent
     icon: list
     studio: false
