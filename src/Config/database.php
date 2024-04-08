@@ -30,6 +30,8 @@ define('Db_TABLE_SEARCH_DATA', Db_PLEXWEB_PREFIX.'search_data');
 define('Db_TABLE_SEQUENCE', Db_PLEXWEB_PREFIX.'sequence');
 define('Db_TABLE_PLAYLIST_VIDEOS', Db_PLEXWEB_PREFIX.'playlist_videos');
 define('Db_TABLE_PLAYLIST_DATA', Db_PLEXWEB_PREFIX.'playlist_data');
+define('Db_TABLE_FAVORITE_VIDEOS', Db_PLEXWEB_PREFIX.'favorite_videos');
+
 define('Db_TABLE_SMARTLIST_DATA', Db_PLEXWEB_PREFIX.'smartlist_data');
 define('Db_TABLE_WORDMAP', Db_PLEXWEB_PREFIX.'wordMap');
 

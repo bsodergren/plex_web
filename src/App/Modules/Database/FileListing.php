@@ -114,7 +114,7 @@ class FileListing
             $this->db->orderBy($this->request['sort'], $this->request['direction']);
         }
 
-        $this->db->where(PlexSQL::getLastest('f.added',$days));
+        $this->db->where(PlexSQL::getLastest('v.added',$days));
         $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
 
         return [$results, $pageObj, $uri];
@@ -239,12 +239,12 @@ class FileListing
         $limitQuery = '';
         // $fieldArray = VideoDb::$VideoMetaFields;
 
-        $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'f.video_key=m.video_key', 'INNER');
+        $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'v.video_key=m.video_key', 'INNER');
 
-        $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'f.video_key=c.video_key', 'LEFT');
-        $this->db->join(Db_TABLE_PLAYLIST_VIDEOS.' p', 'f.id=p.playlist_video_id', 'LEFT OUTER');
+        $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
+        $this->db->join(Db_TABLE_PLAYLIST_VIDEOS.' p', 'v.id=p.playlist_video_id', 'LEFT OUTER');
 
-        $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'f.video_key=i.video_key', 'LEFT OUTER');
+        $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'v.video_key=i.video_key', 'LEFT OUTER');
 
         if (null !== PlexSql::getLibrary()) {
             $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', $_SESSION['library']);
@@ -258,13 +258,13 @@ class FileListing
         //  $dbcount = $this->db;
 
         // $resultQuery  = $this->db->getQuery(
-        //     Db_TABLE_VIDEO_FILE.' f'
+        //     Db_TABLE_VIDEO_FILE.' v'
         // );
 
-        $num_rows = ' f.id ';
+        $num_rows = ' v.id ';
 
         $joinQuery = $this->db->getQuery(
-            Db_TABLE_VIDEO_FILE.' f',
+            Db_TABLE_VIDEO_FILE.' v',
             null,
             $num_rows
         );
@@ -273,15 +273,15 @@ class FileListing
         }
 
         if (str_contains($joinQuery, 'ORDER BY')) {
-            $joinQuery = str_replace('ORDER BY ', ' GROUP BY f.id  ORDER BY ', $joinQuery);
+            $joinQuery = str_replace('ORDER BY ', ' GROUP BY v.id  ORDER BY ', $joinQuery);
         } else {
-            $joinQuery .= ' GROUP BY f.id ';
+            $joinQuery .= ' GROUP BY v.id ';
         }
 
         $joinQuery .= $limitQuery;
 
         $this->saveSearch($joinQuery);
-        $joinQuery = str_replace('SELECT   f.id','SELECT ' . implode(',', $fieldArray), $joinQuery);
+        $joinQuery = str_replace('SELECT   v.id','SELECT ' . implode(',', $fieldArray), $joinQuery);
 
         $joinQuery = str_replace('SELECT ', 'SELECT count(DISTINCT p.playlist_video_id) as totalRecords, ', $joinQuery);
 

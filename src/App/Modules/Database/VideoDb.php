@@ -2,7 +2,8 @@
 
 namespace Plex\Modules\Database;
 
-use Plex\Modules\Database\PlexSql;
+use Plex\Modules\Database\FavoriteDB;
+
 
 class VideoDb
 {
@@ -16,57 +17,55 @@ class VideoDb
 
     public static $VideoInfoFields = ['i.format', 'i.bit_rate', 'i.width', 'i.height'];
 
-    public static $VideoFileFields = ['f.rating',
-        'f.filename', 'f.fullpath', 'f.library',
-        'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key', 'f.thumbnail', 'f.preview'];
+    public static $VideoFileFields = ['v.rating',
+        'v.filename', 'v.fullpath', 'v.library',
+        'v.duration', 'v.filesize', 'v.added', 'v.id', 'v.video_key', 'v.thumbnail', 'v.preview'];
     public static $PlayListFields = ['p.playlist_video_id', 'p.playlist_id'];
-public $db;
-    public function __construct()
+    public static $FavoriteFields = ['f.video_id as favorite_id'];
+
+    public $db;
+    public $library ;
+    public $id;
+
+    public function __construct($library = null)
     {
         $this->db = PlexSql::$DB;
-    }
-    public function videoId()
-    {
+        $this->library  = $_SESSION['library'];
+        if ($library !== null)
+        {
+            $this->library = $library;
+        }
+
         if (\array_key_exists('id', $_REQUEST)) {
             $this->id = $_REQUEST['id'];
         }
+    }
 
+    public function videoId()
+    {
         return $this->id;
     }
+
     public static function getVideoJoins()
     {
-
     }
-
-
 
     public function getVideoDetails($id)
     {
-        $fieldArray = array_merge(self::$VideoMetaFields, self::$VideoInfoFields, self::$VideoFileFields);
+        $fieldArray = array_merge(self::$VideoMetaFields,
+            self::$VideoInfoFields, self::$VideoFileFields, self::$FavoriteFields);
 
         $sql = 'SELECT ';
         $sql .= implode(',', $fieldArray);
 
-        $sql .= ' FROM '.Db_TABLE_VIDEO_FILE.' f ';
-        $sql .= ' INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on f.video_key=m.video_key '; // .PlexSql::getLibrary();
+        $sql .= ' FROM '.Db_TABLE_VIDEO_FILE.' v ';
+        $sql .= ' INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on v.video_key=m.video_key '; // .PlexSql::getLibrary();
         $sql .= ' LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.' c on m.video_key=c.video_key ';
-        $sql .= ' LEFT OUTER JOIN '.Db_TABLE_VIDEO_INFO.' i on f.video_key=i.video_key ';
-        $sql .= " WHERE f.id = '".$id."'";
-        return $this->db->query($sql);
-    }
-
-    public function getPlaylistVideos($playlist_id)
-    {
-        $fieldArray = array_merge(self::$VideoMetaFields, self::$VideoFileFields, self::$PlayListFields);
-
-        $sql = 'SELECT ';
-        $sql .= implode(',', $fieldArray);
-        $sql .= ' FROM '.Db_TABLE_PLAYLIST_VIDEOS.' p ';
-        $sql .= ' ,  '.Db_TABLE_VIDEO_FILE.' f  ';
-        $sql .= ' INNER JOIN '.Db_TABLE_VIDEO_TAGS.'  m on f.video_key=m.video_key '; // .PlexSql::getLibrary();
-        $sql .= ' LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.'  c on m.video_key=c.video_key ';
-        $sql .= ' WHERE  ( p.playlist_id = '.$playlist_id.' and p.playlist_video_id = f.id)';
-
+        $sql .= ' LEFT JOIN '.Db_TABLE_FAVORITE_VIDEOS.' f on f.video_id=v.id ';
+        $sql .= ' LEFT OUTER JOIN '.Db_TABLE_VIDEO_INFO.' i on v.video_key=i.video_key ';
+        $sql .= " WHERE v.id = '".$id."'";
+        utmdump($sql);
+        FavoriteDB::get($id);
         return $this->db->query($sql);
     }
 
@@ -74,8 +73,7 @@ public $db;
     {
         $sql = 'SELECT concat(fullpath,"/",filename) as file FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$id;
         $results = $this->db->query($sql);
+
         return $results[0]['file'];
-
     }
-
 }

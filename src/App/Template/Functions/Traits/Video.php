@@ -70,6 +70,9 @@ trait Video
     public function getPlaylistsfromId($id,$playlist_id){
         $results = Playlist::getVideoPlaylists($id);
         $disabled_id=[] ;
+        if($results === null){
+            return [$playlist_id,''];
+        }
 
         foreach($results as $k => $row)
         {

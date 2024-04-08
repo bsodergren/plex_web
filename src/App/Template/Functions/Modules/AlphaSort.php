@@ -18,7 +18,7 @@ class AlphaSort extends Render
 
 
     private static $alpha_sort_map = [
-        'm.studio', 'm.substudio', 'm.artist', 'm.title', 'f.filename', 'm.genre', 'genre',
+        'm.studio', 'm.substudio', 'm.artist', 'm.title', 'v.filename', 'm.genre', 'genre',
     ];
 
     public function display_alphaSort($offset = 0, $len = 13)

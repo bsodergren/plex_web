@@ -7,12 +7,12 @@ use Plex\Template\Render;
 require_once '_config.inc.php';
 
 $column                         = 'duration';
-$url_array['sort_types']['Key'] = 'f.video_key';
+$url_array['sort_types']['Key'] = 'v.video_key';
 unset($url_array['sort_types']['Genre'], $url_array['sort_types']['Title'], $url_array['sort_types']['Studio'], $url_array['sort_types']['Sub Studio'], $url_array['sort_types']['Artist']);
 
 if (isset($_GET['sort'])) {
     [$p,$field] = explode('.', $_GET['sort']);
-    if ('f' == $p) {
+    if ('v' == $p) {
         $column = $field;
     }
 }

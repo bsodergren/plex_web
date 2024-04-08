@@ -15,16 +15,24 @@ use Symfony\Component\Process\Process;
 use Plex\Modules\Process\Traits\Mediatag;
 use Plex\Modules\Process\Traits\Playlist;
 use Plex\Modules\Process\Traits\DbWrapper;
+use Plex\Modules\Process\Traits\Favorites;
 use Plex\Template\Functions\Functions;
 
 class Forms
 {
     use DbWrapper;
     use Playlist;
+    use Favorites;
 
     public $postArray = [];
     public $getArray = [];
     public $redirect = ''; // .'/home.php';
+public $playlist_id;
+public $library;
+public $id;
+public $data;
+public $tagValue;
+
 
     public object $VideoInfo;
     public object $VideoChapter;

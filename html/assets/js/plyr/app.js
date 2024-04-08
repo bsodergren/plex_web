@@ -405,6 +405,7 @@ const PlayerApp = {
       poster: track.poster
     }
     this.player.play()
+    updateFavVideo()
   },
 
   /**
@@ -670,7 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
   PlayerApp.initialize()
   document.body.scrollTop = 0; // For Safari
   document.documentElement.scrollTop = 0;
-  // resizeWindow(false)
+// resizeWindow(false)
 })
 
 function updateOptions (id) {

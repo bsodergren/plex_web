@@ -9,6 +9,7 @@ class Plyr extends Player
 {
     public $templatePlayer = '/Video/Plyr';
     public $id;
+    public $parent;
 
     public function __construct($object)
     {
@@ -16,7 +17,7 @@ class Plyr extends Player
         parent::$PlayerTemplate = $this->templatePlayer;
         $this->parent = $object;
         $this->id = $this->videoId();
-     
+
         // $object->playlist_id = $this->playlist->playlist_id;
     }
 

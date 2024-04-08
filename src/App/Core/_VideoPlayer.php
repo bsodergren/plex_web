@@ -2,7 +2,9 @@
 
 namespace Plex\Core;
 
+use Plex\Modules\Database\FavoriteDB;
 use Plex\Modules\Database\FileListing;
+use Plex\Modules\Database\PlaylistDB;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\VideoDb;
 use Plex\Template\Functions\Functions;
@@ -30,6 +32,7 @@ class VideoPlayer
     public $nextSequence;
     public $prevSequence;
     public $VideoDb;
+    public $PlaylistDb;
 
     public function __construct()
     {
@@ -38,6 +41,7 @@ class VideoPlayer
         $this->videoId();
         $this->playlistId();
         $this->VideoDb = new VideoDb();
+        $this->PlaylistDb = new PlaylistDB();
     }
 
     public function getCurrentVideoid()
@@ -115,6 +119,13 @@ class VideoPlayer
 
         $res = $this->VideoDb->getVideoDetails($this->id);
 
+
+        if(FavoriteDB::get($this->id) == true) {
+            $this->params['FAVORITE'] = $this->RemoveFavoriteVideo();
+        } else  {
+            $this->params['FAVORITE'] = $this->addFavoriteVideo();
+        }
+
         if (!isset($this->playlist_id)) {
             if (null !== PlexSql::getLibrary()) {
                 $this->js_params['NEXT_VIDEO_ID'] = $this->getNextVideo();
@@ -142,6 +153,13 @@ class VideoPlayer
 
         $this->params['thumbnail'] = APP_HOME.$result['thumbnail'];
 
+        if(FavoriteDB::get($this->id) == true) {
+            utmdump("fsdafsda");
+            $this->params['FAVORITE'] = $this->RemoveFavoriteVideo();
+        } else  {
+            utmdump("YES to fsdafsda");
+            $this->params['FAVORITE'] = $this->addFavoriteVideo();
+        }
         $this->params['Video_studio'] = $result['studio'];
         $this->params['Video_substudio'] = $result['substudio'];
         $this->params['Video_Genre'] = $result['genre'];
@@ -151,6 +169,7 @@ class VideoPlayer
         $this->params['VIDEO_TITLE'] = $active_title;
         $this->params['AddChapter'] = $this->addChapter();
         $this->params['ChapterButtons'] = $this->getChapterButtons();
+
         $this->js_params['ChapterIndex'] = $this->getChapterJson();
         $this->js_params['height'] = $result['height'];
         $this->js_params['width'] = $result['width'];
@@ -238,7 +257,7 @@ class VideoPlayer
 
     public function getPlaylist()
     {
-        $results = $this->VideoDb->getPlaylistVideos($this->playlist_id);
+        $results = $this->PlaylistDb->getPlaylistVideos($this->playlist_id);
         $newArray = [];
         $test = $results;
         foreach ($test as $index => $row) {
@@ -271,7 +290,6 @@ class VideoPlayer
                 $prev_video_id = $results[$max - 1]['playlist_video_id'];
             }
         }
-        $this->params['RemoveVideo'] = $this->getRemoveVideo();
         $this->params['CANVAS_HTML'] = $this->getCanvas();
 
         $this->js_params['PLAYLIST_ID'] = $this->playlist_id;
@@ -293,12 +311,18 @@ class VideoPlayer
         return Render::javascript($this->videoTemplate.'/video_js', $this->js_params);
     }
 
-    public function getRemoveVideo()
+    public function RemoveFavoriteVideo()
     {
         $videoId = Elements::add_hidden('videoId', $this->id);
-        $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
 
         return Render::html(Functions::$ButtonDir.'/remove', ['HIDDEN_VIDEO_ID' => $videoId]);
+    }
+
+    public function addFavoriteVideo()
+    {
+        $videoId = Elements::add_hidden('videoId', $this->id);
+
+        return Render::html(Functions::$ButtonDir.'/add', ['HIDDEN_VIDEO_ID' => $videoId]);
     }
 
     public function addChapter()

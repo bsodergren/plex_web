@@ -123,7 +123,7 @@ class PlexSql extends \MysqliDb
     //         $library = "  AND library = '".$_SESSION['library']."' ";
     //     }
 
-    //     $query = PlexSql::query_builder(''.Db_TABLE_VIDEO_FILE.'','select', "`f.".$column."` = '".$value."' ");
+    //     $query = PlexSql::query_builder(''.Db_TABLE_VIDEO_FILE.'','select', "`v.".$column."` = '".$value."' ");
     //     //$query = "SELECT * FROM `'.Db_TABLE_VIDEO_FILE.'` WHERE `".$column."` = '".$value."' ".  $library;
     //     utmdd($query);
     //     return $db->query($query);
@@ -143,22 +143,22 @@ class PlexSql extends \MysqliDb
         // SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( ) AS T1, (SELECT @rownum := 0) AS r
 
         $fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
-        // $this->db->joinWhere(Db_TABLE_VIDEO_FILE.' f', 'f.'.$column, $value);
-        $this->db->where('f.'.$column, $value);
-        $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'f.video_key=m.video_key', 'INNER');
-        $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'f.video_key=i.video_key', 'LEFT OUTER');
+        // $this->db->joinWhere(Db_TABLE_VIDEO_FILE.' v', 'v.'.$column, $value);
+        $this->db->where('v.'.$column, $value);
+        $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'v.video_key=m.video_key', 'INNER');
+        $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'v.video_key=i.video_key', 'LEFT OUTER');
         if (null !== self::getLibrary()) {
             $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', $_SESSION['library']);
         }
-        //        $this->db->where('f.'.$column, $value);
+        //        $this->db->where('v.'.$column, $value);
         // $fieldArray[] = 'm.library';
 
         $fieldArray = array_merge($fieldArray, [
-            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'f.library', 'f.preview',
-            'f.filename', 'f.thumbnail', 'f.fullpath', 'f.duration', 'f.filesize', 'f.added', 'f.id', 'f.video_key']);
+            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'v.library', 'v.preview',
+            'v.filename', 'v.thumbnail', 'v.fullpath', 'v.duration', 'v.filesize', 'v.added', 'v.id', 'v.video_key']);
 
         $joinQuery = $this->db->getQuery(
-            Db_TABLE_VIDEO_FILE.' f',
+            Db_TABLE_VIDEO_FILE.' v',
             null,
             $fieldArray
         );
@@ -191,8 +191,8 @@ class PlexSql extends \MysqliDb
         $sql = 'SELECT ';
 
         $sql .= 'COALESCE (c.artist,m.artist) as artist, ';
-        $sql .= 'f.video_key FROM '.Db_TABLE_VIDEO_FILE.' f ';
-        $sql .= 'INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on f.video_key=m.video_key '.self::getLibrary();
+        $sql .= 'v.video_key FROM '.Db_TABLE_VIDEO_FILE.' v ';
+        $sql .= 'INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on v.video_key=m.video_key '.self::getLibrary();
         $sql .= 'LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.' c on m.video_key=c.video_key ';
 
         // $where = $this->pwhere("(artist is not null and artist != 'Missing')");
@@ -227,14 +227,14 @@ class PlexSql extends \MysqliDb
     // public $fieldList ='id, video_key,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added,filename ,fullpath,library,filesize';
 
     //  SELECT
-    // m.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.filename ,f.fullpath,m.library,f.filesize
-    // FROM '.Db_TABLE_VIDEO_FILE.' f INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on m.video_key=f.video_key
+    // m.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,v.filename ,v.fullpath,m.library,v.filesize
+    // FROM '.Db_TABLE_VIDEO_FILE.' v INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on m.video_key=v.video_key
     // AND m.studio = 'Brazzers' AND m.library = 'Pornhub' AND m.genre like '%MMF%' ORDER BY m.title ASC LIMIT 0, 5
     public function pselect($table, $fields = 'select')
     {
         //  $this->sql_table = $table;
         //        $field_list      = ' id, video_key,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added,filename ,fullpath,library,filesize';
-        $field_list = 'f.id, f.video_key,f.preview,f.thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,f.added,f.filename ,f.fullpath,m.library,f.filesize';
+        $field_list = 'v.id, v.video_key,v.preview,v.thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,v.added,v.filename ,v.fullpath,m.library,v.filesize';
         if ('select' == $fields) {
             $sql = 'select '.$field_list;
         } else {

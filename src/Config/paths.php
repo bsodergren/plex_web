@@ -9,7 +9,7 @@ if (__THIS_PAGE__ == 'list' || __THIS_PAGE__ == 'grid') {
     $recent_page = __THIS_PAGE__;
 }
 
-define('__RECENT_PAGE__', $recent_page.'.php?sort=f.added&direction=ASC');
+define('__RECENT_PAGE__', $recent_page.'.php?sort=v.added&direction=ASC');
 define('__PHP_ASSETS_DIR__', $_ENV['WEB_HOME'].'/assets');
 define('__PHP_INC_CORE_DIR__', __PLEX_APP_DIR__.'/Includes');
 

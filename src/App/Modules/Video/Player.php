@@ -2,15 +2,16 @@
 
 namespace Plex\Modules\Video;
 
+use Plex\Template\Render;
+use UTMTemplate\HTML\Elements;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\VideoDb;
 use Plex\Modules\Playlist\Playlist;
 use Plex\Modules\Video\Player\Plyr;
+use Plex\Modules\Database\FavoriteDB;
 use Plex\Modules\Video\Player\VideoJs;
-use Plex\Modules\Video\Playlist\PlyrList;
 use Plex\Template\Functions\Functions;
-use Plex\Template\Render;
-use UTMTemplate\HTML\Elements;
+use Plex\Modules\Video\Playlist\PlyrList;
 
 class Player
 {
@@ -26,6 +27,11 @@ class Player
     // public $js_params = [];
     // public $params = [
     // ];
+public $playlist_id;
+public $params;
+public $js_params;
+public $playlist;
+public $PlayerClass;
 
     public $VideoTemplate = 'Video/Plyr';
     public static $PlayerTemplate = '';
@@ -121,7 +127,13 @@ class Player
 
         $this->params['PAGE_TITLE'] = $result['title'];
         $this->params['thumbnail'] = APP_HOME.$result['thumbnail'];
-        $this->params['RemoveVideo'] = $this->getRemoveVideo();
+
+        if(FavoriteDB::get($this->id) == true) {
+            $this->params['FAVORITE'] = $this->RemoveFavoriteVideo();
+        } else  {
+            $this->params['FAVORITE'] = $this->addFavoriteVideo();
+        }
+
 
         $this->params['Video_studio'] = $result['studio'];
         $this->params['Video_substudio'] = $result['substudio'];
@@ -151,14 +163,19 @@ class Player
         return Render::javascript($this->VideoTemplate.'/video_js', $this->js_params);
     }
 
-    public function getRemoveVideo()
+
+    public function RemoveFavoriteVideo()
     {
-        $videoId = Elements::add_hidden('videoId', $this->id,'id="removeVideoId"');
-        $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
+        return Render::html(
+            Functions::$ButtonDir.'/Favorite/button',['FavoriteButton' =>
+            Render::html(Functions::$ButtonDir.'/Favorite/remove')]);
+    }
 
-        return Render::html(Functions::$ButtonDir.'/remove', ['HIDDEN_VIDEO_ID' => $videoId]);
-
-//        return Render::html($this->videoTemplate.'/buttons/remove', ['HIDDEN_VIDEO_ID' => $videoId]);
+    public function addFavoriteVideo()
+    {
+        return Render::html(Functions::$ButtonDir.'/Favorite/button',['FavoriteButton' =>
+        Render::html(Functions::$ButtonDir.'/Favorite/add')]);
+//        return Render::html(Functions::$ButtonDir.'/add');
     }
 
     public function getPlaylist()

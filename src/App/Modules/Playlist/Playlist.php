@@ -12,7 +12,7 @@ use Plex\Modules\Database\PlexSql;
 /**
  * plex web viewer.
  */
-class Playlist 
+class Playlist
 {
     public object $db;
 
@@ -40,7 +40,7 @@ class Playlist
         }
 
         $sql = 'select count(p.playlist_video_id) as count, p.playlist_id, d.name,
-        d.library from '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_PLAYLIST_VIDEOS.' as 
+        d.library from '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_PLAYLIST_VIDEOS.' as
         p where (p.playlist_id = d.id) and d.hide = 0 '.$where.' group by p.playlist_id ORDER BY library ASC;';
         $results = $this->db->query($sql);
         return $results;
@@ -75,7 +75,7 @@ class Playlist
                      $row['name'],
                      $selected,
                      $optionDisabled,
-    
+
             ];
             }
         }
@@ -84,7 +84,7 @@ class Playlist
         // return Elements::SelectOptions(array: $plArray,selected: $selected,
         // blank: '',
         //  disabled: $disabled_id);
-        
+
     }
     public function getPlaylistSelectOptions($playlist_id = null,$disabled_id = null)
     {
@@ -98,18 +98,18 @@ class Playlist
         foreach($res as $i => $row)
         {
             if($row['library'] == $this->library){
-             
+
                 $plArray[] = [
                     'value' => $row['playlist_id'],
                     'text' => $row['name'],
             ];
             }
         }
-       
+
         return Elements::SelectOptions(array: $plArray,selected: $selected,
         blank: '',
          disabled: $disabled_id);
-        
+
     }
     public static function getVideoPlaylists($id){
         if($id == ''){
@@ -122,13 +122,13 @@ class Playlist
         $results = (new Playlist())->db->query($sql);
         return $results;
     }
-    
+
     public function getPlaylist($playlist_id, $limit= '')
     {
 
-        $sql = 'select f.thumbnail,f.id,d.name,d.genre,p.id as playlist_video_id,m.title from  '.Db_TABLE_PLAYLIST_DATA.' as d,
-        '.Db_TABLE_VIDEO_FILE.' as f, '.Db_TABLE_PLAYLIST_VIDEOS.' as p, '.Db_TABLE_VIDEO_TAGS.' as m
-         where (p.playlist_id = '.$playlist_id.' and p.playlist_video_id = f.id and d.id = p.playlist_id and f.video_key = m.video_key) '.$limit.';';
+        $sql = 'select v.thumbnail,v.id,d.name,d.genre,p.id as playlist_video_id,m.title from  '.Db_TABLE_PLAYLIST_DATA.' as d,
+        '.Db_TABLE_VIDEO_FILE.' as v, '.Db_TABLE_PLAYLIST_VIDEOS.' as p, '.Db_TABLE_VIDEO_TAGS.' as m
+         where (p.playlist_id = '.$playlist_id.' and p.playlist_video_id = v.id and d.id = p.playlist_id and v.video_key = m.video_key) '.$limit.';';
        $results = $this->db->query($sql);
        return $results;
 
@@ -140,7 +140,7 @@ class Playlist
         $results = (new Playlist())->db->query($sql);
         return $results[0]['name'];
     }
-   
+
 
 
 }

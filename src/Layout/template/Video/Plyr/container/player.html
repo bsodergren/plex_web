@@ -1,8 +1,8 @@
 
 <div class="col col-sm-12 left {if="{$hasPlaylist}=false"} expanded  {/if}">
     <div class="player_container">
-        <span class="player_text" 
-        onclick="videoCard({$Videoid})" data-videoId>
+        <span class="player_text"
+        onclick="videoCard({$Videoid})" data-videoId="{$Videoid}">
         <div class="text_title">{$VIDEO_TITLE}</div>
         <div class="text_genre">{$Video_Genre}</div>
         <div class="text_artist">{$Video_Artist}</div>

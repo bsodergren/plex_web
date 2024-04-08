@@ -1,0 +1,46 @@
+<div id="FavoriteButton">
+    {$FavoriteButton}
+</div>
+<script>
+
+function FavoriteVideo(action)
+{
+
+    const playervideoid = document.querySelector('.player_text')
+    videoid = playervideoid.getAttribute('data-videoid')
+
+    $.ajax({
+        url: "process.php",
+        type: "POST",
+        data: {
+            submit: action,
+            videoId: videoid
+        },
+        cache: false,
+        success: function (data) {
+                const videoCell = document.getElementById('FavoriteButton');
+                videoCell.innerHTML = data;
+        },
+    });
+}
+
+function updateFavVideo()
+{
+    const playervideoid = document.querySelector('.player_text')
+    videoid = playervideoid.getAttribute('data-videoid')
+
+    $.ajax({
+        url: "process.php",
+        type: "POST",
+        data: {
+            submit: "isFavorite",
+            videoId: videoid
+        },
+        cache: false,
+        success: function (data) {
+                const videoCell = document.getElementById('FavoriteButton');
+                videoCell.innerHTML = data;
+        },
+    });
+}
+</script>

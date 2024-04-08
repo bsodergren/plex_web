@@ -1,3 +1,5 @@
+
+
 function editPlaceholder(id) {
     var x = document.getElementById(id).placeholder;
 

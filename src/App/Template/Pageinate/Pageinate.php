@@ -36,10 +36,10 @@ class Pageinate extends Paginator
 
         $this->currentPage = $currentPage;
         if (false != $query) {
-            $table        = $this->table.' f ';
-            $libraryField = 'f.library';
-            $db->join(Db_TABLE_VIDEO_TAGS.' m', 'm.video_key=f.video_key', 'INNER');
-            $db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'c.video_key=f.video_key', 'LEFT');
+            $table        = $this->table.' v ';
+            $libraryField = 'v.library';
+            $db->join(Db_TABLE_VIDEO_TAGS.' m', 'm.video_key=v.video_key', 'INNER');
+            $db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'c.video_key=v.video_key', 'LEFT');
 
             foreach ($query as $k => $parts) {
                 $db->where('(m.'.$parts['field'].' like ? or c.'.$parts['field'].' like ?)', ['%'.$parts['search'].'%', '%'.$parts['search'].'%']
@@ -55,7 +55,7 @@ class Pageinate extends Paginator
                 $db->where($q);
             }
         }
-        if ('f.added' == $_SESSION['sort']) {
+        if ('v.added' == $_SESSION['sort']) {
             if (__THIS_FILE__ == 'recent.php') {
                 $db->where(PlexSQL::getLastest('added', $_SESSION['days']));
             }

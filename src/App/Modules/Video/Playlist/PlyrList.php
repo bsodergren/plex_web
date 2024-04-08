@@ -9,14 +9,21 @@ use Plex\Template\Functions\Functions;
 
 class PlyrList extends Player
 {
-    
+
+    public $videoTemplate;
+    public $db;
+    public $playlist;
+    public $playlist_id;
+    public $playlistName;
+    public $video_id;
+public $plyr_item;
     public function __construct()
     {
 
         $this->videoTemplate = parent::$PlayerTemplate;
         $this->db = PlexSql::$DB;
       //  $this->playlistId();
-        
+
     }
     private function getPlaylistItem($row, $class, $type)
     {
@@ -40,22 +47,24 @@ class PlyrList extends Player
             ]
         );
     }
-    
+
     public function getPlaylist()
     {
+        $next_video_id = null;
+        $prev_video_id = null;
         $sql = 'select
-                    f.thumbnail,f.filename,p.playlist_video_id,
+                    v.thumbnail,v.filename,p.playlist_video_id,
                     m.title,
                     m.genre,
                     m.studio,
                     m.artist
                     from
-                    '.Db_TABLE_VIDEO_FILE.' as f,
+                    '.Db_TABLE_VIDEO_FILE.' as v,
                     '.Db_TABLE_PLAYLIST_VIDEOS.' as p,
                     '.Db_TABLE_VIDEO_TAGS.' as m where (
                     p.playlist_id = '.$this->playlist_id.' and
-                    p.playlist_video_id = f.id  and
-                    f.video_key = m.video_key);';
+                    p.playlist_video_id = v.id  and
+                    v.video_key = m.video_key);';
 
         $results = $this->db->query($sql);
 
@@ -115,6 +124,6 @@ class PlyrList extends Player
     {
         return Render::return($this->videoTemplate.'/container/playlist', ['PLAY_LIST' => $this->plyr_item]);
     }
-   
+
 
 }

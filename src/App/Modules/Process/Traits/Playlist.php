@@ -2,6 +2,7 @@
 
 namespace Plex\Modules\Process\Traits;
 
+use Plex\Modules\Database\PlaylistDB;
 use Plex\Modules\Database\VideoDb;
 use Plex\Modules\Display\VideoDisplay;
 
@@ -14,21 +15,6 @@ use Plex\Modules\Display\VideoDisplay;
  */
 trait Playlist
 {
-    public function getExistingVidsFromPl($playlist_id)
-    {
-        $existingIds = [];
-        if ('' != $playlist_id) {
-            $this->db->where('playlist_id', $playlist_id);
-            $pl_search = $this->db->get(Db_TABLE_PLAYLIST_VIDEOS, null, ['playlist_video_id']);
-            if ($this->db->count > 0) {
-                foreach ($pl_search as $k => $row) {
-                    $existingIds[$row['playlist_video_id']] = true;
-                }
-            }
-        }
-
-        return $existingIds;
-    }
 
     public function addAllPlaylist()
     {
@@ -63,6 +49,7 @@ trait Playlist
         if (\array_key_exists('AddToPlaylist', $this->postArray)) {
             return $this->postArray['PlaylistID'];
         }
+
         utmdump([__METHOD__, $this->postArray]);
 
         if (\array_key_exists('PlayAll', $this->postArray)) {
@@ -88,15 +75,11 @@ trait Playlist
         }
 
         if (null === $pl_search) {
-            $data = [
-                'name' => $name.implode(' ', $studio),
-                'genre' => 'mmf,mff',
-                'library' => $this->library,
-                'search_id' => $search_id,
-                'hide' => $hide,
-            ];
-
-            $playlist_id = $this->db->insert(Db_TABLE_PLAYLIST_DATA, $data);
+            $playlist_id = PlaylistDB::createPlaylist(
+                    $name.implode(' ', $studio),
+                    "MMF",
+                    $search_id,
+                    $hide);
         }
 
         return $playlist_id;
@@ -106,6 +89,7 @@ trait Playlist
     {
         utmdump([__METHOD__, $this->postArray]);
         $playlist_id = $this->addPlaylistData();
+
         if (!\array_key_exists('playlist', $this->postArray)) {
             return $playlist_id;
         }
@@ -114,19 +98,8 @@ trait Playlist
             $this->postArray['playlist'] = explode(',', $this->postArray['playlist']);
         }
 
-        $existingIds = $this->getExistingVidsFromPl($playlist_id);
-        foreach ($this->postArray['playlist'] as $_ => $id) {
-            if (\array_key_exists($id, $existingIds)) {
-                continue;
-            }
-            $data = [
-                'playlist_id' => $playlist_id,
-                'playlist_video_id' => $id,
-                'library' => $this->library,
-            ];
-            utmdump($data);
-            $ids[] = $this->db->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
-        }
+        PlaylistDB::addVideo($playlist_id, $this->postArray['playlist']);
+
         if (\array_key_exists('PlayAll', $this->postArray)
           //  \array_key_exists('AddToPlaylist', $this->postArray) ||
             || \array_key_exists('refresh', $this->postArray)
@@ -160,51 +133,6 @@ trait Playlist
         return __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
     }
 
-    public function addPlaylist()
-    {
-        $data = [
-            'playlist_id' => $this->playlist_id,
-            'playlist_video_id' => $this->postArray['video_id'],
-            'library' => $this->library,
-        ];
-        $res = $this->db->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
-
-        return 0;
-    }
-
-    public function RemovePlaylistVideo()
-    {
-        $nextId = null;
-        $sql = 'delete FROM '.Db_TABLE_PLAYLIST_VIDEOS.'         WHERE playlist_id = '.$this->postArray['playlistid'].' and playlist_video_id = '.$this->postArray['videoId'].'';
-
-        $vidIds = $this->getExistingVidsFromPl($this->postArray['playlistid']);
-        foreach($vidIds as $k =>  $v)
-        {
-            if($k == $this->postArray['videoId']){
-                $nextId = $k;
-                continue;
-            }
-            if($nextId !== null){
-                $nextId = $k;
-                break;
-            }
-        }
-        utmdump($sql, $nextId);
-        $results = $this->query($sql);
-        echo __URL_HOME__.'/video.php?playlist_id='.$this->postArray['playlistid'].'&r=true&id='.$nextId;
-        exit;
-    }
-
-    public function deletePlaylist()
-    {
-        utmdump([__METHOD__, $this->playlist_id]);
-
-        $sql = 'delete d,v from '.Db_TABLE_PLAYLIST_DATA.'  d join '.Db_TABLE_PLAYLIST_VIDEOS.' v on d.id = v.playlist_id where d.id = '.$this->playlist_id.'';
-        $results = $this->query($sql);
-        $this->myHeader('playlist.php');
-
-        return 0;
-    }
 
     public function savePlaylist()
     {
@@ -224,19 +152,12 @@ trait Playlist
         }
 
         if (isset($update)) {
-            $update_str = implode(', ', $update);
-            $sql = 'UPDATE '.Db_TABLE_PLAYLIST_DATA.' SET '.$update_str.' WHERE id = '.$this->playlist_id.'';
-            $results = $this->query($sql);
+          PlaylistDB::updatePlaylist($this->playlist_id,$update);
         }
 
         if (isset($this->postArray['prune_playlist'])) {
             $video_ids = $this->postArray['prune_playlist'];
-            foreach ($video_ids as $_ => $id) {
-                $video_id_array[] = $id;
-            }
-            $video_ids_str = implode(', ', $video_id_array);
-            $sql = 'delete from '.Db_TABLE_PLAYLIST_VIDEOS.' where id in ('.$video_ids_str.')';
-            $results = $this->query($sql);
+           PlaylistDB::removeVideo($this->playlist_id,$video_ids);
         }
 
         $form_url = __URL_HOME__.'/playlist.php?playlist_id='.$this->playlist_id.'';

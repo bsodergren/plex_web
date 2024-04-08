@@ -12,6 +12,8 @@ class Info
     public $tagValue;
     public $video_key;
     private $postArray;
+    public object $db;
+
 
     public function __construct($req)
     {

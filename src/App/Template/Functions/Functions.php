@@ -36,6 +36,7 @@ class Functions extends Render
     public static $ButtonDir = 'elements/Buttons';
     public static $RatingsDir = 'elements/Rating';
     public static $BreadcrumbsDir = 'elements/Breadcrumb';
+public $playlist_id;
 
     public function __construct()
     {
