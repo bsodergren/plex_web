@@ -16,9 +16,10 @@ define('__PHP_YAML_DIR__', __PHP_CONFIG_DIR__.'/Routes');
 define('__COMPOSER_LIB__', __ROOT_DIRECTORY__.'/vendor');
 
 set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
-require_once __COMPOSER_LIB__.'/autoload.php';
-// Debugger::enable(Debugger::Development);
 
+require_once __COMPOSER_LIB__.'/autoload.php';
+// Debugger::enable();
+Debugger::enable(Debugger::Development);
 // require_once __PHP_CONFIG_DIR__.'/MyDumper.php';
 $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 

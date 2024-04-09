@@ -9,6 +9,11 @@ recent:
     icon: list
     studio: false
     days: true
+favorites:
+    url: favorites.php
+    text: !php/const NavBar_Text_Favorites
+    icon: list
+    studio: false
 list:
     url: list.php
     text: !php/const NavBar_Text_List

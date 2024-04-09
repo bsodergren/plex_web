@@ -13,16 +13,17 @@ class FileListing
     public $urlPattern;
     public static $searchId;
     public object $ReqObj;
+    public $uri;
 
     public function __construct(Request $ReqObj)
     {
         $this->ReqObj = $ReqObj;
-        $uri = $this->ReqObj->getURI();
+        $this->uri = $this->ReqObj->getURI();
         $urlPattern = $this->ReqObj->geturlPattern();
         $url_array = $this->ReqObj->url_array();
         $currentpage = $this->ReqObj->currentPage;
         // $this->db           = new PlexSql('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-         $this->db = PlexSql::$DB;
+        $this->db = PlexSql::$DB;
         // Utmdd($this->db->getlastquery());
         $this->currentpage = $currentpage;
         $this->request = $this->ReqObj->http_request;
@@ -101,12 +102,12 @@ class FileListing
         if (isset($_SESSION['days'])) {
             $uri['days'] = $_SESSION['days'];
             $this->request['days'] = $_SESSION['days'];
-            $days =  $_SESSION['days'];
+            $days = $_SESSION['days'];
         }
 
         if (isset($uri)) {
             $uri['allfiles'] = $this->request['allfiles'];
-       }
+        }
 
         $pageObj = new Pageinate(false, $this->currentpage, $this->urlPattern);
 
@@ -114,10 +115,18 @@ class FileListing
             $this->db->orderBy($this->request['sort'], $this->request['direction']);
         }
 
-        $this->db->where(PlexSQL::getLastest('v.added',$days));
+        $this->db->where(PlexSQL::getLastest('v.added', $days));
         $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
 
         return [$results, $pageObj, $uri];
+    }
+
+    public function getFavorites()
+    {
+        $pageObj = new Pageinate(false, $this->currentpage, $this->urlPattern);
+        $results = FavoriteDB::getFavoriteVideos();
+
+        return [$results, $pageObj, $this->uri];
     }
 
     public function getVideoArray()
@@ -154,7 +163,6 @@ class FileListing
         }
 
         if (isset($this->request['alpha'])) {
-
             $query = PlexSql::getAlphaKey($this->request['sort'], $this->request['alpha']);
             utmdump($query);
 
@@ -195,18 +203,17 @@ class FileListing
             // $where = str_replace($key."  = '".$this->request[$key]."'", $key.' like \'%'.$this->request[$key].'%\'',
             //  $sql_studio);
 
-
             if (isset($this->request['allfiles'])) {
-            //     $where = str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
-            // } else {
-            //     //$studio_key = '';
+                //     $where = str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
+                // } else {
+                //     //$studio_key = '';
                 $uri['allfiles'] = $this->request['allfiles'];
                 $where = $sql_studio;
                 $genre = '';
-             }
+            }
         }
 
-        $pageObj = new Pageinate([['field'=>$key,'search'=>$this->request[$key]]], $this->currentpage, $this->urlPattern);
+        $pageObj = new Pageinate([['field' => $key, 'search' => $this->request[$key]]], $this->currentpage, $this->urlPattern);
 
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
@@ -232,7 +239,9 @@ class FileListing
         return [$results, $pageObj, $uri];
     }
 
-    private function loopTags($array) {}
+    private function loopTags($array)
+    {
+    }
 
     private function buildSQL($limit = null)
     {
@@ -281,7 +290,7 @@ class FileListing
         $joinQuery .= $limitQuery;
 
         $this->saveSearch($joinQuery);
-        $joinQuery = str_replace('SELECT   v.id','SELECT ' . implode(',', $fieldArray), $joinQuery);
+        $joinQuery = str_replace('SELECT   v.id', 'SELECT '.implode(',', $fieldArray), $joinQuery);
 
         $joinQuery = str_replace('SELECT ', 'SELECT count(DISTINCT p.playlist_video_id) as totalRecords, ', $joinQuery);
 

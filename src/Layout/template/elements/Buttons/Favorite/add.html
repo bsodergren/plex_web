@@ -2,13 +2,8 @@
     type="button"
     class="text-dark heartButton FavoriteVideoBtn"
     id="addFavorite"
-    onclick="FavoriteVideo('addFavorite')"
+    onclick="FavoriteVideo('addFavorite'{$videoId})"
 >
-    <span
-        data-bs-toggle="tooltip"
-        data-bs-placement="top"
-        data-bs-title="This top tooltip is themed via CSS variables."
-    >
+
         {{icon=heartPlus|UseCSS=true}}
-    </span>
 </button>

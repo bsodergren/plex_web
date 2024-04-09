@@ -4,6 +4,8 @@ namespace Plex\Modules\VideoCard\Traits;
 
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
+use Plex\Modules\Database\FavoriteDB;
+use Plex\Modules\Display\FavoriteDisplay;
 
 
 trait VideoRow
@@ -273,5 +275,24 @@ trait VideoRow
             ));
         }
         // }
+    }
+
+    public function favorite($videoid)
+    {
+        if(FavoriteDB::get($videoid) == true) {
+            $favoriteBtn = FavoriteDisplay::RemoveFavoriteVideo($videoid);
+        } else  {
+            $favoriteBtn = FavoriteDisplay::addFavoriteVideo($videoid);
+        }
+
+        $this->params['FIELD_ROW_HTML'] .= Render::html(
+            $this->template_base.'/Rows/ListsRow',
+            [
+          'VALUE' => $favoriteBtn,
+                'ALT_CLASS' => $this->AltClass,
+
+            ]
+        );
+
     }
 }

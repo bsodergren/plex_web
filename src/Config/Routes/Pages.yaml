@@ -14,7 +14,10 @@ default:
 home:
     PAGE_TITLE: "Home Page"
     BOTTOM_NAV: false
-
+favorites:
+    PAGE_TITLE: "Favorites Page"
+    BOTTOM_NAV: true
+album:
 artist:
     PAGE_TITLE: "Artist Selection"
 file:
@@ -25,7 +28,7 @@ list:
     SHOW_PAGES: true
     ALPHA_SORT: true
     SHOW_RATING: true
-    
+
 grid:
     PAGE_TITLE: "Grid View"
     SHOW_SORT: true

@@ -6,12 +6,12 @@ footer {
     margin-top: 50px;
 }
 
-/* 
+/*
 .fileList {
     margin-right: 10px;
 } */
 
-/* 
+/*
 .blueTable-td,
 .blueTable-th {
     border: 0px solid #aaaaaa;
@@ -59,7 +59,7 @@ footer {
 } */
 
 
-/* 
+/*
 table.blueTable thead th:first-child {
     border-left: none;
 } */
@@ -240,7 +240,7 @@ button[type="submit"]:hover {
 }
 
 .recent-days-link {
-    border-right: 0px !important; 
+    border-right: 0px !important;
     border-top-right-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
 }
@@ -249,4 +249,23 @@ button[type="submit"]:hover {
     border-left: 0px !important;
     border-top-left-radius: 0px !important;
     border-bottom-left-radius: 0px !important;
+}
+
+
+.heartButton {
+    background-color: transparent;
+    width: 24px;
+    height: 30px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: center;
+    align-items: flex-start;
+    cursor: default;
+    margin: 5px;
+    padding-block: 0px;
+    padding-inline: 0px;
+    border-width: 0px;
+    border-style: outset;
+    border-color: buttonborder;
+    border-image: initial;
 }

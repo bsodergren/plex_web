@@ -8,7 +8,6 @@ use Plex\Template\Render;
 
 trait Breadcrumbs
 {
-
     public function createBreadcrumbs()
     {
         $tag_types = Request::$tag_types;
@@ -17,11 +16,12 @@ trait Breadcrumbs
         $re_string = '';
         $request_tag = [];
         $crumbs['Home'] = 'home.php';
+        $sep = '?';
+        $studio_key = '';
 
         $url = 'list.php';
         if (__THIS_FILE__ == 'search.php') {
             $url = 'search.php';
-
         }
 
         // if (isset(self::$CrubURL['grid'])) {
@@ -32,15 +32,14 @@ trait Breadcrumbs
             $url = 'gridview.php';
         }
 
-        //$crumbs[$in_directory] = '';
+        // $crumbs[$in_directory] = '';
         parse_str($_SERVER['QUERY_STRING'], $query_parts);
         if (\count($query_parts) > 0) {
             if (__THIS_FILE__ == 'search.php') {
-
-            if (!array_key_exists('view', $query_parts) )
-            {
-               $query_parts['view'] = 'List';
-           }}
+                if (!array_key_exists('view', $query_parts)) {
+                    $query_parts['view'] = 'List';
+                }
+            }
 
             foreach ($query_parts as $key => $value) {
                 if (\in_array($key, $tag_types)) {
@@ -52,10 +51,9 @@ trait Breadcrumbs
                         continue;
                     }
                     if (__THIS_FILE__ == 'search.php') {
-
                         $request_tag = [];
                         if ('view' == $key) {
-                            if($value == 'List'){
+                            if ('List' == $value) {
                                 $value = 'Grid';
                             } else {
                                 $value = 'List';
@@ -63,15 +61,11 @@ trait Breadcrumbs
 
                             $request_string['view'] = $value;
                             continue;
-
-
-
                         }
                     }
                     $request_string[$key] = $value;
                 }
             }
-
 
             if (\array_key_exists('genre', $request_tag)) {
                 $url = 'genre.php';
@@ -82,7 +76,6 @@ trait Breadcrumbs
                 //  unset($request_tag['studio']);
             }
 
-            $sep = '?';
             if (\count($request_string) > 0) {
                 $re_string = $sep.http_build_query($request_string);
                 $sep = '&';

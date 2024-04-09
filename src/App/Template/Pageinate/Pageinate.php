@@ -48,7 +48,7 @@ class Pageinate extends Paginator
         } else {
             $libraryField = 'library';
 
-            $query = urlQuerystring($urlPattern, ['current', 'allfiles', 'sec', 'days'], true);
+            $query = urlQuerystring($urlPattern, ['current', 'allfiles', 'sec', 'days','style'], true);
             $table = $this->table;
             if (\count($query) > 0) {
                 $q = trim(str_replace('m.', '', $query['sql']));

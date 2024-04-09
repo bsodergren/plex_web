@@ -2,13 +2,15 @@
 
 namespace Plex\Modules\Display\Layout;
 
-use Plex\Modules\Database\PlexSql;
-use Plex\Modules\Playlist\Playlist;
-use Plex\Modules\VideoCard\VideoCard;
-use Plex\Modules\Display\VideoDisplay;
-use Plex\Template\Functions\Traits\Video;
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
+use Plex\Modules\Database\PlexSql;
+use Plex\Modules\Playlist\Playlist;
+use Plex\Modules\Database\FavoriteDB;
+use Plex\Modules\VideoCard\VideoCard;
+use Plex\Modules\Display\VideoDisplay;
+use Plex\Modules\Display\FavoriteDisplay;
+use Plex\Template\Functions\Traits\Video;
 
 /**
  * plex web viewer.
@@ -109,6 +111,7 @@ class GridDisplay extends VideoDisplay
                     'ROWNUM' => $videoInfo['rownum'],
                     'ROW_TOTAL' => $this->totalRecords, ]);
         }
+        $favRow = $this->favorite($videoInfo['id']);
 
         $params = [
             'FILE_MISSING' => $class_missing,
@@ -120,6 +123,7 @@ class GridDisplay extends VideoDisplay
             'ROWNUM' => $videoInfo['rownum'],
             'ROW_TOTAL' => $this->totalRecords,
             'STAR_RATING' => $videoInfo['rating'],
+            'FAVRow' => $favRow,
         ];
 
         // THUMB_EXTRA = ' alt="#" class="img-fluid" '
@@ -161,4 +165,21 @@ class GridDisplay extends VideoDisplay
 
         return $table_body_html;
     }
+
+public function favorite($videoid){
+    if(FavoriteDB::get($videoid) == true) {
+        $favoriteBtn = FavoriteDisplay::RemoveFavoriteVideo($videoid);
+    } else  {
+        $favoriteBtn = FavoriteDisplay::addFavoriteVideo($videoid);
+    }
+
+  return Render::html(
+        'grid/cell/ListsRow',
+        [
+            'VALUE' => $favoriteBtn,
+            'ALT_CLASS' => $this->AltClass,
+
+        ]
+    );
+}
 }

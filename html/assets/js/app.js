@@ -98,3 +98,50 @@ function previewHover(e, thumb, prev) {
         });
     }
 }
+
+function FavoriteVideo(action,videoid=null)
+{
+
+    var favButton = 'FavoriteButton'
+    if(videoid == null) {
+        const playervideoid = document.querySelector('.player_text')
+        videoid = playervideoid.getAttribute('data-videoid')
+    } else {
+        favButton = favButton + '_' +  videoid
+    }
+    console.log(action + ' ' + videoid)
+    $.ajax({
+        url: "process.php",
+        type: "POST",
+        data: {
+            submit: action,
+            videoId: videoid
+        },
+        cache: false,
+        success: function (data) {
+            console.log(data)
+                const videoCell = document.getElementById(favButton);
+                videoCell.innerHTML = data;
+        },
+    });
+}
+
+function updateFavVideo()
+{
+    const playervideoid = document.querySelector('.player_text')
+    videoid = playervideoid.getAttribute('data-videoid')
+
+    $.ajax({
+        url: "process.php",
+        type: "POST",
+        data: {
+            submit: "isFavorite",
+            videoId: videoid
+        },
+        cache: false,
+        success: function (data) {
+                const videoCell = document.getElementById('FavoriteButton');
+                videoCell.innerHTML = data;
+        },
+    });
+}

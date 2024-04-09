@@ -2,11 +2,11 @@
 
 namespace Plex\Modules\VideoCard;
 
+use Plex\Modules\Chapter\Chapter;
+use Plex\Modules\Database\PlexSql;
+use Plex\Modules\VideoCard\Traits\VideoRow;
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
-use Plex\Modules\Chapter\Chapter;
-use Plex\Modules\VideoCard\Traits\VideoRow;
-use Plex\Modules\Database\PlexSql;
 
 /**
  * plex web viewer.
@@ -27,8 +27,9 @@ class VideoCard
     public $fileInfoArray;
     public $params;
 
-
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function __call($method, $args)
     {
@@ -41,6 +42,7 @@ class VideoCard
 
     public function VideoInfo($fileInfoArray, $total_files)
     {
+        $result_number = null;
         $db = PlexSql::$DB;
         $this->fileInfoArray = $fileInfoArray;
         $this->params = [];
@@ -62,7 +64,7 @@ class VideoCard
             $this->params['VIDEO_TITLE'] = $fileInfoArray['title'];
         }
         $this->params['ROW_ID'] = '';
-        if (OptionIsTrue(NAVBAR)) {
+        if (OptionIsTrue(NAVBAR) &&  $result_number !== null) {
             $this->params['VERTICAL_TEXT'] = Render::html(
                 $this->template_base.'/vertical',
                 ['ROW_ID' => '&nbsp;&nbsp;&nbsp;'.$result_number.' of '.$total_files]
@@ -75,14 +77,9 @@ class VideoCard
         $this->params['FILE_ID'] = $row_id;
         $this->params['WRAPPER_CLASS'] = 'm-3';
         $this->params['RATING_WIDTH'] = 365;
- //$this->params['PlaylistId'] = $fileInfoArray['playlist_id'] ;
-        // if($fileInfoArray['playlist_id'] !== null) {
-        //     = Render::html(
-        //         $this->template_base.'/playlistButton',
-        //         ['PlaylistId' => $fileInfoArray['playlist_id']]);
-        // }
 
-        if (OptionIsFalse(NAVBAR)) {
+
+        if (OptionIsFalse(NAVBAR) ) {
             $this->params['WRAPPER_CLASS'] = 'm-0';
             $this->params['RATING_WIDTH'] = 175;
             $this->params['DELETE_BUTTONS'] = Render::html(
@@ -116,18 +113,19 @@ class VideoCard
                 $this->{$method}($field);
                 ++$x;
                 $this->AltClass = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
-                if($field == 'studio'){
-                    $row_studioy =  $this->fileInfoArray[$field];
-
+                if ('studio' == $field) {
+                    $row_studioy = $this->fileInfoArray[$field];
                 }
             }
         }
         $this->ChapterRow();
+        $this->favorite($row_id);
 
         // utmdd($this->params['HIDDEN_STUDIO']);
         $table_body_html['VIDEO'] = Render::html($this->template_base.'/Video', $this->params);
         $table_body_html['VIDEO_KEY'] = $row_video_key;
         $table_body_html['HIDDEN_STUDIO'] = $row_studioy;
+
         return $table_body_html;
     }
 }

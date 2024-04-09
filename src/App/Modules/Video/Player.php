@@ -9,6 +9,7 @@ use Plex\Modules\Database\VideoDb;
 use Plex\Modules\Playlist\Playlist;
 use Plex\Modules\Video\Player\Plyr;
 use Plex\Modules\Database\FavoriteDB;
+use Plex\Modules\Display\FavoriteDisplay;
 use Plex\Modules\Video\Player\VideoJs;
 use Plex\Template\Functions\Functions;
 use Plex\Modules\Video\Playlist\PlyrList;
@@ -129,9 +130,9 @@ public $PlayerClass;
         $this->params['thumbnail'] = APP_HOME.$result['thumbnail'];
 
         if(FavoriteDB::get($this->id) == true) {
-            $this->params['FAVORITE'] = $this->RemoveFavoriteVideo();
+            $this->params['FAVORITE'] = FavoriteDisplay::RemoveFavoriteVideo();
         } else  {
-            $this->params['FAVORITE'] = $this->addFavoriteVideo();
+            $this->params['FAVORITE'] = FavoriteDisplay::addFavoriteVideo();
         }
 
 
@@ -164,19 +165,7 @@ public $PlayerClass;
     }
 
 
-    public function RemoveFavoriteVideo()
-    {
-        return Render::html(
-            Functions::$ButtonDir.'/Favorite/button',['FavoriteButton' =>
-            Render::html(Functions::$ButtonDir.'/Favorite/remove')]);
-    }
 
-    public function addFavoriteVideo()
-    {
-        return Render::html(Functions::$ButtonDir.'/Favorite/button',['FavoriteButton' =>
-        Render::html(Functions::$ButtonDir.'/Favorite/add')]);
-//        return Render::html(Functions::$ButtonDir.'/add');
-    }
 
     public function getPlaylist()
     {

@@ -9,6 +9,7 @@ const NavBar_Text_Artists     = 'Arists';
 const NavBar_Text_Search      = 'Search';
 const NavBar_Text_Recent      = 'Latest';
 const NavBar_Text_Filebrowser = 'File browser';
+const NavBar_Text_Favorites    = 'Favorites';
 // const NavBar_Text_Tags = 'Tags';
 
 const Play_Video_Text = 'Play_Video';

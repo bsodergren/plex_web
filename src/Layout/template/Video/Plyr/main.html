@@ -13,10 +13,10 @@
         {{javascript=external/popper.min.js}}
         {{javascript=external/bootstrap.min.js}}
         {{javascript=external/jquery.min.js}}
-         {{javascript=external/jquery.editable.min.js}}
-         {{javascript=app.js}}
-
-                {{stylesheet=plyr/style.css}}
+        {{javascript=external/jquery.editable.min.js}}
+        {{javascript=app.js}}
+        {{stylesheet=app.css}}
+        {{stylesheet=plyr/style.css}}
         {{stylesheet=plyr/simplebar.css}}
         {{function=ratingInclude}}
 
@@ -38,18 +38,15 @@
         </div>
 
         <div class="container row">
-            <!-- <div class="col-sm-12 bottomleft"> -->
-                <div class="col">
-                    {{function=videoAddToPlaylist|id={$VideoId},pl_id={$PLAYLIST_ID},close=0}}
-                    </div>
-                    <div class="col-auto me-auto">
-{$FAVORITE}
-
-                    </div>
-            <!-- <div class="col-sm-12 bottomright">  -->
-                <div class="col-auto position-absolute top-0 start-100 translate-middle">
-                    {{function=videoRating|id={$VideoId},rating={$STAR_RATING},close=1}}</div>
-            <!-- </div> -->
+            <div class="col">
+                {{function=videoAddToPlaylist|id={$VideoId},pl_id={$PLAYLIST_ID},close=0}}
+            </div>
+            <div class="col-auto me-auto">
+                {$FAVORITE}
+            </div>
+            <div class="col-auto position-absolute top-0 start-100 translate-middle">
+                {{function=videoRating|id={$VideoId},rating={$STAR_RATING},close=1}}
+            </div>
         </div>
 
  {{javascript=plyr/app.js}} {{javascript=plyr/simplebar.js}}
