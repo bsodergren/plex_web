@@ -1,6 +1,7 @@
 <?php
 namespace Plex\Modules\Database\Traits;
 
+use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\VideoDb;
 
 trait VideoLookup
@@ -22,5 +23,11 @@ trait VideoLookup
         return $this->db->query($sql);
     }
 
+    public static function getVideoKey($video_id)
+    {
+        $sql = 'SELECT video_key FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$video_id;
+        $results = PlexSql::$DB->query($sql);
+        return $results[0]['video_key'];
+    }
 
 }

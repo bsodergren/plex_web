@@ -14,6 +14,12 @@ favorites:
     text: !php/const NavBar_Text_Favorites
     icon: list
     studio: false
+watch:
+    url: video.php
+    text: !php/const NavBar_Text_WatchFavorites
+    icon: list
+    studio: false
+    js: {"Window": true}
 list:
     url: list.php
     text: !php/const NavBar_Text_List

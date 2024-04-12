@@ -3,10 +3,13 @@
 namespace Plex\Modules\Database;
 
 use Plex\Modules\Database\FavoriteDB;
-
+use Plex\Modules\Database\Traits\VideoLookup;
 
 class VideoDb
 {
+
+    use VideoLookup;
+
     public static $VideoMetaFields =
     ['COALESCE (c.title,m.title) as title ',
         'COALESCE (c.artist,m.artist) as artist ',

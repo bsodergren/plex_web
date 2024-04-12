@@ -7,11 +7,11 @@ use UTMTemplate\Template;
 require_once '_config.inc.php';
 
 $videoPlayer = new Player();
-if (isset($videoPlayer->playlist_id)) {
-    utmdump('has Playlist ID '.$videoPlayer->playlist_id);
 
-    $videoPlayer->getPlaylist();
-}
+// if (isset($videoPlayer->playlist_id)) {
+//     utmdump('has Playlist ID '.$videoPlayer->playlist_id);
+//     $videoPlayer->getPlaylist();
+// }
 
 $videoPlayer->PlayVideo();
 

@@ -107,16 +107,23 @@ trait Navbar
                     $is_active = $is_active . " recent-days-link";
                 }
             }
+            $favPopup = '';
+            $template = 'menu_link';
+            if (array_key_exists('js',$link_array)) {
+                $favPopup = ' onclick="popup(\'http://plexmedia/plex/video.php?favorites=true\', \'video_popup\')" ';
+                $link_array['url'] = null;
+                $template = 'menu_popup';
+            }
 
-            $array = [
-                'MENULINK_URL' => $link_array['url'],
-                'MENULINK_TEXT' => $link_array['text'],
-                'MENULINK_ICON' => self::navbarIcon($link_array),
-                'ACTIVE' => $is_active,
-            ];
+                $array = [
+                    'MENULINK_URL' => $link_array['url'],
+                    'MENULINK_JS' => $favPopup,
+                    'MENULINK_TEXT' => $link_array['text'],
+                    'MENULINK_ICON' => self::navbarIcon($link_array),
+                    'ACTIVE' => $is_active,
+                ];
 
-            $url_text = Render::html('base/navbar/menu_link', $array);
-
+                $url_text = Render::html('base/navbar/'. $template , $array);
                 if (array_key_exists('days',$link_array)) {
                     if (__THIS_PAGE__ == 'recent') {
 
@@ -125,6 +132,7 @@ trait Navbar
                     }
                    // $url_text .= '</li>';
                 }
+
 
 
             $html = $html.$url_text."\n";

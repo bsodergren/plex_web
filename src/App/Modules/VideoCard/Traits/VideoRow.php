@@ -93,28 +93,17 @@ trait VideoRow
 
     public function row($field, $value, $id = '',$editable = false)
     {
+
+        // utmdump( $this->videoid);
         $editableClass = '';
         $editableBorder = '';
-        if (OptionIsFalse(NAVBAR)) {
             if ('' != $id) {
                 if ($editable === true) {
                     $id = ucfirst($id);
-                    $editableClass = 'edit'.$id;
-                    $functionName = 'make'.$id.'Editable';
-                   $editableBorder = '  border-bottom border-4 border-info ';
-
-                    $this->params['VIDEOINFO_EDIT_JS'] .= Render::javascript(
-                        $this->template_base.'/Rows/row',
-                        [
-                            'ID_NAME' => $id,
-                            'EDITABLE' => $editableClass,
-                            'FUNCTION' => $functionName,
-                            'VIDEO_KEY' => $this->params['video_key'],
-                        ]
-                    );
+                    $editableClass = $id;
+                 //  $editableBorder = '  border-bottom border-4 border-info ';
                 }
             }
-        }
 
         $this->params['FIELD_ROW_HTML'] .= Render::html(
             $this->template_base.'/Rows/row',
@@ -123,6 +112,7 @@ trait VideoRow
                 'VALUE' => $value,
                 'ALT_CLASS' => $this->AltClass,
                 'EDITABLE' => $editableClass,
+                'VideoId' =>  $this->videoid,
                 'EDITABLE_BORDER' => $editableBorder,
             ]
         );
@@ -170,6 +160,27 @@ trait VideoRow
         return implode('  ', $link_array);
     }
 
+
+    public function Artistrow($key,$cloud = false)
+    {
+
+        $value = $this->fileInfoArray[$key];
+        $value = trim($value);
+        return Render::html(
+            $this->template_base.'/Rows/artist',
+            [
+                'Artist_Name_txt' => $value,
+                'Artist_Name' => urlencode($value),
+                //  'CLASS'    => ' class="badge fs-6 blueTable-thead" ',
+            ]
+        );
+        // utmdump($value);
+
+    }
+
+
+
+
     public function cloudRow($key)
     {
         $this->row(ucfirst($key), $this->metaValue($key,true), $key,true);
@@ -213,6 +224,7 @@ trait VideoRow
     public function Artist($key)
     {
         $this->cloudRow($key);
+        // $this->row( ucfirst($key), $this->artistRow($key), $key);
     }
 
     public function Keyword($key)
@@ -222,10 +234,10 @@ trait VideoRow
 
     public function Title($key)
     {
-        if (OptionIsTrue(NAVBAR)) {
+        // if (OptionIsTrue(NAVBAR)) {
 
         $this->metaRow($key);
-        }
+        // }
     }
 
     public function Fullpath($key)

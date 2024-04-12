@@ -1,31 +1,54 @@
 <?php
+
 namespace Plex\Modules\Video\Playlist;
 
 use Plex\Template\Render;
 use Plex\Modules\Video\Player;
-use UTMTemplate\HTML\Elements;
 use Plex\Modules\Database\PlexSql;
+use Plex\Modules\Playlist\Playlist;
 use Plex\Template\Functions\Functions;
 
 class PlyrList extends Player
 {
-
     public $videoTemplate;
     public $db;
     public $playlist;
     public $playlist_id;
     public $playlistName;
     public $video_id;
-public $plyr_item;
+    public $plyr_item;
+
     public function __construct()
     {
-
         $this->videoTemplate = parent::$PlayerTemplate;
         $this->db = PlexSql::$DB;
-      //  $this->playlistId();
-
     }
-    private function getPlaylistItem($row, $class, $type)
+    public function getplaylistId()
+    {
+        if (\array_key_exists('playlist_id', $_REQUEST)) {
+            $playlist_id = $_REQUEST['playlist_id'];
+            if (!\array_key_exists('id', $_REQUEST)) {
+                $cols = ['playlist_id', 'playlist_video_id'];
+                $this->db->where('playlist_id', $playlist_id);
+
+                $playlist_result = $this->db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
+                $query = $this->db->getLastQuery();
+                $id = $playlist_result['playlist_video_id'];
+                $this->id = $id;
+            }
+            $this->playlist_id = $playlist_id;
+        } else {
+            $pl = (new Playlist())->getVideoPlaylists($this->videoId());
+            foreach ($pl as $k => $row) {
+                if (\array_key_exists('playlist_id', $row)) {
+                    $this->playlist_id = $row['playlist_id'];
+                }
+            }
+        }
+
+        return $this->playlist_id;
+    }
+    private function getPlaylistItem($row, $class)
     {
         $title = $row['title'];
         if ('' == $row['title']) {
@@ -86,9 +109,7 @@ public $plyr_item;
                 $class = ' active';
             }
 
-            // $this->carousel_item .= $this->getPlaylistItem($results[$i], $class, 'carousel');
-            // $this->canvas_item .= $this->getPlaylistItem($results[$i], $class, 'canvas');
-            $this->plyr_item .= $this->getPlaylistItem($results[$i], $class, 'playlist');
+            $this->plyr_item .= $this->getPlaylistItem($results[$i], $class);
 
             if (' active' == $class) {
                 $indx = $i + 1;
@@ -106,12 +127,7 @@ public $plyr_item;
                 }
             }
         }
-        // $this->params['RemoveVideo'] = $this->getRemoveVideo();
-        // $this->params['PLAYLIST_HEIGHT'] = $playlist_height;
 
-        // $this->params['CAROUSEL_HTML' => $this->getCarousel();
-        // $this->params['CANVAS_HTML'] = $this->getCanvas();
-        // $this->params['CAROUSEL_JS'] = $this->getCarouselScript();
         $this->params['PLYRLISTHTML'] = $this->plyr_item;
         $this->params['hasPlaylist'] = 'true';
         $this->js_params['PLAYLIST_ID'] = $this->playlist_id;
@@ -119,11 +135,5 @@ public $plyr_item;
         $this->js_params['PREV_VIDEO_ID'] = $prev_video_id;
         $this->js_params['COMMENT'] = '';
     }
-
-    public function getPlyrList()
-    {
-        return Render::return($this->videoTemplate.'/container/playlist', ['PLAY_LIST' => $this->plyr_item]);
-    }
-
 
 }

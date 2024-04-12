@@ -26,6 +26,7 @@ class VideoCard
     public $AltClass;
     public $fileInfoArray;
     public $params;
+    public $videoid;
 
     public function __construct()
     {
@@ -64,7 +65,7 @@ class VideoCard
             $this->params['VIDEO_TITLE'] = $fileInfoArray['title'];
         }
         $this->params['ROW_ID'] = '';
-        if (OptionIsTrue(NAVBAR) &&  $result_number !== null) {
+        if (OptionIsTrue(NAVBAR) && null !== $result_number) {
             $this->params['VERTICAL_TEXT'] = Render::html(
                 $this->template_base.'/vertical',
                 ['ROW_ID' => '&nbsp;&nbsp;&nbsp;'.$result_number.' of '.$total_files]
@@ -78,8 +79,7 @@ class VideoCard
         $this->params['WRAPPER_CLASS'] = 'm-3';
         $this->params['RATING_WIDTH'] = 365;
 
-
-        if (OptionIsFalse(NAVBAR) ) {
+        if (OptionIsFalse(NAVBAR)) {
             $this->params['WRAPPER_CLASS'] = 'm-0';
             $this->params['RATING_WIDTH'] = 175;
             $this->params['DELETE_BUTTONS'] = Render::html(
@@ -104,19 +104,20 @@ class VideoCard
         $x = 0;
         $this->params['FIELD_ROW_HTML'] = '';
         $this->params['VIDEOINFO_EDIT_JS'] = '';
+        $this->videoid = $row_id;
         foreach ($fileArray as $field) {
-            if (\array_key_exists($field, $this->fileInfoArray)) {
-                if (null === $this->fileInfoArray[$field]) {
-                    $this->fileInfoArray[$field] = '';
-                }
-                $method = ucfirst($field);
-                $this->{$method}($field);
-                ++$x;
-                $this->AltClass = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
-                if ('studio' == $field) {
-                    $row_studioy = $this->fileInfoArray[$field];
-                }
+             if (\array_key_exists($field, $this->fileInfoArray)) {
+            if (null === $this->fileInfoArray[$field]) {
+                $this->fileInfoArray[$field] = '';
             }
+            $method = ucfirst($field);
+            $this->{$method}($field);
+            ++$x;
+            $this->AltClass = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
+            if ('studio' == $field) {
+                $row_studio = $this->fileInfoArray[$field];
+            }
+             }
         }
         $this->ChapterRow();
         $this->favorite($row_id);
@@ -124,7 +125,7 @@ class VideoCard
         // utmdd($this->params['HIDDEN_STUDIO']);
         $table_body_html['VIDEO'] = Render::html($this->template_base.'/Video', $this->params);
         $table_body_html['VIDEO_KEY'] = $row_video_key;
-        $table_body_html['HIDDEN_STUDIO'] = $row_studioy;
+        $table_body_html['HIDDEN_STUDIO'] = $row_studio;
 
         return $table_body_html;
     }

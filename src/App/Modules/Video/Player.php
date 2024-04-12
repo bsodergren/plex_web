@@ -2,40 +2,38 @@
 
 namespace Plex\Modules\Video;
 
-use Plex\Template\Render;
-use UTMTemplate\HTML\Elements;
+use Plex\Modules\Database\FavoriteDB;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\VideoDb;
+use Plex\Modules\Display\FavoriteDisplay;
 use Plex\Modules\Playlist\Playlist;
 use Plex\Modules\Video\Player\Plyr;
-use Plex\Modules\Database\FavoriteDB;
-use Plex\Modules\Display\FavoriteDisplay;
-use Plex\Modules\Video\Player\VideoJs;
-use Plex\Template\Functions\Functions;
+use Plex\Modules\Video\Playlist\Favorites;
 use Plex\Modules\Video\Playlist\PlyrList;
+use Plex\Template\Functions\Functions;
+use Plex\Template\Render;
+use UTMTemplate\HTML\Elements;
 
 class Player
 {
-    // public $playlist_id;
     public $id;
     public $db;
-    // public $playlistName;
-    // public $templateRoot = 'Video';
-    // public $canvas_form;
-    // public $carousel_item;
-    // public $canvas_item;
-    // public $chapterIndex;
-    // public $js_params = [];
-    // public $params = [
-    // ];
-public $playlist_id;
-public $params;
-public $js_params;
-public $playlist;
-public $PlayerClass;
+
+    public $playlist_id;
+    public $params;
+
+    public $js_params;
+    public $playlist;
+
+    public $favorites;
+    public $showFavorites = false;
+
+    public $PlayerClass;
 
     public $VideoTemplate = 'Video/Plyr';
+
     public static $PlayerTemplate = '';
+
     public $options = [
         'usePlyr' => true,
         'useCanvas' => false,
@@ -48,26 +46,29 @@ public $PlayerClass;
     {
         self::$PlayerTemplate = $this->VideoTemplate;
         $this->db = PlexSql::$DB;
-        $this->playlistId();
+
+        if (\array_key_exists('favorites', $_REQUEST)) {
+            $this->showFavorites = true;
+            $this->favoriteList();
+        } else {
+            $this->getPlaylist();
+        }
     }
 
     public function PlayVideo()
     {
-        if (true == $this->options['usePlyr']) {
-            $this->PlayerClass = new Plyr($this);
-        } elseif (true == $this->options['useVideoJs']) {
-            $this->PlayerClass = new videoJs();
-        }
-        // / $this->PlayerClass->videoId();
+        $this->PlayerClass = new Plyr($this);
 
         $this->VideoDetails();
-        if (\is_object($this->playlist)) {
+
+        if (\is_object($this->favorites)) {
+            $this->params = array_merge($this->params, $this->favorites->params);
+            $this->js_params = array_merge($this->js_params, $this->favorites->js_params);
+        } elseif (\is_object($this->playlist)) {
             $this->params = array_merge($this->params, $this->playlist->params);
             $this->js_params = array_merge($this->js_params, $this->playlist->js_params);
         }
-
         $this->getVideo();
-
     }
 
     public function options($options = [])
@@ -79,7 +80,7 @@ public $PlayerClass;
 
     public function getPlayerTemplate($template)
     {
-        return self::$PlayerTemplate.DIRECTORY_SEPARATOR.$template;
+        return self::$PlayerTemplate.\DIRECTORY_SEPARATOR.$template;
     }
 
     public function getVideoURL($video_id)
@@ -97,11 +98,15 @@ public $PlayerClass;
     public function getVideo()
     {
         $this->params['Videoid'] = $this->id;
-        if (null === $this->playlist_id) {
-            $this->params['hasPlaylist'] = false;
-        } else {
-            $this->params['PLAYLIST_ID'] = $this->playlist_id;
-        }
+        // if (null === $this->playlist_id) {
+        //     $this->params['hasPlaylist'] = false;
+        // } else {
+        //     $this->params['PLAYLIST_ID'] = $this->playlist_id;
+        // }
+        // if (true === $this->showFavorites) {
+        //     $this->params['hasPlaylist'] = 'true';
+        // }
+
         $this->params['__LAYOUT_URL__'] = __LAYOUT_URL__;
 
         $this->params['VIDEO_JS'] = $this->videoJs();
@@ -129,12 +134,11 @@ public $PlayerClass;
         $this->params['PAGE_TITLE'] = $result['title'];
         $this->params['thumbnail'] = APP_HOME.$result['thumbnail'];
 
-        if(FavoriteDB::get($this->id) == true) {
+        if (true == FavoriteDB::get($this->id)) {
             $this->params['FAVORITE'] = FavoriteDisplay::RemoveFavoriteVideo();
-        } else  {
+        } else {
             $this->params['FAVORITE'] = FavoriteDisplay::addFavoriteVideo();
         }
-
 
         $this->params['Video_studio'] = $result['studio'];
         $this->params['Video_substudio'] = $result['substudio'];
@@ -164,41 +168,27 @@ public $PlayerClass;
         return Render::javascript($this->VideoTemplate.'/video_js', $this->js_params);
     }
 
-
-
+    public function favoriteList()
+    {
+        $this->favorites = new Favorites();
+        $this->favorites->getFavoriteList();
+        $this->id = $this->favorites->id;
+    }
 
     public function getPlaylist()
     {
         $this->playlist = new PlyrList();
+        $this->playlist_id = $this->playlist->getplaylistId();
+        if($this->playlist_id === null) {
+            unset($this->playlist);
+        } else {
+        $this->id = $this->playlist->id;
         $this->playlist->playlist_id = $this->playlist_id;
         $this->playlist->getPlaylist();
-    }
-
-    public function playlistId()
-    {
-        if (\array_key_exists('playlist_id', $_REQUEST)) {
-            $playlist_id = $_REQUEST['playlist_id'];
-            if (!\array_key_exists('id', $_REQUEST)) {
-                $cols = ['playlist_id', 'playlist_video_id'];
-                $this->db->where('playlist_id', $playlist_id);
-
-                $playlist_result = $this->db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
-                $query = $this->db->getLastQuery();
-                $id = $playlist_result['playlist_video_id'];
-                $this->id = $id;
-            }
-            $this->playlist_id = $playlist_id;
-        } else {
-            $pl = (new Playlist())->getVideoPlaylists($this->videoId());
-            foreach ($pl as $k => $row) {
-                if (\array_key_exists('playlist_id', $row)) {
-                    $this->playlist_id = $row['playlist_id'];
-                }
-            }
         }
-
-        return $this->playlist_id;
     }
+
+
 
     public function addChapter()
     {

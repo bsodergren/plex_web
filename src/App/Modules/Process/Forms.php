@@ -6,33 +6,29 @@ namespace Plex\Modules\Process;
  * plex web viewer
  */
 
-use Nette\Utils\Callback;
-use UTMTemplate\Template;
-use UTMTemplate\HTML\Elements;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\VideoDb;
-use Symfony\Component\Process\Process;
-use Plex\Modules\Process\Traits\Mediatag;
-use Plex\Modules\Process\Traits\Playlist;
 use Plex\Modules\Process\Traits\DbWrapper;
 use Plex\Modules\Process\Traits\Favorites;
+use Plex\Modules\Process\Traits\Mediatag;
+use Plex\Modules\Process\Traits\Playlist;
 use Plex\Template\Functions\Functions;
+use UTMTemplate\HTML\Elements;
 
 class Forms
 {
     use DbWrapper;
-    use Playlist;
     use Favorites;
+    use Playlist;
 
     public $postArray = [];
     public $getArray = [];
     public $redirect = ''; // .'/home.php';
-public $playlist_id;
-public $library;
-public $id;
-public $data;
-public $tagValue;
-
+    public $playlist_id;
+    public $library;
+    public $id;
+    public $data;
+    public $tagValue;
 
     public object $VideoInfo;
     public object $VideoChapter;
@@ -99,11 +95,10 @@ public $tagValue;
 
     public function jquery()
     {
-        $out = (new Functions)->getVideoPlaylistJson($this->postArray['id']);
+        $out = (new Functions())->getVideoPlaylistJson($this->postArray['id']);
         echo $out;
         // utmdump([$out,$this->postArray]);
         exit;
-
     }
 
     public function rating()
@@ -121,25 +116,24 @@ public $tagValue;
         $mediatag = new Mediatag();
         $mediatag->addFile($file);
         $mediatag->refreshFile();
-        $this->myHeader($this->redirect."&jo");
+        $this->myHeader($this->redirect.'&jo');
 
         exit;
-//        return $this->redirect;
+        //        return $this->redirect;
 
-
-  //      utmdd([__METHOD__,$this->postArray]);
+        //      utmdd([__METHOD__,$this->postArray]);
     }
 
     public function updateVideoCard()
     {
-        $keys = array_keys($this->postArray);
-        $method = $keys[0];
-        $tagValue = $this->postArray[$method];
-        $video_key = $this->postArray[$keys[1]];
+        $video_key = VideoDB::getVideoKey($this->postArray['video_id']);
+        $method = $this->postArray['field'];
+        $tagValue = $this->postArray['value'];
+
         $this->VideoInfo->{$method}($tagValue, $video_key);
+        exit;
+
     }
-
-
 
     public function GenreConfigSave()
     {

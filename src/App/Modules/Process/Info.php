@@ -25,6 +25,7 @@ class Info
     {
         $this->tagValue = $args[0];
         $this->video_key = $args[1];
+
         $this->InfoUpdate($method);
     }
 
@@ -47,7 +48,7 @@ class Info
             $this->onDuplicate($fieldArray, 'id');
             $this->insert(Db_TABLE_VIDEO_CUSTOM, $data);
         }
-        //  utmdd($this->getLastQuery());
+        //   utmdump($this->getLastQuery());
     }
 
     public function save($tag, $data)
