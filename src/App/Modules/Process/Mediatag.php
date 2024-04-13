@@ -3,17 +3,19 @@
 namespace Plex\Modules\Process;
 
 use Nette\Utils\Callback;
-use UTMTemplate\Template;
-use Symfony\Component\Process\Process;
 use Plex\Modules\Process\Traits\Mediatag\mediadb;
-use Plex\Modules\Process\Traits\Mediatag\playlist;
+use Plex\Modules\Process\Traits\Mediatag\mediadownload;
 use Plex\Modules\Process\Traits\Mediatag\mediaupdate;
+use Plex\Modules\Process\Traits\Mediatag\playlist;
+use Symfony\Component\Process\Process;
+use UTMTemplate\Template;
 
 class Mediatag
 {
     use mediadb;
     use mediaupdate;
     use playlist;
+    use mediadownload;
 
     public $fileList = [];
     public $path;
@@ -48,15 +50,55 @@ class Mediatag
     {
         $callbackCmd = Callback::check([$this, $callback]);
         $process = new Process($command);
-
+echo $process->getCommandLine();
         if (true === $this->test) {
-            echo $process->getCommandLine();
+
 
             return null;
         }
         $process->setTimeout(60000);
         $process->start();
         $process->wait($callbackCmd);
+    }
+
+
+    public function downloadOutput($type, $buffer){
+        $buffer = str_replace("\n", '', $buffer);
+
+        utmdump($buffer);
+        $this->p->setProgressBarHeader($buffer);
+
+        // switch ($buffer) {
+        // }
+    }
+
+    public function progressBar($type, $buffer)
+    {
+        // download]
+
+        $buffer = str_replace("\n", '', $buffer);
+        $buffer = str_replace("\r", '', $buffer);
+
+            utmdump($buffer);
+
+        switch ($buffer) {
+            case str_contains($buffer, '[download]'):
+
+                if (str_contains($buffer, 'Destination')) {
+                    preg_match('/Destination:\s+(.*.mp4)/', $buffer, $destArray);
+                    $this->p->setProgressBarHeader($destArray[1]);
+                }
+                $outputText = htmlspecialchars($buffer);
+                preg_match('/([0-9.]+)\%.*ETA ([0-9:]+)/', $outputText, $output_array);
+                $this->p->setProgressBarProgress($output_array[1] * 100 / 100);
+
+                //                echo Template::put($output_array[0]);
+                break;
+            default:
+            $this->p->setProgressBarHeader($buffer);
+
+                break;
+        }
     }
 
     public function ProcessOutput($type, $buffer)

@@ -9,16 +9,7 @@ require_once '_config.inc.php';
 $url = __URL_HOME__.'/pledit.php';
 $file = '/home/bjorn/plex/XXX/Playlists/plexplaylist.txt';
  $pl = new Mediatag('Playlists');
-    UtmDump($_REQUEST);
 
- if (isset($_REQUEST['download'])) {
-    if (file_exists($file)) {
-        $pl->playlistDownload($file);
-        echo "fadsfsda";
-    }
-//   header(sprintf('Location: %s', $url));
-    exit;
-}
 
 if (!file_exists($file)) {
     touch($file);
@@ -32,15 +23,15 @@ if (isset($_POST['text'])) {
 
 //    $pl->playlistClean($file);
     if ('Download' == $_POST['submit']) {
-        $popurl = $url.'?download=true';
-        utmdump($popurl);
+         $url = $url.'?download=true';
+    //     utmdump($popurl);
 
-        echo '<script>';
-        echo "window.open('$popurl','ff');".\PHP_EOL;
-        echo "window.location.href = '$url';".\PHP_EOL;
-        echo '</script>';
-        exit;
-       sleep(2);
+    //     echo '<script>';
+    //     echo "window.open('$popurl','ff');".\PHP_EOL;
+    //     echo "window.location.href = '$url';".\PHP_EOL;
+    //     echo '</script>';
+    //     exit;
+    //    sleep(2);
 
     }
     // redirect to form again
@@ -81,3 +72,13 @@ $html = Render::html('editor/main', ['TextBlocks' => $textBlocks,
 // $html = Render::html('editor/main', [ 'WordMap' => $text]);
 
 Render::Display($html);
+
+if (isset($_REQUEST['download'])) {
+    if (file_exists($file)) {
+      //  $pl->playlistDownload($file);
+        $pl->mediadownload();
+        echo "fadsfsda";
+    }
+    exit;
+}
+

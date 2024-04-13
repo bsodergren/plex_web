@@ -2,6 +2,9 @@
 
 namespace Plex\Modules\Process\Traits\Mediatag;
 
+use Plex\Modules\Display\Layout;
+use Plex\Template\Render;
+
 trait playlist
 {
     public $playlistCmd = '/home/bjorn/scripts/Mediatag/bin/playlist';
@@ -15,6 +18,15 @@ trait playlist
     public function playlistDownload($playlistName)
     {
         $cmd = [$this->playlistCmd,  '--path', $this->path, $playlistName];
-        $this->runCmd($cmd, 'ProcessOutput');
+
+        $this->p = new Render();
+
+        echo '<div style="width: 600px;">';
+
+        $this->p->render();
+        echo '</div>';
+
+        $this->runCmd($cmd, 'progressBar');
+         $this->p->setProgressBarProgress(100);
     }
 }
