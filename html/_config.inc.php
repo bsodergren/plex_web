@@ -3,11 +3,12 @@
 use Camoo\Config\Config;
 use Plex\Core\RoboLoader;
 use Plex\EnvLoader;
-use UTMTemplate\Template;
 use Tracy\Debugger;
+use UTMTemplate\Template;
+
 // session_abort();
 // session_destroy();
-
+error_reporting(\E_ALL & ~\E_NOTICE & ~\E_WARNING);
 session_start();
 define('__ROOT_DIRECTORY__', dirname(realpath($_SERVER['CONTEXT_DOCUMENT_ROOT']), 1));
 define('__PLEX_APP_DIR__', __ROOT_DIRECTORY__.'/src');
@@ -19,7 +20,7 @@ set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
 
 require_once __COMPOSER_LIB__.'/autoload.php';
 // Debugger::enable();
-Debugger::enable(Debugger::Development);
+// Debugger::enable(Debugger::Development);
 // require_once __PHP_CONFIG_DIR__.'/MyDumper.php';
 $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
@@ -38,13 +39,13 @@ require_once __PHP_CONFIG_DIR__.'/database.php';
 require_once __PHP_CONFIG_DIR__.'/Functions.php';
 
 Template::$registeredCallbacks = [
-    '\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK'      => 'callback_parse_function',
+    '\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK' => 'callback_parse_function',
     '\Plex\Template\Callbacks\FunctionCallback::SCRIPTINCLUDE_CALLBACK' => 'callback_script_include'];
 
 Template::$USER_TEMPLATE_DIR = __HTML_TEMPLATE__;
 Template::$TEMPLATE_COMMENTS = true;
-Template::$SITE_URL          = __LAYOUT_URL__;
-Template::$SITE_PATH         = __LAYOUT_PATH__;
+Template::$SITE_URL = __LAYOUT_URL__;
+Template::$SITE_PATH = __LAYOUT_PATH__;
 RoboLoader::loadPage();
 
 $const_keys = array_keys(get_defined_constants(true)['user']);
