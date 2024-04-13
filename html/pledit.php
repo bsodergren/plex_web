@@ -75,8 +75,8 @@ Render::Display($html);
 
 if (isset($_REQUEST['download'])) {
     if (file_exists($file)) {
-      //  $pl->playlistDownload($file);
-        $pl->mediadownload();
+        $pl->playlistDownload($file);
+      //  $pl->mediadownload();
         echo "fadsfsda";
     }
     exit;
