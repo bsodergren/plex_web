@@ -141,7 +141,9 @@ function updateFavVideo()
         cache: false,
         success: function (data) {
                 const videoCell = document.getElementById('FavoriteButton');
+                if(videoCell != null){
                 videoCell.innerHTML = data;
+                }
         },
     });
 }
