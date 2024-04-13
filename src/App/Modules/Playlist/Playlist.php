@@ -89,7 +89,7 @@ class Playlist
     public function getPlaylistSelectOptions($playlist_id = null,$disabled_id = null)
     {
         $selected = [];
-
+        $plArray=[];
 
         if($playlist_id !== null){
             $selected =  ['value'=>$playlist_id];

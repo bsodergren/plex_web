@@ -18,9 +18,11 @@ use Plex\Template\Functions\Traits\Video;
 class GridDisplay extends VideoDisplay
 {
     use Video;
+    private $totalRecords;
     public $showVideoDetails = false;
     private $template_base = '';
     public $VideoPlaylists = [];
+    private $AltClass;
 
     public function __construct($template_base = 'filelist')
     {
@@ -33,6 +35,7 @@ class GridDisplay extends VideoDisplay
     public function gridPlaylistDropdown($playlists, $video_id)
     {
         $current = [];
+        $playlist_html = '';
         $ids = Playlist::getVideoPlaylists($video_id);
         if (\count($ids) > 0) {
             foreach ($ids as $k => $pl) {
@@ -102,9 +105,14 @@ class GridDisplay extends VideoDisplay
         }
         $thumbnail = '';
         if (OptionIsTrue(SHOW_THUMBNAILS)) {
+            $plLinks = null;
+            if($playlist_html !== null)
+            {
+               $plLinks = str_replace('VIDEO_ID', $videoInfo['id'], $playlist_html);
+            }
             $thumbnail = Render::html(
                 'grid/cell/thumbnail',
-                ['PLAYLIST_LINKS' => str_replace('VIDEO_ID', $videoInfo['id'], $playlist_html),
+                ['PLAYLIST_LINKS' => $plLinks,
                     'THUMBNAIL' => $this->fileThumbnail($videoInfo['id']),
                     'ROW_ID' => $videoInfo['id'],
                     'VIDEO_DATA' => $videoFields,
@@ -136,6 +144,7 @@ class GridDisplay extends VideoDisplay
     {
         global $_SESSION,$_REQUEST;
         global $sort_type_map;
+        $cell_html = '';
         $db = PlexSql::$DB;
         if (isset($page_array['total_files'])) {
             $this->totalRecords = $page_array['total_files'];
@@ -156,11 +165,10 @@ class GridDisplay extends VideoDisplay
                 'ROW_ID' => $videoRow['id']]
             );
         }
-
         $table_body_html = Render::html('grid/table', [
-            'HIDDEN_STUDIO_NAME' => Elements::add_hidden('studio', $studio).Elements::add_hidden('substudio', $substudio),
+          //  'HIDDEN_STUDIO_NAME' => Elements::add_hidden('studio', $studio).Elements::add_hidden('substudio', $substudio),
             'ROWS_HTML' => $cell_html,
-            'INFO_NAME' => $sort_type_map['map'][$_REQUEST['sort']],
+          //  'INFO_NAME' => $sort_type_map['map'][$_REQUEST['sort']],
         ]);
 
         return $table_body_html;

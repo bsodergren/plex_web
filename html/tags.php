@@ -30,7 +30,7 @@ if (isset($uri)) {
 $redirect_string = 'search.php'.$request_key;
 $field           = 'genre';
 
-define('__TAG_CAT_CLASS__', ''); // border border-1 border-black');
+// define('__TAG_CAT_CLASS__', ''); // border border-1 border-black');
 
 $html = Render::html('cloud/main',
     [

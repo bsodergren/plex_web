@@ -6,7 +6,6 @@ use Plex\Core\Request;
 use Plex\Core\Utilities\PlexArray;
 use Plex\Modules\Display\Display;
 use Plex\Template\Render;
-use UTM\Utilities\Option;
 
 /**
  * plex web viewer.
@@ -16,7 +15,6 @@ class AlphaSort extends Render
     private static $ShowAlpha = false;
     private $templateDir = 'elements/AlphaSort';
 
-
     private static $alpha_sort_map = [
         'm.studio', 'm.substudio', 'm.artist', 'm.title', 'v.filename', 'm.genre', 'genre',
     ];
@@ -24,6 +22,10 @@ class AlphaSort extends Render
     public function display_alphaSort($offset = 0, $len = 13)
     {
         $html = '';
+        $sort = '';
+        $current = '';
+        $request_uri = '';
+
         $url_array = Request::$url_array;
         $sep = '&';
         if ('' != $url_array['query_string']) {
@@ -64,7 +66,6 @@ class AlphaSort extends Render
 
         $range = \array_slice($charrange, $offset, $len);
         $max = \count($range);
-
 
         foreach ($range as $char) {
             $bg = 'btn-primary ';

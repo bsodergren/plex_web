@@ -9,7 +9,7 @@ use UTMTemplate\HTML\Elements;
 require_once '_config.inc.php';
 $playlist_ids = [];
 $queries      = [];
-
+utmdump($_REQUEST);
 foreach (Request::$tag_array as $tag) {
     if (isset($_REQUEST[$tag])) {
         if (is_array($_REQUEST[$tag])) {
@@ -25,13 +25,11 @@ if (!is_array($_REQUEST['field'])) {
     $_REQUEST['field'] = $fieldArray;
 }
 
-utmdump([__LINE__, $_REQUEST]);
 
 if (count($queries) > 0) {
     $_REQUEST['query'] = $queries;
 }
 
-utmdump([__LINE__, $_REQUEST]);
 
 if (isset($_REQUEST['sort'])) {
     $uri['sort'] = $_REQUEST['sort'];
@@ -57,7 +55,7 @@ if (isset($uri)) {
 
 $redirect_string = 'search.php'.$request_key;
 
-if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
+if ('Search' == isset($_REQUEST['submit']) || isset($_REQUEST['query'])) {
     $search = new FileListing(new Request());
 
     [$results,$pageObj] = $search->getSearchResults($_REQUEST['field'][0], $_REQUEST['query']);
@@ -72,7 +70,13 @@ if ('Search' == $_REQUEST['submit'] || isset($_REQUEST['query'])) {
     if (array_key_exists('view', $_REQUEST)) {
         $view = $_REQUEST['view'];
     }
-    $msg      = 'Showing '.$pageObj->totalRecords.' results for for '.$_REQUEST['query'];
+    if(is_array($_REQUEST['query'])) {
+        $string = implode(", ", $_REQUEST['query']);
+    } else {
+        $string = $_REQUEST['query'];
+    }
+   // utmdump($_REQUEST['query']);
+    $msg      = 'Showing '.$pageObj->totalRecords.' results for for '.$string;
     $msg      = strtolower(str_replace('-', '.', $msg));
     $msg      = strtolower(str_replace('_', ' ', $msg));
     $html_msg = Render::html('search/search_msg', ['MSG' => $msg]);
@@ -91,7 +95,7 @@ $search_types = [
     'keyword',
     'genre',
 ];
-
+$checkboxes = '';
 foreach ($search_types as $key) {
     // $checkbox = Elements::draw_checkbox("searchField[]", $key, $key);
     $checkboxes .= Render::html('search/checkboxes', ['NAME' => $key]);
@@ -99,7 +103,7 @@ foreach ($search_types as $key) {
 
 $body = Render::html('search/search', [
     'HIDDEN_IDS'     => Elements::add_hidden('playlist', $playlist_ids_str),
-    'HIDDEN_STUDIO'  => Elements::add_hidden('studio', $_REQUEST['query'].' Search'),
+    'HIDDEN_STUDIO'  => Elements::add_hidden('studio', $string.' Search'),
     'SEARCH_RESULTS' => $search_results,
     'CHECKBOXES'     => $checkboxes,
     'HTML_MSG'       => $html_msg,

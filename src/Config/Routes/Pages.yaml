@@ -26,14 +26,14 @@ list:
     PAGE_TITLE: "List view"
     SHOW_SORT: true
     SHOW_PAGES: true
-    ALPHA_SORT: true
+    ALPHA_SORT: false
     SHOW_RATING: true
 
 grid:
     PAGE_TITLE: "Grid View"
     SHOW_SORT: true
     SHOW_PAGES: true
-    ALPHA_SORT: true
+    ALPHA_SORT: false
     SHOW_RATING: true
 editor:
     PAGE_TITLE: "Wordmap Editor"

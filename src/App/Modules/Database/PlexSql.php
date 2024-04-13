@@ -195,7 +195,8 @@ class PlexSql extends \MysqliDb
         $sql .= 'INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on v.video_key=m.video_key '.self::getLibrary();
         $sql .= 'LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.' c on m.video_key=c.video_key ';
 
-        // $where = $this->pwhere("(artist is not null and artist != 'Missing')");
+        $where = ''; // $this->pwhere("(artist is not null and artist != 'Missing')");
+
         return $this->db->query($sql.$where);
     }
 

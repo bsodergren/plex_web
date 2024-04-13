@@ -23,7 +23,7 @@ class Request
             'Duration' => 'v.duration',
             'Date Added' => 'v.added',
             'Rating' => 'v.rating',
-            'Playlist' => 'p.playlist_id',
+            // 'Playlist' => 'p.playlist_id',
         ],
         'map' => [
             'v.rating' => 'Rating',
@@ -36,7 +36,7 @@ class Request
             'v.duration' => 'Duration',
             'v.added' => 'Date Added',
             'm.genre' => 'Genre',
-            'p.playlist_id' => 'Playlist',
+            // 'p.playlist_id' => 'Playlist',
         ],
     ];
     public static $sort_types = [
@@ -47,7 +47,7 @@ class Request
 
         'Artist' => 'm.artist',
         'Filename' => 'v.filename',
-        'Playlist' => 'p.playlist_id',
+        // 'Playlist' => 'p.playlist_id',
         'File size' => 'v.filesize',
         'Duration' => 'v.duration',
         'Date Added' => 'v.added',
@@ -147,11 +147,12 @@ class Request
 
         $request_key = '';
         if ('' != $_SERVER['QUERY_STRING']) {
-            $this->query_string = '&'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
-            $request_string_query = '?'.urlQuerystring($_SERVER['QUERY_STRING'], 'itemsPerPage');
-            $query_string_no_current = '&'.urlQuerystring($_SERVER['QUERY_STRING'], 'current');
+            $this->query_string = '&'.urlQuerystring($_SERVER['QUERY_STRING'], ['itemsPerPage']);
+            $request_string_query = '?'.urlQuerystring($_SERVER['QUERY_STRING'], ['itemsPerPage']);
+            $query_string_no_current ='&' . urlQuerystring($_SERVER['QUERY_STRING'], ['current']);
+           // utmdd($query_string_no_current);
 
-            $query_string_no_current = '&'.urlQuerystring($query_string_no_current, 'itemsPerPage');
+            $query_string_no_current = '&'.urlQuerystring($query_string_no_current, ['itemsPerPage']);
             // utmdd([$_SERVER['QUERY_STRING'],$query_string_no_current]);
         }
 
@@ -258,10 +259,10 @@ class Request
         return $uri_query;
     } // end uri_SQLQuery()
 
-    public static function urlQuerystring($input_string, $exclude = '', $query = false)
+    public static function urlQuerystring($input_string, $exclude = [], $query = false)
     {
         $query_string = '';
-
+        $parts = [];
         if ('' != $input_string) {
             parse_str($input_string, $query_parts);
             foreach ($query_parts as $field => $value) {
@@ -282,8 +283,12 @@ class Request
                     }
                 }
             }
+            if(count($parts) == 0)  {
+                return '';
+            }
             if (false === $query) {
                 $query_string = uri_String($parts, '');
+
             } else {
                 $parts = array_reverse($parts);
                 array_pop($parts);
@@ -299,7 +304,7 @@ class Request
 
     public static function uri_String($request_array, $start = '?')
     {
-        // utmdd($request_array);
+        $uri_array = [];
         foreach ($request_array as $key => $value) {
             if ('direction' == $key) {
                 continue;
@@ -310,11 +315,13 @@ class Request
                 $uri_array[] = $key.'='.urlencode(implode(',', $value));
                 // }
             } else {
+                if($value !== null) {
                 $uri_array[] = $key.'='.urlencode($value);
+                }
             }
         }
 
-        if (\is_array($uri_array)) {
+        if (count($uri_array) > 0) {
             $uri_string = implode('&', $uri_array);
 
             return $start.$uri_string;

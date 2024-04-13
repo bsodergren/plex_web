@@ -109,7 +109,7 @@ function FavoriteVideo(action,videoid=null)
     } else {
         favButton = favButton + '_' +  videoid
     }
-    console.log(action + ' ' + videoid)
+    // console.log(action + ' ' + videoid)
     $.ajax({
         url: "process.php",
         type: "POST",
@@ -119,7 +119,7 @@ function FavoriteVideo(action,videoid=null)
         },
         cache: false,
         success: function (data) {
-            console.log(data)
+            // console.log(data)
                 const videoCell = document.getElementById(favButton);
                 videoCell.innerHTML = data;
         },

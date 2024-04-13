@@ -11,19 +11,17 @@ trait TagCloud
 
     private  function getKeywordSQL($table,$field,$where = '')
     {
-    
+
 
        $sql = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field;
        $sql .= ", ',', n.digit+1), ',', -1) val FROM ".$table;
        $sql .= ' INNER JOIN (SELECT 0 digit UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n';
        $sql .= ' ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit '.$where.' ORDER BY `val` ASC';
-       UtmDump($sql);
                  return $sql;
     }
     private  function getKeywordList($field = 'keyword')
     {
          $db = PlexSql::$DB;
-        global $_SESSION;
         $where = PlexSql::getLibrary();
         $where = str_replace('AND', 'WHERE', $where);
         $where = str_replace('m.library', 'library', $where);
@@ -42,10 +40,9 @@ trait TagCloud
         $var = $this->parseVars($matches);
         $field = $var['field'];
 
-        
-        global $_SESSION;
 
-       
+
+
         // foreach ($qlist as $k => $val) {
         //     $tagArray[] = $val['genre'];
         // }

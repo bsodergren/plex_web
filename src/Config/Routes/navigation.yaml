@@ -50,11 +50,11 @@ artist:
     text: !php/const NavBar_Text_Artists
     icon: ""
     studio: false
-search:
-    url: search.php
-    text: !php/const NavBar_Text_Search
-    icon: ""
-    studio: false
+# search:
+#     url: search.php
+#     text: !php/const NavBar_Text_Search
+#     icon: ""
+#     studio: false
 extra:
     text: "Settings"
     dropdown: [{
