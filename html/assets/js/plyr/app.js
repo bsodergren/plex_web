@@ -442,18 +442,6 @@ const PlayerApp = {
         const playerText = document.querySelector(".player_text");
         const videoTextvideoid = document.querySelector(".video_text");
 
-
-        const ratingInput = document.querySelector(".rating.rating-input");
-
-        ratingInput.setAttribute(
-            "id",
-            "ratingInput_"+item.getAttribute("data-videoid")
-        );
-        ratingInput.setAttribute(
-            "value",
-            item.getAttribute("data-rating")
-        );
-
         textvideoid.value = item.getAttribute("data-videoid");
         playerText.setAttribute(
             "data-videoid",
