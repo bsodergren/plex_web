@@ -157,7 +157,7 @@ const PlayerApp = {
             volume: 1,
             clickToPlay: true,
             hideControlsOnPause: false,
-            hideControls: false,
+            hideControls: true,
             disableContextMenu: true,
             storage: {
                 enabled: false,
@@ -337,7 +337,7 @@ const PlayerApp = {
         });
 
         document.addEventListener("keydown", (event) => {
-            console.log(event.key);
+            // console.log(event.key);
             if (event.key === "n") {
                 this.playVisibleItem("next");
             }
@@ -403,40 +403,81 @@ const PlayerApp = {
 
         item.classList.add("active");
         // Get the text-title span element
+
+
+
+
         const textTitle = document.querySelector(".text_title");
+        const videotitle = document.querySelector(".video_title");
+
         textTitle.textContent = item.getAttribute("data-title");
+        videotitle.textContent = textTitle.textContent
+
         const textartist = document.querySelector(".text_artist");
+        const videoartist = document.querySelector(".video_artist");
 
         if (item.getAttribute("data-artist") == "") {
             textartist.classList.add("hidden"); // Add 'hidden' class
             textartist.textContent = "";
+
+            videoartist.classList.add("hidden"); // Add 'hidden' class
+            videoartist.textContent = "";
         } else {
             textartist.textContent = item.getAttribute("data-artist");
+            videoartist.textContent =  textartist.textContent
+
         }
 
         const textgenre = document.querySelector(".text_genre");
+        const videogenre = document.querySelector(".video_genre");
         textgenre.textContent = item.getAttribute("data-genre");
+        videogenre.textContent =  textgenre.textContent
 
         const textstudio = document.querySelector(".text_studio");
+        const videostudio = document.querySelector(".video_studio");
         textstudio.textContent = item.getAttribute("data-studio");
+        videostudio.textContent = textstudio.textContent
 
         const textvideoid = document.querySelector("#videoPlaylistVideoId");
-        const playervideoid = document.querySelector(".player_text");
+        const playerText = document.querySelector(".player_text");
+        const videoTextvideoid = document.querySelector(".video_text");
+
+
+        const ratingInput = document.querySelector(".rating.rating-input");
+
+        ratingInput.setAttribute(
+            "id",
+            "ratingInput_"+item.getAttribute("data-videoid")
+        );
+        ratingInput.setAttribute(
+            "value",
+            item.getAttribute("data-rating")
+        );
+
         textvideoid.value = item.getAttribute("data-videoid");
-        playervideoid.setAttribute(
+        playerText.setAttribute(
+            "data-videoid",
+            item.getAttribute("data-videoid")
+        );
+        videoTextvideoid.setAttribute(
             "data-videoid",
             item.getAttribute("data-videoid")
         );
 
-        console.log("data video id", item.getAttribute("data-videoid"));
+        // console.log("data video id", item.getAttribute("data-videoid"));
 
         // Get the player_text anchor element
-        const playerText = document.querySelector(".player_text");
 
         playerText.setAttribute(
             "onclick",
             "videoCard(" + textvideoid.value + ")"
         );
+        videoTextvideoid.setAttribute(
+            "onclick",
+            "videoCard(" + textvideoid.value + ")"
+        );
+
+
         playerText.setAttribute("href", item.getAttribute("data-pUrl"));
         updateOptions(item.getAttribute("data-videoid"));
         this.player.source = {
@@ -446,6 +487,7 @@ const PlayerApp = {
             poster: track.poster,
         };
         this.player.play();
+
         updateFavVideo();
     },
 
@@ -580,6 +622,7 @@ const PlayerApp = {
             leftColumn.classList.toggle("expanded");
             rightColumn.classList.toggle("hidden");
             resizeWindow(!leftColumn.classList.contains("expanded"));
+
         });
     },
 
@@ -717,6 +760,8 @@ document.addEventListener("DOMContentLoaded", () => {
     PlayerApp.initialize();
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0;
+    // factory(window.jQuery);
+
     // resizeWindow(false)
 });
 
@@ -762,3 +807,4 @@ function updateOptions(id) {
         },
     });
 }
+

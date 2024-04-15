@@ -2,11 +2,11 @@
 
 namespace Plex\Modules\Video\Playlist;
 
-use Plex\Template\Render;
-use Plex\Modules\Video\Player;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Playlist\Playlist;
+use Plex\Modules\Video\Player;
 use Plex\Template\Functions\Functions;
+use Plex\Template\Render;
 
 class PlyrList extends Player
 {
@@ -23,6 +23,7 @@ class PlyrList extends Player
         $this->videoTemplate = parent::$PlayerTemplate;
         $this->db = PlexSql::$DB;
     }
+
     public function getplaylistId()
     {
         if (\array_key_exists('playlist_id', $_REQUEST)) {
@@ -48,12 +49,14 @@ class PlyrList extends Player
 
         return $this->playlist_id;
     }
+
     private function getPlaylistItem($row, $class)
     {
         $title = $row['title'];
         if ('' == $row['title']) {
             $title = $row['filename'];
         }
+        utmdump($row);
 
         return Render::html(
             $this->videoTemplate.'/container/item',
@@ -62,6 +65,8 @@ class PlyrList extends Player
                 'STUDIO' => $row['studio'],
                 'ARTIST' => $row['artist'],
                 'GENRE' => $row['genre'],
+                'Rating' => $row['rating'],
+
                 'PLAYLIST_ID' => $this->playlist_id,
                 'CLASS_ACTIVE' => $class,
                 'Videoid' => $row['playlist_video_id'],
@@ -135,5 +140,4 @@ class PlyrList extends Player
         $this->js_params['PREV_VIDEO_ID'] = $prev_video_id;
         $this->js_params['COMMENT'] = '';
     }
-
 }

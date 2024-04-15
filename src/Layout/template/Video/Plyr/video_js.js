@@ -59,9 +59,9 @@ function resizeWindow(large)
     heightMulti = .68
     if(large == false) {
         heightMulti = .85
-    }        
+    }
         windowHeight = videoHeight * heightMulti
-    
+
     text= "Resising Window to W:"+windowWidth + " H:" + windowHeight + ", x"+heightMulti+" Playlist:"+large;
     console.log(text)
 

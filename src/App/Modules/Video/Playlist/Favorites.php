@@ -30,6 +30,7 @@ class Favorites extends Player
         if ('' == $row['title']) {
             $title = $row['filename'];
         }
+        utmdump($row);
 
         return Render::html(
             $this->videoTemplate.'/container/item',
@@ -38,6 +39,7 @@ class Favorites extends Player
                 'STUDIO' => $row['studio'],
                 'ARTIST' => $row['artist'],
                 'GENRE' => $row['genre'],
+                'Rating' => $row['rating'],
                 'CLASS_ACTIVE' => $class,
                 'Videoid' => $row['id'],
                 'VIDEO_URL' => $this->getVideoURL($row['id']),
@@ -64,7 +66,7 @@ class Favorites extends Player
                 // $this->js_params['PLAYLIST_ID'] = 1;
                 // $this->js_params['NEXT_VIDEO_ID'] = $next_video_id;
                 // $this->js_params['PREV_VIDEO_ID'] = $prev_video_id;
-                 $this->js_params['COMMENT'] = '';
+                $this->js_params['COMMENT'] = '';
             }
         }
     }
