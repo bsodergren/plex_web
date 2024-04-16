@@ -23,7 +23,7 @@ class Player
     public $params;
 
     public $js_params;
-    public $playlist;
+    public $playlistObj;
 
     public $favorites;
     public $showFavorites = false;
@@ -42,6 +42,27 @@ class Player
         'useVideoJs' => false,
     ];
 
+    private $VideoParams = [
+        'title' => 'PAGE_TITLE',
+        'thumbnail' => 'thumbnail',
+
+        'studio' => 'Video_studio',
+        'substudio' => 'Video_substudio',
+
+        'genre' => 'Video_Genre',
+        'artist' => 'Video_Artist',
+        'rating' => 'STAR_RATING',
+        'video_file' => 'VIDEO_URL',
+        'video_title' => 'active_title',
+        'id' => 'Videoid',
+        'height' => 'height',
+    ];
+
+    private $VideoJsParams = [
+        'width' => 'width',
+        'height' => 'height',
+    ];
+
     public function __construct()
     {
         self::$PlayerTemplate = $this->VideoTemplate;
@@ -55,6 +76,17 @@ class Player
         }
     }
 
+    private function parseParams($row)
+    {
+        foreach ($row as $field => $value) {
+            if (array_key_exists($field, $this->VideoParams)) {
+                $this->params[$this->VideoParams[$field]] = $value;
+            }
+        }
+
+        // utmdd($this->params);
+    }
+
     public function PlayVideo()
     {
         $this->PlayerClass = new Plyr($this);
@@ -64,9 +96,9 @@ class Player
         if (\is_object($this->favorites)) {
             $this->params = array_merge($this->params, $this->favorites->params);
             $this->js_params = array_merge($this->js_params, $this->favorites->js_params);
-        } elseif (\is_object($this->playlist)) {
-            $this->params = array_merge($this->params, $this->playlist->params);
-            $this->js_params = array_merge($this->js_params, $this->playlist->js_params);
+        } elseif (null !== $this->playlistObj) {
+            $this->params = array_merge($this->params, $this->playlistObj->params);
+            $this->js_params = array_merge($this->js_params, $this->playlistObj->js_params);
         }
         $this->getVideo();
     }
@@ -120,7 +152,7 @@ class Player
         $result = $res[0];
         $active_title = null;
         if (null === $active_title) {
-            $active_title = $result['filename'];
+            $result['active_title'] = $result['filename'];
         }
         if (null === $result['width']) {
             $result['width'] = 1920;
@@ -129,10 +161,11 @@ class Player
             $result['height'] = 1080;
         }
 
-        $video_file = $this->getVideoURL($result['id']);
+        $result['video_file'] = $this->getVideoURL($result['id']);
+        $this->parseParams($result);
 
-        $this->params['PAGE_TITLE'] = $result['title'];
-        $this->params['thumbnail'] = APP_HOME.$result['thumbnail'];
+        // $this->params['PAGE_TITLE'] = $result['title'];
+        // $this->params['thumbnail'] = APP_HOME.$result['thumbnail'];
 
         if (true == FavoriteDB::get($this->id)) {
             $this->params['FAVORITE'] = FavoriteDisplay::RemoveFavoriteVideo();
@@ -140,15 +173,15 @@ class Player
             $this->params['FAVORITE'] = FavoriteDisplay::addFavoriteVideo();
         }
 
-        $this->params['Video_studio'] = $result['studio'];
-        $this->params['Video_substudio'] = $result['substudio'];
-        $this->params['Video_Genre'] = $result['genre'];
-        $this->params['Video_Artist'] = $result['artist'];
-        $this->params['STAR_RATING'] = $result['rating'];
-        $this->params['VIDEO_URL'] = $video_file;
-        $this->params['height'] = $result['height'];
-        $this->params['VIDEO_TITLE'] = $active_title;
-        $this->params['Videoid'] = $result['id'];
+        // $this->params['Video_studio'] = $result['studio'];
+        // $this->params['Video_substudio'] = $result['substudio'];
+        // $this->params['Video_Genre'] = $result['genre'];
+        // $this->params['Video_Artist'] = $result['artist'];
+        // $this->params['STAR_RATING'] = $result['rating'];
+        // $this->params['VIDEO_URL'] = $video_file;
+        // $this->params['height'] = $result['height'];
+        // $this->params['VIDEO_TITLE'] = $active_title;
+        // $this->params['Videoid'] = $result['id'];
         $this->js_params['height'] = $result['height'];
         $this->js_params['width'] = $result['width'];
     }
@@ -177,18 +210,16 @@ class Player
 
     public function getPlaylist()
     {
-        $this->playlist = new PlyrList();
-        $this->playlist_id = $this->playlist->getplaylistId();
-        if($this->playlist_id === null) {
-            unset($this->playlist);
+        $this->playlistObj = new PlyrList();
+        $this->playlist_id = $this->playlistObj->getplaylistId();
+        if (null === $this->playlist_id) {
+            $this->playlistObj = null;
         } else {
-        $this->id = $this->playlist->id;
-        $this->playlist->playlist_id = $this->playlist_id;
-        $this->playlist->getPlaylist();
+            $this->id = $this->playlistObj->id;
+            $this->playlistObj->playlist_id = $this->playlist_id;
+            $this->playlistObj->getPlaylist();
         }
     }
-
-
 
     public function addChapter()
     {

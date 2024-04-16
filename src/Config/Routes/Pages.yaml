@@ -42,6 +42,8 @@ search:
     BOTTOM_NAV: true
     SHOW_SORT: true
     SHOW_PAGES: true
+    SHOW_RATING: true
+
 genre:
     PAGE_TITLE: "Genre Selection"
     BOTTOM_NAV: false

@@ -55,19 +55,8 @@ class VideoDb
 
     public function getVideoDetails($id)
     {
-        $fieldArray = array_merge(self::$VideoMetaFields,
-            self::$VideoInfoFields, self::$VideoFileFields, self::$FavoriteFields);
-
-        $sql = 'SELECT ';
-        $sql .= implode(',', $fieldArray);
-
-        $sql .= ' FROM '.Db_TABLE_VIDEO_FILE.' v ';
-        $sql .= ' INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on v.video_key=m.video_key '; // .PlexSql::getLibrary();
-        $sql .= ' LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.' c on m.video_key=c.video_key ';
-        $sql .= ' LEFT JOIN '.Db_TABLE_FAVORITE_VIDEOS.' f on f.video_id=v.id ';
-        $sql .= ' LEFT OUTER JOIN '.Db_TABLE_VIDEO_INFO.' i on v.video_key=i.video_key ';
+        $sql = self::getVideoQuery();
         $sql .= " WHERE v.id = '".$id."'";
-        utmdump($sql);
         FavoriteDB::get($id);
         return $this->db->query($sql);
     }

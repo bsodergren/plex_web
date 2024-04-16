@@ -2,15 +2,15 @@
 
 namespace Plex\Modules\Display\Layout;
 
+use Plex\Modules\Database\FavoriteDB;
+use Plex\Modules\Database\PlexSql;
+use Plex\Modules\Display\FavoriteDisplay;
+use Plex\Modules\Display\VideoDisplay;
+use Plex\Modules\Playlist\Playlist;
+use Plex\Modules\VideoCard\VideoCard;
+use Plex\Template\Functions\Traits\Video;
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
-use Plex\Modules\Database\PlexSql;
-use Plex\Modules\Playlist\Playlist;
-use Plex\Modules\Database\FavoriteDB;
-use Plex\Modules\VideoCard\VideoCard;
-use Plex\Modules\Display\VideoDisplay;
-use Plex\Modules\Display\FavoriteDisplay;
-use Plex\Template\Functions\Traits\Video;
 
 /**
  * plex web viewer.
@@ -18,7 +18,7 @@ use Plex\Template\Functions\Traits\Video;
 class GridDisplay extends VideoDisplay
 {
     use Video;
-    private $totalRecords;
+    public $totalRecords;
     public $showVideoDetails = false;
     private $template_base = '';
     public $VideoPlaylists = [];
@@ -44,17 +44,20 @@ class GridDisplay extends VideoDisplay
         }
 
         foreach ($playlists as $p) {
-            if (\array_key_exists($p['id'], $current)) {
-                continue;
+            if (\array_key_exists('id', $p)) {
+                if (\array_key_exists($p['id'], $current)) {
+                    continue;
+                }
+
+                $playlist_html .= Render::html(
+                    'grid/playlist_link',
+                    [
+                        'PL_NAME' => $p['name'],
+                        'PL_ID' => $p['id'],
+                        'VIDEO_DATA' => 'VIDEO_ID',
+                    ]
+                );
             }
-            $playlist_html .= Render::html(
-                'grid/playlist_link',
-                [
-                    'PL_NAME' => $p['name'],
-                    'PL_ID' => $p['id'],
-                    'VIDEO_DATA' => 'VIDEO_ID',
-                ]
-            );
         }
 
         return $playlist_html;
@@ -106,9 +109,8 @@ class GridDisplay extends VideoDisplay
         $thumbnail = '';
         if (OptionIsTrue(SHOW_THUMBNAILS)) {
             $plLinks = null;
-            if($playlist_html !== null)
-            {
-               $plLinks = str_replace('VIDEO_ID', $videoInfo['id'], $playlist_html);
+            if (null !== $playlist_html) {
+                $plLinks = str_replace('VIDEO_ID', $videoInfo['id'], $playlist_html);
             }
             $thumbnail = Render::html(
                 'grid/cell/thumbnail',
@@ -174,20 +176,14 @@ class GridDisplay extends VideoDisplay
         return $table_body_html;
     }
 
-public function favorite($videoid){
-    if(FavoriteDB::get($videoid) == true) {
-        $favoriteBtn = FavoriteDisplay::RemoveFavoriteVideo($videoid);
-    } else  {
-        $favoriteBtn = FavoriteDisplay::addFavoriteVideo($videoid);
+    public function favorite($videoid)
+    {
+        if (true == FavoriteDB::get($videoid)) {
+            $favoriteBtn = FavoriteDisplay::RemoveFavoriteVideo($videoid);
+        } else {
+            $favoriteBtn = FavoriteDisplay::addFavoriteVideo($videoid);
+        }
+
+        return $favoriteBtn;
     }
-
-  return Render::html(
-        'grid/cell/ListsRow',
-        [
-            'VALUE' => $favoriteBtn,
-            'ALT_CLASS' => $this->AltClass,
-
-        ]
-    );
-}
 }

@@ -65,7 +65,7 @@ class PlyrList extends Player
                 'STUDIO' => $row['studio'],
                 'ARTIST' => $row['artist'],
                 'GENRE' => $row['genre'],
-                'Rating' => $row['rating'],
+                // 'Rating' => $row['rating'],
 
                 'PLAYLIST_ID' => $this->playlist_id,
                 'CLASS_ACTIVE' => $class,

@@ -21,6 +21,49 @@ function topFunction() {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
+function getCurrentPage(){
+
+}
+
+function prevPage(){
+ const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    var currentPage = urlParams.get("current");
+    urlParams.delete("current");
+    nextPage = parseInt(currentPage) - 1;
+if(nextPage == 0) {
+    return false;
+}
+   urlParams.append("current",nextPage)
+   var url = window.location.pathname + '?' + urlParams.toString()
+   window.location.href = url
+}
+function nextPage(){
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    var currentPage = urlParams.get("current");
+    if(currentPage == null){
+        currentPage = 1;
+    }
+    urlParams.delete("current");
+    const lastPageValue = document.querySelector(".page-link.lastPage");
+
+    var lastPage =  lastPageValue.textContent
+     if(lastPage == currentPage) {
+
+         return false;
+     }
+
+    nextPage = parseInt(currentPage) + 1;
+   urlParams.append("current",nextPage)
+   var url = window.location.pathname + '?' + urlParams.toString()
+   window.location.href = url
+
+}
+
 const writeLog = function (msg) {
     let date = new Date();
     window.console.log(date.toISOString() + " " + msg);

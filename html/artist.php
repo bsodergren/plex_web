@@ -84,7 +84,7 @@ foreach ($sortedArray as $num => $artistArray) {
         $name = strtolower(str_replace('-', '.', $artist));
         $name = strtolower(str_replace('_', ' ', $name));
         $link_array[] = Render::html(
-            'VideoCard/search_link',
+            VideoCard::$template.'/search_link',
             [
                 'KEY' => $field,
                 'QUERY' => urlencode($name),

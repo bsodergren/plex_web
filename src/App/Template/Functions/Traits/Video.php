@@ -2,12 +2,13 @@
 
 namespace Plex\Template\Functions\Traits;
 
-use Plex\Modules\Database\PlexSql;
-use Plex\Modules\Playlist\Playlist;
-use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
 use UTM\Utilities\Option;
 use UTMTemplate\HTML\Elements;
+use Plex\Modules\Database\PlexSql;
+use Plex\Modules\Playlist\Playlist;
+use Plex\Modules\VideoCard\VideoCard;
+use Plex\Template\Functions\Functions;
 
 trait Video
 {
@@ -135,7 +136,7 @@ trait Video
 
             $window = basename($var['href'], '.php').'_popup';
             $url = __URL_HOME__.'/'.$var['href'].$req.$val['playlist_id'];
-            $class = 'btn btn-outline-primary';
+            $class = 'btn btn-primary';
             $extra = '';
             $javascript = " onclick=\"popup('".$url."', '".$window."')\"";
             $text = Playlist::getPlaylistName($val['playlist_id']);
@@ -189,7 +190,7 @@ trait Video
             $row_preview_image = $this->filePreview($row_id);
             $params['width'] = 325;
             $params['Thumbnail_html'] = Render::html(
-                'VideoCard/thumbnail',
+                VideoCard::$template.'/thumbnail',
                 [
                     'PREVIEW' => $row_preview_image,
                     'THUMBNAIL' => $thumbnail,
@@ -200,7 +201,7 @@ trait Video
         }
 
         return Render::html(
-            'VideoCard/thumbnail_wrapper',
+            VideoCard::$template.'/thumbnail_wrapper',
             $params);
     }
 

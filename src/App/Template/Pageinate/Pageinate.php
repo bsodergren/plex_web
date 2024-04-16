@@ -68,11 +68,16 @@ class Pageinate extends Paginator
         }
 
         $this->results = $db->withTotalCount()->get($table);
-
         $this->totalRecords = $db->totalCount;
         $this->limit_array  = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];
-
         $this->offset = ($this->currentPage - 1) * $this->itemsPerPage;
+
+        if($this->totalRecords < $this->offset)
+        {
+            $this->currentPage = ($this->currentPage - 1);
+            $this->limit_array  = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];
+            $this->offset = ($this->currentPage - 1) * $this->itemsPerPage;
+        }
 
         $this->paginator = new Paginator(
             $this->totalRecords,
@@ -131,7 +136,9 @@ class Pageinate extends Paginator
         if (0 == \count($pages)) {
             $pill_start_class = 'rounded-pill';
         }
-        foreach ($pages as $page) {
+
+        $lastKey = array_key_last($pages);
+        foreach ($pages as $i => $page) {
             // $params = [];
 
             if ($page['isCurrent'] && false === $next_page) {
@@ -139,6 +146,11 @@ class Pageinate extends Paginator
             } else {
                 $pill_end_class = '';
             }
+
+            if($i == $lastKey) {
+                $pill_end_class = $pill_end_class.' lastPage';
+            }
+
             if ($page['url']) {
                 $params = [
                     'LI_CLASS' => $page['isCurrent'] ? ' class="page-item  active '.$pill_end_class.'"' : ' class="page-item '.$pill_end_class.'" ',

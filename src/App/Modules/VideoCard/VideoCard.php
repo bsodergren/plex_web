@@ -20,8 +20,8 @@ class VideoCard
     use VideoRow;
 
     public $showVideoDetails = false;
-    private $template_base = 'VideoCard';
-    public object $Chapters;
+    private $template_base = 'Video/Card';
+    public static $template = 'Video/Card';
 
     public $AltClass;
     public $fileInfoArray;
@@ -49,7 +49,6 @@ class VideoCard
         $this->params = [];
         $table_body_html = [];
         $row_id = $fileInfoArray['id'];
-        $this->Chapters = new Chapter(['id' => $row_id]);
         // $row_filename = $row_id.":".$row['filename'];
         $row_filename = $fileInfoArray['filename'];
         $row_fullpath = $fileInfoArray['fullpath'];
@@ -106,20 +105,19 @@ class VideoCard
         $this->params['VIDEOINFO_EDIT_JS'] = '';
         $this->videoid = $row_id;
         foreach ($fileArray as $field) {
-             if (\array_key_exists($field, $this->fileInfoArray)) {
-            if (null === $this->fileInfoArray[$field]) {
-                $this->fileInfoArray[$field] = '';
+            if (\array_key_exists($field, $this->fileInfoArray)) {
+                if (null === $this->fileInfoArray[$field]) {
+                    $this->fileInfoArray[$field] = '';
+                }
+                $method = ucfirst($field);
+                $this->{$method}($field);
+                ++$x;
+                $this->AltClass = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
+                if ('studio' == $field) {
+                    $row_studio = $this->fileInfoArray[$field];
+                }
             }
-            $method = ucfirst($field);
-            $this->{$method}($field);
-            ++$x;
-            $this->AltClass = (0 == $x % 2) ? 'text-bg-primary' : 'text-bg-secondary';
-            if ('studio' == $field) {
-                $row_studio = $this->fileInfoArray[$field];
-            }
-             }
         }
-        $this->ChapterRow();
         $this->favorite($row_id);
 
         // utmdd($this->params['HIDDEN_STUDIO']);

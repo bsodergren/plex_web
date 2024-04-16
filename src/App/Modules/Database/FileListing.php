@@ -259,7 +259,6 @@ class FileListing
         foreach($results as $b => $videoRow){
             $vidResults[$b] = VideoDb::getVideo($videoRow['id']);
             $vidResults[$b]['rownum'] = $videoRow['rownum'];
-            // UtmDd($vidResults);
         }
         return $vidResults;
     }
@@ -310,7 +309,6 @@ class FileListing
         }
 
         $joinQuery .= $limitQuery;
-         utmdump($joinQuery);
         $this->saveSearch($joinQuery);
         $joinQuery = str_replace('SELECT   v.id', 'SELECT '.implode(',', $fieldArray), $joinQuery);
 
@@ -319,7 +317,8 @@ class FileListing
         $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
 
         $results = $this->db->rawQuery($query);
-// utmdump($results);
+        utmdump($results);
+
 $vidResults = $this->loopVideos($results);
         return $vidResults;
     }

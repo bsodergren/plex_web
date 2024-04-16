@@ -1,10 +1,11 @@
 <?php
 
 use Plex\Core\Request;
-use Plex\Modules\Database\FileListing;
-use Plex\Modules\Display\Display;
-use Plex\Modules\Display\VideoDisplay;
 use Plex\Template\Render;
+use UTMTemplate\HTML\Elements;
+use Plex\Modules\Display\Display;
+use Plex\Modules\Database\FileListing;
+use Plex\Modules\Display\VideoDisplay;
 
 /**
  * plex web viewer.
@@ -23,7 +24,10 @@ $referer_url = '';
 if ('home.php' != basename($_SERVER['HTTP_REFERER'])) {
     $referer_url = $_SERVER['HTTP_REFERER'];
 }
-
+if($results === null){
+    echo Elements::javaRefresh($redirect_string, 0);
+    exit;
+}
 $res = count($results);
 if (0 == $res) {
     $redirect_string = urlQuerystring($redirect_string, 'alpha');

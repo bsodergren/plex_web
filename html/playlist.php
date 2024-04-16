@@ -11,15 +11,15 @@ use UTMTemplate\HTML\Elements;
  */
 
 require_once '_config.inc.php';
-// $playlist_id = null;
-// $playlist_links = '';
+$playlist_id = null;
+$playlist_links = '';
 if (isset($_REQUEST['playlist_id'])) {
     $p = new Forms($_REQUEST);
     $p->process();
 
     $playlist_id = $_REQUEST['playlist_id'];
 }
-
+$cell_html = '';
 $table_body_html = '';
 $main_links = '';
 $playlist = new Playlist();
@@ -137,7 +137,7 @@ if (null === $playlist_id) {
         'PLAYLIST_GENRE' => $results[0]['genre'],
         'PLAYLIST_NAME' => $results[0]['name'],
         'CELLS_HTML' => $cell_html,
-        'Playlist_Canvas' => $Playlist_Canvas,
+        // 'Playlist_Canvas' => $Playlist_Canvas,
     ]);
     define('PLAYLIST_DROPDOWN', $playlist_LinkArray);
 }

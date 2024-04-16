@@ -175,9 +175,54 @@ button[type="submit"]:hover {
     width: 180px;
 }
 
+#pageRight
+{
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    font-size: 100px;
+    /* background: rgb(0, 0, 0); */
+    background: rgba(0, 0, 0, 0.7);
+    width: 20px;
+    height: 160px;
+    display: block;
+    text-decoration: none;
+    -webkit-border-radius: 35px;
+    -moz-border-radius: 35px;
+    border-radius: 35px;
+    /* display: none; */
+    -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+#pageLeft
+{
+    position: fixed;
+    top: 50%;
+    left: 20px;
+    font-size: 100px;
+    /* background: rgb(0, 0, 0); */
+    background: rgba(0, 0, 0, 0.7);
+    width: 20px;
+    height: 160px;
+    display: block;
+    text-decoration: none;
+    -webkit-border-radius: 35px;
+    -moz-border-radius: 35px;
+    border-radius: 35px;
+    /* display: none; */
+    -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
 #myBtn {
     position: fixed;
-    bottom: 50px;
+    bottom: 75px;
     right: 20px;
     /* background: rgb(0, 0, 0); */
     /* background: rgba(0, 0, 0, 0.7); */
@@ -275,7 +320,7 @@ button[type="submit"]:hover {
     cursor: pointer;
 }
 *,::after, ::before {
-    box-sizing: unset !important;
+    /* box-sizing: unset !important; */
 }
 .VideoCard-img-fluid {
 

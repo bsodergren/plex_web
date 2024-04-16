@@ -3,20 +3,19 @@
 namespace Plex\Modules\Display\Layout;
 
 use Plex\Core\Request;
-use Plex\Template\Render;
-use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\Traits\FolderFunc;
-use Plex\Modules\VideoCard\VideoCard;
 use Plex\Modules\Display\VideoDisplay;
+use Plex\Modules\VideoCard\VideoCard;
+use Plex\Template\Render;
 
 class FolderDisplay extends VideoDisplay
 {
+    use FolderFunc;
     public $showVideoDetails = false;
     private $template_base = '';
     public $parentfolder = '';
     public object $ReqObj;
-public $folderCounts;
-    use FolderFunc;
+    public $folderCounts;
 
     public function __construct($template_base = 'fileBrowser')
     {
@@ -36,45 +35,39 @@ public $folderCounts;
 
     private function urlPath()
     {
-        $query = parse_url($this->ReqObj->urlPattern); 
+        $query = parse_url($this->ReqObj->urlPattern);
         parse_str($query['query'], $query_parts);
-        //utmdd($query_parts);
-        
-        foreach($query_parts as $k => $v)
-        {
-            if($k != 'p')
-            {
+        // utmdd($query_parts);
+
+        foreach ($query_parts as $k => $v) {
+            if ('p' != $k) {
                 $req .= '?'.$k.'='.$v;
                 continue;
             }
             $this->currentPath = $v.'/';
-
         }
 
-        $this->url = $query['path']. $req;
-       
-        
+        $this->url = $query['path'].$req;
     }
 
     public function getParentUrl($folder)
     {
         $root = $this->fm_clean_path(__PLEX_LIBRARY__);
-        
+
         $this->CurrentFolderName = $this->fm_clean_path($this->currentPath);
 
-            $f = str_replace( $root ,'',$folder);
-            //$f = $this->fm_get_parent_path($root);
-            return $this->fm_clean_path($f);
-            
+        $f = str_replace($root, '', $folder);
 
+        // $f = $this->fm_get_parent_path($root);
+        return $this->fm_clean_path($f);
     }
-
 
     public function folderLink($folder)
     {
-        if($folder == $_SESSION['library']) {
+        if ($folder == $_SESSION['library']) {
             $folder = '';
         }
+
         return $this->url.'&p='.urlencode($folder);
     }
 
@@ -84,24 +77,21 @@ public $folderCounts;
         if ('' != $this->parentfolder) {
             $parentLink = $this->getParentUrl($this->parentfolder);
         }
-            $parentText = $parentLink;
+        $parentText = $parentLink;
 
-            $folderLinks = Render::html($this->template_base.'/FolderLink', [
-                'FolderLink' => $this->folderLink($parentLink),
-                'FolderText' => $parentText]);
+        $folderLinks = Render::html($this->template_base.'/FolderLink', [
+            'FolderLink' => $this->folderLink($parentLink),
+            'FolderText' => $parentText]);
 
         if (\count($folders) > 0) {
             foreach ($folders as $folder) {
-                
-              array_walk( $this->folderCounts, function($value, $key, $folder) {
-                if($value['folder'] == $folder){
-                    $this->FolderCount = $value['folderCount'];      
-                    $this->videoCount = $value['videoCount'];  
-                    
-                }
-                    
-                 }, $folder); 
-                $folderLink = $this->folderLink($this->currentPath . $folder);
+                array_walk($this->folderCounts, function ($value, $key, $folder) {
+                    if ($value['folder'] == $folder) {
+                        $this->FolderCount = $value['folderCount'];
+                        $this->videoCount = $value['videoCount'];
+                    }
+                }, $folder);
+                $folderLink = $this->folderLink($this->currentPath.$folder);
                 $folderText = $folder;
                 $folderLinks .= Render::html($this->template_base.'/FolderLink',
                     ['FolderLink' => $folderLink,
@@ -112,7 +102,7 @@ public $folderCounts;
         }
 
         return Render::html($this->template_base.'/FolderList', ['FolderList' => $folderLinks,
-    'FolderHeader'=> $this->CurrentFolderName ]);
+    'FolderHeader' => $this->CurrentFolderName]);
     }
 
     public function fileDisplay($files)

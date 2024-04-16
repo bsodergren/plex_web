@@ -107,8 +107,9 @@ class Playlist
         }
 
         return Elements::SelectOptions(array: $plArray,selected: $selected,
-        blank: '',
-         disabled: $disabled_id);
+        blank: 'Add to Playlist',
+         disabled: $disabled_id,
+         class: 'filter-option text-dark');
 
     }
     public static function getVideoPlaylists($id){
