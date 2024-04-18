@@ -278,7 +278,10 @@ class FileListing
         // }
 
         $this->db->join(Db_TABLE_PLAYLIST_VIDEOS.' p', 'v.id=p.playlist_video_id', 'LEFT OUTER');
+
+        if($_SESSION['library'] != 'All') {
             $this->db->where('v.library', $_SESSION['library']);
+        }
 
         // if()
          $fieldArray[] = 'v.id';
@@ -309,6 +312,7 @@ class FileListing
         }
 
         $joinQuery .= $limitQuery;
+
         $this->saveSearch($joinQuery);
         $joinQuery = str_replace('SELECT   v.id', 'SELECT '.implode(',', $fieldArray), $joinQuery);
 
@@ -317,9 +321,13 @@ class FileListing
         $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
 
         $results = $this->db->rawQuery($query);
-        utmdump($results);
+        if(count($results) == 0)
+        {
+            echo "No results in query, invalid query";
+            utmdd("No Results");
+        }
 
-$vidResults = $this->loopVideos($results);
+        $vidResults = $this->loopVideos($results);
         return $vidResults;
     }
 }

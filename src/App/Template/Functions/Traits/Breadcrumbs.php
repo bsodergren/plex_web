@@ -5,6 +5,7 @@ namespace Plex\Template\Functions\Traits;
 use Plex\Core\Request;
 use Plex\Modules\Display\Display;
 use Plex\Template\Render;
+use UTMTemplate\HTML\Elements;
 
 trait Breadcrumbs
 {
@@ -133,15 +134,15 @@ trait Breadcrumbs
             }
 
             $class = 'breadcrumb-item';
-            $link = '<a href="'.$url.'">'.$text.'</a>';
 
             if ('' == $url) {
                 $class .= ' active" aria-current="page';
-                $link = $text;
+                $url='#';
             }
 
             $params['CLASS'] = $class;
-            $params['LINK'] = $link;
+            $params['LINK'] = Elements::url($url,$text);
+
             $crumbs_html .= Render::html(self::$BreadcrumbsDir.'/crumb', $params);
         }
 

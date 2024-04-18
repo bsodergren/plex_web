@@ -21,7 +21,7 @@ if (isset($_POST['text'])) {
     // save the text contents
     file_put_contents($file, $text);
 
-//    $pl->playlistClean($file);
+    $pl->playlistClean($file);
     if ('Download' == $_POST['submit']) {
          $url = $url.'?download=true';
     //     utmdump($popurl);

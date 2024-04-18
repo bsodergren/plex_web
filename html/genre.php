@@ -2,6 +2,7 @@
 
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Display\Layout;
+use UTMTemplate\HTML\Elements;
 
 require_once '_config.inc.php';
 
@@ -83,7 +84,7 @@ foreach ($genre_array as $k => $v) {
         }
         $count = $db->getOne(Db_TABLE_VIDEO_TAGS, 'count(*) as cnt');
 
-        echo $studio." <a href='list.php?".$request_key.'genre='.urlencode($v)."'>".$v.'</a> '.$count['cnt'].' <br>';
+        echo $studio.Elements::url("list.php?".$request_key.'genre='.urlencode($v),$v).$count['cnt'].' <br>';
     }
 }
 

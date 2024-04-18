@@ -70,6 +70,7 @@ class Request
         'sort' => 'v.added',
         'direction' => 'DESC',
         'days' => 1,
+        'session_id' => 1,
         // 'alpha' => '',
     ];
 
@@ -107,6 +108,8 @@ class Request
                 }
             }
         }
+
+        $this->uri['session_id'] = session_id();
 
         unset($_REQUEST['itemsPerPage']);
         if (isset($_REQUEST['alpha'])) {
@@ -181,6 +184,7 @@ class Request
                 'direction' => $_SESSION['direction'],
                 'sort_types' => self::$sort_types,
                 'days' => $_SESSION['days'],
+                'session_id' => session_id(),
             ];
         } else {
             self::$url_array = $url_array;
@@ -200,7 +204,9 @@ class Request
                 $where_field = $value;
                 continue;
             }
-
+            if ('session_id' == $key) {
+                continue;
+            }
             if ('direction' == $key) {
                 continue;
             }
