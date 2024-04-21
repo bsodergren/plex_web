@@ -1,6 +1,6 @@
 <?php
 
-namespace Plex\Modules\Video;
+namespace Plex\Modules\VideoJs;
 
 use Plex\Modules\Database\FavoriteDB;
 use Plex\Modules\Database\PlexSql;
@@ -30,7 +30,7 @@ class Player
 
     public $PlayerClass;
 
-    public $VideoTemplate = 'Video/Plyr';
+    public $VideoTemplate = 'Video/Js';
 
     public static $PlayerTemplate = '';
 

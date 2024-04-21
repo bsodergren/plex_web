@@ -2,10 +2,11 @@
 
 namespace Plex\Modules\Display;
 
-use Plex\Modules\Database\PlexSql;
-use Plex\Modules\Display\Display;
-use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
+use UTMTemplate\UtmDevice;
+use Plex\Modules\Display\Display;
+use Plex\Modules\Database\PlexSql;
+use Plex\Template\Functions\Functions;
 
 class Layout
 {
@@ -34,9 +35,11 @@ class Layout
             $library_links .= Display::navbar_left_links('home.php?library='.$v['library'], $v['library']);
         }
         $library_links .= Display::navbar_left_links('home.php?library=All', 'All');
+        $params['CURRENT_DEVICE'] = UtmDevice::$DEVICE;
 
         $params['NAV_BAR_LEFT_LINKS'] = Render::html('base/navbar/library_menu',
             ['LIBRARY_SELECT_LINKS' => $library_links]);
+ utmdump($params);
         Render::echo('base/navbar/main', $params);
     }
 

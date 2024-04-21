@@ -1,0 +1,12 @@
+<form action="{$PAGE_UPDATE}" method="GET">
+    {$HIDDEN}
+    <input type=submit style="display:none;">
+    <ul class="pagination m-0"> 
+        {$PREVIOUS_LINK}
+        <select class="page-link page-item {$PILL_CLASS} " name="itemsPerPage" id="itemsPerPage" onchange="this.form.submit()">
+            {$OPTIONS}
+        </select>
+        {$LINK_LIST}
+        {$NEXT_LINK}
+    </ul>
+</form>

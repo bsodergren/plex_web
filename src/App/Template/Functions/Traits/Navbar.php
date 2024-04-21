@@ -110,7 +110,7 @@ trait Navbar
             $favPopup = '';
             $template = 'menu_link';
             if (array_key_exists('js',$link_array)) {
-                $favPopup = ' onclick="popup(\'http://plexmedia/plex/video.php?favorites=true\', \'video_popup\')" ';
+                $favPopup = ' onclick="popup(\''.__URL_HOME__.'/video.php?favorites=true\', \'video_popup\')" ';
                 $link_array['url'] = null;
                 $template = 'menu_popup';
             }

@@ -1,11 +1,13 @@
 <?php
+
 ob_start();
 
-use Camoo\Config\Config;
-use Plex\Core\RoboLoader;
 use Plex\EnvLoader;
 use Tracy\Debugger;
+use Camoo\Config\Config;
+use Plex\Core\RoboLoader;
 use UTMTemplate\Template;
+use UTMTemplate\UtmDevice;
 
 // session_abort();
 // session_destroy();
@@ -28,14 +30,14 @@ error_reporting(\E_ALL & ~\E_NOTICE & ~\E_WARNING);
 
 //     // session_commit();
 // }else{
-    //common session statement goes here
-    session_start();
-    if(!array_key_exists('library', $_REQUEST )){
-        $_REQUEST['library'] =  $_SESSION['library'];
-    }
-    // $session_id=session_id();
+// common session statement goes here
+session_start();
+if (!array_key_exists('library', $_REQUEST)) {
+    $_REQUEST['library'] = $_SESSION['library'];
+}
+// $session_id=session_id();
 //    $_SESSION['library'] = ;
-    // echo "your.php?session_id=" . $session_id;
+// echo "your.php?session_id=" . $session_id;
 // }
 // ini_set('arg_separator.input', '&');
 // ini_set('arg_separator.output', '&');
@@ -75,16 +77,26 @@ Template::$registeredCallbacks = [
     '\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK' => 'callback_parse_function',
     '\Plex\Template\Callbacks\FunctionCallback::SCRIPTINCLUDE_CALLBACK' => 'callback_script_include'];
 
-    Template::$registeredFilters = [
-        '\Plex\Template\Callbacks\URLFilter::parse_urllink' => ['a=href'=> ['library' => $_REQUEST['library']]],
-    ];
+Template::$registeredFilters = [
+    '\Plex\Template\Callbacks\URLFilter::parse_urllink' => ['a=href' => ['library' => $_REQUEST['library']]],
+];
 
 Template::$USER_TEMPLATE_DIR = __HTML_TEMPLATE__;
 Template::$TEMPLATE_COMMENTS = true;
 Template::$SITE_URL = __LAYOUT_URL__;
 Template::$SITE_PATH = __LAYOUT_PATH__;
-RoboLoader::loadPage();
+Template::$ASSETS_URL = __LAYOUT_URL__.DIRECTORY_SEPARATOR."Default";
+Template::$ASSETS_PATH = __LAYOUT_PATH__.DIRECTORY_SEPARATOR."Default";
+Template::$CACHE_DIR = __TPL_CACHE_DIR__;
 
+UtmDevice::$DETECT_BROWSER = true;
+UtmDevice::$USER_DEFAULT_TEMPLATE = __HTML_TEMPLATE__;
+UtmDevice::$USER_MOBILE_TEMPLATE = __MOBILE_TEMPLATE__;
+UtmDevice::$MOBILE_ASSETS_URL = __LAYOUT_URL__.DIRECTORY_SEPARATOR."Mobile";
+UtmDevice::$MOBILE_ASSETS_PATH = __LAYOUT_PATH__.DIRECTORY_SEPARATOR."Mobile";
+
+$device = new UtmDevice();
+RoboLoader::loadPage();
 $const_keys = array_keys(get_defined_constants(true)['user']);
 define('__TEMPLATE_CONSTANTS__', $const_keys);
 logger('____________________________________________________________________________________________________________________');

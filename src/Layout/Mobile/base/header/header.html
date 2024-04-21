@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta
+            http-equiv="Cache-Control"
+            content="no-cache, no-store, must-revalidate"
+        />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+        <meta charset="utf-8" />
+        <meta name="description" content="{$APP_DESCRIPTION}" />
+        <meta name="author" content="{$APP_OWNER}" />
+        <base href="{$__URL_HOME__}/" />
+
+        <title>{$PAGE_TITLE}|{$APP_NAME}</title>
+
+        {{javascript=external/popper.min.js}}
+        {{javascript=external/bootstrap.min.js}}
+        {{javascript=external/jquery.min.js}}
+        {{javascript=external/jquery.editable.min.js}}
+         {{javascript=app.js}}
+
+
+
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
+            rel="stylesheet"
+        />
+
+    {{stylesheet=app.css}}
+         {{stylesheet=tags-input.css}}
+         {{stylesheet=bootstrap-image-checkbox.min.css}}
+         {{stylesheet=themes/slate/bootstrap.min.css}}
+
+
+
+
+         {{function=ratingInclude}}
+        {$SCRIPTS}
+    </head>
+    <body {$ONLOAD}>
+        <script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"
+        ></script>
+        <!-- MDB -->

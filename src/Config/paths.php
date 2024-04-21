@@ -28,7 +28,8 @@ define('__DEBUG__', true);
 
 define('__LAYOUT_PATH__', __PHP_ASSETS_DIR__);
 
-define('__HTML_TEMPLATE__', __PLEX_APP_DIR__.'/Layout/template');
+define('__HTML_TEMPLATE__', __PLEX_APP_DIR__.'/Layout/Default');
+define('__MOBILE_TEMPLATE__', __PLEX_APP_DIR__.'/Layout/Mobile');
 
 define('__ROUTE_NAV__', __PHP_YAML_DIR__.'/navigation.yaml');
 define('__PAGE_CONFIG__', __PHP_YAML_DIR__.'/Pages.yaml');
