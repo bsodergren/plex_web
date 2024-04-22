@@ -122,4 +122,4 @@ foreach ($studioArray as $subLibrary => $studioArr) {
         'LIBRARY_NAME'    => $subLibrary]);
 } // end foreach
 
-Render::Display($studio_html);
+Render::Display(Render::html('home/page',['BODY' =>$studio_html]));

@@ -142,4 +142,4 @@ if (null === $playlist_id) {
     define('PLAYLIST_DROPDOWN', $playlist_LinkArray);
 }
 
-Render::Display($table_body_html);
+Render::Display(Render::html('playlist/page', ['BODY' =>$table_body_html]));
