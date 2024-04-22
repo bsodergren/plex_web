@@ -13,10 +13,14 @@ footer {
 }
 
 .categories-wrapper {
-    position: relative;
+    /* position: relative; */
 }
 
+.sidenav-pos{
+    position:fixed;
 
+    top: 60px;
+}
 .container-sidenav {
     position:absolute;
     left: 140px;
