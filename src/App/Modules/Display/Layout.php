@@ -39,7 +39,6 @@ class Layout
 
         $params['NAV_BAR_LEFT_LINKS'] = Render::html('base/navbar/library_menu',
             ['LIBRARY_SELECT_LINKS' => $library_links]);
- utmdump($params);
         Render::echo('base/navbar/main', $params);
     }
 

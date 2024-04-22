@@ -30,9 +30,9 @@ class Player
 
     public $PlayerClass;
 
-    public $VideoTemplate = 'Video/Plyr';
+    public $VideoTemplate = 'pages/Video/Plyr';
 
-    public static $PlayerTemplate = '';
+    public static $PlayerTemplate = 'pages/Video/Plyr';
 
     public $options = [
         'usePlyr' => true,
@@ -197,7 +197,6 @@ class Player
 
     public function videoJs()
     {
-         utmdump($this->js_params);
         return Render::javascript($this->VideoTemplate.'/video_js', $this->js_params);
     }
 

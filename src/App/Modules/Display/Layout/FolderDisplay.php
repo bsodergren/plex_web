@@ -19,7 +19,7 @@ class FolderDisplay extends VideoDisplay
 
     public function __construct($template_base = 'fileBrowser')
     {
-        $this->template_base = $template_base;
+        $this->template_base = 'pages'.DIRECTORY_SEPARATOR. $template_base;
         $this->ReqObj = new Request();
         $this->urlPath();
     }

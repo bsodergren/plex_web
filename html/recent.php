@@ -14,7 +14,7 @@ $fileinfo = new FileListing(new Request());
 
 [$results,$pageObj,$uri] = $fileinfo->getLatest();
 
-$request_key     = uri_String($uri);
+$request_key = uri_String($uri);
 $redirect_string = __THIS_FILE__.$request_key;
 
 if (array_key_exists('genre', $_REQUEST)) {
@@ -28,11 +28,11 @@ if ('home.php' != basename($_SERVER['HTTP_REFERER'])) {
 Display::$CrubURL['grid'] = 'grid.php';
 
 $vidInfo = (new VideoDisplay('List'))->init('filelist');
-$body    = $vidInfo->Display($results, [
-    'total_files'     => $pageObj->totalRecords,
+$body = $vidInfo->Display($results, [
+    'total_files' => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
 ]);
 
 // Layout::Header();
-Render::Display($body);
+Render::Display($body, 'home/page');
 // Layout::Footer();

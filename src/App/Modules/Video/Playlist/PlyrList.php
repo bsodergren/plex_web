@@ -22,6 +22,7 @@ class PlyrList extends Player
     {
         $this->videoTemplate = parent::$PlayerTemplate;
         $this->db = PlexSql::$DB;
+
     }
 
     public function getplaylistId()
@@ -56,8 +57,6 @@ class PlyrList extends Player
         if ('' == $row['title']) {
             $title = $row['filename'];
         }
-        utmdump($row);
-
         return Render::html(
             $this->videoTemplate.'/container/item',
             [

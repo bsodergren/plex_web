@@ -7,14 +7,14 @@ use Plex\Modules\Video\Playlist\Playlist;
 
 class Plyr extends Player
 {
-    public $templatePlayer = '/Video/Plyr';
+    public $templatePlayer = 'pages/Video/Plyr';
     public $id;
     public $parent;
 
     public function __construct($object)
     {
         parent::__construct();
-        parent::$PlayerTemplate = $this->templatePlayer;
+      //  parent::$PlayerTemplate = $this->templatePlayer;
         $this->parent = $object;
         $this->id = $this->videoId();
 

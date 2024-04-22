@@ -44,4 +44,7 @@ $table_body_html = $grid->Display($results, [
     'total_files'     => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
 ]);
-Render::Display($table_body_html);
+
+// Render::Display($table_body_html,$grid->template_base . '/body');
+
+//Render::Display($table_body_html,'pages/grid/body');

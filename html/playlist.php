@@ -36,7 +36,7 @@ if (null === $playlist_id) {
         }
         $preview = $playlist->showPlaylistPreview($results[$i]['playlist_id']);
         foreach ($preview as $r => $row) {
-            $playlist_image .= Render::html('playlist/thumbnail/image', ['image' => __URL_HOME__.$row['thumbnail']]);
+            $playlist_image .= Render::html('pages/playlist/thumbnail/image', ['image' => __URL_HOME__.$row['thumbnail']]);
             // UtmDump($row);
         }
 
@@ -44,22 +44,22 @@ if (null === $playlist_id) {
             'PLAYLIST_ID' => $results[$i]['playlist_id'],
             'PLAYLIST_NAME' => $results[$i]['name'],
             'PLAYLIST_COUNT' => $results[$i]['count'],
-            'ThumbnailPreview' => Render::html('playlist/thumbnail/thumbnail', ['PlaylistPreviewImage' => $playlist_image]),
+            'ThumbnailPreview' => Render::html('pages/playlist/thumbnail/thumbnail', ['PlaylistPreviewImage' => $playlist_image]),
         ];
         if ($library == $prev) {
-            $playlist_links .= Render::html('playlist/playlist_link', $params);
+            $playlist_links .= Render::html('pages/playlist/playlist_link', $params);
         } else {
-            $table_body_html .= Render::html('playlist/main', [
+            $table_body_html .= Render::html('pages/playlist/main', [
                 'PLAYLIST_LIST' => $playlist_links,
                 'PLAYLIST_LIBRARY' => $prev,
             ]);
-            $playlist_links = Render::html('playlist/playlist_link', $params);
+            $playlist_links = Render::html('pages/playlist/playlist_link', $params);
 
             $prev = $library;
         }
     }
 
-    $table_body_html .= Render::html('playlist/main', [
+    $table_body_html .= Render::html('pages/playlist/main', [
         'PLAYLIST_LIST' => $playlist_links,
         'PLAYLIST_LIBRARY' => $library,
     ]);
@@ -103,7 +103,7 @@ if (null === $playlist_id) {
         $thumbnail = '';
         if (OptionIsTrue(SHOW_THUMBNAILS)) {
             $thumbnail = Render::html(
-                'playlist/thumbnail',
+                'pages/playlist/thumbnail',
                 [
                     'THUMBNAIL' => $VideoDisplay->fileThumbnail($results[$i]['id'], 'alt="#" class="img-fluid" '),
                     'VIDEO_ID' => $results[$i]['id'],
@@ -114,7 +114,7 @@ if (null === $playlist_id) {
         }
 
         $cell_html .= Render::html(
-            'playlist/cell',
+            'pages/playlist/cell',
             [
                 // 'VID_NUMBER' => $i +1,
                 'TITLE' => $results[$i]['title'],
@@ -129,7 +129,7 @@ if (null === $playlist_id) {
     $form_url = __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
     $form_action = Elements::add_hidden('playlist_id', $playlist_id);
 
-    $table_body_html = Render::html('playlist/table', [
+    $table_body_html = Render::html('pages/playlist/table', [
         'FORM_URL' => $form_url,
         'HIDDEN' => $form_action,
         'PLAYLIST_ID' => $playlist_id,
@@ -142,4 +142,4 @@ if (null === $playlist_id) {
     define('PLAYLIST_DROPDOWN', $playlist_LinkArray);
 }
 
-Render::Display(Render::html('playlist/page', ['BODY' =>$table_body_html]));
+Render::Display(Render::html('pages/playlist/body', ['BODY' =>$table_body_html]));

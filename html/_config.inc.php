@@ -77,9 +77,9 @@ Template::$registeredCallbacks = [
     '\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK' => 'callback_parse_function',
     '\Plex\Template\Callbacks\FunctionCallback::SCRIPTINCLUDE_CALLBACK' => 'callback_script_include'];
 
-Template::$registeredFilters = [
-    '\Plex\Template\Callbacks\URLFilter::parse_urllink' => ['a=href' => ['library' => $_REQUEST['library']]],
-];
+// Template::$registeredFilters = [
+//     '\Plex\Template\Callbacks\URLFilter::parse_urllink' => ['a=href' => ['library' => $_REQUEST['library']]],
+// ];
 
 Template::$USER_TEMPLATE_DIR = __HTML_TEMPLATE__;
 Template::$TEMPLATE_COMMENTS = true;
@@ -88,7 +88,7 @@ Template::$SITE_PATH = __LAYOUT_PATH__;
 Template::$ASSETS_URL = __LAYOUT_URL__.DIRECTORY_SEPARATOR."Default";
 Template::$ASSETS_PATH = __LAYOUT_PATH__.DIRECTORY_SEPARATOR."Default";
 Template::$CACHE_DIR = __TPL_CACHE_DIR__;
-
+Template::$USE_TEMPLATE_CACHE = false;
 UtmDevice::$DETECT_BROWSER = true;
 UtmDevice::$USER_DEFAULT_TEMPLATE = __HTML_TEMPLATE__;
 UtmDevice::$USER_MOBILE_TEMPLATE = __MOBILE_TEMPLATE__;

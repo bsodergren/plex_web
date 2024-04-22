@@ -1,33 +1,30 @@
 <header>
-    <nav class="navbar top-navbar navbar-expand-sm navbar-light bg-dark navbar-dark fixed-top">
-        <div class="container-fluid">
-            <ul class="navbar-nav flex-row">
-                <li class="nav-item me-2 me-lg-0">
-                    <a class="navbar-brand text-light" href="home.php"> <img src="images/logonotextwhite.png" alt="" width="50" height="50" class="mr-3" />
-                        {$PAGE_TITLE}
- {$CURRENT_DEVICE}
- fsdfsd
-                    </a>
-
-                </li>
-            </ul>
-            {$NAV_BAR_LEFT_LINKS}
-        </div>
-    </nav>
-    <nav class="navbar second-navbar navbar-expand-sm navbar-light bg-primary navbar-dark">
-        <div class="container-fluid">
-            <ul class="navbar-nav flex-row"></ul>
-            <ul class="nav nav-tabs">
+    <div id="sidenav" class="sidenav" data-mdb-color="dark" role="navigation" data-mdb-hidden="false" data-mdb-accordion="true">
+        <a class="ripple d-flex justify-content-left text-white py-3" href="home.php" data-mdb-ripple-color="primary">
+            <img id="MDB-logo" src="images/logonotextwhite.png" alt="MDB Logo" draggable="false" height="25">
+        </a>
+        <div class="sidenav-pos">
+            <ul class="nav-menu nav-tabs nav-sidebar">
                 {{function=navbar_links}}
+                </ul>
+                <ul class="nav-menu nav-tabs nav-sidebar">
+
+            {{function=displayPageSorter}}
             </ul>
         </div>
-    </nav>
+    </div>
 
-    <nav style="margin-top: 00px; --bs-breadcrumb-divider: '>'" aria-label="breadcrumb" class="third-navbar navbar-expand-sm navbar-dark d-flex">
-        <div class="container-fluid row">
-            {{function=breadcrumbs}}
-            {{function=AlphaBlock}}
-            {{function=displayFilters}}
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <div class="d-flex ms-5 ps-4">
+                {{function=breadcrumbs}}
+            </div>
+            <ul class="navbar-nav d-flex align-items-center flex-row">
+            {$NAV_BAR_LEFT_LINKS}
+            </ul>
+
+
         </div>
     </nav>
 </header>
+

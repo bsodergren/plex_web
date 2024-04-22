@@ -24,12 +24,12 @@ if ('home.php' != basename($_SERVER['HTTP_REFERER'])) {
 }
 Display::$CrubURL['grid'] = 'grid.php';
 
-$vidInfo = (new VideoDisplay('List'))->init('filelist');
+$vidInfo = (new VideoDisplay('List'))->init();
 $body    = $vidInfo->Display($results, [
     'total_files'     => $pageObj->totalRecords,
     'redirect_string' => $redirect_string,
 ]);
 
 // Layout::Header();
-Render::Display($body);
+// Render::Display($body,'pages/List/body');
 // Layout::Footer();

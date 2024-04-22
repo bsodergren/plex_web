@@ -20,15 +20,14 @@ class GridDisplay extends VideoDisplay
     use Video;
     public $totalRecords;
     public $showVideoDetails = false;
-    private $template_base = '';
+    public $template_base = '';
     public $VideoPlaylists = [];
     private $AltClass;
 
-    public function __construct($template_base = 'filelist')
+    public function __construct($template_base = 'Grid')
     {
-        $db = PlexSql::$DB;
-
-        $this->template_base = $template_base;
+        $this->template_base = 'pages'.DIRECTORY_SEPARATOR. $template_base;
+        utmdump($this->template_base);
         $this->VideoPlaylists = (new Playlist())->showPlaylists(true);
     }
 
@@ -50,7 +49,7 @@ class GridDisplay extends VideoDisplay
                 }
 
                 $playlist_html .= Render::html(
-                    'grid/playlist_link',
+                    'pages/Grid/playlist_link',
                     [
                         'PL_NAME' => $p['name'],
                         'PL_ID' => $p['id'],
@@ -97,7 +96,7 @@ class GridDisplay extends VideoDisplay
         foreach ($file_info as $field => $value) {
             // if ($value != '') {
             $videoFields .= Render::html(
-                'grid/cell/video_data',
+                'pages/Grid/cell/video_data',
                 [
                     'FILE_FIELD' => ucfirst($field),
                     'FILE_INFO' => $value,
@@ -113,7 +112,7 @@ class GridDisplay extends VideoDisplay
                 $plLinks = str_replace('VIDEO_ID', $videoInfo['id'], $playlist_html);
             }
             $thumbnail = Render::html(
-                'grid/cell/thumbnail',
+                'pages/Grid/cell/thumbnail',
                 ['PLAYLIST_LINKS' => $plLinks,
                     'THUMBNAIL' => $this->fileThumbnail($videoInfo['id']),
                     'ROW_ID' => $videoInfo['id'],
@@ -138,11 +137,12 @@ class GridDisplay extends VideoDisplay
 
         // THUMB_EXTRA = ' alt="#" class="img-fluid" '
         return Render::html(
-            'grid/cell/video', $params
+            'pages/Grid/cell/video', $params
         );
     }
 
-    public function display($results, $page_array = [])
+
+    public function getDisplay($results, $page_array = [])
     {
         global $_SESSION,$_REQUEST;
         global $sort_type_map;
@@ -162,17 +162,16 @@ class GridDisplay extends VideoDisplay
         }
 
         foreach ($results as $k => $videoRow) {
-            $cell_html .= Render::html('grid/cell', [
+            $cell_html .= Render::html('pages/Grid/cell', [
                 'VIDEO_CELL' => $this->videoCell($videoRow),
                 'ROW_ID' => $videoRow['id']]
             );
         }
-        $table_body_html = Render::html('grid/table', [
+        $table_body_html = Render::html('/pages/Grid/table', [
           //  'HIDDEN_STUDIO_NAME' => Elements::add_hidden('studio', $studio).Elements::add_hidden('substudio', $substudio),
             'ROWS_HTML' => $cell_html,
           //  'INFO_NAME' => $sort_type_map['map'][$_REQUEST['sort']],
         ]);
-
         return $table_body_html;
     }
 

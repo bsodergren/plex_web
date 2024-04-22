@@ -24,7 +24,3 @@ $body    = $vidInfo->Display($results, [
     'total_files'     => $pageObj->totalRecords,
    // 'redirect_string' => $redirect_string,
 ]);
-
-// Layout::Header();
-Render::Display($body);
-// Layout::Footer();

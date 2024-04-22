@@ -32,10 +32,10 @@ $field           = 'genre';
 
 // define('__TAG_CAT_CLASS__', ''); // border border-1 border-black');
 
-$html = Render::html('cloud/main',
+$html = Render::html('pages/Tags/main',
     [
         'TAG_CAT_CLASS' => __TAG_CAT_CLASS__,
         // 'TAG_CLOUD_HTML' => Elements::keyword_cloud('genre'),
         //    'TAG_CLOUD_KEYWORD' => Elements::keyword_cloud('keyword'),
     ]);
-Render::Display($html);
+Render::Display($html,'pages/Tags/body');

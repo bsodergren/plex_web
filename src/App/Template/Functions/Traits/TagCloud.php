@@ -125,7 +125,7 @@ trait TagCloud
                 }
                 ++$index;
                 $link_array[] = Render::html(
-                    'cloud/tag',
+                    'pages/Tags/tag',
                     [
                         'KEY' => $field,
                         'QUERY' => urlencode($keyword),

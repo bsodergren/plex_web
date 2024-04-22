@@ -13,8 +13,8 @@ require_once '_config.inc.php';
 $subLibraries = [];
 $studio_links = '';
 $studio_html = '';
-$sql          = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'DISTINCT(subLibrary) as subLibrary ', 'library');
-$result       = $db->query($sql);
+$sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'DISTINCT(subLibrary) as subLibrary ', 'library');
+$result = $db->query($sql);
 if (count($result) > 0) {
     foreach ($result as $_ => $value) {
         $subLibraries[] = $value['subLibrary'];
@@ -23,8 +23,8 @@ if (count($result) > 0) {
 
 logger('qyefasd', $sql);
 $result = $db->query($sql);
-$rar    = $db->rawQueryOne($sql);
-$sql    = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'studio,subLibrary,count(video_key) as cnt', 'library', 'studio,subLibrary', 'studio,subLibrary ASC');
+$rar = $db->rawQueryOne($sql);
+$sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'studio,subLibrary,count(video_key) as cnt', 'library', 'studio,subLibrary', 'studio,subLibrary ASC');
 $result = $db->query($sql);
 
 $all_url = 'list.php?allfiles=1';
@@ -46,11 +46,11 @@ foreach ($studioArray as $subLibrary => $studioArr) {
 
     foreach ($studioArr as $row => $sname) {
         $name = ['studio' => $sname['studio']];
-        $cnt  = $sname['cnt'];
+        $cnt = $sname['cnt'];
 
         if ('' == $name['studio']) {
             $name['studio'] = 'NULL';
-            $sql_studio     = ' IS NULL';
+            $sql_studio = ' IS NULL';
         } else {
             $sql_studio = ' LIKE "'.$name['studio'].'"';
         }
@@ -64,51 +64,51 @@ foreach ($studioArray as $subLibrary => $studioArr) {
         }
 
         $substudio_sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'count(substudio) as cnt, substudio', ' studio  '.$sql_studio, 'substudio', 'substudio ASC ');
-        $ss_result     = $db->query($substudio_sql);
+        $ss_result = $db->query($substudio_sql);
         if (count($ss_result) >= 2) {
-            $accordian                     = [];
-            $accordian['ACCORDIAN_ID']     = Display::RandomId('accordian_');
+            $accordian = [];
+            $accordian['ACCORDIAN_ID'] = Display::RandomId('accordian_');
             $accordian['ACCORDIAN_HEADER'] = $name['studio'];
 
-            $accordian['STUDIO_LINK'] = Render::html('home/studio/link', [
-                'url'         => 'studio',
+            $accordian['STUDIO_LINK'] = Render::html('pages/home/studio/link', [
+                'url' => 'studio',
                 'GET_REQUEST' => 'studio='.$studio,
-                'NAME'        => $name['studio'],
-                'COUNT'       => $cnt,
-                'CLASS'       => 'btn btn-secondary',
+                'NAME' => $name['studio'],
+                'COUNT' => $cnt,
+                'CLASS' => 'btn btn-secondary',
             ]);
 
             foreach ($ss_result as $ssRow => $ssName) {
                 if (null === $ssName['substudio']) {
                     continue;
                 }
-                $ssCnt     = ' ('.$ssName['cnt'].')';
+                $ssCnt = ' ('.$ssName['cnt'].')';
                 $substudio = urlencode($ssName['substudio']);
-                $accordian['STUDIO_LINK'] .= Render::html('home/studio/link', [
-                    'url'         => 'genre',
+                $accordian['STUDIO_LINK'] .= Render::html('pages/home/studio/link', [
+                    'url' => 'genre',
                     'GET_REQUEST' => 'substudio='.$substudio,
-                    'NAME'        => $ssName['substudio'],
-                    'COUNT'       => $ssCnt,
-                    'CLASS'       => 'btn btn-secondary',
+                    'NAME' => $ssName['substudio'],
+                    'COUNT' => $ssCnt,
+                    'CLASS' => 'btn btn-secondary',
                 ]);
             }
-            $accordian['ACCORDIAN_LINKS'] = Render::html('home/studio/group', $accordian);
-            $studio_links .= Render::html('home/accordian/block', $accordian);
+            $accordian['ACCORDIAN_LINKS'] = Render::html('pages/home/studio/group', $accordian);
+            $studio_links .= Render::html('pages/home/accordian/block', $accordian);
         } else {
-            $studio_links .= Render::html('home/studio/group', [
-                'STUDIO_LINK' => Render::html('home/studio/link', [
-                    'url'         => 'genre',
+            $studio_links .= Render::html('pages/home/studio/group', [
+                'STUDIO_LINK' => Render::html('pages/home/studio/link', [
+                    'url' => 'genre',
                     'GET_REQUEST' => 'studio='.$studio,
-                    'NAME'        => $name['studio'],
-                    'COUNT'       => $cnt,
-                    'CLASS'       => 'btn btn-secondary',
+                    'NAME' => $name['studio'],
+                    'COUNT' => $cnt,
+                    'CLASS' => 'btn btn-secondary',
                 ]),
             ]);
         }
         if ('' != $studio_links) {
-            $studio_box .= Render::html('home/block', [
+            $studio_box .= Render::html('pages/home/block', [
                 'STUDIO_LINKS' => $studio_links,
-                'CLASS'        => '',
+                'CLASS' => '',
             ]);
             $studio_links = '';
         }
@@ -117,9 +117,9 @@ foreach ($studioArray as $subLibrary => $studioArr) {
         // }
     }
 
-    $studio_html .= Render::html('home/studio/lib', [
+    $studio_html .= Render::html('pages/home/studio/lib', [
         'STUDIO_BOX_HTML' => $studio_box,
-        'LIBRARY_NAME'    => $subLibrary]);
+        'LIBRARY_NAME' => $subLibrary]);
 } // end foreach
 
-Render::Display(Render::html('home/page',['BODY' =>$studio_html]));
+Render::Display($studio_html, 'pages/home/body');

@@ -20,8 +20,8 @@ class VideoCard
     use VideoRow;
 
     public $showVideoDetails = false;
-    private $template_base = 'Video/Card';
-    public static $template = 'Video/Card';
+    private $template_base = 'pages/Video/Card';
+    public static $template = 'pages/Video/Card';
 
     public $AltClass;
     public $fileInfoArray;

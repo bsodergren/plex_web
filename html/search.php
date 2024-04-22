@@ -79,11 +79,11 @@ utmdump($results);
     $msg      = 'Showing '.$pageObj->totalRecords.' results for for '.$string;
     $msg      = strtolower(str_replace('-', '.', $msg));
     $msg      = strtolower(str_replace('_', ' ', $msg));
-    $html_msg = Render::html('search/search_msg', ['MSG' => $msg]);
+    $html_msg = Render::html('pages/search/search_msg', ['MSG' => $msg]);
     //  $html_msg .= Render::html("search/search_msg", [   'MSG' => $sql] );
 
     $grid           = (new VideoDisplay($view))->init();
-    $search_results = $grid->Display($results, ['total_files' => $pageObj->totalRecords]);
+    $search_results = $grid->getDisplay($results, ['total_files' => $pageObj->totalRecords]);
 
     //   $search_results =     display_filelist($results, '', $page_array);
 }
@@ -98,10 +98,10 @@ $search_types = [
 $checkboxes = '';
 foreach ($search_types as $key) {
     // $checkbox = Elements::draw_checkbox("searchField[]", $key, $key);
-    $checkboxes .= Render::html('search/checkboxes', ['NAME' => $key]);
+    $checkboxes .= Render::html('pages/search/checkboxes', ['NAME' => $key]);
 }
 
-$body = Render::html('search/search', [
+$body = Render::html('pages/search/search', [
     'HIDDEN_IDS'     => Elements::add_hidden('playlist', $playlist_ids_str),
     'HIDDEN_STUDIO'  => Elements::add_hidden('studio', $string.' Search'),
     'SEARCH_RESULTS' => $search_results,
@@ -109,4 +109,4 @@ $body = Render::html('search/search', [
     'HTML_MSG'       => $html_msg,
 ]);
 
-Render::Display($body);
+Render::Display($body,'pages/search/body');

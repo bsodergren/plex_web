@@ -68,7 +68,7 @@ $genre_array = array_unique($genre_array);
 // $studio_url  = 'studio.php?studio='.$_REQUEST['prev'];
 Layout::Header();
 ?>
-<main role="main" class="container">
+<main role="main" class="container container-sidenav">
 
     <?php
 asort($genre_array);

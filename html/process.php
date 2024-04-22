@@ -6,7 +6,6 @@ use Plex\Modules\Display\Layout;
 
 require_once '_config.inc.php';
 
-utmdump([__METHOD__, $_REQUEST]);
 
 if (array_key_exists('q',$_GET)) {
     $q = $_GET['q'];

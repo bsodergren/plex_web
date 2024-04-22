@@ -5,21 +5,26 @@ namespace Plex\Modules\Display\Layout;
 use Plex\Template\Render;
 use Plex\Modules\VideoCard\VideoCard;
 use Plex\Modules\Display\VideoDisplay;
+use Plex\Modules\Playlist\Playlist;
 
 class ListDisplay extends VideoDisplay
 {
     public $showVideoDetails = false;
-    private $template_base   = '';
+    public $template_base   = '';
+    public $VideoPlaylists = [];
 
-    public function __construct($template_base = 'filelist')
+
+    public function __construct($template_base = 'List')
     {
+        $this->template_base = 'pages'.DIRECTORY_SEPARATOR. $template_base;
+        $this->VideoPlaylists = (new Playlist())->showPlaylists(true);
 
-        $this->template_base = $template_base;
+        utmdump($this->template_base);
     }
 
-    public function display($results, $page_array = [])
+    public function getDisplay($results, $page_array = [])
     {
-        $videohtml = ['BODY'=>'','HIDDEN_STUDIO'=>''];
+        $videohtml ='';// ['BODY'=>'','HIDDEN_STUDIO'=>''];
         $total_files     = '';
 
         if (isset($page_array['total_files'])) {
@@ -41,14 +46,8 @@ class ListDisplay extends VideoDisplay
             $table_body[] = $videoinfo->VideoInfo($row, $total_files);
         }
         foreach ($table_body as $key => $value) {
-            $videohtml['BODY'] .= $value['VIDEO'];
-
-            $videohtml['HIDDEN_STUDIO'] = $value['HIDDEN_STUDIO'];
-
-            $videohtml['VIDEO_KEY']     = $value['VIDEO_KEY'];
+            $videohtml.= $value['VIDEO'];
         }
-
-       return  Render::html($this->template_base.'/page', $videohtml);
-//        return $videohtml; // .$javascript_html;
-    } // end display_filelist()
+        return $videohtml;
+    }
 }

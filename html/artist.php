@@ -1,8 +1,9 @@
 <?php
 
-use Plex\Modules\Database\PlexSql;
-use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
+use Plex\Modules\Database\PlexSql;
+use Plex\Modules\VideoCard\VideoCard;
+use Plex\Template\Functions\Functions;
 
 require_once '_config.inc.php';
 
@@ -60,7 +61,7 @@ foreach ($sortedArray as $num => $artistArray) {
     $link_array = [];
 
     sort($artistArray);
-    $artist_box['COUNT_HTML'] = Render::html('artist/artist_count', ['ARTIST_COUNT' => $num]);
+    $artist_box['COUNT_HTML'] = Render::html('pages/artist/artist_count', ['ARTIST_COUNT' => $num]);
     $artist_links = '';
 
     // foreach($artistArray as $artist)
@@ -98,7 +99,7 @@ foreach ($sortedArray as $num => $artistArray) {
     // utmdd($link_array);
     $artist_box['ARTIST_LINKS'] = $artist_links;
 
-    $artist_html .= Render::html('artist/artist_box', $artist_box);
+    $artist_html .= Render::html('pages/artist/artist_box', $artist_box);
 }
 $params['ARTIST_HTML'] = $artist_html;
 $params['THUMBNAIL_HTML'] = '';
@@ -115,7 +116,7 @@ foreach ($results as $num => $artistArray) {
         // $titleBg = ' bg-info ';
     }
     $params['THUMBNAIL_HTML'] .= Render::html(
-        'artist/artist_thumbnail',
+        'pages/artist/artist_thumbnail',
         [
             'MISSING_TITLE_BG' => $titleBg,
             'THUMBNAIL' => $VideoDisplay->fileThumbnail($id),
@@ -126,5 +127,5 @@ foreach ($results as $num => $artistArray) {
     //  utmdd($artistArray);
 }
 
-Render::Display(Render::html('artist/cloud', $params));
+Render::Display(Render::html('pages/artist/cloud', $params),'pages/artist/body');
 // Render::echo("artist/main",$PARAMS);
