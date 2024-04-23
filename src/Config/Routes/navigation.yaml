@@ -1,34 +1,34 @@
 home:
     url: home.php
     text:  !php/const NavBar_Text_Home
-    icon: home
+    icon: fa-home
     studio: false
 recent:
     url: recent.php?direction=ASC&sort=v.added
     text: !php/const NavBar_Text_Recent
-    icon: list
+    icon: fa-star
     studio: false
     days: true
 favorites:
     url: favorites.php
     text: !php/const NavBar_Text_Favorites
-    icon: list
+    icon: fa-heart
     studio: false
 watch:
     url: video.php
     text: !php/const NavBar_Text_WatchFavorites
-    icon: list
+    icon: fa-play-circle
     studio: false
     js: {"Window": true}
 list:
     url: list.php
     text: !php/const NavBar_Text_List
-    icon: list
+    icon: fa-list
     studio: true
 grid:
     url: grid.php
     text: !php/const NavBar_Text_Grid
-    icon: grid
+    icon: fa-th
     studio: true
 # folder:
 #     url: file.php
@@ -38,17 +38,17 @@ grid:
 playlist:
     url: playlist.php
     text: !php/const NavBar_Text_Playist
-    icon: playlist
+    icon:  fa-list-alt
     studio: false
 tag:
     url: tags.php
     text: !php/const NavBar_Text_Tags
-    icon: ""
+    icon: fa-tag
     studio: false
 artist:
     url: artist.php
     text: !php/const NavBar_Text_Artists
-    icon: ""
+    icon: fa-female
     studio: false
 # search:
 #     url: search.php
@@ -57,6 +57,7 @@ artist:
 #     studio: false
 extra:
     text: "Settings"
+    icon: fa-cog
     dropdown: [{
             Duplicates: dupes.php},
         {

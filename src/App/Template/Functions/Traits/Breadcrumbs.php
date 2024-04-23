@@ -6,6 +6,7 @@ use Plex\Core\Request;
 use Plex\Modules\Display\Display;
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
+use UTMTemplate\UtmDevice;
 
 trait Breadcrumbs
 {
@@ -16,7 +17,7 @@ trait Breadcrumbs
         $parts = [];
         $re_string = '';
         $request_tag = [];
-        $crumbs['Home'] = 'home.php';
+        $crumbs = ['Home'=> 'home.php'];
         $sep = '?';
         $studio_key = '';
 

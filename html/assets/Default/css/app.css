@@ -10,7 +10,7 @@ footer {
     text-transform: initial !important;
 }
 
-.sidenav-pos {
+ .sidenav-pos {
     position: fixed;
     top: 60px;
 }
@@ -18,14 +18,38 @@ footer {
 .container-sidenav {
     position: absolute;
     left: 140px;
-    top: 60px;
+    top: 100px;
+    width:90%;
 }
 
+.navbar-breadcrumb{
+    position: absolute;
+    left: 80px;
+    top: 60px;
+}
 
 .nav-sidebar {
     width: 180px;
     position: absolute;
     left: -30px;
+
+}
+
+.nav-sidebar-sort{
+width: 180px;
+position: absolute;
+top: 370px;
+left: -30px;
+
+
+}
+
+.nav-sidebar-header{
+    width: 180px;
+    position: absolute;
+    top: 340px;
+
+
 
 }
 
@@ -46,7 +70,6 @@ footer {
 }
 
 .navbar.second-navbar {
-    /* height: 50px; */
     margin-top: 55px;
     z-index: 1;
     border: none;
@@ -64,7 +87,15 @@ footer {
     text-wrap: nowrap;
 
 }
+    .nav-tabs .nav-link {
+        padding: 10px 10px 10px 10px;
+    }
+    .dropdown-item {
+        display: block;
+        width: 100%;
+        padding: 0px 0px 0px 0px;
 
+    }
 .nav-tabs .nav-link:not([disabled]):not(.disabled).active,
 .nav-tabs .nav-link:not([disabled]):not(.disabled):active,
 .nav-tabs .nav-link:not([disabled]):not(.disabled):focus,

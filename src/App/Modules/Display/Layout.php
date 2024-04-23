@@ -16,7 +16,6 @@ class Layout
         if (OptionIsTrue(GRID_VIEW)) {
             $params['SCRIPTS'] .= Render::html('base/header/header_grid', ['__LAYOUT_URL__' => __LAYOUT_URL__]);
         }
-
         Render::echo('base/header/header', $params);
 
         if (OptionIsTrue(NAVBAR)) {
@@ -36,6 +35,7 @@ class Layout
         }
         $library_links .= Display::navbar_left_links('home.php?library=All', 'All');
         $params['CURRENT_DEVICE'] = UtmDevice::$DEVICE;
+        $params['Device'] = ucfirst(strtolower(UtmDevice::$DEVICE));
 
         $params['NAV_BAR_LEFT_LINKS'] = Render::html('base/navbar/library_menu',
             ['LIBRARY_SELECT_LINKS' => $library_links]);

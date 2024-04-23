@@ -1,6 +1,7 @@
 <?php
 namespace Plex\Modules\Display;
 
+use Plex\Modules\Database\PlexSql;
 use Plex\Template\Render;
 
 
@@ -17,8 +18,11 @@ class VideoDisplay
     }
 
 
-    public function init()
+    public function init($template=null)
     {
+        if($template !== null) {
+            $this->template_display = $template;
+        }
         return new $this->class($this->template_display);
     }
     public function RenderDisplay($displayHtml)

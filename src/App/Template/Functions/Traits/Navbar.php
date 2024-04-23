@@ -69,6 +69,8 @@ trait Navbar
 
         return Render::html('base/navbar/menu_dropdown', [
             'DROPDOWN_TEXT' => $array['text'],
+            'Icon_Class' => self::navbarIcon($array),
+
             'DROPDOWN_LINKS' => implode("\n", $dropdown_link_html),
         ]);
     }
@@ -119,7 +121,8 @@ trait Navbar
                     'MENULINK_URL' => $link_array['url'],
                     'MENULINK_JS' => $favPopup,
                     'MENULINK_TEXT' => $link_array['text'],
-                    'MENULINK_ICON' => self::navbarIcon($link_array),
+                    'Icon_Class' => self::navbarIcon($link_array),
+                   // '' => ' fa-home',
                     'ACTIVE' => $is_active,
                 ];
 
@@ -143,12 +146,12 @@ trait Navbar
 
     public static function navbarIcon($link_array)
     {
-        $html = '';
+        $icon = '';
         if (isset($link_array['icon'])) {
             $icon = $link_array['icon'];
-            $html = ' '.Template::Icons($icon);
+           // $html = ' '.Template::Icons($icon);
         }
 
-        return $html;
+        return $icon;
     }
 }
