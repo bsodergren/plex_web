@@ -92,7 +92,7 @@ class PlexSql extends \MysqliDb
     1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
     ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit  '.$querySQl.'  ORDER BY `val` ASC';
 
-        $res = $this->db->query($sql);
+        $res = self::$DB->query($sql);
         foreach ($res as $k => $g) {
             $array[] = $g['val'];
         }
