@@ -1,3 +1,23 @@
+
+
+const sideBar = document.querySelector("ul.nav-menu.nav-tabs.nav-sidebar");
+if (sideBar != null) {
+
+    let SideBarHeight = sideBar.clientHeight + 20;
+
+    let sideBarHeader = document.querySelector(".nav-sidebar-header");
+    if (sideBarHeader != null) {
+        sideBarHeader.style.top = SideBarHeight + "px";
+        sideBarHeader.style.position = "absolute";
+        sideBarHeader.style.width = "180px";
+        let sideBarsort = document.querySelector(".nav-sidebar-sort");
+
+        sideBarsort.style.top = SideBarHeight + 30 + "px";
+        sideBarsort.style.position = "absolute";
+        sideBarsort.style.width = "180px";
+    }
+}
+
 let mybutton = document.getElementById("myBtn");
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function () {
@@ -21,47 +41,42 @@ function topFunction() {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
-function getCurrentPage(){
+function getCurrentPage() {}
 
-}
-
-function prevPage(){
- const queryString = window.location.search;
+function prevPage() {
+    const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
     var currentPage = urlParams.get("current");
     urlParams.delete("current");
     nextPage = parseInt(currentPage) - 1;
-if(nextPage == 0) {
-    return false;
+    if (nextPage == 0) {
+        return false;
+    }
+    urlParams.append("current", nextPage);
+    var url = window.location.pathname + "?" + urlParams.toString();
+    window.location.href = url;
 }
-   urlParams.append("current",nextPage)
-   var url = window.location.pathname + '?' + urlParams.toString()
-   window.location.href = url
-}
-function nextPage(){
-
+function nextPage() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
     var currentPage = urlParams.get("current");
-    if(currentPage == null){
+    if (currentPage == null) {
         currentPage = 1;
     }
     urlParams.delete("current");
     const lastPageValue = document.querySelector(".page-link.lastPage");
 
-    var lastPage =  lastPageValue.textContent
-     if(lastPage == currentPage) {
-
-         return false;
-     }
+    var lastPage = lastPageValue.textContent;
+    if (lastPage == currentPage) {
+        return false;
+    }
 
     nextPage = parseInt(currentPage) + 1;
-   urlParams.append("current",nextPage)
-   var url = window.location.pathname + '?' + urlParams.toString()
-   window.location.href = url
-
+    urlParams.append("current", nextPage);
+    var url = window.location.pathname + "?" + urlParams.toString();
+    window.location.href = url;
 }
 
 const writeLog = function (msg) {
@@ -137,14 +152,13 @@ $("#ajaxform").submit(function (e) {
     });
 });
 
-
-var $editMetadata = $('.editMetadata')
+var $editMetadata = $(".editMetadata");
 
 function metaEditor() {
     $editMetadata.editable({
-        emptyMessage: 'Please write something...',
+        emptyMessage: "Please write something...",
         callback: function (data) {
-            editBox = data.$el[0].id
+            editBox = data.$el[0].id;
             const editBoxArr = editBox.split("_");
             var metafield = editBoxArr[0];
             var videoId = editBoxArr[1];
@@ -152,38 +166,36 @@ function metaEditor() {
             if (data.content !== false) {
                 let value = data.content.trim();
 
-                if(value == ""){
+                if (value == "") {
                     value = "NULL";
                 }
                 $.ajax({
-                    type: 'post',
-                    url: 'process.php',
+                    type: "post",
+                    url: "process.php",
                     data: jQuery.param({
-                        submit: 'updateVideoCard',
+                        submit: "updateVideoCard",
                         field: metafield,
                         value: value,
-                        video_id: videoId
-                        }),
-                        success: function (data) {
+                        video_id: videoId,
+                    }),
+                    success: function (data) {
+                        let close = document.getElementById("reload");
+                        console.log(" window reload -> " + close);
 
-                            let close = document.getElementById("reload");
-                            console.log(' window reload -> ' + close)
-
-                            if (close != null) {
-                                window.opener.location.reload(true);
-                                window.location.reload(true);
-
-                            }
+                        if (close != null) {
+                            window.opener.location.reload(true);
+                            window.location.reload(true);
                         }
-                })
-                console.log('   * The text was changed -> ' + value)
+                    },
+                });
+                console.log("   * The text was changed -> " + value);
             }
-        }
-    })
+        },
+    });
 }
 
-$editMetadata.on('edit', function () {
-    console.log('Started editing element ' + this.nodeName)
-})
+$editMetadata.on("edit", function () {
+    console.log("Started editing element " + this.nodeName);
+});
 
-metaEditor()
+metaEditor();

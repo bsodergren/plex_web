@@ -76,11 +76,21 @@ class VideoCard
         $this->params['FULL_PATH'] = $row_fullpath;
         $this->params['FILE_ID'] = $row_id;
         $this->params['WRAPPER_CLASS'] = 'm-3';
-        $this->params['RATING_WIDTH'] = 365;
+        $this->params['RATING_WIDTH'] = 345;
+        $this->params['FavTextClass'] = 'text-start';
+        $this->params['RatingColWidth'] = 'visually-hidden';
+        if (OptionIsTrue(SHOW_RATING)) {
+            $this->params['FavTextClass'] = 'text-end';
+
+            $this->params['RatingColWidth'] = '';
+        }
+
 
         if (OptionIsFalse(NAVBAR)) {
+            $this->params['RatingColWidth'] = '';
+            $this->params['FavTextClass'] = 'text-end';
             $this->params['WRAPPER_CLASS'] = 'm-0';
-            $this->params['RATING_WIDTH'] = 175;
+            $this->params['RATING_WIDTH'] = 320;
             $this->params['DELETE_BUTTONS'] = Render::html(
                 $this->template_base.'/deletebuttons',
                 ['DELETE_ID' => Elements::add_hidden('id', $row_id, 'id="DorRvideoId"')]);
@@ -95,9 +105,9 @@ class VideoCard
             'substudio',
             'keyword',
             'library',
-            'fullpath',
+            // 'fullpath',
             'filesize',
-            'format',
+            // 'format',
             'added',
         ];
         $x = 0;
@@ -118,7 +128,7 @@ class VideoCard
                 }
             }
         }
-        $this->favorite($row_id);
+      //  $this->favorite($row_id);
 
         // utmdd($this->params['HIDDEN_STUDIO']);
         $table_body_html['VIDEO'] = Render::html($this->template_base.'/Video', $this->params);

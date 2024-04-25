@@ -9,14 +9,12 @@ use Plex\Template\Functions\Modules\metaFilters;
 use Plex\Template\Functions\Traits\Breadcrumbs;
 use Plex\Template\Functions\Traits\Navbar;
 use Plex\Template\Functions\Traits\PageSort;
-use Plex\Template\Functions\Traits\RecentDays;
 use Plex\Template\Functions\Traits\TagCloud;
 use Plex\Template\Functions\Traits\ThemeSwitcher;
 use Plex\Template\Functions\Traits\Video;
 use Plex\Template\Render;
 use UTMTemplate\Functions\Traits\Parser;
 use UTMTemplate\HTML\Elements;
-use UTMTemplate\Template;
 
 class Functions extends Render
 {
@@ -24,7 +22,6 @@ class Functions extends Render
     use Navbar;
     use PageSort;
     use Parser;
-    use RecentDays;
     use TagCloud;
     use ThemeSwitcher;
 
@@ -36,7 +33,7 @@ class Functions extends Render
     public static $ButtonDir = 'elements/Buttons';
     public static $RatingsDir = 'elements/Rating';
     public static $BreadcrumbsDir = 'elements/Breadcrumb';
-public $playlist_id;
+    public $playlist_id;
 
     public function __construct()
     {
@@ -44,7 +41,6 @@ public $playlist_id;
 
     public function __call($name, $arguments)
     {
-
     }
 
     public function hiddenSearch()
@@ -83,13 +79,5 @@ public $playlist_id;
         return (new AlphaSort())->displayAlphaBlock();
     }
 
-    public function pageHeader($matches)
-    {
-        Layout::Header();
-    }
 
-    public function pageFooter($matches)
-    {
-        Layout::Footer();
-    }
 }

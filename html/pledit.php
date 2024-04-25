@@ -8,8 +8,7 @@ require_once '_config.inc.php';
 // configuration
 $url = __URL_HOME__.'/pledit.php';
 $file = '/home/bjorn/plex/XXX/Playlists/plexplaylist.txt';
- $pl = new Mediatag('Playlists');
-
+$pl = new Mediatag('Playlists');
 
 if (!file_exists($file)) {
     touch($file);
@@ -23,16 +22,15 @@ if (isset($_POST['text'])) {
 
     $pl->playlistClean($file);
     if ('Download' == $_POST['submit']) {
-         $url = $url.'?download=true';
-    //     utmdump($popurl);
+        $url .= '?download=true';
+        //     utmdump($popurl);
 
-    //     echo '<script>';
-    //     echo "window.open('$popurl','ff');".\PHP_EOL;
-    //     echo "window.location.href = '$url';".\PHP_EOL;
-    //     echo '</script>';
-    //     exit;
-    //    sleep(2);
-
+        //     echo '<script>';
+        //     echo "window.open('$popurl','ff');".\PHP_EOL;
+        //     echo "window.location.href = '$url';".\PHP_EOL;
+        //     echo '</script>';
+        //     exit;
+        //    sleep(2);
     }
     // redirect to form again
     header(sprintf('Location: %s', $url));
@@ -53,9 +51,9 @@ foreach ($array as $line) {
     }
 }
 
-$stylesheet .= Render::stylesheet('editor/form', ['id' => $id]);
+$stylesheet .= Render::stylesheet('pages/editor/form', ['id' => $id]);
 
-$textBlocks .= Render::html('editor/textblock',
+$textBlocks .= Render::html('pages/editor/textblock',
     ['WordWrapPart' => 'text',
         'id' => 'playlistText',
         'TextList' => $text,
@@ -65,7 +63,7 @@ $textBlocks .= Render::html('editor/textblock',
 
 //   break;
 
-$html = Render::html('editor/main', ['TextBlocks' => $textBlocks,
+$html = Render::html('pages/editor/body', ['TextBlocks' => $textBlocks,
     'Javascript' => $javascript,
     'Stylesheet' => $stylesheet,
     'FormAction' => $url]);
@@ -76,9 +74,8 @@ Render::Display($html);
 if (isset($_REQUEST['download'])) {
     if (file_exists($file)) {
         $pl->playlistDownload($file);
-      //  $pl->mediadownload();
-        echo "fadsfsda";
+        //  $pl->mediadownload();
+        echo 'fadsfsda';
     }
     exit;
 }
-

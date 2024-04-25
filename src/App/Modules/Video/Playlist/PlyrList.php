@@ -51,16 +51,20 @@ class PlyrList extends Player
         return $this->playlist_id;
     }
 
-    private function getPlaylistItem($row, $class)
+    private function getPlaylistItem($row, $class = '')
     {
+
         $title = $row['title'];
         if ('' == $row['title']) {
             $title = $row['filename'];
         }
+
+        $thumbImg =  ( new Functions())->fileThumbnail($row['playlist_video_id'], 'alt="#" class="img-fluid" ');
+        // utmdump($thumbImg);
         return Render::html(
             $this->videoTemplate.'/container/item',
             [
-                'THUMBNAIL' => ( new Functions())->fileThumbnail($row['playlist_video_id'], 'alt="#" class="img-fluid" '),
+                'THUMBNAIL' =>$thumbImg,
                 'STUDIO' => $row['studio'],
                 'ARTIST' => $row['artist'],
                 'GENRE' => $row['genre'],
@@ -79,6 +83,7 @@ class PlyrList extends Player
     {
         $next_video_id = null;
         $prev_video_id = null;
+
         $sql = 'select
                     v.thumbnail,v.filename,p.playlist_video_id,
                     m.title,

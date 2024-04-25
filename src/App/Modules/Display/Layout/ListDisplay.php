@@ -19,7 +19,6 @@ class ListDisplay extends VideoDisplay
         $this->template_base = 'pages'.DIRECTORY_SEPARATOR. $template_base;
         $this->VideoPlaylists = (new Playlist())->showPlaylists(true);
 
-        utmdump($this->template_base);
     }
 
     public function getDisplay($results, $page_array = [])

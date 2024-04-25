@@ -2,15 +2,11 @@ body {
     margin-bottom: 60px;
 }
 
-footer {
-    margin-top: 50px;
-}
-
 .btn {
     text-transform: initial !important;
 }
 
- .sidenav-pos {
+.sidenav-pos {
     position: fixed;
     top: 60px;
 }
@@ -18,15 +14,12 @@ footer {
 .container-sidenav {
     position: absolute;
     left: 140px;
-    top: 100px;
-    width:90%;
+    top: 60px;
+    width: 90%;
+    z-index: 1;
+    padding-bottom: 35px;
 }
 
-.navbar-breadcrumb{
-    position: absolute;
-    left: 80px;
-    top: 60px;
-}
 
 .nav-sidebar {
     width: 180px;
@@ -35,23 +28,21 @@ footer {
 
 }
 
-.nav-sidebar-sort{
-width: 180px;
-position: absolute;
-top: 370px;
-left: -30px;
+.nav-sidebar-sort {
+    width: 180px;
+    position: absolute;
+    top: 370px;
+    left: 0px;
 
 
 }
 
-.nav-sidebar-header{
+.nav-sidebar-header {
     width: 180px;
     position: absolute;
     top: 340px;
-
-
-
 }
+
 
 .vertical-text {
     transform-origin: center;
@@ -87,15 +78,17 @@ left: -30px;
     text-wrap: nowrap;
 
 }
-    .nav-tabs .nav-link {
-        padding: 10px 10px 10px 10px;
-    }
-    .dropdown-item {
-        display: block;
-        width: 100%;
-        padding: 0px 0px 0px 0px;
 
-    }
+.nav-tabs .nav-link {
+    padding: 10px 10px 10px 10px;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0px 0px 0px 0px;
+}
+
 .nav-tabs .nav-link:not([disabled]):not(.disabled).active,
 .nav-tabs .nav-link:not([disabled]):not(.disabled):active,
 .nav-tabs .nav-link:not([disabled]):not(.disabled):focus,
@@ -250,7 +243,7 @@ button[type="submit"]:hover {
 
 #myBtn {
     position: fixed;
-    bottom: 75px;
+    bottom: 85px;
     right: 20px;
     /* background: rgb(0, 0, 0); */
     /* background: rgba(0, 0, 0, 0.7); */
@@ -354,4 +347,34 @@ button[type="submit"]:hover {
     /* box-sizing: unset !important; */
 }
 
-.VideoCard-img-fluid {}
+.VideoCard-img-fluid {
+    width: 100%;
+}
+
+
+.nav-dropdown {
+    width: 149px;
+    left: -1px;
+    position: relative;
+    padding: 10px 10px 10px 10px;
+    text-align: start;
+}
+
+.nav-dropdown-menu {
+    --bs-dropdown-zindex: 1000;
+    --bs-dropdown-padding-x: 0;
+    --bs-dropdown-padding-y: 0.5rem;
+    --bs-dropdown-spacer: 0.125rem;
+
+}
+button.btn.playlist-canvas-button {
+    position: fixed;
+    top: 10px;
+    left: 10px
+}
+
+.navbar-breadcrumb {
+    position: absolute;
+    left: 120px;
+    top: 10px;
+}

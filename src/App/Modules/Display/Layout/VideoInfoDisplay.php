@@ -13,6 +13,5 @@ class VideoInfoDisplay extends ListDisplay
     {
         $this->template_base = 'pages'.DIRECTORY_SEPARATOR. $template_base;
 
-        utmdump($this->template_base);
     }
 }

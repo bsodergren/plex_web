@@ -27,7 +27,6 @@ class GridDisplay extends VideoDisplay
     public function __construct($template_base = 'Grid')
     {
         $this->template_base = 'pages'.DIRECTORY_SEPARATOR. $template_base;
-        utmdump($this->template_base);
         $this->VideoPlaylists = (new Playlist())->showPlaylists(true);
     }
 

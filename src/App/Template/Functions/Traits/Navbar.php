@@ -2,22 +2,23 @@
 
 namespace Plex\Template\Functions\Traits;
 
-use Plex\Template\Render;
-use UTMTemplate\Template;
-use Symfony\Component\Yaml\Yaml;
 use Plex\Template\Functions\Functions;
+use Plex\Template\Render;
+use Symfony\Component\Yaml\Yaml;
+use UTMTemplate\Template;
 
 trait Navbar
 {
     private $NavbarDir = 'base/navbar';
 
-    public static function dropdownLink($url, $name, $active, $badge)
+    public static function dropdownLink($url, $name, $active, $badge, $Icon = '')
     {
         return Render::html('base/navbar/menu_dropdown_link', [
             'ACTIVE' => $active,
             'DROPDOWN_URL_TEXT' => $name,
             'DROPDOWN_URL' => $url,
             'DROPDOWN_BADGE' => $badge,
+            'Icon_Class' => $Icon,
         ]);
     }
 
@@ -31,11 +32,18 @@ trait Navbar
 
             if (\is_array($d_values)) {
                 foreach ($d_values as $dd_name => $dd_url) {
+                    $icon = '';
+                    if (\is_array($dd_url)) {
+                        $tmp_arr = $dd_url;
+                        unset($dd_url);
+                        $icon = $tmp_arr['icon'];
+                        $dd_url = $tmp_arr['url'];
+                    }
                     $is_active = '';
                     if (__THIS_PAGE__ == basename($dd_url, '.php')) {
                         $is_active = ' active';
                     }
-                    $dropdown_link_html[] = self::dropdownLink($dd_url, $dd_name, $is_active, $badge);
+                    $dropdown_link_html[] = self::dropdownLink($dd_url, $dd_name, $is_active, $badge, $icon);
                 }
                 $dropdown_link_html[] = '<li><hr class="dropdown-divider-settings"></li>';
                 $pop = true;
@@ -50,7 +58,6 @@ trait Navbar
             if (__THIS_PAGE__ == basename($d_values, '.php')) {
                 $is_active = ' active';
             }
-
 
             $parts = explode('|', $d_values);
             $url = $parts[0];
@@ -104,38 +111,29 @@ trait Navbar
                 $is_active = ' active';
             }
 
-            if (array_key_exists('days',$link_array)) {
+            if (\array_key_exists('days', $link_array)) {
                 if (__THIS_PAGE__ == 'recent') {
-                    $is_active = $is_active . " recent-days-link";
+                    $is_active .= ' recent-days-link';
                 }
             }
             $favPopup = '';
             $template = 'menu_link';
-            if (array_key_exists('js',$link_array)) {
+            if (\array_key_exists('js', $link_array)) {
                 $favPopup = ' onclick="popup(\''.__URL_HOME__.'/video.php?favorites=true\', \'video_popup\')" ';
                 $link_array['url'] = null;
                 $template = 'menu_popup';
             }
 
-                $array = [
-                    'MENULINK_URL' => $link_array['url'],
-                    'MENULINK_JS' => $favPopup,
-                    'MENULINK_TEXT' => $link_array['text'],
-                    'Icon_Class' => self::navbarIcon($link_array),
-                   // '' => ' fa-home',
-                    'ACTIVE' => $is_active,
-                ];
+            $array = [
+                'MENULINK_URL' => $link_array['url'],
+                'MENULINK_JS' => $favPopup,
+                'MENULINK_TEXT' => $link_array['text'],
+                'Icon_Class' => self::navbarIcon($link_array),
+               // '' => ' fa-home',
+                'ACTIVE' => $is_active,
+            ];
 
-                $url_text = Render::html('base/navbar/'. $template , $array);
-                if (array_key_exists('days',$link_array)) {
-                    if (__THIS_PAGE__ == 'recent') {
-
-                    //$url_text = str_replace("</li>",'',$url_text);
-                    $url_text .= (new Functions)->displayDayList();
-                    }
-                   // $url_text .= '</li>';
-                }
-
+            $url_text = Render::html('base/navbar/'.$template, $array);
 
 
             $html = $html.$url_text."\n";
@@ -149,7 +147,7 @@ trait Navbar
         $icon = '';
         if (isset($link_array['icon'])) {
             $icon = $link_array['icon'];
-           // $html = ' '.Template::Icons($icon);
+            // $html = ' '.Template::Icons($icon);
         }
 
         return $icon;

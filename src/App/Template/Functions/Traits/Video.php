@@ -2,17 +2,44 @@
 
 namespace Plex\Template\Functions\Traits;
 
-use Plex\Template\Render;
-use UTM\Utilities\Option;
-use UTMTemplate\HTML\Elements;
+use Plex\Modules\Database\FavoriteDB;
 use Plex\Modules\Database\PlexSql;
+use Plex\Modules\Display\FavoriteDisplay;
 use Plex\Modules\Playlist\Playlist;
 use Plex\Modules\VideoCard\VideoCard;
 use Plex\Template\Functions\Functions;
+use Plex\Template\Render;
+use UTMTemplate\HTML\Elements;
 
 trait Video
 {
-    public function UseEditable($matches) {}
+    public function UseEditable($matches)
+    {
+    }
+
+    public function videoFavorite($matches)
+    {
+        $var = $this->parseVars($matches);
+
+        $videoid = $var['id'];
+        if (true === FavoriteDB::get($videoid)) {
+            $favoriteBtn = FavoriteDisplay::RemoveFavoriteVideo($videoid);
+        } else {
+            $favoriteBtn = FavoriteDisplay::addFavoriteVideo($videoid);
+        }
+
+        // $this->params['FIELD_ROW_HTML'] .= Render::html(
+        //     $this->template_base.'/Rows/ListsRow',
+        //     [
+        //   'VALUE' => $favoriteBtn,
+        //         'ALT_CLASS' => $this->AltClass,
+
+        //     ]
+        // );
+        // utmdump($favoriteBtn);
+
+        return $favoriteBtn;
+    }
 
     public function videoButton($matches)
     {
@@ -67,17 +94,16 @@ trait Video
         return Elements::addButton($text, 'button', $class, $extra, $javascript);
     }
 
-
-    public function getPlaylistsfromId($id,$playlist_id){
+    public function getPlaylistsfromId($id, $playlist_id)
+    {
         $results = Playlist::getVideoPlaylists($id);
-        $disabled_id=[] ;
-        if($results === null){
-            return [$playlist_id,''];
+        $disabled_id = [];
+        if (null === $results) {
+            return [$playlist_id, ''];
         }
 
-        foreach($results as $k => $row)
-        {
-            if($playlist_id === null){
+        foreach ($results as $k => $row) {
+            if (null === $playlist_id) {
                 if (\array_key_exists('playlist_id', $row)) {
                     $playlist_id = $row['playlist_id'];
                 }
@@ -85,29 +111,28 @@ trait Video
                 $disabled_id[] = $row['playlist_id'];
             }
         }
-        $disabled_id_list = implode(",",$disabled_id);
+        $disabled_id_list = implode(',', $disabled_id);
 
-        return [$playlist_id,$disabled_id_list];
+        return [$playlist_id, $disabled_id_list];
     }
 
-    public function getVideoPlaylistJson($id,$playlist_id=null)
+    public function getVideoPlaylistJson($id, $playlist_id = null)
     {
-        list($playlist_id,$disabled_id_list) = $this->getPlaylistsfromId($id,$playlist_id);
-        $playlists = (new Playlist())->getPlaylistJsonOptions($playlist_id,$disabled_id_list);
+        list($playlist_id, $disabled_id_list) = $this->getPlaylistsfromId($id, $playlist_id);
+        $playlists = (new Playlist())->getPlaylistJsonOptions($playlist_id, $disabled_id_list);
         $this->playlist_id = $playlist_id;
+
         return $playlists;
     }
 
-    public  function getVideoPlaylists($id,$playlist_id=null)
+    public function getVideoPlaylists($id, $playlist_id = null)
     {
-        list($playlist_id,$disabled_id_list) = $this->getPlaylistsfromId($id,$playlist_id);
-        $playlists = (new Playlist())->getPlaylistSelectOptions($playlist_id,$disabled_id_list);
+        list($playlist_id, $disabled_id_list) = $this->getPlaylistsfromId($id, $playlist_id);
+        $playlists = (new Playlist())->getPlaylistSelectOptions($playlist_id, $disabled_id_list);
         $this->playlist_id = $playlist_id;
+
         return $playlists;
-
     }
-
-
 
     public function videoAddToPlaylist($matches)
     {
@@ -115,13 +140,13 @@ trait Video
         $id = $var['id'];
         $playlist_id = $var['pl_id'];
 
-        $playlisthtml = $this->getVideoPlaylists($id,$playlist_id);
+        $playlisthtml = $this->getVideoPlaylists($id, $playlist_id);
+
         return Render::html(Functions::$PlaylistDir.'/VideoPlayer/PlaylistForm', [
-            'playlistId' =>  $this->playlist_id ,
+            'playlistId' => $this->playlist_id,
             'SelectPlaylists' => $playlisthtml,
             'Videoid' => $var['id'],
         ]);
-
     }
 
     public function videoPlaylistBtn($matches)
@@ -150,28 +175,26 @@ trait Video
     public function videoRating($matches)
     {
         $hidden = null;
-            if (OptionIsTrue(SHOW_RATING)) {
-                $var = $this->parseVars($matches);
-                $params = [
-                    'ROW_ID' => $var['id'],
-                    'STAR_RATING' => $var['rating'],
-                ];
+        if (OptionIsTrue(SHOW_RATING)) {
+            $var = $this->parseVars($matches);
+            $params = [
+                'ROW_ID' => $var['id'],
+                'STAR_RATING' => $var['rating'],
+            ];
 
-                if (\array_key_exists('close', $var)) {
-                    $params['RATING_HIDDEN'] = Elements::add_hidden('close', 'false', 'id="close_window"');
-                }
-
-                return Render::html(Functions::$RatingsDir.'/rating', $params);
+            if (\array_key_exists('close', $var)) {
+                $params['RATING_HIDDEN'] = Elements::add_hidden('close', 'false', 'id="close_window"');
             }
 
+            return Render::html(Functions::$RatingsDir.'/rating', $params);
+        }
     }
 
     public function ratingInclude($matches)
     {
-            if (OptionIsTrue(SHOW_RATING)) {
-                return Render::html(Functions::$RatingsDir.'/header', []);
-            }
-
+        if (OptionIsTrue(SHOW_RATING)) {
+            return Render::html(Functions::$RatingsDir.'/header', []);
+        }
     }
 
     public function Thumbnail($matches)

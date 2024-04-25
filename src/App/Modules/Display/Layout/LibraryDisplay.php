@@ -19,7 +19,6 @@ class LibraryDisplay extends VideoDisplay
         $this->template_base = 'pages'.\DIRECTORY_SEPARATOR.$template_base;
         $this->db = PlexSql::$DB;
 
-        utmdump($this->template_base);
     }
 
     public function getDisplay($result, $page_array = [])

@@ -128,10 +128,10 @@ function FavoriteVideo(action,videoid=null)
     });
 }
 
-function updateFavVideo()
+function updateFavVideo(videoid)
 {
-    const playervideoid = document.querySelector('.player_text')
-    videoid = playervideoid.getAttribute('data-videoid')
+    // const playervideoid = document.querySelector('.player_text')
+    // videoid = playervideoid.getAttribute('data-videoid')
 
     $.ajax({
         url: "process.php",

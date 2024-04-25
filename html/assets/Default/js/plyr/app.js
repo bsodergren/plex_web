@@ -1,12 +1,9 @@
-
-
 const PlayerApp = {
     playlist: null,
     playerContainer: null,
     playlistItems: [],
     tracks: [],
     player: null,
-
 
     /**
      * Initializes the player application.
@@ -15,13 +12,10 @@ const PlayerApp = {
         // Get the DOM element
         this.playlist = document.getElementById("playlist");
         this.playerContainer = document.getElementById("player_container");
-
-        var hasPlaylist = document.getElementById("playlist");
-
         // prepare objects
         this.createPlayer();
 
-        if (hasPlaylist != null) {
+        if (this.playlist != null) {
             this.initializePlaylistItems();
             this.populateAccordionContent();
             this.initializeEventListeners();
@@ -44,9 +38,6 @@ const PlayerApp = {
      * Creates the Plyr player with the specified controls.
      */
     createPlayer() {
-
-
-
         const controls = `
     <!-- Player controls HTML -->
     <button type="button" class="plyr__control plyr__control--overlaid" data-plyr="play">
@@ -139,6 +130,9 @@ const PlayerApp = {
         this.player = new Plyr(".js-playerx", {
             // Plyr options
             controls: controls,
+            ratio: '16:9',
+            // iconUrl: "https://cdn.plyr.io/3.7.8/plyr.svg",
+            blankVideo: "https://cdn.plyr.io/static/blank.mp4",
             loadSprite: true,
             debug: false,
             keyboard: {
@@ -248,11 +242,6 @@ const PlayerApp = {
         var readyCount = 0;
 
         // Get the currently playing track
-        const playlistIcon = document.querySelector(".playlist-icon");
-
-        var playlerText = document.querySelector(
-            ".player_container .player_text"
-        );
 
         this.player.on("ready", () => {
             this.player.play();
@@ -284,15 +273,25 @@ const PlayerApp = {
             readyCount++;
         });
 
+        const playlistIcon = document.querySelector(".playlist-icon");
+
+        var playlerText = document.querySelector(
+            ".player_container .player_text"
+        );
+
         this.player.on("controlshidden", () => {
             //this.player.play();
-            playlistIcon.classList.add("hidden");
-            playlerText.classList.add("hidden");
+            if (playlerText != null) {
+                playlistIcon.classList.add("hidden");
+                playlerText.classList.add("hidden");
+            }
         });
         this.player.on("controlsshown", () => {
             //this.player.play();
-            playlistIcon.classList.remove("hidden");
-            playlerText.classList.remove("hidden");
+            if (playlerText != null) {
+                playlistIcon.classList.remove("hidden");
+                playlerText.classList.remove("hidden");
+            }
         });
 
         this.player.on("ended", () => {
@@ -363,11 +362,15 @@ const PlayerApp = {
 
         this.player.on("controlshidden", () => {
             //this.player.play();
-            playlerText.classList.add("hidden");
+            if (playlerText != null) {
+                playlerText.classList.add("hidden");
+            }
         });
         this.player.on("controlsshown", () => {
             //this.player.play();
-            playlerText.classList.remove("hidden");
+            if (playlerText != null) {
+                playlerText.classList.remove("hidden");
+            }
         });
 
         this.player.on("progress", () => {
@@ -405,69 +408,9 @@ const PlayerApp = {
         item.classList.add("active");
         // Get the text-title span element
 
+        setInfoText("text", item);
+        // setInfoText("video", item)
 
-
-
-        const textTitle = document.querySelector(".text_title");
-        const videotitle = document.querySelector(".video_title");
-
-        textTitle.textContent = item.getAttribute("data-title");
-        videotitle.textContent = textTitle.textContent
-
-        const textartist = document.querySelector(".text_artist");
-        const videoartist = document.querySelector(".video_artist");
-
-        if (item.getAttribute("data-artist") == "") {
-            textartist.classList.add("hidden"); // Add 'hidden' class
-            textartist.textContent = "";
-
-            videoartist.classList.add("hidden"); // Add 'hidden' class
-            videoartist.textContent = "";
-        } else {
-            textartist.textContent = item.getAttribute("data-artist");
-            videoartist.textContent =  textartist.textContent
-
-        }
-
-        const textgenre = document.querySelector(".text_genre");
-        const videogenre = document.querySelector(".video_genre");
-        textgenre.textContent = item.getAttribute("data-genre");
-        videogenre.textContent =  textgenre.textContent
-
-        const textstudio = document.querySelector(".text_studio");
-        const videostudio = document.querySelector(".video_studio");
-        textstudio.textContent = item.getAttribute("data-studio");
-        videostudio.textContent = textstudio.textContent
-
-        const textvideoid = document.querySelector("#videoPlaylistVideoId");
-        const playerText = document.querySelector(".player_text");
-        const videoTextvideoid = document.querySelector(".video_text");
-
-        textvideoid.value = item.getAttribute("data-videoid");
-        playerText.setAttribute(
-            "data-videoid",
-            item.getAttribute("data-videoid")
-        );
-        videoTextvideoid.setAttribute(
-            "data-videoid",
-            item.getAttribute("data-videoid")
-        );
-
-        // console.log("data video id", item.getAttribute("data-videoid"));
-
-        // Get the player_text anchor element
-
-        playerText.setAttribute(
-            "onclick",
-            "videoCard(" + textvideoid.value + ")"
-        );
-        videoTextvideoid.setAttribute(
-            "onclick",
-            "videoCard(" + textvideoid.value + ")"
-        );
-
-
-        playerText.setAttribute("href", item.getAttribute("data-pUrl"));
         updateOptions(item.getAttribute("data-videoid"));
         this.player.source = {
             type: "video",
@@ -475,9 +418,9 @@ const PlayerApp = {
             sources: track.sources,
             poster: track.poster,
         };
-        this.player.play();
+        var isPlaying = this.player.play();
         resize();
-        updateFavVideo();
+        updateFavVideo(item.getAttribute("data-videoid"));
     },
 
     /**
@@ -611,7 +554,6 @@ const PlayerApp = {
             leftColumn.classList.toggle("expanded");
             rightColumn.classList.toggle("hidden");
             resizeWindow(!leftColumn.classList.contains("expanded"));
-
         });
     },
 
@@ -753,37 +695,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // resizeWindow(false)
     resize();
-
 });
 
-
-window.addEventListener('resize', resize, false);
+window.addEventListener("resize", resize, false);
 
 // video.height = 100; /* to get an initial width to work with*/
 
 function resize() {
     var videoTag = document.getElementsByTagName("video");
     const video = videoTag[0];
-    text= "Video is W:"+video.clientWidth + " H:" + video.clientHeight + " Src: "+ video.currentSrc;
-    // console.log(text)
-    console.log(video.parentNode.clientHeight)
-//     videoRatio = video.height / video.width;
-// windowRatio = window.innerHeight / window.innerWidth; /* browser size */
 
-//     if (windowRatio < videoRatio) {
-//         if (window.innerHeight > 50) { /* smallest video height */
-//         video.height = window.innerHeight;
+    //     videoRatio = video.height / video.width;
+    // windowRatio = window.innerHeight / window.innerWidth; /* browser size */
 
-//         } else {
-//             video.height = 50;
-//     }
-//     } else {
-//         video.width = window.innerWidth;
-//     }
-//     text= "Resising Window to W:"+video.width + " H:" + video.height;
-//     console.log(text)
+    //     if (windowRatio < videoRatio) {
+    //         if (window.innerHeight > 50) { /* smallest video height */
+    //         video.height = window.innerHeight;
 
-};
+    //         } else {
+    //             video.height = 50;
+    //     }
+    //     } else {
+    //         video.width = window.innerWidth;
+    //     }
+    //     text= "Resising Window to W:"+video.width + " H:" + video.height;
+    //     console.log(text)
+}
 function updateOptions(id) {
     $.ajax({
         url: "process.php",
@@ -827,3 +764,50 @@ function updateOptions(id) {
     });
 }
 
+function setInfoText(className, item) {
+    var TitleId = "." + className + "_title";
+    const textTitle = document.querySelector(TitleId);
+    if (textTitle != null) {
+        textTitle.textContent = item.getAttribute("data-title");
+    }
+
+    var artistId = "." + className + "_artist";
+    const textartist = document.querySelector(artistId);
+    if (textartist != null) {
+        if (item.getAttribute("data-artist") == "") {
+            textartist.classList.add("hidden"); // Add 'hidden' class
+            textartist.textContent = "";
+        } else {
+            textartist.textContent = item.getAttribute("data-artist");
+        }
+    }
+
+    var genreId = "." + className + "_genre";
+    const textgenre = document.querySelector(genreId);
+    if (textgenre != null) {
+        textgenre.textContent = item.getAttribute("data-genre");
+    }
+
+    var studioId = "." + className + "_studio";
+    const textstudio = document.querySelector(studioId);
+    if (textstudio != null) {
+        textstudio.textContent = item.getAttribute("data-studio");
+    }
+
+    const textvideoid = document.querySelector("#videoPlaylistVideoId");
+
+    const playerTextInfo = document.querySelector(".player_" + className);
+    if (playerTextInfo != null) {
+        playerTextInfo.setAttribute("href", item.getAttribute("data-pUrl"));
+
+        textvideoid.value = item.getAttribute("data-videoid");
+        playerTextInfo.setAttribute(
+            "data-videoid",
+            item.getAttribute("data-videoid")
+        );
+        playerTextInfo.setAttribute(
+            "onclick",
+            "videoCard(" + textvideoid.value + ")"
+        );
+    }
+}

@@ -80,6 +80,10 @@ class Player
     {
         foreach ($row as $field => $value) {
             if (array_key_exists($field, $this->VideoParams)) {
+                if($field == 'thumbnail'){
+                    $value = __URL_HOME__ . $value;
+                }
+                utmdump([$field,$value]);
                 $this->params[$this->VideoParams[$field]] = $value;
             }
         }

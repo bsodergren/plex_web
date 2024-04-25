@@ -1,6 +1,6 @@
 home:
     url: home.php
-    text:  !php/const NavBar_Text_Home
+    text: !php/const NavBar_Text_Home
     icon: fa-home
     studio: false
 recent:
@@ -8,7 +8,31 @@ recent:
     text: !php/const NavBar_Text_Recent
     icon: fa-star
     studio: false
-    days: true
+    dropdown:
+        [
+            {
+                "1":
+                    {
+                        url: recent.php?direction=ASC&sort=v.added&days=1,
+                        icon: fa-star,
+                    },
+                "2":
+                    {
+                        url: recent.php?direction=ASC&sort=v.added&days=2,
+                        icon: fa-star,
+                    },
+                "4":
+                    {
+                        url: recent.php?direction=ASC&sort=v.added&days=4,
+                        icon: fa-star,
+                    },
+                "5":
+                    {
+                        url: recent.php?direction=ASC&sort=v.added&days=5,
+                        icon: fa-star,
+                    },
+            },
+        ]
 favorites:
     url: favorites.php
     text: !php/const NavBar_Text_Favorites
@@ -19,7 +43,7 @@ watch:
     text: !php/const NavBar_Text_WatchFavorites
     icon: fa-play-circle
     studio: false
-    js: {"Window": true}
+    js: { "Window": true }
 list:
     url: list.php
     text: !php/const NavBar_Text_List
@@ -38,7 +62,7 @@ grid:
 playlist:
     url: playlist.php
     text: !php/const NavBar_Text_Playist
-    icon:  fa-list-alt
+    icon: fa-list-alt
     studio: false
 tag:
     url: tags.php
@@ -58,22 +82,23 @@ artist:
 extra:
     text: "Settings"
     icon: fa-cog
-    dropdown: [{
-            Duplicates: dupes.php},
-        {
-            artistEditor: Config/artistEditor.php,
-            studioEditor: Config/studioEditor.php,
-            genreEditor: Config/genreEditor.php
-        },
-        {
-            wordMap: editor.php,
-            plEdit: pledit.php,
-            "File Browser": filebrowser.php,
-            test: test.php
-        },
-        {
-            refresh: "process.php?action=refresh",
-            settings: settings.php
-        }
-    ]
-
+    dropdown:
+        [
+            { Duplicates: { url: dupes.php, icon: fa-star }
+            },
+            {
+                artistEditor: { url: Config/artistEditor.php, icon: "" },
+                studioEditor: { url: Config/studioEditor.php, icon: "" },
+                genreEditor: { url: Config/genreEditor.php, icon: "" },
+            },
+            {
+                wordMap: { url: editor.php, icon: "" },
+                plEdit: { url: pledit.php, icon: "" },
+                "File Browser": { url: filebrowser.php, icon: "" },
+                test: { url: test.php, icon: "" },
+            },
+            {
+                refresh: { url: "process.php?action=refresh", icon: "" },
+                settings: { url: settings.php, icon: fa-gear },
+            },
+        ]
