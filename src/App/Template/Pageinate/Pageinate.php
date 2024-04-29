@@ -29,6 +29,7 @@ class Pageinate extends Paginator
 
     public function __construct($query, $currentPage, $urlPattern)
     {
+
         global $_SESSION;
         $db                 = PlexSql::$DB;
         $this->itemsPerPage = $_SESSION['itemsPerPage'];

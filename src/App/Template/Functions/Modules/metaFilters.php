@@ -17,6 +17,7 @@ class metaFilters extends Render
 
     public function __call($name, $arguments)
     {
+        $hidden = '';
         $filter_html = $this->filter($name);
         foreach ($_REQUEST as $name => $value) {
             if ('' != $value) {
@@ -29,10 +30,10 @@ class metaFilters extends Render
 
     public function displayFilters()
     {
-        
+
             if (OptionIsTrue(USE_FILTER)) {
                 return Render::html($this->templateDir.'/block', []);
-        
+
         }
     }
 
@@ -58,5 +59,5 @@ class metaFilters extends Render
         return Render::html($this->templateDir.'/select_box', $params);
     }
 
-    
+
 }

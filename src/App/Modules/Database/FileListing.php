@@ -3,7 +3,6 @@
 namespace Plex\Modules\Database;
 
 use Plex\Core\Request;
-use Plex\Modules\Database\VideoDb;
 use Plex\Template\Pageinate\Pageinate;
 
 class FileListing
@@ -109,7 +108,7 @@ class FileListing
 
         if (isset($uri)) {
             if (isset($this->request['allfiles'])) {
-            $uri['allfiles'] = $this->request['allfiles'];
+                $uri['allfiles'] = $this->request['allfiles'];
             }
         }
 
@@ -138,22 +137,17 @@ class FileListing
         global $_SESSION;
         $tag_array = ['studio', 'substudio', 'genre', 'artist'];
 
-        $where = '';
         // . ' AND ';
-
+        $request_query = [];
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
                 ${$tag} = urldecode($this->request[$tag]);
                 $uri[$tag] = ${$tag};
                 if ('studio' == $tag || 'substudio' == $tag
                 || 'genre' == $tag || 'artist' == $tag || 'keyword' == $tag) {
-                    $key = $tag;
+                    $request_query[] = ['field' => $tag, 'search' => $this->request[$tag]];
                 }
             }
-        }
-
-        if (!isset($key)) {
-            $key = 'studio';
         }
 
         if (isset($_SESSION['sort'])) {
@@ -168,7 +162,6 @@ class FileListing
 
         if (isset($this->request['alpha'])) {
             $query = PlexSql::getAlphaKey($this->request['sort'], $this->request['alpha']);
-            utmdump($query);
 
             if (null === $query) {
                 unset($this->request['alpha']);
@@ -197,31 +190,12 @@ class FileListing
                 $sql_studio = $res_array['sql'];
             }
 
-            // if (isset($this->request['genre'])) {
-            //     $key = 'genre';
-            // }
-            // if (isset($this->request['artist'])) {
-            //     $key = 'artist';
-            // }
-
-            // $where = str_replace($key."  = '".$this->request[$key]."'", $key.' like \'%'.$this->request[$key].'%\'',
-            //  $sql_studio);
-
             if (isset($this->request['allfiles'])) {
-                //     $where = str_replace("studio = 'null'", 'studio IS NULL', $sql_studio);
-                // } else {
-                //     //$studio_key = '';
                 $uri['allfiles'] = $this->request['allfiles'];
-                $where = $sql_studio;
-                $genre = '';
             }
         }
 
-        $search = '';
-        if (\array_key_exists($key, $this->request)) {
-            $search = $this->request[$key];
-        }
-        $pageObj = new Pageinate([['field' => $key, 'search' => $search]], $this->currentpage, $this->urlPattern);
+        $pageObj = new Pageinate($request_query, $this->currentpage, $this->urlPattern);
         $tagTables = false;
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
@@ -239,27 +213,25 @@ class FileListing
             }
         }
 
-
         if (isset($this->request['sort'], $this->request['direction'])) {
             $this->db->orderBy($this->request['sort'], $this->request['direction']);
         }
-//    if($tagTables === true){
-//             $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'v.video_key=m.video_key', 'INNER');
-//             $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
-
-//         }
+        if (true === $tagTables) {
+            $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'v.video_key=m.video_key', 'INNER');
+            $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
+        }
         $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
-       //
 
         return [$results, $pageObj, $uri];
     }
 
     private function loopVideos($results)
     {
-        foreach($results as $b => $videoRow){
+        foreach ($results as $b => $videoRow) {
             $vidResults[$b] = VideoDb::getVideo($videoRow['id']);
             $vidResults[$b]['rownum'] = $videoRow['rownum'];
         }
+
         return $vidResults;
     }
 
@@ -268,25 +240,25 @@ class FileListing
         $limitQuery = '';
         // $fieldArray = VideoDb::$VideoMetaFields;
 
-        $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'v.video_key=m.video_key', 'INNER');
-        $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
+        // $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'v.video_key=m.video_key', 'INNER');
+        // $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
 
         // $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'v.video_key=i.video_key', 'LEFT OUTER');
 
         // if (null !== PlexSql::getLibrary()) {
-          //  $this->db->joinWhere(Db_TABLE_VIDEO_FILE.' v', 'v.library', $_SESSION['library']);
+        //  $this->db->joinWhere(Db_TABLE_VIDEO_FILE.' v', 'v.library', $_SESSION['library']);
         // }
 
         $this->db->join(Db_TABLE_PLAYLIST_VIDEOS.' p', 'v.id=p.playlist_video_id', 'LEFT OUTER');
 
-        if($_SESSION['library'] != 'All') {
+        if ('All' != $_SESSION['library']) {
             $this->db->where('v.library', $_SESSION['library']);
         }
 
         // if()
-         $fieldArray[] = 'v.id';
+        $fieldArray[] = 'v.id';
 
-    //    $fieldArray = array_merge(VideoDb::$VideoMetaFields, VideoDb::$VideoInfoFields, VideoDb::$VideoFileFields);
+        //    $fieldArray = array_merge(VideoDb::$VideoMetaFields, VideoDb::$VideoInfoFields, VideoDb::$VideoFileFields);
         // ,VideoDb::$PlayListFields );
         //  $dbcount = $this->db;
 
@@ -314,20 +286,20 @@ class FileListing
         $joinQuery .= $limitQuery;
 
         $this->saveSearch($joinQuery);
-        $joinQuery = str_replace('SELECT   v.id', 'SELECT '.implode(',', $fieldArray), $joinQuery);
+        // $joinQuery = str_replace('SELECT   v.id', 'SELECT '.implode(',', $fieldArray), $joinQuery);
 
         $joinQuery = str_replace('SELECT ', 'SELECT count(DISTINCT p.playlist_video_id) as totalRecords, ', $joinQuery);
 
         $query = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
 
         $results = $this->db->rawQuery($query);
-        if(count($results) == 0)
-        {
-            echo "No results in query, invalid query";
-            utmdd("No Results");
+        if (0 == \count($results)) {
+            echo 'No results in query, invalid query';
+            utmdd('No Results');
         }
 
         $vidResults = $this->loopVideos($results);
+
         return $vidResults;
     }
 }
