@@ -59,16 +59,16 @@ function resizeWindow(large)
         videoWidth = 1920
     }
     windowWidth = videoWidth * 0.75
-    // heightMulti = .68
-    // if(large == false) {
-        heightMulti = 1.25
-    // }
+    heightMulti = .58
+    if(large == false) {
+        heightMulti = heightMulti + .13
+    }
         windowHeight = videoHeight * heightMulti
 
-    // text= "Resising Window to W:"+windowWidth + " H:" + windowHeight + ", x"+heightMulti+" Playlist:"+large;
-    // console.log(text)
+    text= "Resising Window to W:"+windowWidth + " H:" + windowHeight + ", x"+heightMulti+" Playlist:"+large;
+    console.log(text)
 
-    // window.resizeTo(windowWidth, windowHeight)
+     window.resizeTo(windowWidth, windowHeight)
 }
 
 resizeWindow(document.querySelector('.playlist-icon'))

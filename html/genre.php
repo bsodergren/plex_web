@@ -1,11 +1,11 @@
 <?php
 
 use Plex\Modules\Database\PlexSql;
-use Plex\Modules\Display\Layout;
+use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
 
 require_once '_config.inc.php';
-
+$body = '';
 $null = '';
 $null_req = '&';
 $sql_studio = 'library';
@@ -65,14 +65,17 @@ foreach ($result as $k => $v) {
 }
 
 $genre_array = array_unique($genre_array);
-// $studio_url  = 'studio.php?studio='.$_REQUEST['prev'];
-Layout::Header();
-?>
-<main role="main" class="container container-sidenav p-3 m-3">
 
-	<?php
+$genre_links = Render::html(
+    'pages/Genre/link',[
+    'url' => 'list',
+    'NAME' => 'All',
+    'GET_REQUEST' => $request_key,
+    ]
+);
 asort($genre_array);
 foreach ($genre_array as $k => $v) {
+    $link_array = [];
     // $v["cnt"]=1; ".$v["cnt"]."
     if ('' != $v) {
         if (isset($studio_key, $studio)) {
@@ -83,14 +86,30 @@ foreach ($genre_array as $k => $v) {
             $db->where('library', $_SESSION['library'], 'like');
         }
         $count = $db->getOne(Db_TABLE_VIDEO_TAGS, 'count(*) as cnt');
+        $link_array['url'] = 'list';
 
-        echo $studio.Elements::url('list.php?'.$request_key.'genre='.urlencode($v), $v).$count['cnt'].' <br>';
+        $link_array['GET_REQUEST'] = $request_key.'genre='.urlencode($v);
+        $link_array['NAME'] = $v;
+        $link_array['COUNT'] = $count['cnt'];
+        $genre_links .= Render::html(
+            'pages/Genre/link',
+            $link_array
+     );
     }
 }
 
-?>
-</main>
-<?php
 
-Layout::Footer();
-?>
+$html_links = Render::html('pages/Genre/group', [
+    'STUDIO_LINK' => $genre_links,
+]);
+
+$genre_html = Render::html('pages/Genre/block', [
+    'STUDIO_LINKS' => $html_links,
+]);
+
+$body = Render::html('pages/Genre/Library', [
+    'LIBRARY_NAME' => $studio,
+    'STUDIO_BOX_HTML' => $genre_html,
+]);
+
+Render::Display($body, 'pages/Genre/body');

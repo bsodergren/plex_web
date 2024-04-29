@@ -30,7 +30,6 @@ class Favorites extends Player
         if ('' == $row['title']) {
             $title = $row['filename'];
         }
-        utmdump($row);
 
         return Render::html(
             $this->videoTemplate.'/container/item',
@@ -50,7 +49,7 @@ class Favorites extends Player
 
     public function getFavoriteList()
     {
-        $results = (new FavoriteDB())->getFavoriteVideos();
+        $results = FavoriteDB::getFavoriteVideos();
 
         if (\count($results) > 0) {
             $this->id = $results[0]['id'];
@@ -63,9 +62,6 @@ class Favorites extends Player
 
                 $this->params['PLYRLISTHTML'] = $this->plyr_item;
                 $this->params['hasPlaylist'] = 'true';
-                // $this->js_params['PLAYLIST_ID'] = 1;
-                // $this->js_params['NEXT_VIDEO_ID'] = $next_video_id;
-                // $this->js_params['PREV_VIDEO_ID'] = $prev_video_id;
                 $this->js_params['COMMENT'] = '';
             }
         }

@@ -30,33 +30,58 @@ $sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
     $studio_field,
     $order
 );
-// $studio = ;
+$studio_html = '';
 
 $request_key = $studio_key.'='.$studio_text;
-
-utmdump($sql);
 
 $result = $db->query($sql);
 $rows = count($result);
 
 $all_url = 'list.php?'.$request_key.'&allfiles=1';
 
-utmdump([$studio, $studio_field, $studio_key]);
 foreach ($result as $k => $v) {
+    UtmDump([$k, $v]);
     $len = strlen($studio) * 2;
     // $v["cnt"]=1; ".$v["cnt"]."
-
+    $link_array = [];
+    $link_array['url'] = 'genre';
     if ('' != $v[$studio_field]) {
         if ('studio' == $studio_field) {
+            $studio_name = $v[$studio_field];
             // Render::return('elements/html/a',[]);
-            $body .= $v[$studio_field]." <a href='genre.php?".$studio_key.'='.urlencode($studio)."'>".$studio.'</a> '.$v['cnt'].'<br>'."\n";
+            // $link_array['prefix'] = $v[$studio_field];
+            $link_array['GET_REQUEST'] = $studio_key.'='.urlencode($studio);
+            $link_array['NAME'] = '1 '.$studio;
+            $link_array['COUNT'] = $v['cnt'];
         } else {
-            $body .= $studio." <a href='genre.php?".$studio_field.'='.urlencode($v[$studio_field]).'&prev='.$studio_text."'>".$v[$studio_field].'</a> '.$v['cnt'].'<br>'."\n";
+            // $link_array['prefix'] = $studio_text;
+            $link_array['GET_REQUEST'] = $studio_field.'='.urlencode($v[$studio_field]).'&studio='.
+            urlencode($studio_text);
+            $link_array['NAME'] = $v[$studio_field];
+            $link_array['COUNT'] = $v['cnt'];
         }
     } else {
-        $char = '&nbsp;';
-        $body .= str_repeat($char, $len)."<a href='genre.php?studio=".urlencode($studio)."'>".$studio.'</a> <br>'."\n";
+        $link_array['prefix'] = str_repeat('&nbsp;', $len);
+        $link_array['GET_REQUEST'] = 'studio='.urlencode($studio);
+        $link_array['NAME'] = $studio;
+        $link_array['COUNT'] = $v['cnt'];
     }
+    $studio_links .= Render::html(
+        'pages/Studio/link',
+        $link_array);
 }
 
-Render::Display($body, 'pages/body');
+$html_links = Render::html('pages/Studio/group', [
+    'STUDIO_LINK' => $studio_links,
+]);
+
+$studio_html = Render::html('pages/Studio/block', [
+    'STUDIO_LINKS' => $html_links,
+]);
+
+$body = Render::html('pages/Studio/Library', [
+    'LIBRARY_NAME' => $studio,
+    'STUDIO_BOX_HTML' => $studio_html,
+]);
+
+Render::Display($body, 'pages/Studio/body');

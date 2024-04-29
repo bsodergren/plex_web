@@ -13,7 +13,7 @@ class Plyr extends Player
 
     public function __construct($object)
     {
-        parent::__construct();
+       // parent::__construct();
       //  parent::$PlayerTemplate = $this->templatePlayer;
         $this->parent = $object;
         $this->id = $this->videoId();

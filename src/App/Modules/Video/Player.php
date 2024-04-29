@@ -69,8 +69,11 @@ class Player
         $this->db = PlexSql::$DB;
 
         if (\array_key_exists('favorites', $_REQUEST)) {
-            $this->showFavorites = true;
-            $this->favoriteList();
+            // if (!is_object($this->favorites))
+            // {
+                $this->showFavorites = true;
+                $this->favoriteList();
+            // }
         } else {
             $this->getPlaylist();
         }
@@ -83,7 +86,6 @@ class Player
                 if($field == 'thumbnail'){
                     $value = __URL_HOME__ . $value;
                 }
-                utmdump([$field,$value]);
                 $this->params[$this->VideoParams[$field]] = $value;
             }
         }
@@ -224,60 +226,4 @@ class Player
         }
     }
 
-    public function addChapter()
-    {
-        $videoId = Elements::add_hidden('videoId', $this->id);
-        if (null != $this->playlist_id) {
-            $videoId .= Elements::add_hidden('playlistid', $this->playlist_id);
-        }
-
-        return Render::html(Functions::$ChapterDir.'/addChapter', ['HIDDEN_VIDEO_ID' => $videoId]);
-    }
-
-    public function getChapterButtons()
-    {
-        $index = $this->getChapters();
-        foreach ($index as $i => $row) {
-            // $editableClass = 'edit'.$row['time'];
-            // $functionName = 'make'.$row['time'].'Editable';
-
-            // $row['EDITABLE'] = $editableClass;
-
-            // $this->params['VIDEOINFO_EDIT_JS'] .= Render::javascript(
-            //     Functions::$ChapterDir.'/chapter',
-            //     [
-            //         'ID_NAME' => $row['time'],
-            //         'EDITABLE' => $editableClass,
-            //         'FUNCTION' => $functionName,
-            //         'VIDEO_KEY' => $this->id,
-            //     ]
-            // );
-            $html .= Render::html(Functions::$ChapterDir.'/chapter', $row);
-        }
-
-        return $html;
-    }
-
-    public function getChapterJson()
-    {
-        return json_encode($this->getChapters());
-    }
-
-    public function getChapters()
-    {
-        if (null == $this->chapterIndex) {
-            $this->db->where('video_id', $this->id);
-            $this->db->orderBy('timeCode', 'ASC');
-            $search_result = $this->db->get(Db_TABLE_VIDEO_CHAPTER);
-            foreach ($search_result as $i => $row) {
-                if (null === $row['name']) {
-                    $row['name'] = 'Timestamp';
-                }
-
-                $this->chapterIndex[] = ['time' => $row['timeCode'], 'label' => $row['name']];
-            }
-        }
-
-        return $this->chapterIndex;
-    }
 }

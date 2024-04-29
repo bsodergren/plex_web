@@ -2,10 +2,11 @@
 
 ob_start();
 
-use Camoo\Config\Config;
-use Plex\Core\RoboLoader;
 use Plex\EnvLoader;
 use Tracy\Debugger;
+use Plex\Core\Request;
+use Camoo\Config\Config;
+use Plex\Core\RoboLoader;
 use UTMTemplate\Template;
 use UTMTemplate\UtmDevice;
 
@@ -33,6 +34,7 @@ $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
 EnvLoader::LoadEnv($config['path']['mediatag'])->load();
 
+Request::startPage();
 foreach ($config['constants'] as $name => $value) {
     define($name, $value);
 }

@@ -3,6 +3,7 @@
 namespace Plex\Template\Functions\Traits;
 
 use Plex\Core\Request;
+use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Display\Display;
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
@@ -19,8 +20,12 @@ trait Breadcrumbs
         $request_tag = [];
         $crumbs = ['Home'=> 'home.php'];
         $sep = '?';
-        $studio_key = '';
-
+        $studio_query = [];
+$order = [
+    'genre' => 3,
+    'studio' => 1,
+    'substudio' => 2,
+];
         $url = 'list.php';
         if (__THIS_FILE__ == 'search.php') {
             $url = 'search.php';
@@ -33,7 +38,7 @@ trait Breadcrumbs
         if (isset(Display::$CrubURL['list'])) {
             $url = 'gridview.php';
         }
-
+$allUrl = $url;
         // $crumbs[$in_directory] = '';
         parse_str($_SERVER['QUERY_STRING'], $query_parts);
         if (\count($query_parts) > 0) {
@@ -71,11 +76,26 @@ trait Breadcrumbs
 
             if (\array_key_exists('genre', $request_tag)) {
                 $url = 'genre.php';
+                $genre_url = $url;
             }
             if (\array_key_exists('studio', $request_tag)) {
-                // $url = 'studio.php';
-                $studio_key = $request_tag['studio'];
+                 $url = 'genre.php';
+                $studio_query = ['studio' =>$request_tag['studio']];
                 //  unset($request_tag['studio']);
+            }
+                if (\array_key_exists('substudio', $request_tag)) {
+                     $url = 'studio.php';
+                    $substudio_key = urldecode($request_tag['substudio']);
+                    $studio_query['substudio'] =$request_tag['substudio'];
+                    $res = PlexSql::$DB->rawQueryOne("SELECT studio FROM `mediatag_video_metadata` WHERE substudio = '".$substudio_key."';");
+                    // utmdump($res);
+                    if(count($res) > 0) {
+
+                        $studio_query['studio'] =$res['studio'];
+                        $request_tag['studio'] = $res['studio'];
+                    }
+                    //  unset($request_tag['substudio']);
+
             }
 
             if (\count($request_string) > 0) {
@@ -84,20 +104,38 @@ trait Breadcrumbs
             }
 
             $crumb_url = $url.$re_string;
+            ksort($request_tag);
 
             if (\count($request_tag) > 0) {
-                $crumbs[$_SESSION['library']] = $crumb_url.$sep.http_build_query(['studio' => $studio_key]);
-                foreach ($request_tag as $key => $value) {
+                if(array_key_exists('studio',$request_tag)) {
+                    $req_array['studio'] = $request_tag['studio'];
+                }
+                if(array_key_exists('substudio',$request_tag)) {
+                    $req_array['substudio'] = $request_tag['substudio'];
+                }
+                if(array_key_exists('genre',$request_tag)) {
+                    $req_array['genre'] = $request_tag['genre'];
+                }
+
+                                 utmdump($req_array);
+
+
+
+               // $crumbs[$_SESSION['library']] = $crumb_url.$sep.http_build_query($studio_query);
+                foreach ($req_array as $key => $value) {
                     $parts[$key] = $value;
+                    if ('genre' == $key) {
+                        $crumb_url = $genre_url.$re_string;
+                    }
                     $crumbs[$value] = $crumb_url.$sep.http_build_query($parts);
                     $last = $value;
                 }
-
-                if ('genre' == $key) {
-                    $crumbs[$last] = '';
-                } else {
-                    $crumbs[$last] = 'genre.php?'.http_build_query($parts);
-                }
+UtmDump($crumbs);
+                // if ('genre' == $key) {
+                //    $crumbs[$last] = '';
+                // } else {
+                //     $crumbs[$last] = 'genre.php?'.http_build_query($parts);
+                // }
             }
         }
 
@@ -110,7 +148,7 @@ trait Breadcrumbs
             $crumbs['List'] = $crumb_url;
         }
 
-        $crumbs['All'] = $url.'?allfiles=1'.$req;
+        $crumbs['All'] = $allUrl.'?allfiles=1'.$req;
 
         if (isset(Display::$CrubURL['grid'])) {
             $crumbs['Grid'] = Display::$CrubURL['grid'].$re_string.$sep.http_build_query($parts);
@@ -122,7 +160,6 @@ trait Breadcrumbs
             $crumbs['List'] = Display::$CrubURL['list'].$re_string.$sep.http_build_query($parts);
             unset($crumbs['All']);
         }
-
         return $crumbs;
     }
 
