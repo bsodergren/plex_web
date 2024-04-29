@@ -7,7 +7,6 @@ use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Display\Display;
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
-use UTMTemplate\UtmDevice;
 
 trait Breadcrumbs
 {
@@ -18,14 +17,10 @@ trait Breadcrumbs
         $parts = [];
         $re_string = '';
         $request_tag = [];
-        $crumbs = ['Home'=> 'home.php'];
+        $crumbs = ['Home' => 'home.php'];
         $sep = '?';
         $studio_query = [];
-$order = [
-    'genre' => 3,
-    'studio' => 1,
-    'substudio' => 2,
-];
+
         $url = 'list.php';
         if (__THIS_FILE__ == 'search.php') {
             $url = 'search.php';
@@ -38,12 +33,12 @@ $order = [
         if (isset(Display::$CrubURL['list'])) {
             $url = 'gridview.php';
         }
-$allUrl = $url;
+        $allUrl = $url;
         // $crumbs[$in_directory] = '';
         parse_str($_SERVER['QUERY_STRING'], $query_parts);
         if (\count($query_parts) > 0) {
             if (__THIS_FILE__ == 'search.php') {
-                if (!array_key_exists('view', $query_parts)) {
+                if (!\array_key_exists('view', $query_parts)) {
                     $query_parts['view'] = 'List';
                 }
             }
@@ -79,23 +74,21 @@ $allUrl = $url;
                 $genre_url = $url;
             }
             if (\array_key_exists('studio', $request_tag)) {
-                 $url = 'genre.php';
-                $studio_query = ['studio' =>$request_tag['studio']];
+                $url = 'genre.php';
+                $studio_query = ['studio' => $request_tag['studio']];
                 //  unset($request_tag['studio']);
             }
-                if (\array_key_exists('substudio', $request_tag)) {
-                     $url = 'studio.php';
-                    $substudio_key = urldecode($request_tag['substudio']);
-                    $studio_query['substudio'] =$request_tag['substudio'];
-                    $res = PlexSql::$DB->rawQueryOne("SELECT studio FROM `mediatag_video_metadata` WHERE substudio = '".$substudio_key."';");
-                    // utmdump($res);
-                    if(count($res) > 0) {
-
-                        $studio_query['studio'] =$res['studio'];
-                        $request_tag['studio'] = $res['studio'];
-                    }
-                    //  unset($request_tag['substudio']);
-
+            if (\array_key_exists('substudio', $request_tag)) {
+                $url = 'studio.php';
+                $substudio_key = urldecode($request_tag['substudio']);
+                $studio_query['substudio'] = $request_tag['substudio'];
+                $res = PlexSql::$DB->rawQueryOne("SELECT studio FROM `mediatag_video_metadata` WHERE substudio = '".$substudio_key."';");
+                // utmdump($res);
+                if (\count($res) > 0) {
+                    $studio_query['studio'] = $res['studio'];
+                    $request_tag['studio'] = $res['studio'];
+                }
+                //  unset($request_tag['substudio']);
             }
 
             if (\count($request_string) > 0) {
@@ -107,21 +100,18 @@ $allUrl = $url;
             ksort($request_tag);
 
             if (\count($request_tag) > 0) {
-                if(array_key_exists('studio',$request_tag)) {
+                if (\array_key_exists('studio', $request_tag)) {
                     $req_array['studio'] = $request_tag['studio'];
                 }
-                if(array_key_exists('substudio',$request_tag)) {
+                if (\array_key_exists('substudio', $request_tag)) {
                     $req_array['substudio'] = $request_tag['substudio'];
                 }
-                if(array_key_exists('genre',$request_tag)) {
+                if (\array_key_exists('genre', $request_tag)) {
                     $req_array['genre'] = $request_tag['genre'];
                 }
 
-                                 utmdump($req_array);
 
-
-
-               // $crumbs[$_SESSION['library']] = $crumb_url.$sep.http_build_query($studio_query);
+                // $crumbs[$_SESSION['library']] = $crumb_url.$sep.http_build_query($studio_query);
                 foreach ($req_array as $key => $value) {
                     $parts[$key] = $value;
                     if ('genre' == $key) {
@@ -130,7 +120,6 @@ $allUrl = $url;
                     $crumbs[$value] = $crumb_url.$sep.http_build_query($parts);
                     $last = $value;
                 }
-UtmDump($crumbs);
                 // if ('genre' == $key) {
                 //    $crumbs[$last] = '';
                 // } else {
@@ -160,6 +149,7 @@ UtmDump($crumbs);
             $crumbs['List'] = Display::$CrubURL['list'].$re_string.$sep.http_build_query($parts);
             unset($crumbs['All']);
         }
+
         return $crumbs;
     }
 
@@ -175,11 +165,11 @@ UtmDump($crumbs);
 
             if ('' == $url) {
                 $class .= ' active" aria-current="page';
-                $url='#';
+                $url = '#';
             }
 
             $params['CLASS'] = $class;
-            $params['LINK'] = Elements::url($url,$text);
+            $params['LINK'] = Elements::url($url, $text);
 
             $crumbs_html .= Render::html(self::$BreadcrumbsDir.'/crumb', $params);
         }
