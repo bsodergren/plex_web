@@ -31,8 +31,7 @@ class Playlist
         }
 
     }
-
-    public function showPlaylists($library = false)
+    public function showAllPlaylists($library = false)
     {
         $where = '';
         if($library !== false ) {
@@ -42,6 +41,27 @@ class Playlist
         $sql = 'select count(p.playlist_video_id) as count, p.playlist_id, d.name,
         d.library from '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_PLAYLIST_VIDEOS.' as
         p where (p.playlist_id = d.id) and d.hide = 0 '.$where.' group by p.playlist_id ORDER BY library ASC;';
+
+        // $sql = 'select id, name, library from '.Db_TABLE_PLAYLIST_DATA.'  where hide = 0 '.$where.'  ORDER BY library ASC;';
+
+        // utmdump($sql);
+        $results = $this->db->query($sql);
+        return $results;
+    }
+    public function showPlaylists($library = false)
+    {
+        $where = '';
+        if($library !== false ) {
+            $where = ' and Library = "'.$this->library.'"';
+        }
+
+        // $sql = 'select count(p.playlist_video_id) as count, p.playlist_id, d.name,
+        // d.library from '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_PLAYLIST_VIDEOS.' as
+        // p where (p.playlist_id = d.id) and d.hide = 0 '.$where.' group by p.playlist_id ORDER BY library ASC;';
+
+        $sql = 'select id, name, library from '.Db_TABLE_PLAYLIST_DATA.'  where hide = 0 '.$where.'  ORDER BY library ASC;';
+
+        utmdump($sql);
         $results = $this->db->query($sql);
         return $results;
     }
@@ -63,15 +83,15 @@ class Playlist
             $selected = false;
             $optionDisabled = false;
             if($row['library'] == $this->library){
-                if (str_contains($disabled_id, $row['playlist_id'])) {
+                if (str_contains($disabled_id, $row['id'])) {
                     $optionDisabled = true;
                 }
-             if($row['playlist_id'] == $playlist_id){
+             if($row['id'] == $playlist_id){
                 $selected = true;
                 $optionDisabled = false;
              }
                 $plArray[] = [
-                    $row['playlist_id'],
+                    $row['id'],
                      $row['name'],
                      $selected,
                      $optionDisabled,
@@ -95,12 +115,13 @@ class Playlist
             $selected =  ['value'=>$playlist_id];
         }
         $res = $this->showPlaylists();
+        utmdump([__METHOD__,$res]);
         foreach($res as $i => $row)
         {
             if($row['library'] == $this->library){
 
                 $plArray[] = [
-                    'value' => $row['playlist_id'],
+                    'value' => $row['id'],
                     'text' => $row['name'],
             ];
             }

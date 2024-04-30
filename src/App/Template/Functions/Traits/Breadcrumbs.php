@@ -29,7 +29,7 @@ trait Breadcrumbs
         // if (isset(self::$CrubURL['grid'])) {
         //     $url = 'files.php';
         // }
-
+utmdump(Display::$CrubURL);
         if (isset(Display::$CrubURL['list'])) {
             $url = 'gridview.php';
         }
@@ -142,12 +142,18 @@ trait Breadcrumbs
         if (isset(Display::$CrubURL['grid'])) {
             $crumbs['Grid'] = Display::$CrubURL['grid'].$re_string.$sep.http_build_query($parts);
             unset($crumbs['All']);
+            unset(Display::$CrubURL['grid']);
         }
 
         // $crumbs['List'] = "";
         if (isset(Display::$CrubURL['list'])) {
             $crumbs['List'] = Display::$CrubURL['list'].$re_string.$sep.http_build_query($parts);
             unset($crumbs['All']);
+            unset(Display::$CrubURL['list']);
+        }
+
+        foreach(Display::$CrubURL as $k => $url){
+            $crumbs[$k] = $url.$re_string.$sep.http_build_query($parts);
         }
 
         return $crumbs;

@@ -81,8 +81,18 @@ trait Playlist
                     $search_id,
                     $hide);
         }
+        utmdump([__METHOD__, $playlist_id]);
 
         return $playlist_id;
+    }
+
+    public function deletePlaylist()
+    {
+        utmdump([__METHOD__, $this->postArray]);
+       $playlist_id = $this->postArray['playlist_id'];
+       PlaylistDB::deletePlaylist($playlist_id);
+        $this->myHeader(__URL_HOME__.'/playlist.php');
+
     }
 
     public function createPlaylist()

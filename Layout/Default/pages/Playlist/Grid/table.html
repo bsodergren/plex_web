@@ -1,12 +1,10 @@
-{$Playlist_Canvas}
-
 <form action="{$FORM_URL}" method="post">
 
     {$HIDDEN}
-    <div class="container  text-bg-primary " style="--bs-bg-opacity: .5;">
+    <div class="  text-bg-primary " style="--bs-bg-opacity: .5;">
         <div class="row justify-content-center">
             <div class="col-9  text-center fs-3">
-                {$PLAYLIST_NAME} 
+                {$PLAYLIST_NAME}
             </div>
         </div>
 
@@ -22,7 +20,7 @@
                 <div class="input-group input-group-sm">
                     <span class="input-group-text" id="basic-addon2">Name</span>
                     <input type="text" name="playlist_name" class="form-control"
-                    aria-label="playlist_name" aria-describedby="basic-addon2" value="{$PLAYLIST_NAME}" >
+                        aria-label="playlist_name" aria-describedby="basic-addon2" value="{$PLAYLIST_NAME}">
                 </div>
             </div>
         </div>
@@ -43,7 +41,7 @@
         </div>
     </div>
 
-    <div class="container text-center" style="--bs-bg-opacity: .5;">
+    <div class=" text-center" style="--bs-bg-opacity: .5;">
         <div class="row">
             <div class="d-flex flex-sm-wrap text-white">
                 {$CELLS_HTML}
