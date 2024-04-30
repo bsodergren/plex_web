@@ -59,7 +59,6 @@ if ('Search' == isset($_REQUEST['submit']) || isset($_REQUEST['query'])) {
     $search = new FileListing(new Request());
 
     [$results,$pageObj] = $search->getSearchResults($_REQUEST['field'][0], $_REQUEST['query']);
-utmdump($results);
     foreach ($results as $n => $row) {
         $playlist_ids[] = $row['id'];
     }

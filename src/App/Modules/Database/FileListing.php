@@ -77,9 +77,10 @@ class FileListing
                 'search' => $search,
             ];
         }
-
         $pageObj = new Pageinate($where, $this->currentpage, $this->urlPattern);
-
+utmdump($query);
+$this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'v.video_key=m.video_key', 'INNER');
+$this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         foreach ($query as $search) {
             $search = urldecode($search);
             $this->db->where('(m.'.$field.' like ? or c.'.$field.' like ?)', ['%'.$search.'%', '%'.$search.'%']);
@@ -284,7 +285,7 @@ class FileListing
         }
 
         $joinQuery .= $limitQuery;
-
+UtmDump($joinQuery);
         $this->saveSearch($joinQuery);
         // $joinQuery = str_replace('SELECT   v.id', 'SELECT '.implode(',', $fieldArray), $joinQuery);
 

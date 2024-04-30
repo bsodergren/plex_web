@@ -61,7 +61,6 @@ class Playlist
 
         $sql = 'select id, name, library from '.Db_TABLE_PLAYLIST_DATA.'  where hide = 0 '.$where.'  ORDER BY library ASC;';
 
-        utmdump($sql);
         $results = $this->db->query($sql);
         return $results;
     }
@@ -115,7 +114,6 @@ class Playlist
             $selected =  ['value'=>$playlist_id];
         }
         $res = $this->showPlaylists();
-        utmdump([__METHOD__,$res]);
         foreach($res as $i => $row)
         {
             if($row['library'] == $this->library){

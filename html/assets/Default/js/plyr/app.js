@@ -390,6 +390,33 @@ const PlayerApp = {
                 .querySelector(".player_container")
                 .classList.remove("loading");
         });
+        this.player.on("ended", () => {
+            this.playNewVideo(
+                playlerText.getAttribute("data-videoid"));
+            resize();
+        });
+
+
+        const parentElement = document.querySelector(".player_container");
+        parentElement.addEventListener("click", (event) => {
+            if (event.target.matches('button[data-plyr="next"]')) {
+                this.playNewVideo(
+                    playlerText.getAttribute("data-videoid"));
+            }
+
+            if (event.target.matches('button[data-plyr="prev"]')) {
+                this.playVisibleItem("prev");
+            }
+        });
+
+        document.addEventListener("keydown", (event) => {
+            // console.log(event.key);
+            if (event.key === "n") {
+                this.playNewVideo(
+                    playlerText.getAttribute("data-videoid"));
+            }
+
+        });
     },
 
     /**
@@ -592,6 +619,25 @@ const PlayerApp = {
         });
     },
 
+
+    playNewVideo(videoid)
+    {
+        $.ajax({
+            url: "process.php",
+            type: "POST",
+            data: {
+                submit: "nextVideo",
+                videoid: videoid
+
+            },
+            cache: false,
+            success: function (data) {
+                 console.log(data)
+                 window.location.href = data;
+
+            },
+        });
+    },
     /**
      * Plays the visible playlist item.
      */

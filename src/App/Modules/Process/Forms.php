@@ -12,6 +12,7 @@ use Plex\Modules\Process\Traits\DbWrapper;
 use Plex\Modules\Process\Traits\Favorites;
 use Plex\Modules\Process\Traits\Mediatag;
 use Plex\Modules\Process\Traits\Playlist;
+use Plex\Modules\Process\Traits\VideoPlayer;
 use Plex\Template\Functions\Functions;
 use UTMTemplate\HTML\Elements;
 
@@ -20,6 +21,7 @@ class Forms
     use DbWrapper;
     use Favorites;
     use Playlist;
+    use VideoPlayer;
 
     public $postArray = [];
     public $getArray = [];
