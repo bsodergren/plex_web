@@ -30,6 +30,7 @@ require_once __COMPOSER_LIB__.'/autoload.php';
 Debugger::enable(Debugger::Development);
 
 $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
+dd($config);
 
 EnvLoader::LoadEnv($config['path']['mediatag'])->load();
 
