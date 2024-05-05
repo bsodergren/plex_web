@@ -2,15 +2,14 @@
 
 namespace Plex\Modules\Display;
 
-use Plex\Template\Render;
-use UTMTemplate\UtmDevice;
-use Plex\Modules\Display\Display;
 use Plex\Modules\Database\PlexSql;
 use Plex\Template\Functions\Functions;
+use Plex\Template\Render;
+use UTMTemplate\UtmDevice;
 
 class Layout
 {
-    public static function Header()
+    public static function Header($body = false)
     {
         $params = [];
         if (OptionIsTrue(GRID_VIEW)) {
@@ -23,13 +22,16 @@ class Layout
             \define('BREADCRUMB', $crumbs);
             self::Navbar($params);
         }
+        if (true === $body) {
+            Render::echo('base/push', []);
+        }
     }
 
     public static function Navbar($params)
     {
         $db = PlexSql::$DB;
         $library_links = '';
-        $sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'DISTINCT(library) as library ');
+        $sql = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA, 'DISTINCT(library) as library ');
         foreach ($db->query($sql) as $k => $v) {
             $library_links .= Display::navbar_left_links('home.php?library='.$v['library'], $v['library']);
         }

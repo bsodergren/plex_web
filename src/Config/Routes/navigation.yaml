@@ -99,6 +99,8 @@ extra:
             },
             {
                 refresh: { url: "process.php?action=refresh", icon: "" },
+                "Export SQL": { url: "process.php?action=exportSql", icon: "" },
+
                 settings: { url: settings.php, icon: fa-gear },
             },
         ]

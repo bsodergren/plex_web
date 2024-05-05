@@ -12,7 +12,7 @@ class PlaylistDB extends VideoDb
         $sql .= implode(',', $fieldArray);
         $sql .= ' FROM '.Db_TABLE_PLAYLIST_VIDEOS.' p ';
         $sql .= ' ,  '.Db_TABLE_VIDEO_FILE.' v  ';
-        $sql .= ' INNER JOIN '.Db_TABLE_VIDEO_TAGS.'  m on v.video_key=m.video_key '; // .PlexSql::getLibrary();
+        $sql .= ' INNER JOIN '.Db_TABLE_VIDEO_METADATA.'  m on v.video_key=m.video_key '; // .PlexSql::getLibrary();
         $sql .= ' LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.'  c on m.video_key=c.video_key ';
         $sql .= ' WHERE  ( p.playlist_id = '.$playlist_id.' and p.playlist_video_id = v.id)';
         utmdump([__METHOD__, $sql]);

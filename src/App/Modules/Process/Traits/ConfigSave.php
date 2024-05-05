@@ -23,7 +23,7 @@ trait ConfigSave
                         $set = '`'.$field.'`= NULL ';
                     }
 
-                    $sql = 'UPDATE '.Db_TABLE_STUDIO.'  SET '.$set.' WHERE id = '.$id;
+                    $sql = 'UPDATE '.Db_TABLE_STUDIOS.'  SET '.$set.' WHERE id = '.$id;
                     $db->query($sql);
                 }
             }

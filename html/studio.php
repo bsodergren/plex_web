@@ -24,7 +24,7 @@ $studio = str_replace('_', '_', $studio);
 $order = $studio_field.' ASC';
 
 $sql_studio = $studio_key." = '".$studio."'";
-$sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
+$sql = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA,
     'DISTINCT('.$studio_field.') as '.$studio_field.' ',
     $sql_studio,
     $studio_field,

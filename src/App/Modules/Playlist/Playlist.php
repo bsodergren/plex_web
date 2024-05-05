@@ -147,7 +147,7 @@ class Playlist
     {
 
         $sql = 'select v.thumbnail,v.id,d.name,d.genre,p.id as playlist_video_id,m.title from  '.Db_TABLE_PLAYLIST_DATA.' as d,
-        '.Db_TABLE_VIDEO_FILE.' as v, '.Db_TABLE_PLAYLIST_VIDEOS.' as p, '.Db_TABLE_VIDEO_TAGS.' as m
+        '.Db_TABLE_VIDEO_FILE.' as v, '.Db_TABLE_PLAYLIST_VIDEOS.' as p, '.Db_TABLE_VIDEO_METADATA.' as m
          where (p.playlist_id = '.$playlist_id.' and p.playlist_video_id = v.id and d.id = p.playlist_id and v.video_key = m.video_key) '.$limit.';';
        $results = $this->db->query($sql);
        return $results;

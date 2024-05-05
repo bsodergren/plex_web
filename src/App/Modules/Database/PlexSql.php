@@ -88,7 +88,7 @@ class PlexSql extends \MysqliDb
             $querySQl .= $partsSQL;
         }
 
-        $sql = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_TAGS.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
+        $sql = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field.", ',', n.digit+1), ',', -1) val FROM ".Db_TABLE_VIDEO_METADATA.' INNER JOIN (SELECT 0 digit UNION ALL SELECT
     1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n
     ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit  '.$querySQl.'  ORDER BY `val` ASC';
 
@@ -145,10 +145,10 @@ class PlexSql extends \MysqliDb
         $fieldArray = ['m.title', 'm.artist', 'm.genre', 'm.studio', 'm.substudio', 'm.keyword'];
         // $this->db->joinWhere(Db_TABLE_VIDEO_FILE.' v', 'v.'.$column, $value);
         $this->db->where('v.'.$column, $value);
-        $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'v.video_key=m.video_key', 'INNER');
+        $this->db->join(Db_TABLE_VIDEO_METADATA.' m', 'v.video_key=m.video_key', 'INNER');
         $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'v.video_key=i.video_key', 'LEFT OUTER');
         if (null !== self::getLibrary()) {
-            $this->db->joinWhere(Db_TABLE_VIDEO_TAGS.' m', 'm.library', $_SESSION['library']);
+            $this->db->joinWhere(Db_TABLE_VIDEO_METADATA.' m', 'm.library', $_SESSION['library']);
         }
         //        $this->db->where('v.'.$column, $value);
         // $fieldArray[] = 'm.library';
@@ -192,7 +192,7 @@ class PlexSql extends \MysqliDb
 
         $sql .= 'COALESCE (c.artist,m.artist) as artist, ';
         $sql .= 'v.video_key FROM '.Db_TABLE_VIDEO_FILE.' v ';
-        $sql .= 'INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on v.video_key=m.video_key '.self::getLibrary();
+        $sql .= 'INNER JOIN '.Db_TABLE_VIDEO_METADATA.' m on v.video_key=m.video_key '.self::getLibrary();
         $sql .= 'LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.' c on m.video_key=c.video_key ';
 
         $where = ''; // $this->pwhere("(artist is not null and artist != 'Missing')");
@@ -229,7 +229,7 @@ class PlexSql extends \MysqliDb
 
     //  SELECT
     // m.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,v.filename ,v.fullpath,m.library,v.filesize
-    // FROM '.Db_TABLE_VIDEO_FILE.' v INNER JOIN '.Db_TABLE_VIDEO_TAGS.' m on m.video_key=v.video_key
+    // FROM '.Db_TABLE_VIDEO_FILE.' v INNER JOIN '.Db_TABLE_VIDEO_METADATA.' m on m.video_key=v.video_key
     // AND m.studio = 'Brazzers' AND m.library = 'Pornhub' AND m.genre like '%MMF%' ORDER BY m.title ASC LIMIT 0, 5
     public function pselect($table, $fields = 'select')
     {

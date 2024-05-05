@@ -33,3 +33,4 @@ define('__MOBILE_TEMPLATE__', __ROOT_DIRECTORY__.'/Layout/Mobile');
 
 define('__ROUTE_NAV__', __PHP_YAML_DIR__.'/navigation.yaml');
 define('__PAGE_CONFIG__', __PHP_YAML_DIR__.'/Pages.yaml');
+define('__PHP_SCHEMA_DIR__', __PHP_CONFIG_DIR__.'/Schema');

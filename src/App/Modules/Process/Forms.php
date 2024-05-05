@@ -9,6 +9,7 @@ namespace Plex\Modules\Process;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\VideoDb;
 use Plex\Modules\Process\Traits\DbWrapper;
+use Plex\Modules\Process\Traits\ExportSQL;
 use Plex\Modules\Process\Traits\Favorites;
 use Plex\Modules\Process\Traits\Mediatag;
 use Plex\Modules\Process\Traits\Playlist;
@@ -22,6 +23,7 @@ class Forms
     use Favorites;
     use Playlist;
     use VideoPlayer;
+    use ExportSQL;
 
     public $postArray = [];
     public $getArray = [];
@@ -280,7 +282,7 @@ class Forms
                         $set = '`'.$field.'`= NULL ';
                     }
 
-                    $sql = 'UPDATE '.Db_TABLE_STUDIO.'  SET '.$set.' WHERE id = '.$id;
+                    $sql = 'UPDATE '.Db_TABLE_STUDIOS.'  SET '.$set.' WHERE id = '.$id;
                     $db->query($sql);
                 }
             }

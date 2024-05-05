@@ -2,11 +2,11 @@
 
 ob_start();
 
+use Camoo\Config\Config;
+use Plex\Core\Request;
+use Plex\Core\RoboLoader;
 use Plex\EnvLoader;
 use Tracy\Debugger;
-use Plex\Core\Request;
-use Camoo\Config\Config;
-use Plex\Core\RoboLoader;
 use UTMTemplate\Template;
 use UTMTemplate\UtmDevice;
 
@@ -23,7 +23,6 @@ define('__PLEX_APP_DIR__', __ROOT_DIRECTORY__.'/src');
 define('__PHP_CONFIG_DIR__', __PLEX_APP_DIR__.'/Config');
 define('__PHP_YAML_DIR__', __PHP_CONFIG_DIR__.'/Routes');
 define('__COMPOSER_LIB__', __ROOT_DIRECTORY__.'/vendor');
-
 set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
 
 require_once __COMPOSER_LIB__.'/autoload.php';

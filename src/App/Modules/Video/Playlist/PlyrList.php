@@ -93,7 +93,7 @@ class PlyrList extends Player
                     from
                     '.Db_TABLE_VIDEO_FILE.' as v,
                     '.Db_TABLE_PLAYLIST_VIDEOS.' as p,
-                    '.Db_TABLE_VIDEO_TAGS.' as m where (
+                    '.Db_TABLE_VIDEO_METADATA.' as m where (
                     p.playlist_id = '.$this->playlist_id.' and
                     p.playlist_video_id = v.id  and
                     v.video_key = m.video_key);';

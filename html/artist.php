@@ -103,7 +103,7 @@ foreach ($sortedArray as $num => $artistArray) {
 }
 $params['ARTIST_HTML'] = $artist_html;
 $params['THUMBNAIL_HTML'] = '';
-$sql = 'select m.title,v.id,v.thumbnail,v.filename from '.Db_TABLE_VIDEO_TAGS.' as m, '.Db_TABLE_VIDEO_FILE.' as v';
+$sql = 'select m.title,v.id,v.thumbnail,v.filename from '.Db_TABLE_VIDEO_METADATA.' as m, '.Db_TABLE_VIDEO_FILE.' as v';
 $sql = $sql." WHERE m.library = '".$_SESSION['library']."' and (m.artist is  null or m.artist = 'Missing' ) and (v.video_key = m.video_key)";
 $results = $db->query($sql);
 foreach ($results as $num => $artistArray) {

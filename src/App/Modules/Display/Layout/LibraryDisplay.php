@@ -94,7 +94,7 @@ class LibraryDisplay extends VideoDisplay
                 $cnt = ' ('.$cnt.') ';
             }
 
-            $substudio_sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
+            $substudio_sql = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA,
                 'count(substudio) as cnt, substudio', ' studio  '.$sql_studio,
                 'substudio', 'substudio ASC ');
             $ss_result = $this->db->query($substudio_sql);

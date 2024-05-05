@@ -8,13 +8,13 @@ use UTMTemplate\HTML\Elements;
 
 require_once '../_config.inc.php';
 
-$pageObj          = new ConfigPagenate("library = 'Studios'", $currentPage, $urlPattern);
+$pageObj = new ConfigPagenate("library = 'Studios'", $currentPage, $urlPattern);
 
-$sql              = 'SELECT * FROM '.Db_TABLE_STUDIO."
+$sql = 'SELECT * FROM '.Db_TABLE_STUDIOS."
  WHERE library = 'Studios' ORDER BY studio,path,name";
 
-$limit            = $pageObj->itemsPerPage;
-$offset           = $pageObj->offset;
+$limit = $pageObj->itemsPerPage;
+$offset = $pageObj->offset;
 
 if (false != $limit && false == $offset) {
     $sql = $sql.' LIMIT '.$limit.'';
@@ -23,9 +23,9 @@ if (false != $limit && false != $offset) {
     $sql = $sql.'  LIMIT '.$offset.', '.$limit.'';
 }
 
-$results          = $db->query($sql);
+$results = $db->query($sql);
 
-$redirect_string  = __THIS_FILE__;
+$redirect_string = __THIS_FILE__;
 
 Layout::Header();
 
@@ -55,13 +55,13 @@ foreach ($studio_rows as $library => $studios) {
         $studio_row_html .= Render::html(
             'config/studio/studio_row',
             [
-                'STUDIO_ID'   => 'studio_'.$row['id'],
-                'PATH_ID'     => 'path_'.$row['id'],
+                'STUDIO_ID' => 'studio_'.$row['id'],
+                'PATH_ID' => 'path_'.$row['id'],
 
                 'STUDIO_NAME' => $row['name'],
 
-                'STUDIO_PH'   => $row['studio'],
-                'PATH_PH'     => $row['path'],
+                'STUDIO_PH' => $row['studio'],
+                'PATH_PH' => $row['path'],
             ]
         );
     }
@@ -70,15 +70,15 @@ foreach ($studio_rows as $library => $studios) {
         'config/studio/studios',
         [
             'STUDIO_LIBRARY' => $library,
-            'STUDIO_ROWS'    => $studio_row_html,
+            'STUDIO_ROWS' => $studio_row_html,
         ]
     );
 }
 
-$hidden           = Elements::add_hidden('submit', 'StudioConfigSave');
+$hidden = Elements::add_hidden('submit', 'StudioConfigSave');
 $hidden .= Elements::add_hidden('redirect', $redirect_string);
 $studio_main_html .= Render::html('config/studio/form_wrapper', [
-    'HIDDEN'           => $hidden,
+    'HIDDEN' => $hidden,
     'STUDIO_FORM_HTML' => $studio_list_html,
 ]);
 

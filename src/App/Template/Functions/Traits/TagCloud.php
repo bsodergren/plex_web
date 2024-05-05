@@ -25,10 +25,10 @@ trait TagCloud
         $where = PlexSql::getLibrary();
         $where = str_replace('AND', 'WHERE', $where);
         $where = str_replace('m.library', 'library', $where);
-        $sql_meta =$this->getKeywordSQL(Db_TABLE_VIDEO_TAGS,$field,$where);
+        $sql_meta =$this->getKeywordSQL(Db_TABLE_VIDEO_METADATA,$field,$where);
         $sql_custom = $this->getKeywordSQL(Db_TABLE_VIDEO_CUSTOM,$field);
 
-        // $sql = "SELECT DISTINCT m.genre,c.genre FROM '.Db_TABLE_VIDEO_CUSTOM.' c, '.Db_TABLE_VIDEO_TAGS.' m WHERE (m.genre is not null and c.genre is not null) and  m.Library = 'Studios'";
+        // $sql = "SELECT DISTINCT m.genre,c.genre FROM '.Db_TABLE_VIDEO_CUSTOM.' c, '.Db_TABLE_VIDEO_METADATA.' m WHERE (m.genre is not null and c.genre is not null) and  m.Library = 'Studios'";
         $qlist_meta = $db->query($sql_meta);
         $qlist_custom = $db->query($sql_custom);
         return array_merge($qlist_custom, $qlist_meta);

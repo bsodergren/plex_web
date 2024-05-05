@@ -44,7 +44,7 @@ if (isset($_REQUEST['allfiles'])) {
     $request_key = $studio_key.'='.urlencode($studio_text).$null_req;
 }
 $order = 'genre ASC';
-$sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS,
+$sql = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA,
     'DISTINCT(genre) as genre, count(genre) as cnt ',
     $sql_studio,
     'genre',
@@ -85,7 +85,7 @@ foreach ($genre_array as $k => $v) {
         if ('All' != $_SESSION['library']) {
             $db->where('library', $_SESSION['library'], 'like');
         }
-        $count = $db->getOne(Db_TABLE_VIDEO_TAGS, 'count(*) as cnt');
+        $count = $db->getOne(Db_TABLE_VIDEO_METADATA, 'count(*) as cnt');
         $link_array['url'] = 'list';
 
         $link_array['GET_REQUEST'] = $request_key.'genre='.urlencode($v);

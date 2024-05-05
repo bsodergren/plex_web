@@ -79,7 +79,7 @@ class FileListing
         }
         $pageObj = new Pageinate($where, $this->currentpage, $this->urlPattern);
 utmdump($query);
-$this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'v.video_key=m.video_key', 'INNER');
+$this->db->join(Db_TABLE_VIDEO_METADATA.' m', 'v.video_key=m.video_key', 'INNER');
 $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         foreach ($query as $search) {
             $search = urldecode($search);
@@ -218,7 +218,7 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
             $this->db->orderBy($this->request['sort'], $this->request['direction']);
         }
         if (true === $tagTables) {
-            $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'v.video_key=m.video_key', 'INNER');
+            $this->db->join(Db_TABLE_VIDEO_METADATA.' m', 'v.video_key=m.video_key', 'INNER');
             $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         }
         $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
@@ -241,7 +241,7 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         $limitQuery = '';
         // $fieldArray = VideoDb::$VideoMetaFields;
 
-        // $this->db->join(Db_TABLE_VIDEO_TAGS.' m', 'v.video_key=m.video_key', 'INNER');
+        // $this->db->join(Db_TABLE_VIDEO_METADATA.' m', 'v.video_key=m.video_key', 'INNER');
         // $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
 
         // $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'v.video_key=i.video_key', 'LEFT OUTER');

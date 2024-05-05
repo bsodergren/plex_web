@@ -11,7 +11,7 @@ use Plex\Modules\Display\VideoDisplay;
 
 require_once '_config.inc.php';
 
-$sql = PlexSql::query_builder(Db_TABLE_VIDEO_TAGS, 'studio,subLibrary,count(video_key) as cnt', 'library', 'studio,subLibrary', 'studio,subLibrary ASC');
+$sql = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA, 'studio,subLibrary,count(video_key) as cnt', 'library', 'studio,subLibrary', 'studio,subLibrary ASC');
 $result = $db->query($sql);
 
 
