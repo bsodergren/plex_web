@@ -20,7 +20,7 @@
     "sensiolabs/ansi-to-html": "^1.2",
     "thingengineer/mysqli-database-class": "dev-master",
     "guzzlehttp/guzzle": "^7.5",
-    "symfony/console": "^6.1",
+    "symfony/console": "^6.4",
     "pear/console_getopt": "^1.4",
     "pear/console_commandline": "^1.2",
     "pear/system_command": "^1.0",
