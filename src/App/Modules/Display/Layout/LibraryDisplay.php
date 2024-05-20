@@ -23,6 +23,7 @@ class LibraryDisplay extends VideoDisplay
 
     public function getDisplay($result, $page_array = [])
     {
+        $studio_html = '';
         foreach ($result as $r => $row) {
             if (null === $row['subLibrary']) {
                 $row['subLibrary'] = 'Studios';
@@ -47,17 +48,34 @@ class LibraryDisplay extends VideoDisplay
         $accordian = [];
         $accordian['ACCORDIAN_ID'] = Display::RandomId('accordian_');
         $accordian['ACCORDIAN_HEADER'] = $studio;
-
         $accordian['STUDIO_LINK'] = Render::html($this->template_base.'/studio/link', [
             'url' => 'studio',
             'GET_REQUEST' => 'studio='.urlencode($studio),
-            'NAME' => $studio,
+            'NAME' => "All",
             'COUNT' => $count,
             'CLASS' => 'btn btn-secondary',
         ]);
 
         foreach ($results as $ssRow => $ssName) {
             if (null === $ssName['substudio']) {
+                $sql_studio = ' LIKE "'.$studio.'" AND  substudio is NULL ';
+                $studioCnt_sql = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA,
+                'count(studio) as cnt, studio', ' studio  '.$sql_studio,
+                'studio', 'studio ASC ');
+                $ss_result = $this->db->query($studioCnt_sql);
+
+//                 SELECT count(studio) as cnt, studio FROM mediatag_video_metadata  WHERE  studio   LIKE "Team Skeet" AND
+// substudio is NULL and 
+// library = 'Studios'
+//   GROUP BY studio ORDER BY studio ASC
+
+                $accordian['STUDIO_LINK'] .= Render::html($this->template_base.'/studio/link', [
+                    'url' => 'genre',
+                    'GET_REQUEST' => 'studio='.urlencode($studio).'&substudio=null',
+                    'NAME' => $studio,
+                    'COUNT' => $ss_result[0]['cnt'] ,
+                    'CLASS' => 'btn btn-secondary',
+                ]);
                 continue;
             }
             $ssCnt = ' ('.$ssName['cnt'].')';
@@ -77,6 +95,10 @@ class LibraryDisplay extends VideoDisplay
 
     public function parseStudio($studioArr)
     {
+
+        $studio_links = '';
+        $studio_box = '';
+      
         foreach ($studioArr as $row => $sname) {
             $name = ['studio' => $sname['studio']];
             $cnt = $sname['cnt'];
@@ -89,22 +111,29 @@ class LibraryDisplay extends VideoDisplay
             }
 
             $studio = $name['studio'];
+            $url = 'genre';
 
-            if (isset($cnt)) {
+            if (isset($cnt)) {   
+                if($cnt == 1) {
+                    $url = 'list';
+                }
                 $cnt = ' ('.$cnt.') ';
             }
-
+  utmdump([__METHOD__,$sql_studio]);
             $substudio_sql = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA,
                 'count(substudio) as cnt, substudio', ' studio  '.$sql_studio,
                 'substudio', 'substudio ASC ');
+              
             $ss_result = $this->db->query($substudio_sql);
-
             if (\count($ss_result) >= 2) {
                 $studio_links .= $this->parseSubStudios($studio, $cnt, $ss_result);
             } else {
+
+             
+
                 $studio_links .= Render::html($this->template_base.'/studio/group', [
                     'STUDIO_LINK' => Render::html($this->template_base.'/studio/link', [
-                        'url' => 'genre',
+                        'url' => $url,
                         'GET_REQUEST' => 'studio='.urlencode($studio),
                         'NAME' => $name['studio'],
                         'COUNT' => $cnt,

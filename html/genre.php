@@ -22,7 +22,7 @@ if (isset($_REQUEST['allfiles'])) {
     } else {
         if (isset($_REQUEST['substudio']) && 'null' == $_REQUEST['substudio']) {
             $null = ' and substudio is null ';
-            $null_req = '&substudio=null';
+            $null_req = '&substudio=null' . $null_req ;
         }
 
         $studio_key = 'studio';
@@ -50,6 +50,7 @@ $sql = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA,
     'genre',
     $order
 );
+
 $genre_array = [];
 $result = $db->query($sql);
 
@@ -74,6 +75,7 @@ $genre_links = Render::html(
     ]
 );
 asort($genre_array);
+utmdump($genre_array);
 foreach ($genre_array as $k => $v) {
     $link_array = [];
     // $v["cnt"]=1; ".$v["cnt"]."
@@ -84,6 +86,9 @@ foreach ($genre_array as $k => $v) {
         $db->where('genre', '%'.$v.'%', 'like');
         if ('All' != $_SESSION['library']) {
             $db->where('library', $_SESSION['library'], 'like');
+        }
+        if($null != '') {
+            $db->where("substudio", NULL, 'IS');
         }
         $count = $db->getOne(Db_TABLE_VIDEO_METADATA, 'count(*) as cnt');
         $link_array['url'] = 'list';

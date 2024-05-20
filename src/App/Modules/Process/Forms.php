@@ -64,7 +64,6 @@ class Forms
         $redirect = false;
         $this->VideoInfo = new Info($this->postArray);
         $this->VideoChapter = new Chapter($this->postArray);
-
         if (isset($this->postArray['submit'])) {
             $method = $this->postArray['submit'];
             unset($this->postArray['submit']);

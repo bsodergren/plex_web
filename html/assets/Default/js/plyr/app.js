@@ -209,6 +209,8 @@ const PlayerApp = {
             artist: item.getAttribute("data-artist"),
             studio: item.getAttribute("data-studio"),
             videoid: item.getAttribute("data-videoid"),
+            width: item.getAttribute("data-width"),
+            height: item.getAttribute("data-height"),
             sources: [source],
             poster: item.getAttribute("data-poster"),
             category,
@@ -446,7 +448,9 @@ const PlayerApp = {
             poster: track.poster,
         };
         var isPlaying = this.player.play();
-        resize();
+        // console.log(track.width , track.height)
+        resizeWindow(true,track.width , track.height)
+        // resize();
         updateFavVideo(item.getAttribute("data-videoid"));
     },
 
@@ -580,7 +584,8 @@ const PlayerApp = {
         playlistIcon.addEventListener("click", () => {
             leftColumn.classList.toggle("expanded");
             rightColumn.classList.toggle("hidden");
-            resizeWindow(!leftColumn.classList.contains("expanded"));
+            // console.log(item.getAttribute("data-width"));
+            // resizeWindow(!leftColumn.classList.contains("expanded"));
         });
     },
 
@@ -768,6 +773,7 @@ function resize() {
     //     console.log(text)
 }
 function updateOptions(id) {
+
     $.ajax({
         url: "process.php",
         type: "POST",

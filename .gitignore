@@ -252,3 +252,5 @@ src/Layout/Mobile/elements/New folder/Themes/stylesheet.html
 src/Layout/Mobile/elements/New folder/metaFilter/block.html
 src/Layout/Mobile/elements/New folder/metaFilter/filter.html
 src/Layout/Mobile/elements/New folder/metaFilter/select_box.html
+html/var**
+.env-server

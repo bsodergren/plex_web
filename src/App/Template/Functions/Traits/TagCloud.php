@@ -31,9 +31,14 @@ trait TagCloud
         // $sql = "SELECT DISTINCT m.genre,c.genre FROM '.Db_TABLE_VIDEO_CUSTOM.' c, '.Db_TABLE_VIDEO_METADATA.' m WHERE (m.genre is not null and c.genre is not null) and  m.Library = 'Studios'";
         $qlist_meta = $db->query($sql_meta);
         $qlist_custom = $db->query($sql_custom);
-        return array_merge($qlist_custom, $qlist_meta);
+        if($qlist_meta[0]['val'] == ""){
+            unset($qlist_meta[0]);
+        }
+        $arr = array_merge($qlist_custom, $qlist_meta);
+        return $arr;
 
     }
+
     public function tagCloud($matches)
     {
 
@@ -67,6 +72,7 @@ trait TagCloud
         // }
 
         $list = $this->getKeywordList($field);
+        // dd(["list",$list]);
         // utmdd(\count($list));
         $tag_links = '';
         if (0 == \count($list)) {

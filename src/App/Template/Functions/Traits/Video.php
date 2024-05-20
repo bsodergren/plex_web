@@ -236,6 +236,11 @@ trait Video
         }
         $query = 'SELECT thumbnail FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$row_id;
         $result = $db->query($query);
+
+        if($result[0]['thumbnail'] === null){
+            return __URL_HOME__.'/images/default.jpg';
+        }
+
         if (OptionIsFalse(SHOW_THUMBNAILS)) {
             return null;
         }

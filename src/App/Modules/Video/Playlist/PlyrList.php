@@ -58,7 +58,6 @@ class PlyrList extends Player
         if ('' == $row['title']) {
             $title = $row['filename'];
         }
-
         $thumbImg =  ( new Functions())->fileThumbnail($row['playlist_video_id'], 'alt="#" class="img-fluid" ');
         // utmdump($thumbImg);
         return Render::html(
@@ -68,6 +67,8 @@ class PlyrList extends Player
                 'STUDIO' => $row['studio'],
                 'ARTIST' => $row['artist'],
                 'GENRE' => $row['genre'],
+                'width' => $row['width'],
+                'height' => $row['height'],
                 // 'Rating' => $row['rating'],
 
                 'PLAYLIST_ID' => $this->playlist_id,
@@ -89,14 +90,19 @@ class PlyrList extends Player
                     m.title,
                     m.genre,
                     m.studio,
-                    m.artist
+                    m.artist,
+                    i.width,
+                    i.height
                     from
                     '.Db_TABLE_VIDEO_FILE.' as v,
+                    '.Db_TABLE_VIDEO_INFO.' as i,
                     '.Db_TABLE_PLAYLIST_VIDEOS.' as p,
                     '.Db_TABLE_VIDEO_METADATA.' as m where (
                     p.playlist_id = '.$this->playlist_id.' and
                     p.playlist_video_id = v.id  and
-                    v.video_key = m.video_key);';
+                    v.video_key = m.video_key
+                    and
+                    v.video_key = i.video_key);';
 
         $results = $this->db->query($sql);
 

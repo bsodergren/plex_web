@@ -7,7 +7,7 @@ require_once '_config.inc.php';
 
 // configuration
 $url = __URL_HOME__.'/pledit.php';
-$file = '/home/bjorn/plex/XXX/Playlists/plexplaylist.txt';
+$file = __PLEX_LIBRARY__.'/Playlists/plexplaylist.txt';
 $pl = new Mediatag('Playlists');
 
 if (!file_exists($file)) {

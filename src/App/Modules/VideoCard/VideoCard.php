@@ -105,9 +105,9 @@ class VideoCard
             'substudio',
             'keyword',
             'library',
-            // 'fullpath',
+            'fullpath',
             'filesize',
-            // 'format',
+            'format',
             'added',
         ];
         $x = 0;

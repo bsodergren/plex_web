@@ -142,6 +142,7 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         $request_query = [];
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
+
                 ${$tag} = urldecode($this->request[$tag]);
                 $uri[$tag] = ${$tag};
                 if ('studio' == $tag || 'substudio' == $tag
@@ -200,15 +201,15 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         $tagTables = false;
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
-                $value = '%'.$this->request[$tag].'%';
-                $comp = ' like';
 
-                if ('NULL' == $this->request[$tag]) {
-                    $value = null;
-                    $comp = ' IS';
-                }
-                $tag_query = '(m.'.$tag.' '.$comp.' \''.$value.'\' OR c.'.$tag.' '.$comp.' \''.$value.'\')';
-                $this->db->where($tag_query);
+                        if ('NULL' == strtoupper($this->request[$tag])) {
+                            $this->db->where('COALESCE (m.'.$tag.',c.'.$tag.')  is null');
+                        
+                    } else {
+                        $this->db->where("COALESCE (m.".$tag.",c.".$tag.") like '%". $this->request[$tag]."%'");
+                    }
+                
+
                 $tagTables = true;
                 // $this->db->orwhere('c.'.$tag, $value, $comp);
             }
@@ -222,6 +223,7 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
             $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         }
         $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
+                // utmdd($results);
 
         return [$results, $pageObj, $uri];
     }
@@ -285,7 +287,7 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         }
 
         $joinQuery .= $limitQuery;
-UtmDump($joinQuery);
+// utmdd($joinQuery);
         $this->saveSearch($joinQuery);
         // $joinQuery = str_replace('SELECT   v.id', 'SELECT '.implode(',', $fieldArray), $joinQuery);
 

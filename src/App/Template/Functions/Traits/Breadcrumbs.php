@@ -79,6 +79,7 @@ utmdump(Display::$CrubURL);
                 //  unset($request_tag['studio']);
             }
             if (\array_key_exists('substudio', $request_tag)) {
+                if( 'null' != $_REQUEST['substudio']) {
                 $url = 'studio.php';
                 $substudio_key = urldecode($request_tag['substudio']);
                 $studio_query['substudio'] = $request_tag['substudio'];
@@ -88,6 +89,7 @@ utmdump(Display::$CrubURL);
                     $studio_query['studio'] = $res['studio'];
                     $request_tag['studio'] = $res['studio'];
                 }
+            }
                 //  unset($request_tag['substudio']);
             }
 
@@ -104,7 +106,10 @@ utmdump(Display::$CrubURL);
                     $req_array['studio'] = $request_tag['studio'];
                 }
                 if (\array_key_exists('substudio', $request_tag)) {
+                    if( 'null' != $request_tag['substudio']) {
+
                     $req_array['substudio'] = $request_tag['substudio'];
+                    }
                 }
                 if (\array_key_exists('genre', $request_tag)) {
                     $req_array['genre'] = $request_tag['genre'];

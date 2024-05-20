@@ -43,8 +43,13 @@ class Pageinate extends Paginator
             $db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'c.video_key=v.video_key', 'LEFT');
 
             foreach ($query as $k => $parts) {
-                $db->where('(m.'.$parts['field'].' like ? or c.'.$parts['field'].' like ?)', ['%'.$parts['search'].'%', '%'.$parts['search'].'%']
-                );
+                if($parts['field'] == 'substudio') {
+                    if ('NULL' == strtoupper($parts['search'])) {
+                        $db->where('COALESCE (m.'.$parts['field'].',c.'.$parts['field'].')  is null');
+                    }
+                } else {
+                    $db->where("COALESCE (m.".$parts['field'].",c.".$parts['field'].") like '%".$parts['search']."%'");
+                }
             }
         } else {
             $libraryField = 'library';
@@ -69,7 +74,6 @@ class Pageinate extends Paginator
         }
 
         $this->results = $db->withTotalCount()->get($table);
-        UtmDump(($db->getLastQuery()));
         $this->totalRecords = $db->totalCount;
         $this->limit_array  = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];
         $this->offset = ($this->currentPage - 1) * $this->itemsPerPage;

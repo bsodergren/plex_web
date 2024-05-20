@@ -14,7 +14,9 @@ use UTMTemplate\UtmDevice;
 
 session_start();
 if (!array_key_exists('library', $_REQUEST)) {
-    $_REQUEST['library'] = $_SESSION['library'];
+    if (array_key_exists('library', $_SESSION)) {
+        $_REQUEST['library'] = $_SESSION['library'];
+    }
 }
 
 define('__ROOT_DIRECTORY__', dirname(realpath($_SERVER['CONTEXT_DOCUMENT_ROOT']), 1));
@@ -30,14 +32,13 @@ require_once __COMPOSER_LIB__.'/autoload.php';
 Debugger::enable(Debugger::Development);
 
 $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
-dd($config);
 
-EnvLoader::LoadEnv($config['path']['mediatag'])->load();
+EnvLoader::LoadEnv($config['path']['HOME'])->load();
 
 Request::startPage();
-foreach ($config['constants'] as $name => $value) {
-    define($name, $value);
-}
+// foreach ($config['constants'] as $name => $value) {
+//     define($name, $value);
+// }
 
 require_once __PHP_CONFIG_DIR__.'/Language.php';
 require_once __PHP_CONFIG_DIR__.'/paths.php';
@@ -55,7 +56,7 @@ Template::$registeredCallbacks = [
 // ];
 
 Template::$USER_TEMPLATE_DIR = __HTML_TEMPLATE__;
-Template::$TEMPLATE_COMMENTS = true;
+Template::$TEMPLATE_COMMENTS = false;
 Template::$SITE_URL = __LAYOUT_URL__;
 Template::$SITE_PATH = __LAYOUT_PATH__;
 Template::$ASSETS_URL = __LAYOUT_URL__.\DIRECTORY_SEPARATOR.'Default';

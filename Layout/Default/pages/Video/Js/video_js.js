@@ -59,7 +59,7 @@ function resizeWindow(large)
         videoWidth = 1920
     }
     windowWidth = videoWidth * 0.75
-    heightMulti = .68
+    heightMulti = .75
     // if(large == false) {
         // heightMulti = 1.25
     // }

@@ -25,18 +25,18 @@ $order = $studio_field.' ASC';
 
 $sql_studio = $studio_key." = '".$studio."'";
 $sql = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA,
-    'DISTINCT('.$studio_field.') as '.$studio_field.' ',
+    'DISTINCT('.$studio_field.') as '.$studio_field.',count('.$studio_field.') as cnt ',
     $sql_studio,
     $studio_field,
     $order
 );
 $studio_html = '';
-
+$studio_links = '';
 $request_key = $studio_key.'='.$studio_text;
 
 $result = $db->query($sql);
 $rows = count($result);
-
+// dump($result);
 $all_url = 'list.php?'.$request_key.'&allfiles=1';
 
 foreach ($result as $k => $v) {
@@ -64,7 +64,7 @@ foreach ($result as $k => $v) {
         $link_array['prefix'] = str_repeat('&nbsp;', $len);
         $link_array['GET_REQUEST'] = 'studio='.urlencode($studio);
         $link_array['NAME'] = $studio;
-        $link_array['COUNT'] = $v['cnt'];
+       $link_array['COUNT'] = $v['cnt'];
     }
     $studio_links .= Render::html(
         'pages/Studio/link',
