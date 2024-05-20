@@ -51,6 +51,7 @@ function videoPlaylistButton(videoId, page) {
         type: "POST",
         data: {
             submit: "playlist",
+            action: "AddToPlaylist",
             PlaylistID: playlistId,
             playlist: { 0: videoId },
             Video_ID: videoId,

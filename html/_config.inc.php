@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 ob_start();
 
@@ -29,7 +32,7 @@ set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
 
 require_once __COMPOSER_LIB__.'/autoload.php';
 // Debugger::enable();
-Debugger::enable(Debugger::Development);
+// Debugger::enable(Debugger::Development);
 
 $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
@@ -48,26 +51,26 @@ require_once __PHP_CONFIG_DIR__.'/database.php';
 require_once __PHP_CONFIG_DIR__.'/Functions.php';
 
 Template::$registeredCallbacks = [
-    '\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK' => 'callback_parse_function',
+    '\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK'      => 'callback_parse_function',
     '\Plex\Template\Callbacks\FunctionCallback::SCRIPTINCLUDE_CALLBACK' => 'callback_script_include'];
 
 // Template::$registeredFilters = [
 //     '\Plex\Template\Callbacks\URLFilter::parse_urllink' => ['a=href' => ['library' => $_REQUEST['library']]],
 // ];
 
-Template::$USER_TEMPLATE_DIR = __HTML_TEMPLATE__;
-Template::$TEMPLATE_COMMENTS = false;
-Template::$SITE_URL = __LAYOUT_URL__;
-Template::$SITE_PATH = __LAYOUT_PATH__;
-Template::$ASSETS_URL = __LAYOUT_URL__.\DIRECTORY_SEPARATOR.'Default';
-Template::$ASSETS_PATH = __LAYOUT_PATH__.\DIRECTORY_SEPARATOR.'Default';
-Template::$CACHE_DIR = __TPL_CACHE_DIR__;
-Template::$USE_TEMPLATE_CACHE = false;
-UtmDevice::$DETECT_BROWSER = true;
+Template::$USER_TEMPLATE_DIR      = __HTML_TEMPLATE__;
+Template::$TEMPLATE_COMMENTS      = false;
+Template::$SITE_URL               = __LAYOUT_URL__;
+Template::$SITE_PATH              = __LAYOUT_PATH__;
+Template::$ASSETS_URL             = __LAYOUT_URL__.\DIRECTORY_SEPARATOR.'Default';
+Template::$ASSETS_PATH            = __LAYOUT_PATH__.\DIRECTORY_SEPARATOR.'Default';
+Template::$CACHE_DIR              = __TPL_CACHE_DIR__;
+Template::$USE_TEMPLATE_CACHE     = false;
+UtmDevice::$DETECT_BROWSER        = true;
 UtmDevice::$USER_DEFAULT_TEMPLATE = __HTML_TEMPLATE__;
-UtmDevice::$USER_MOBILE_TEMPLATE = __MOBILE_TEMPLATE__;
-UtmDevice::$MOBILE_ASSETS_URL = __LAYOUT_URL__.\DIRECTORY_SEPARATOR.'Mobile';
-UtmDevice::$MOBILE_ASSETS_PATH = __LAYOUT_PATH__.\DIRECTORY_SEPARATOR.'Mobile';
+UtmDevice::$USER_MOBILE_TEMPLATE  = __MOBILE_TEMPLATE__;
+UtmDevice::$MOBILE_ASSETS_URL     = __LAYOUT_URL__.\DIRECTORY_SEPARATOR.'Mobile';
+UtmDevice::$MOBILE_ASSETS_PATH    = __LAYOUT_PATH__.\DIRECTORY_SEPARATOR.'Mobile';
 
 $device = new UtmDevice();
 RoboLoader::loadPage();

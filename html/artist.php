@@ -1,9 +1,12 @@
 <?php
+/**
+ *  Plexweb
+ */
 
-use Plex\Template\Render;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\VideoCard\VideoCard;
 use Plex\Template\Functions\Functions;
+use Plex\Template\Render;
 
 require_once '_config.inc.php';
 
@@ -127,5 +130,5 @@ foreach ($results as $num => $artistArray) {
     //  utmdd($artistArray);
 }
 
-Render::Display(Render::html('pages/artist/cloud', $params),'pages/artist/body');
+Render::Display(Render::html('pages/artist/cloud', $params), 'pages/artist/body');
 // Render::echo("artist/main",$PARAMS);

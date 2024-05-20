@@ -1,10 +1,10 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Process;
 
-/*
- * plex web viewer
- */
 
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\VideoDb;
@@ -20,14 +20,14 @@ use UTMTemplate\HTML\Elements;
 class Forms
 {
     use DbWrapper;
+    use ExportSQL;
     use Favorites;
     use Playlist;
     use VideoPlayer;
-    use ExportSQL;
 
     public $postArray = [];
-    public $getArray = [];
-    public $redirect = ''; // .'/home.php';
+    public $getArray  = [];
+    public $redirect  = ''; // .'/home.php';
     public $playlist_id;
     public $library;
     public $id;
@@ -38,10 +38,19 @@ class Forms
     public object $VideoChapter;
     public object $db;
     public object $playlist;
+    public static $registeredCallbacks = false;
+    private $registered_callbacks = false;
+
 
     public function __construct($postArray)
     {
-        $this->db = PlexSql::$DB;
+
+        if (true == self::$registeredCallbacks) {
+            $this->registerCallback(self::$registeredCallbacks);
+        }
+
+
+        $this->db        = PlexSql::$DB;
         $this->postArray = $postArray;
 
         $this->redirect = $_SERVER['HTTP_REFERER'];
@@ -59,10 +68,39 @@ class Forms
         $this->library = $_SESSION['library'];
     }
 
+
+    public function registerCallback($constant, $function = '')
+    {
+        if (\is_array($constant)) {
+            foreach ($constant as $key => $value) {
+                $this->registerCallback($key, $value);
+            }
+        } else {
+            if (!\array_key_exists($constant, $this->registered_callbacks)) {
+                $this->registered_callbacks = array_merge($this->registered_callbacks, [$constant => $function]);
+            }
+        }
+    }
+
+
     public function process()
     {
-        $redirect = false;
-        $this->VideoInfo = new Info($this->postArray);
+
+        // foreach ($this->registered_callbacks as $pattern => $function) {
+        //     if (!str_contains($pattern, '::')) {
+        //         $pattern = 'self::'.$pattern;
+        //         $class = $this;
+        //     } else {
+        //         $parts = explode('::', $pattern);
+        //         // UtmDump([$pattern,$parts,$function]);
+        //         $class = (new $parts[0]());
+        //         // $function = $parts[1];
+        //     }
+        // }
+
+
+           $redirect           = false;
+        $this->VideoInfo    = new Info($this->postArray);
         $this->VideoChapter = new Chapter($this->postArray);
         if (isset($this->postArray['submit'])) {
             $method = $this->postArray['submit'];
@@ -74,6 +112,8 @@ class Forms
             }
             $redirect = true;
         }
+
+
         if (isset($this->postArray['action'])) {
             $method = $this->postArray['action'];
             if (str_contains($method, 'Playlist')) {
@@ -91,6 +131,13 @@ class Forms
             }
             $redirect = true;
         }
+
+        if (isset($this->postArray['exit'])) {
+            if($this->postArray['exit'] == "true"){
+               exit;
+            }
+        }
+
         if (true === $redirect) {
             $this->myHeader($this->redirect);
         }
@@ -106,15 +153,16 @@ class Forms
 
     public function rating()
     {
+        utmdump([__METHOD__,"fasd"]);
         [$_,$videoId] = explode('_', $this->postArray['id']);
-        $rating = $this->postArray['rating'];
+        $rating       = $this->postArray['rating'];
         $this->VideoInfo->updateRating($videoId, $rating);
     }
 
     public function update_file()
     {
         $videoDb = new VideoDb();
-        $file = $videoDb->getVideoPath($this->postArray['id']);
+        $file    = $videoDb->getVideoPath($this->postArray['id']);
 
         $mediatag = new Mediatag();
         $mediatag->addFile($file);
@@ -129,13 +177,12 @@ class Forms
 
     public function updateVideoCard()
     {
-        $video_key = VideoDB::getVideoKey($this->postArray['video_id']);
-        $method = $this->postArray['field'];
-        $tagValue = $this->postArray['value'];
+        $video_key = VideoDb::getVideoKey($this->postArray['video_id']);
+        $method    = $this->postArray['field'];
+        $tagValue  = $this->postArray['value'];
 
         $this->VideoInfo->{$method}($tagValue, $video_key);
         exit;
-
     }
 
     public function GenreConfigSave()
@@ -206,7 +253,7 @@ class Forms
                 if ('' != $value) {
                     $pcs = explode('_', $key);
 
-                    $id = $pcs[1];
+                    $id    = $pcs[1];
                     $field = $pcs[0];
                     if ('null' == $value) {
                         $set = '`'.$field.'`= NULL ';
@@ -230,7 +277,7 @@ class Forms
 
     public static function StaticArtistConfigSave($data_array, $redirect, $timeout = 0)
     {
-        $db = PlexSql::$DB;
+        $db       = PlexSql::$DB;
         $__output = '';
         foreach ($data_array as $key => $val) {
             if (true == str_contains($key, '_')) {
@@ -239,7 +286,7 @@ class Forms
                 if ('' != $value) {
                     $pcs = explode('_', $key);
 
-                    $id = $pcs[1];
+                    $id    = $pcs[1];
                     $field = $pcs[0];
                     if ('null' == $value) {
                         $set = '`'.$field.'`= NULL ';
@@ -263,7 +310,7 @@ class Forms
 
     public static function StaticsaveStudioConfig($data_array, $redirect, $timeout = 0)
     {
-        $db = PlexSql::$DB;
+        $db       = PlexSql::$DB;
         $__output = '';
 
         foreach ($data_array as $key => $val) {
@@ -273,9 +320,9 @@ class Forms
                 if ('' != $value) {
                     $pcs = explode('_', $key);
 
-                    $id = $pcs[1];
+                    $id    = $pcs[1];
                     $field = $pcs[0];
-                    $set = '`'.$field.'` = "'.$value.'"';
+                    $set   = '`'.$field.'` = "'.$value.'"';
 
                     if ('null' == $value) {
                         $set = '`'.$field.'`= NULL ';

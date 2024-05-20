@@ -20,13 +20,14 @@ if (array_key_exists('q', $_GET)) {
 
     exit;
 }
+
 // $t = new Template();
-if (array_key_exists('action', $_REQUEST)) {
-    Layout::Header(true);
-    if ('refresh' == $_REQUEST['action']) {
-        // Layout::Header();
-    }
-}
+// if (array_key_exists('action', $_REQUEST)) {
+//     Layout::Header(true);
+//     if ('refresh' == $_REQUEST['action']) {
+//         // Layout::Header();
+//     }
+// }
 
 logger('_REQUEST', $_REQUEST);
 

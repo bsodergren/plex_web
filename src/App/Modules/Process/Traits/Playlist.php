@@ -5,7 +5,7 @@ namespace Plex\Modules\Process\Traits;
 use Plex\Modules\Database\PlaylistDB;
 use Plex\Modules\Database\VideoDb;
 use Plex\Modules\Display\VideoDisplay;
-
+use Plex\Modules\Process\Forms;
 /**
  * plex web viewer.
  */

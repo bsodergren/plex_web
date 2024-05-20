@@ -39,9 +39,9 @@ function calculateAspectRatio(width, height) {
     function gcd(a, b) {
         return (b == 0) ? a : gcd(b, a % b);
     }
-    
+
     var divisor = gcd(width, height);
-    
+
     return (width / divisor) + ":" + (height / divisor);
 }
 
@@ -66,21 +66,26 @@ function resizeWindow(large,width=1280,height=720)
     videoWidth = width
     videoHeight = height
 
-    ratio = calculateAspectRatio(videoWidth, videoHeight)
-    
-    text= "Video to W:"+videoWidth + " H:" + videoHeight + " Ratio:" +  ratio ;
+    text= "Origintal Video W:"+videoWidth + " H:" + videoHeight;
     console.log(text)
+
+    ratio = calculateAspectRatio(videoWidth, videoHeight)
+
     if (videoWidth > 1921) {
         videoWidth =  1280
     }
 
-    console.log(calculateApectHeight(videoWidth, ratio));
+
+
 
     windowWidth = videoWidth * 0.75
+  videoHeight = calculateApectHeight(videoWidth, ratio);
 
-    heightMulti = .6
+    text= "Video to W:"+videoWidth + " H:" + videoHeight + " Ratio:" +  ratio ;
+    console.log(text)
+    heightMulti = .9
      if(large == true) {
-         heightMulti = heightMulti + .13
+       //  heightMulti = heightMulti - .13
      }
         windowHeight = videoHeight * heightMulti
 

@@ -1,4 +1,8 @@
 <?php
+/**
+ *  Plexweb
+ */
+
 namespace Plex\Modules\Process\Traits;
 
 use Plex\Modules\Database\FavoriteDB;
@@ -10,37 +14,35 @@ trait Favorites
 
     public function addFavorite()
     {
-        if(!array_key_exists('video_id',$_REQUEST)){
-            return "";
+        if (!\array_key_exists('videoId', $_REQUEST)) {
+            return '';
         }
         FavoriteDB::add($_REQUEST['videoId']);
-        echo Render::html(Functions::$ButtonDir.'/Favorite/remove');
-        exit;
+        echo Render::html(Functions::$ButtonDir.'/Favorite/remove',['videoId' => ','.$_REQUEST['videoId']]);
     }
 
     public function RemoveFavorite()
     {
-        if(!array_key_exists('video_id',$_REQUEST)){
-            return "";
+      //  utmdump([__METHOD__, $_REQUEST]);
+
+        if (!\array_key_exists('videoId', $_REQUEST)) {
+            return '';
         }
         FavoriteDB::delete($_REQUEST['videoId']);
-        echo Render::html(Functions::$ButtonDir.'/Favorite/add');
-        exit;
-
+        echo  Render::html(Functions::$ButtonDir.'/Favorite/add',['videoId' =>  ','.$_REQUEST['videoId']]);
     }
 
     public function isFavorite()
     {
-        if(!array_key_exists('video_id',$_REQUEST)){
-            return "";
-        }
-       $res = FavoriteDB::get($_REQUEST['videoId']);
-       if($res){
-           echo Render::html(Functions::$ButtonDir.'/Favorite/remove');
-           exit;
-       }
-       echo Render::html(Functions::$ButtonDir.'/Favorite/add');
-        exit;
+        utmdump([__METHOD__, $_REQUEST]);
 
+        if (!\array_key_exists('videoId', $_REQUEST)) {
+            return '';
+        }
+        $res = FavoriteDB::get($_REQUEST['videoId']);
+        if ($res) {
+            echo Render::html(Functions::$ButtonDir.'/Favorite/remove');
+        }
+        echo Render::html(Functions::$ButtonDir.'/Favorite/add');
     }
 }

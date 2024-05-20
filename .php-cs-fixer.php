@@ -1,36 +1,39 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
 $fileHeaderComment = <<<'EOF'
-
+ Plexweb
 EOF;
 
-return (new PhpCsFixer\Config())->setRules([
+return (new Config())->setRules([
     // 'array_syntax' => ['syntax' => 'short'],
     // 'blank_line_after_namespace'   => true,
     // 'blank_line_after_opening_tag' => true,
     // 'blank_line_before_statement'  => [
     //     'statements' => ['return'],
     // ],
-    // 'braces'                      => true,
-    // 'cast_spaces'                 => true,
-    // 'class_attributes_separation' => [
-    //     'elements' => [
-    //         'const'        => 'one',
-    //         'method'       => 'one',
-    //         'property'     => 'one',
-    //         'trait_import' => 'none',
-    //     ],
-    // ],
+    'braces' => true,
+    'cast_spaces' => true,
+    'class_attributes_separation' => [
+        'elements' => [
+            'const' => 'one',
+            'method' => 'one',
+            'property' => 'one',
+            'trait_import' => 'none',
+        ],
+    ],
     // 'class_definition' => [
     //     'multi_line_extends_each_single_line' => true,
     //     'single_item_single_line'             => true,
     //     'single_line'                         => true,
     // ],
 
-    // 'header_comment' => ['header' => $fileHeaderComment, 'comment_type' => 'PHPDoc', 'location' => 'after_open', 'separate' => 'bottom'],
+    'header_comment' => ['header' => $fileHeaderComment, 'comment_type' => 'PHPDoc', 'location' => 'after_open', 'separate' => 'bottom'],
 
     // 'single_class_element_per_statement' => [
     //     'elements' => ['const', 'property'],
@@ -53,13 +56,13 @@ return (new PhpCsFixer\Config())->setRules([
     // 'get_class_to_class_keyword' => true,
     // 'no_unused_imports' => true,
 
-    // 'binary_operator_spaces' => [
-    //     'operators' => [
-    //         '=>'  => 'align',
-    //         '='   => 'align',
-    //         '===' => 'align',
-    //     ],
-    // ],
+    'binary_operator_spaces' => [
+        'operators' => [
+            '=>' => 'align',
+            '=' => 'align',
+            '===' => 'align',
+        ],
+    ],
 ])
     ->setRiskyAllowed(true)
     ->setCacheFile('.php-cs-fixer.cache')

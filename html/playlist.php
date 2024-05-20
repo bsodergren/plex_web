@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 use Plex\Modules\Display\Display;
 use Plex\Modules\Display\VideoDisplay;
@@ -16,14 +19,16 @@ $Playlist = (new VideoDisplay('Playlist'))->init();
 
 // exit;
 
-//     $form = new Formr\Formr('bootstrap', 'hush');
-//  utmdump($_REQUEST);
-//     if ($form->submitted()) {
-//         // $data = $form->validate('playlist_name,action');
+$form = new Formr\Formr('bootstrap', 'hush');
+if ($form->submitted()) {
+    if (isset($_REQUEST['action'])) {
+        // $data = $form->validate('playlist_name,action');
+        $p = new Forms($_REQUEST);
+        $p->process();
 
-//         $p = new Forms($_REQUEST);
-//         $p->process();
-//     }
+        echo $p->redirect;
+    }
+}
 
 // if (isset($_REQUEST['add'])) {
 
@@ -40,7 +45,7 @@ $Playlist = (new VideoDisplay('Playlist'))->init();
 // $playlist_links = '';
 
 if (isset($_REQUEST['playlist_id'])) {
-    $playlist_id = $_REQUEST['playlist_id'];
+    $playlist_id           = $_REQUEST['playlist_id'];
     $Playlist->playlist_id = $playlist_id;
 }
 if (null === $playlist_id) {

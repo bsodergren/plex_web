@@ -116,12 +116,13 @@ function FavoriteVideo(action,videoid=null)
         url: "process.php",
         type: "POST",
         data: {
-            submit: action,
-            videoId: videoid
+            action: action,
+            videoId: videoid,
+            exit: true
         },
         cache: false,
         success: function (data) {
-            // console.log(data)
+             console.log(data)
                 const videoCell = document.getElementById(favButton);
                 videoCell.innerHTML = data;
         },
@@ -137,7 +138,7 @@ function updateFavVideo(videoid)
         url: "process.php",
         type: "POST",
         data: {
-            submit: "isFavorite",
+            action: "isFavorite",
             videoId: videoid
         },
         cache: false,
