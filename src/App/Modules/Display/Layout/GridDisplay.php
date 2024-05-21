@@ -74,7 +74,7 @@ class GridDisplay extends VideoDisplay
 
         $file_info = [
             'title' => $videoInfo['title'],
-            'library' => $videoInfo['library'],
+            'library' => $videoInfo['Library'],
             'studio' => $videoInfo['studio'],
             'substudio' => $videoInfo['substudio'],
             'artist' => $videoInfo['artist'],

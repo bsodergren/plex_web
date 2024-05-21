@@ -24,7 +24,7 @@ trait TagCloud
          $db = PlexSql::$DB;
         $where = PlexSql::getLibrary();
         $where = str_replace('AND', 'WHERE', $where);
-        $where = str_replace('m.library', 'library', $where);
+        $where = str_replace('m.Library', 'Library', $where);
         $sql_meta =$this->getKeywordSQL(Db_TABLE_VIDEO_METADATA,$field,$where);
         $sql_custom = $this->getKeywordSQL(Db_TABLE_VIDEO_CUSTOM,$field);
 

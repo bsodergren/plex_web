@@ -30,7 +30,7 @@ foreach ($result as $k => $v) {
 }
 
 foreach ($allgenre_array as $x => $g) {
-    $sql   = "SELECT count(*) as cnt from metatags_filedb WHERE library = '".$in_directory."' AND genre LIKE '%".$g."%'";
+    $sql   = "SELECT count(*) as cnt from metatags_filedb WHERE Library = '".$in_directory."' AND genre LIKE '%".$g."%'";
 
     $rar   = $db->rawQueryOne($sql);
     $cnt   = '';

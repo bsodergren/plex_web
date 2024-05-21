@@ -204,11 +204,11 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
 
                         if ('NULL' == strtoupper($this->request[$tag])) {
                             $this->db->where('COALESCE (m.'.$tag.',c.'.$tag.')  is null');
-                        
+
                     } else {
                         $this->db->where("COALESCE (m.".$tag.",c.".$tag.") like '%". $this->request[$tag]."%'");
                     }
-                
+
 
                 $tagTables = true;
                 // $this->db->orwhere('c.'.$tag, $value, $comp);
@@ -249,13 +249,13 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         // $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'v.video_key=i.video_key', 'LEFT OUTER');
 
         // if (null !== PlexSql::getLibrary()) {
-        //  $this->db->joinWhere(Db_TABLE_VIDEO_FILE.' v', 'v.library', $_SESSION['library']);
+        //  $this->db->joinWhere(Db_TABLE_VIDEO_FILE.' v', 'v.Library', $_SESSION['library']);
         // }
 
         $this->db->join(Db_TABLE_PLAYLIST_VIDEOS.' p', 'v.id=p.playlist_video_id', 'LEFT OUTER');
 
         if ('All' != $_SESSION['library']) {
-            $this->db->where('v.library', $_SESSION['library']);
+            $this->db->where('v.Library', $_SESSION['library']);
         }
 
         // if()

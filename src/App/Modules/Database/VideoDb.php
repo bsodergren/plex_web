@@ -21,7 +21,7 @@ class VideoDb
     public static $VideoInfoFields = ['i.format', 'i.bit_rate', 'i.width', 'i.height'];
 
     public static $VideoFileFields = ['v.rating',
-        'v.filename', 'v.fullpath', 'v.library',
+        'v.filename', 'v.fullpath', 'v.Library',
         'v.duration', 'v.filesize', 'v.added', 'v.id', 'v.video_key', 'v.thumbnail', 'v.preview'];
     public static $PlayListFields = ['p.playlist_video_id', 'p.playlist_id'];
     public static $FavoriteFields = ['f.video_id as favorite_id'];

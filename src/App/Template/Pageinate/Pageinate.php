@@ -38,7 +38,7 @@ class Pageinate extends Paginator
         $this->currentPage = $currentPage;
         if (false != $query) {
             $table        = $this->table.' v ';
-            $libraryField = 'v.library';
+            $libraryField = 'v.Library';
             $db->join(Db_TABLE_VIDEO_METADATA.' m', 'm.video_key=v.video_key', 'INNER');
             $db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'c.video_key=v.video_key', 'LEFT');
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Display;
 
@@ -29,15 +32,16 @@ class Layout
 
     public static function Navbar($params)
     {
-        $db = PlexSql::$DB;
+        $db            = PlexSql::$DB;
         $library_links = '';
-        $sql = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA, 'DISTINCT(library) as library ');
+        $sql           = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA, 'DISTINCT(Library) as Library ');
+utmdump($sql);
         foreach ($db->query($sql) as $k => $v) {
-            $library_links .= Display::navbar_left_links('home.php?library='.$v['library'], $v['library']);
+            $library_links .= Display::navbar_left_links('home.php?library='.$v['Library'], $v['Library']);
         }
         $library_links .= Display::navbar_left_links('home.php?library=All', 'All');
         $params['CURRENT_DEVICE'] = UtmDevice::$DEVICE;
-        $params['Device'] = ucfirst(strtolower(UtmDevice::$DEVICE));
+        $params['Device']         = ucfirst(strtolower(UtmDevice::$DEVICE));
 
         $params['NAV_BAR_LEFT_LINKS'] = Render::html('base/navbar/library_menu',
             ['LIBRARY_SELECT_LINKS' => $library_links]);
@@ -47,16 +51,16 @@ class Layout
     public static function Footer()
     {
         global $pageObj;
-        $params = [];
+        $params    = [];
         $page_html = '';
-        $navbar = '';
+        $navbar    = '';
         if (OptionIsTrue(BOTTOM_NAV)) {
             if (OptionIsTrue(SHOW_PAGES) && isset($pageObj)) {
                 $page_html = $pageObj->toHtml();
             }
 
             $footer_nav = ['FOOTER_NAV' => $page_html];
-            $navbar = Render::html('base/footer/navbar', $footer_nav);
+            $navbar     = Render::html('base/footer/navbar', $footer_nav);
         }
 
         Render::echo('base/footer/main', ['FOOT_NAVBAR' => $navbar]);

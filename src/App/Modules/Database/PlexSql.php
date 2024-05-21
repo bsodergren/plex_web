@@ -80,7 +80,7 @@ class PlexSql extends \MysqliDb
         }
 
         if ('All' != $_SESSION['library']) {
-            $query[] = " library = '".$_SESSION['library']."'  ";
+            $query[] = " Library = '".$_SESSION['library']."'  ";
         }
         if (\count($query) > 0) {
             $querySQl = ' WHERE ';
@@ -106,7 +106,7 @@ class PlexSql extends \MysqliDb
 
         $library = '';
         if ('All' != $_SESSION['library']) {
-            $library = " WHERE library = '".$_SESSION['library']."' ";
+            $library = " WHERE Library = '".$_SESSION['library']."' ";
         }
         $query = 'SELECT '.$column.',count('.$column.') FROM `'.Db_TABLE_VIDEO_FILE.'` '.$library.' group
         by '.$column.' having COUNT('.$column.') > 1;';
@@ -120,7 +120,7 @@ class PlexSql extends \MysqliDb
 
     //     $library = '';
     //     if ('All' != $_SESSION['library']) {
-    //         $library = "  AND library = '".$_SESSION['library']."' ";
+    //         $library = "  AND Library = '".$_SESSION['library']."' ";
     //     }
 
     //     $query = PlexSql::query_builder(''.Db_TABLE_VIDEO_FILE.'','select', "`v.".$column."` = '".$value."' ");
@@ -148,13 +148,13 @@ class PlexSql extends \MysqliDb
         $this->db->join(Db_TABLE_VIDEO_METADATA.' m', 'v.video_key=m.video_key', 'INNER');
         $this->db->join(Db_TABLE_VIDEO_INFO.' i', 'v.video_key=i.video_key', 'LEFT OUTER');
         if (null !== self::getLibrary()) {
-            $this->db->joinWhere(Db_TABLE_VIDEO_METADATA.' m', 'm.library', $_SESSION['library']);
+            $this->db->joinWhere(Db_TABLE_VIDEO_METADATA.' m', 'm.Library', $_SESSION['library']);
         }
         //        $this->db->where('v.'.$column, $value);
-        // $fieldArray[] = 'm.library';
+        // $fieldArray[] = 'm.Library';
 
         $fieldArray = array_merge($fieldArray, [
-            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'v.library', 'v.preview',
+            'i.format', 'i.bit_rate', 'i.width', 'i.height', 'v.Library', 'v.preview',
             'v.filename', 'v.thumbnail', 'v.fullpath', 'v.duration', 'v.filesize', 'v.added', 'v.id', 'v.video_key']);
 
         $joinQuery = $this->db->getQuery(
@@ -228,14 +228,14 @@ class PlexSql extends \MysqliDb
     // public $fieldList ='id, video_key,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added,filename ,fullpath,library,filesize';
 
     //  SELECT
-    // m.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,v.filename ,v.fullpath,m.library,v.filesize
+    // m.video_key,thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,v.filename ,v.fullpath,m.Library,v.filesize
     // FROM '.Db_TABLE_VIDEO_FILE.' v INNER JOIN '.Db_TABLE_VIDEO_METADATA.' m on m.video_key=v.video_key
-    // AND m.studio = 'Brazzers' AND m.library = 'Pornhub' AND m.genre like '%MMF%' ORDER BY m.title ASC LIMIT 0, 5
+    // AND m.studio = 'Brazzers' AND m.Library = 'Pornhub' AND m.genre like '%MMF%' ORDER BY m.title ASC LIMIT 0, 5
     public function pselect($table, $fields = 'select')
     {
         //  $this->sql_table = $table;
         //        $field_list      = ' id, video_key,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added,filename ,fullpath,library,filesize';
-        $field_list = 'v.id, v.video_key,v.preview,v.thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,v.added,v.filename ,v.fullpath,m.library,v.filesize';
+        $field_list = 'v.id, v.video_key,v.preview,v.thumbnail,m.title,m.artist,m.genre,m.studio,m.keyword,m.substudio,v.added,v.filename ,v.fullpath,m.Library,v.filesize';
         if ('select' == $fields) {
             $sql = 'select '.$field_list;
         } else {
@@ -270,7 +270,7 @@ class PlexSql extends \MysqliDb
 
         $library = '';
         if ('All' != $_SESSION['library']) {
-            $library = " library = '".$_SESSION['library']."' ";
+            $library = " Library = '".$_SESSION['library']."' ";
         }
 
         if ('library' != $where) {

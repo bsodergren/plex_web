@@ -11,9 +11,9 @@ require_once '../_config.inc.php';
 $pageObj = new ConfigPagenate("library = 'Studios'", $currentPage, $urlPattern);
 
 $sql = 'SELECT * FROM '.Db_TABLE_STUDIOS."
- WHERE library = 'Studios' ORDER BY studio,path,name";
+ WHERE Library = 'Studios' ORDER BY studio,path,name";
 
-$limit = $pageObj->itemsPerPage;
+$limit  = $pageObj->itemsPerPage;
 $offset = $pageObj->offset;
 
 if (false != $limit && false == $offset) {
@@ -56,12 +56,12 @@ foreach ($studio_rows as $library => $studios) {
             'config/studio/studio_row',
             [
                 'STUDIO_ID' => 'studio_'.$row['id'],
-                'PATH_ID' => 'path_'.$row['id'],
+                'PATH_ID'   => 'path_'.$row['id'],
 
                 'STUDIO_NAME' => $row['name'],
 
                 'STUDIO_PH' => $row['studio'],
-                'PATH_PH' => $row['path'],
+                'PATH_PH'   => $row['path'],
             ]
         );
     }
@@ -70,7 +70,7 @@ foreach ($studio_rows as $library => $studios) {
         'config/studio/studios',
         [
             'STUDIO_LIBRARY' => $library,
-            'STUDIO_ROWS' => $studio_row_html,
+            'STUDIO_ROWS'    => $studio_row_html,
         ]
     );
 }
@@ -78,7 +78,7 @@ foreach ($studio_rows as $library => $studios) {
 $hidden = Elements::add_hidden('submit', 'StudioConfigSave');
 $hidden .= Elements::add_hidden('redirect', $redirect_string);
 $studio_main_html .= Render::html('config/studio/form_wrapper', [
-    'HIDDEN' => $hidden,
+    'HIDDEN'           => $hidden,
     'STUDIO_FORM_HTML' => $studio_list_html,
 ]);
 

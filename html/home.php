@@ -1,7 +1,8 @@
 <?php
+/**
+ *  Plexweb
+ */
 
-use Plex\Template\Render;
-use Plex\Modules\Display\Display;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Display\VideoDisplay;
 
@@ -11,9 +12,9 @@ use Plex\Modules\Display\VideoDisplay;
 
 require_once '_config.inc.php';
 
-$sql = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA, 'studio,subLibrary,count(video_key) as cnt', 'library', 'studio,subLibrary', 'studio,subLibrary ASC');
+$sql    = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA, 'studio,subLibrary,count(video_key) as cnt', 'library', 'studio,subLibrary', 'studio,subLibrary ASC');
+utmdump($sql);
 $result = $db->query($sql);
-
 
 $homePage = (new VideoDisplay('Library'))->init('Home');
 

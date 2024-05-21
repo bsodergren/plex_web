@@ -18,7 +18,7 @@ class FavoriteDB extends VideoDb
         $sql .= ' ,  '.Db_TABLE_VIDEO_FILE.' v  ';
         $sql .= ' INNER JOIN '.Db_TABLE_VIDEO_METADATA.'  m on v.video_key=m.video_key '; // .PlexSql::getLibrary();
         $sql .= ' LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.'  c on m.video_key=c.video_key ';
-        $sql .= ' WHERE  ( f.video_id = v.id) AND f.library = "' .$_SESSION['library'].'"' ;
+        $sql .= ' WHERE  ( f.video_id = v.id) AND f.Library = "' .$_SESSION['library'].'"' ;
         utmdump([__METHOD__, $sql]);
 
         return PlexSql::$DB->query($sql);

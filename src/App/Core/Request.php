@@ -339,14 +339,14 @@ class Request
     public static function startPage()
     {
 
-        $start[] = "PAGE:".$_SERVER['SCRIPT_NAME'];
+        // $start[] = "PAGE:".$_SERVER['SCRIPT_NAME'];
 
-        $start[] = self::parseRequest('_GET');
-        $start[] = self::parseRequest('_POST');
+        // $start[] = self::parseRequest('_GET');
+        // $start[] = self::parseRequest('_POST');
 
-        $start_string = implode(", ",$start);
+        // $start_string = implode(", ",$start);
 
-        utmdump("start ". $start_string ." --------". date("F j, Y, g:i a")."--------");
+        // utmdump("start ". $start_string ." --------". date("F j, Y, g:i a")."--------");
 
     }
 
@@ -355,10 +355,11 @@ class Request
 
         $var_array = $GLOBALS[$var];
         $start = '';
+        utmdump($var_array);
         if(is_array($var_array)) {
         if(count($var_array) > 0){
             foreach($var_array as $f=>$v) {
-                $array[] = "$f=>$v";
+                $array[] = @"$f=>$v";
             }
             $start = $var.":".implode(",",$array);
         }

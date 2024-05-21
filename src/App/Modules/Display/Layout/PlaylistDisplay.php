@@ -30,7 +30,7 @@ public $playlist_id = null;
 
         for ($i = 0; $i < count($results); ++$i) {
             $playlist_image = '';
-            $library = $results[$i]['library'];
+            $library = $results[$i]['Library'];
 
             if (0 == $i) {
                 $prev = $library;
