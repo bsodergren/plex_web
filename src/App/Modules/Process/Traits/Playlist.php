@@ -1,11 +1,14 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Process\Traits;
 
 use Plex\Modules\Database\PlaylistDB;
 use Plex\Modules\Database\VideoDb;
 use Plex\Modules\Display\VideoDisplay;
-use Plex\Modules\Process\Forms;
+
 /**
  * plex web viewer.
  */
@@ -15,7 +18,6 @@ use Plex\Modules\Process\Forms;
  */
 trait Playlist
 {
-
     public function addAllPlaylist()
     {
         $url = $this->createPlaylist();
@@ -25,18 +27,19 @@ trait Playlist
 
     private function addPlaylistData()
     {
-        $hide = 0;
+        $hide      = 0;
         $search_id = null;
 
-        $name = 'User Playlist';
-        $studio = [];
+        $name      = 'User Playlist';
+        $studio    = [];
+        $pl_search = null;
 
         if (\array_key_exists('substudio', $this->postArray)) {
-            $name = '';
+            $name     = '';
             $studio[] = $this->postArray['substudio'];
         }
         if (\array_key_exists('studio', $this->postArray)) {
-            $name = '';
+            $name     = '';
             $studio[] = $this->postArray['studio'];
         }
 
@@ -76,10 +79,10 @@ trait Playlist
 
         if (null === $pl_search) {
             $playlist_id = PlaylistDB::createPlaylist(
-                    $name.implode(' ', $studio),
-                    "MMF",
-                    $search_id,
-                    $hide);
+                $name.implode(' ', $studio),
+                'MMF',
+                $search_id,
+                $hide);
         }
         utmdump([__METHOD__, $playlist_id]);
 
@@ -89,10 +92,9 @@ trait Playlist
     public function deletePlaylist()
     {
         utmdump([__METHOD__, $this->postArray]);
-       $playlist_id = $this->postArray['playlist_id'];
-       PlaylistDB::deletePlaylist($playlist_id);
+        $playlist_id = $this->postArray['playlist_id'];
+        PlaylistDB::deletePlaylist($playlist_id);
         $this->myHeader(__URL_HOME__.'/playlist.php');
-
     }
 
     public function createPlaylist()
@@ -128,12 +130,12 @@ trait Playlist
                 return __URL_HOME__.'/video.php?id='.$id.'&playlist_id='.$playlist_id.'';
             }
             if ('grid' == $this->postArray['VideoPlayer']) {
-                $videoInfo = (new VideoDb())->getVideoDetails($this->postArray['Video_ID']);
+                $videoInfo              = (new VideoDb())->getVideoDetails($this->postArray['Video_ID']);
                 $videoInfo[0]['rownum'] = $this->postArray['currentId'];
 
-                $grid = (new VideoDisplay('Grid'))->init();
+                $grid               = (new VideoDisplay('Grid'))->init();
                 $grid->totalRecords = $this->postArray['total'];
-                $html = $grid->videoCell($videoInfo[0]);
+                $html               = $grid->videoCell($videoInfo[0]);
                 utmdump($videoInfo[0]);
 
                 return $html;
@@ -142,7 +144,6 @@ trait Playlist
 
         return __URL_HOME__.'/playlist.php?playlist_id='.$playlist_id.'';
     }
-
 
     public function savePlaylist()
     {
@@ -162,12 +163,12 @@ trait Playlist
         }
 
         if (isset($update)) {
-          PlaylistDB::updatePlaylist($this->playlist_id,$update);
+            PlaylistDB::updatePlaylist($this->playlist_id, $update);
         }
 
         if (isset($this->postArray['prune_playlist'])) {
             $video_ids = $this->postArray['prune_playlist'];
-           PlaylistDB::removeVideo($this->playlist_id,$video_ids);
+            PlaylistDB::removeVideo($this->playlist_id, $video_ids);
         }
 
         $form_url = __URL_HOME__.'/playlist.php?playlist_id='.$this->playlist_id.'';

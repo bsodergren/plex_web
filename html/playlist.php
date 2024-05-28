@@ -14,6 +14,7 @@ use Plex\Template\Render;
  */
 
 require_once '_config.inc.php';
+$playlist_id = null;
 
 $Playlist = (new VideoDisplay('Playlist'))->init();
 

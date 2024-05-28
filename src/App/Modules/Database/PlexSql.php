@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Database;
 
@@ -13,8 +16,8 @@ class PlexSql extends \MysqliDb
     public $limit = false;
     public $db;
 
-    public $offset = false;
-    public $where = '';
+    public $offset  = false;
+    public $where   = '';
     public $groupBy = '';
     public $orderBy = '';
     public $_tableName;
@@ -45,7 +48,7 @@ class PlexSql extends \MysqliDb
             $field = $url_array['sortDefault'];
         }
         $tag_string = implode(',', Request::$tag_types);
-        $f = explode('.', $field);
+        $f          = explode('.', $field);
         if (str_contains($tag_string, $f[1])) {
             if ('All' == $key) {
                 return null;
@@ -69,7 +72,7 @@ class PlexSql extends \MysqliDb
     public static function getFilterList($field)
     {
         $tag_array = ['studio', 'substudio', 'genre', 'artist'];
-        $query = [];
+        $query     = [];
         foreach ($tag_array as $tag) {
             if ($tag == $field) {
                 continue;
@@ -132,7 +135,7 @@ class PlexSql extends \MysqliDb
     {
         global $_SESSION;
         if ('All' != $_SESSION['library']) {
-            return ' '.$useAnd.' '.$prefix."library = '".$_SESSION['library']."'  ";
+            return ' '.$useAnd.' '.$prefix."Library = '".$_SESSION['library']."'  ";
         }
 
         return null;
@@ -176,7 +179,7 @@ class PlexSql extends \MysqliDb
         foreach ($res as $k => $v) {
             $array[] = $v['artist'];
         }
-        $namesStr = implode(',', $array);
+        $namesStr   = implode(',', $array);
         $namesArray = explode(',', $namesStr);
         $namesArray = array_unique($namesArray);
         sort($namesArray);

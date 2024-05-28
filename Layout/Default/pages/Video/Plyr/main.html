@@ -36,7 +36,11 @@
                 {{function=videoAddToPlaylist|id={$VideoId},pl_id={$PLAYLIST_ID},close=0}}
             </div>
             <div class="col-auto me-auto">{$FAVORITE}</div>
-            <div class="col-auto position-absolute top-0 start-100 translate-middle">
+        </div>
+
+        <div class="container row">
+            <div class="col-auto ">
+                {{template=pages/Video/Plyr/container/info}}
             </div>
         </div>
 

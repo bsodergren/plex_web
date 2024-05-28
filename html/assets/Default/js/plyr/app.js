@@ -1,3 +1,13 @@
+var curVolume = getCookie('playerVolCookie')
+if(curVolume == null)
+    {
+        curVolume = .5
+    } else {
+        curVolume = curVolume / 100;
+    }
+console.log("current volume " + curVolume);
+
+
 const PlayerApp = {
     playlist: null,
     playerContainer: null,
@@ -124,6 +134,7 @@ const PlayerApp = {
       </div>
     `;
 
+
         /**
          * Initializes the playlist items by extracting data from the DOM.
          */
@@ -148,7 +159,7 @@ const PlayerApp = {
             // },
             autoplay: false,
             seekTime: 30,
-            volume: 1,
+            volume: curVolume,
             clickToPlay: true,
             hideControlsOnPause: false,
             hideControls: true,
@@ -291,8 +302,8 @@ const PlayerApp = {
         this.player.on("controlsshown", () => {
             //this.player.play();
             if (playlerText != null) {
-                playlistIcon.classList.remove("hidden");
-                playlerText.classList.remove("hidden");
+                // playlistIcon.classList.remove("hidden");
+                // playlerText.classList.remove("hidden");
             }
         });
 
@@ -371,7 +382,7 @@ const PlayerApp = {
         this.player.on("controlsshown", () => {
             //this.player.play();
             if (playlerText != null) {
-                playlerText.classList.remove("hidden");
+              //  playlerText.classList.remove("hidden");
             }
         });
 
@@ -438,7 +449,7 @@ const PlayerApp = {
         // Get the text-title span element
 
         setInfoText("text", item);
-        // setInfoText("video", item)
+         setInfoText("video", item)
 
         updateOptions(item.getAttribute("data-videoid"));
         this.player.source = {
@@ -448,8 +459,18 @@ const PlayerApp = {
             poster: track.poster,
         };
         var isPlaying = this.player.play();
+
+        var playerControl = document.querySelector(
+            ".plyr__volume"
+        );
+       var inputNode = playerControl.children[0]
+    //    console.log(inputNode.attributes)//,
+    setCookie('playerVolCookie',inputNode.getAttribute("aria-valuenow"),7);
+    //    console.log(inputNode.getAttribute("aria-valuenow"))
+
+
         // console.log(track.width , track.height)
-        resizeWindow(true,track.width , track.height)
+        // resizeWindow(true,track.width , track.height)
         // resize();
         updateFavVideo(item.getAttribute("data-videoid"));
     },
@@ -817,6 +838,7 @@ function updateOptions(id) {
 }
 
 function setInfoText(className, item) {
+    // console.log("setInfoText" , className, item.getAttribute("data-title"))
     var TitleId = "." + className + "_title";
     const textTitle = document.querySelector(TitleId);
     if (textTitle != null) {
@@ -862,4 +884,26 @@ function setInfoText(className, item) {
             "videoCard(" + textvideoid.value + ")"
         );
     }
+}
+
+
+
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
 }

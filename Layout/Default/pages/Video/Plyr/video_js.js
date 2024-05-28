@@ -67,7 +67,7 @@ function resizeWindow(large,width=1280,height=720)
     videoHeight = height
 
     text= "Origintal Video W:"+videoWidth + " H:" + videoHeight;
-    console.log(text)
+    // console.log(text)
 
     ratio = calculateAspectRatio(videoWidth, videoHeight)
 
@@ -82,15 +82,15 @@ function resizeWindow(large,width=1280,height=720)
   videoHeight = calculateApectHeight(videoWidth, ratio);
 
     text= "Video to W:"+videoWidth + " H:" + videoHeight + " Ratio:" +  ratio ;
-    console.log(text)
+    // console.log(text)
     heightMulti = .9
      if(large == true) {
-       //  heightMulti = heightMulti - .13
+        // heightMulti = heightMulti + .13
      }
         windowHeight = videoHeight * heightMulti
 
     text= "Resising Window to W:"+windowWidth + " H:" + windowHeight + ", x"+heightMulti+" Playlist:"+large;
-    console.log(text)
+    // console.log(text)
 
      window.resizeTo(windowWidth, windowHeight)
 }

@@ -1,52 +1,50 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Template\Functions\Traits;
 
-use Plex\Template\Render;
 use Plex\Modules\Database\PlexSql;
+use Plex\Template\Render;
 
 trait TagCloud
 {
-
-
-    private  function getKeywordSQL($table,$field,$where = '')
+    private function getKeywordSQL($table, $field, $where = '')
     {
+        $sql = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field;
+        $sql .= ", ',', n.digit+1), ',', -1) val FROM ".$table;
+        $sql .= ' INNER JOIN (SELECT 0 digit UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n';
+        $sql .= ' ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit '.$where.' ORDER BY `val` ASC';
+        utmdump($sql);
 
-
-       $sql = 'SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX('.$field;
-       $sql .= ", ',', n.digit+1), ',', -1) val FROM ".$table;
-       $sql .= ' INNER JOIN (SELECT 0 digit UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n';
-       $sql .= ' ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit '.$where.' ORDER BY `val` ASC';
-                 return $sql;
+        return $sql;
     }
-    private  function getKeywordList($field = 'keyword')
+
+    private function getKeywordList($field = 'keyword')
     {
-         $db = PlexSql::$DB;
-        $where = PlexSql::getLibrary();
-        $where = str_replace('AND', 'WHERE', $where);
-        $where = str_replace('m.Library', 'Library', $where);
-        $sql_meta =$this->getKeywordSQL(Db_TABLE_VIDEO_METADATA,$field,$where);
-        $sql_custom = $this->getKeywordSQL(Db_TABLE_VIDEO_CUSTOM,$field);
+        $db         = PlexSql::$DB;
+        $where      = PlexSql::getLibrary();
+        $where      = str_replace('AND', 'WHERE', $where);
+        $where      = str_replace('m.Library', 'Library', $where);
+        $sql_meta   =$this->getKeywordSQL(Db_TABLE_VIDEO_METADATA, $field, $where);
+        $sql_custom = $this->getKeywordSQL(Db_TABLE_VIDEO_CUSTOM, $field);
 
         // $sql = "SELECT DISTINCT m.genre,c.genre FROM '.Db_TABLE_VIDEO_CUSTOM.' c, '.Db_TABLE_VIDEO_METADATA.' m WHERE (m.genre is not null and c.genre is not null) and  m.Library = 'Studios'";
-        $qlist_meta = $db->query($sql_meta);
+        $qlist_meta   = $db->query($sql_meta);
         $qlist_custom = $db->query($sql_custom);
-        if($qlist_meta[0]['val'] == ""){
+        if ('' == $qlist_meta[0]['val']) {
             unset($qlist_meta[0]);
         }
         $arr = array_merge($qlist_custom, $qlist_meta);
-        return $arr;
 
+        return $arr;
     }
 
     public function tagCloud($matches)
     {
-
-        $var = $this->parseVars($matches);
+        $var   = $this->parseVars($matches);
         $field = $var['field'];
-
-
-
 
         // foreach ($qlist as $k => $val) {
         //     $tagArray[] = $val['genre'];
@@ -116,7 +114,7 @@ trait TagCloud
             //     ]
             // );
         }
-        $max = 10;
+        $max               = 10;
         $keyword_box_class = '<div class="">';
         foreach ($keyword_array as $letter => $keywordArray) {
             $index = 0;
@@ -127,14 +125,14 @@ trait TagCloud
             foreach ($keywordArray as $k => $keyword) {
                 if ($max <= $index) {
                     $link_array[] = '</div>'.$keyword_box_class;
-                    $index = 0;
+                    $index        = 0;
                 }
                 ++$index;
                 $link_array[] = Render::html(
                     'pages/Tags/tag',
                     [
-                        'KEY' => $field,
-                        'QUERY' => urlencode($keyword),
+                        'KEY'      => $field,
+                        'QUERY'    => urlencode($keyword),
                         'URL_TEXT' => $keyword,
                         // 'CLASS'    => ' badge fs-6 blueTable-thead ',
                     ]

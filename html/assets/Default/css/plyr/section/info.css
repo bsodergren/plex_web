@@ -40,7 +40,9 @@
     -moz-backface-visibility: hidden;
     -webkit-transform: translate3d(0, 0, 0);
     -moz-transform: translate3d(0, 0, 0);
-    position: relative;
+    /* position: relative; */
+    /* top: 6px; */
+    /* left: 10px; */
     padding: 0;
     margin: 0;
 }
@@ -51,9 +53,8 @@
     border-radius: 15px;
     text-decoration: none;
     display: block;
-    /* position: absolute;
-    top: 6px;
-    left: 10px; */
+    /* position: absolute; */
+
     z-index: 99;
     font-size: 24px;
     padding: 10px;
