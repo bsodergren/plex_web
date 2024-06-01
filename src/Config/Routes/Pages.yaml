@@ -26,7 +26,7 @@ list:
     PAGE_TITLE: "List view"
     SHOW_SORT: true
     SHOW_PAGES: true
-    ALPHA_SORT: true
+    ALPHA_SORT: false
     USE_FILTER: false
     SHOW_RATING: true
 

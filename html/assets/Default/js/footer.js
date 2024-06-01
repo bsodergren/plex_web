@@ -199,3 +199,24 @@ $editMetadata.on("edit", function () {
 });
 
 metaEditor();
+
+
+
+function getNextVideo(videoid)
+{
+    $.ajax({
+        url: "process.php",
+        type: "POST",
+        data: {
+            submit: "nextVideoCard",
+            videoid: videoid
+
+        },
+        cache: false,
+        success: function (data) {
+             console.log(data)
+              window.location.href = data;
+
+        },
+    });
+}

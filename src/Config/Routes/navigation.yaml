@@ -48,12 +48,12 @@ list:
     url: list.php
     text: !php/const NavBar_Text_List
     icon: fa-list
-    studio: true
+    studio: false
 grid:
     url: grid.php
     text: !php/const NavBar_Text_Grid
     icon: fa-th
-    studio: true
+    studio: false
 # folder:
 #     url: file.php
 #     text: !php/const NavBar_Text_Filebrowser

@@ -1,8 +1,11 @@
-<div class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary" style="max-width: 230px">
+<div class="col bg-primary bg-gradient fs-5 fw-bold text-bg-primary" style="max-width: 270px">
     <form id="videoRefreshOrDelete" onsubmit="return false;">
         {$DELETE_ID}
         <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
-            <button type="button" class="btn text-bg-primary" id="RefreshBtn" data-bs-toggle="modal" data-bs-target="#exampleModal2" onclick="clickButton(this,false);" name="submit" value="update_file">{L VideoCard_Refresh_Btn}</button>
+            <button class="btn text-bg-info" onclick="getNextVideo({$FILE_ID});" type="button">next</button>
+
+            <button type="button" class="btn text-bg-primary" id="RefreshBtn"
+            data-bs-toggle="modal" data-bs-target="#exampleModal2" onclick="clickButton(this,false);" name="submit" value="update_file">{L VideoCard_Refresh_Btn}</button>
             <button type="button" class="btn text-bg-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">{L VideoCard_Delete_Btn}</button>
         </div>
     </form>

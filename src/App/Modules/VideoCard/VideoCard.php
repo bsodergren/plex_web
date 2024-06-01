@@ -93,7 +93,8 @@ class VideoCard
             $this->params['RATING_WIDTH'] = 320;
             $this->params['DELETE_BUTTONS'] = Render::html(
                 $this->template_base.'/deletebuttons',
-                ['DELETE_ID' => Elements::add_hidden('id', $row_id, 'id="DorRvideoId"')]);
+                ['DELETE_ID' => Elements::add_hidden('id', $row_id, 'id="DorRvideoId"'),
+            'FILE_ID' => $row_id]);
         }
 
         $fileArray = [

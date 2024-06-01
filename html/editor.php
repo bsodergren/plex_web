@@ -7,9 +7,10 @@ require_once '_config.inc.php';
 // configuration
 $url  = __URL_HOME__.'/editor.php';
 $file = '/home/bjorn/scripts/Mediatag/config/data/map/Words.txt';
-
 // check if form has been submitted
 if (isset($_POST['text'])) {
+    $text =  '';
+
     $textArray = array_reverse($_POST['text']);
     foreach ($textArray as $key => $value) {
         $value = preg_replace("/[\r ]/", '', $value);
@@ -26,6 +27,10 @@ if (isset($_POST['text'])) {
 }
 
 $rows = 10;
+$stylesheet =  '';
+$textBlocks =  '';
+$TextRow =  '';
+
 // read the textfile
 $text       = file_get_contents($file);
 $textArray  = explode(\PHP_EOL, $text);
