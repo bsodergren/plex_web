@@ -5,13 +5,11 @@
 
 namespace Plex\Modules\Process;
 
-
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Database\VideoDb;
 use Plex\Modules\Process\Traits\DbWrapper;
 use Plex\Modules\Process\Traits\ExportSQL;
 use Plex\Modules\Process\Traits\Favorites;
-use Plex\Modules\Process\Traits\Mediatag;
 use Plex\Modules\Process\Traits\Playlist;
 use Plex\Modules\Process\Traits\VideoPlayer;
 use Plex\Template\Functions\Functions;
@@ -39,16 +37,13 @@ class Forms
     public object $db;
     public object $playlist;
     public static $registeredCallbacks = false;
-    private $registered_callbacks = false;
-
+    private $registered_callbacks      = false;
 
     public function __construct($postArray)
     {
-
         if (true == self::$registeredCallbacks) {
             $this->registerCallback(self::$registeredCallbacks);
         }
-
 
         $this->db        = PlexSql::$DB;
         $this->postArray = $postArray;
@@ -68,7 +63,6 @@ class Forms
         $this->library = $_SESSION['library'];
     }
 
-
     public function registerCallback($constant, $function = '')
     {
         if (\is_array($constant)) {
@@ -82,10 +76,8 @@ class Forms
         }
     }
 
-
     public function process()
     {
-
         // foreach ($this->registered_callbacks as $pattern => $function) {
         //     if (!str_contains($pattern, '::')) {
         //         $pattern = 'self::'.$pattern;
@@ -98,8 +90,7 @@ class Forms
         //     }
         // }
 
-
-           $redirect           = false;
+        $redirect           = false;
         $this->VideoInfo    = new Info($this->postArray);
         $this->VideoChapter = new Chapter($this->postArray);
         if (isset($this->postArray['submit'])) {
@@ -112,7 +103,6 @@ class Forms
             }
             $redirect = true;
         }
-
 
         if (isset($this->postArray['action'])) {
             $method = $this->postArray['action'];
@@ -133,8 +123,8 @@ class Forms
         }
 
         if (isset($this->postArray['exit'])) {
-            if($this->postArray['exit'] == "true"){
-               exit;
+            if ('true' == $this->postArray['exit']) {
+                exit;
             }
         }
 
@@ -153,7 +143,7 @@ class Forms
 
     public function rating()
     {
-        utmdump([__METHOD__,"fasd"]);
+        utmdump([__METHOD__, 'fasd']);
         [$_,$videoId] = explode('_', $this->postArray['id']);
         $rating       = $this->postArray['rating'];
         $this->VideoInfo->updateRating($videoId, $rating);

@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Process;
 
@@ -13,9 +16,9 @@ use UTMTemplate\Template;
 class Mediatag
 {
     use mediadb;
+    use mediadownload;
     use mediaupdate;
     use playlist;
-    use mediadownload;
 
     public $fileList = [];
     public $path;
@@ -49,11 +52,10 @@ class Mediatag
     public function runCmd($command, $callback)
     {
         $callbackCmd = Callback::check([$this, $callback]);
-        $process = new Process($command);
-echo $process->getCommandLine();
+        $process     = new Process($command);
+        echo $process->getCommandLine();
+        // dd($process->getCommandLine());
         if (true === $this->test) {
-
-
             return null;
         }
         $process->setTimeout(60000);
@@ -61,8 +63,8 @@ echo $process->getCommandLine();
         $process->wait($callbackCmd);
     }
 
-
-    public function downloadOutput($type, $buffer){
+    public function downloadOutput($type, $buffer)
+    {
         $buffer = str_replace("\n", '', $buffer);
 
         utmdump($buffer);
@@ -79,11 +81,10 @@ echo $process->getCommandLine();
         $buffer = str_replace("\n", '', $buffer);
         $buffer = str_replace("\r", '', $buffer);
 
-            utmdump($buffer);
+        utmdump($buffer);
 
         switch ($buffer) {
             case str_contains($buffer, '[download]'):
-
                 if (str_contains($buffer, 'Destination')) {
                     preg_match('/Destination:\s+(.*.mp4)/', $buffer, $destArray);
                     $this->p->setProgressBarHeader($destArray[1]);
@@ -95,7 +96,7 @@ echo $process->getCommandLine();
                 //                echo Template::put($output_array[0]);
                 break;
             default:
-            $this->p->setProgressBarHeader($buffer);
+                $this->p->setProgressBarHeader($buffer);
 
                 break;
         }

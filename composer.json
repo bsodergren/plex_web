@@ -62,8 +62,8 @@
     "ifsnop/mysqldump-php": "^2.12",
     "spatie/db-dumper": "^3.6",
     "druidfi/mysqldump-php": "^1.1",
-    "bsodergren/utm": "dev-master",
-    "bsodergren/utmtemplate": "dev-master"
+    "bsodergren/utm": "dev-main",
+    "bsodergren/utmtemplate": "dev-main"
 
     },
   "require-dev": {

@@ -32,19 +32,19 @@ $textArray  = explode(\PHP_EOL, $text);
 $textPcs    = array_chunk($textArray, $rows);
 $textPcs    = array_reverse($textPcs);
 $col        = 0;
-$javascript = Render::javascript('editor/form_func', []);
+$javascript = Render::javascript('pages/editor/form_func', []);
 foreach ($textPcs as $id => $wordArray) {
     ++$col;
     $mouseover = '';
     $lineNo    = '<div id="line-numbers"><p></p></div>';
     if (0 == $id) {
-        $javascript .= Render::javascript('editor/form', ['id' => $id]);
+        $javascript .= Render::javascript('pages/editor/form', ['id' => $id]);
         $mouseover = ' onmousemove="lineNumbers_'.$id.'()"';
         $lineNo    = '<div id="line-numbers-'.$id.'"><p>1</p></div>';
     }
-    $stylesheet .= Render::stylesheet('editor/form', ['id' => $id]);
+    $stylesheet .= Render::stylesheet('pages/editor/form', ['id' => $id]);
 
-    $textBlocks .= Render::html('editor/textblock',
+    $textBlocks .= Render::html('pages/editor/textblock',
         ['WordWrapPart' => 'text[]',
             'MouseOver' => $mouseover,
             'LineNo'    => $lineNo,
@@ -54,7 +54,7 @@ foreach ($textPcs as $id => $wordArray) {
         ]);
 
     if (5 == $col) {
-        $TextRow .= Render::html('editor/row',
+        $TextRow .= Render::html('pages/editor/row',
             ['TextRow' => $textBlocks,
             ]);
         $textBlocks = '';
@@ -63,10 +63,10 @@ foreach ($textPcs as $id => $wordArray) {
 
     //   break;
 }
-$TextRow .= Render::html('editor/row',
+$TextRow .= Render::html('pages/editor/row',
     ['TextRow' => $textBlocks,
     ]);
-$html = Render::html('editor/main', ['TextBlocks' => $TextRow,
+$html = Render::html('pages/editor/main', ['TextBlocks' => $TextRow,
     'Javascript'                                  => $javascript,
     'Stylesheet'                                  => $stylesheet,
     'FormAction'                                  => $url]);

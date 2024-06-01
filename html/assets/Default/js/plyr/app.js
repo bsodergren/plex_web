@@ -42,6 +42,7 @@ const PlayerApp = {
             const leftColumn = document.querySelector(".col-sm-12.left");
             leftColumn.classList.toggle("expanded");
         }
+        this.initialiseChapter();
     },
 
     /**
@@ -339,7 +340,11 @@ const PlayerApp = {
         });
 
         const parentElement = document.querySelector(".player_container");
+
+
         parentElement.addEventListener("click", (event) => {
+            console.log(event)
+
             if (event.target.matches('button[data-plyr="next"]')) {
                 this.playVisibleItem("next");
             }
@@ -411,7 +416,10 @@ const PlayerApp = {
 
 
         const parentElement = document.querySelector(".player_container");
+
+
         parentElement.addEventListener("click", (event) => {
+
             if (event.target.matches('button[data-plyr="next"]')) {
                 this.playNewVideo(
                     playlerText.getAttribute("data-videoid"));
@@ -723,6 +731,19 @@ const PlayerApp = {
         }
     },
 
+    initialiseChapter(){
+        var playlerText = document.querySelector(
+            ".player_container .player_text"
+        );
+        const parentElement = document.querySelector(".player_container");
+
+        parentElement.addEventListener("contextmenu", (event) => {
+            event.preventDefault();
+            var timeCode = event.target.getAttribute("aria-valuenow")
+            var videoid =  playlerText.getAttribute("data-videoid")
+            console.log("line 744", timeCode,videoid)
+        });
+    },
     /**
      * Initializes the SimpleBar for the playlist.
      */
@@ -761,6 +782,8 @@ const PlayerApp = {
 
 document.addEventListener("DOMContentLoaded", () => {
     PlayerApp.initialize();
+
+
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0;
     // factory(window.jQuery);
@@ -886,6 +909,10 @@ function setInfoText(className, item) {
     }
 }
 
+function seektoTime(timeCode)
+{
+    PlayerApp.player.currentTime = timeCode
+}
 
 
 function setCookie(name,value,days) {

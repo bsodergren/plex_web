@@ -14,7 +14,7 @@ trait mediadb
 
     public function updateDbInfo()
     {
-        $cmd = [$this->mediadb, '-q', '--path', $this->path, '-tDPi'];
+        $cmd = [$this->mediadb, '-q', '--path', $this->path, '-tDi'];
         $this->runCmd($cmd, 'ProcessOutput');
     }
 
