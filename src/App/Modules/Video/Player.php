@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Video;
 
@@ -10,15 +13,17 @@ use Plex\Modules\Playlist\Playlist;
 use Plex\Modules\Video\Player\Plyr;
 use Plex\Modules\Video\Playlist\Favorites;
 use Plex\Modules\Video\Playlist\PlyrList;
-use Plex\Template\Functions\Functions;
+use Plex\Modules\Chapter\Chapter;
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
+use Plex\Modules\VideoCard\VideoCard;
+
 
 class Player
 {
     public $id;
     public $db;
-
+    public object $Chapters;
     public $playlist_id;
     public $params;
 
@@ -35,45 +40,45 @@ class Player
     public static $PlayerTemplate = 'pages/Video/Plyr';
 
     public $options = [
-        'usePlyr' => true,
-        'useCanvas' => false,
-        'useCarousel' => false,
+        'usePlyr'         => true,
+        'useCanvas'       => false,
+        'useCarousel'     => false,
         'usePlyrPlaylist' => true,
-        'useVideoJs' => false,
+        'useVideoJs'      => false,
     ];
 
     private $VideoParams = [
-        'title' => 'PAGE_TITLE',
+        'title'     => 'PAGE_TITLE',
         'thumbnail' => 'thumbnail',
 
-        'studio' => 'Video_studio',
+        'studio'    => 'Video_studio',
         'substudio' => 'Video_substudio',
 
-        'genre' => 'Video_Genre',
-        'artist' => 'Video_Artist',
-        'rating' => 'STAR_RATING',
-        'video_file' => 'VIDEO_URL',
+        'genre'       => 'Video_Genre',
+        'artist'      => 'Video_Artist',
+        'rating'      => 'STAR_RATING',
+        'video_file'  => 'VIDEO_URL',
         'video_title' => 'active_title',
-        'id' => 'Videoid',
-        'height' => 'height',
+        'id'          => 'Videoid',
+        'height'      => 'height',
     ];
 
     private $VideoJsParams = [
-        'width' => 'width',
+        'width'  => 'width',
         'height' => 'height',
     ];
 
     public function __construct()
     {
         self::$PlayerTemplate = $this->VideoTemplate;
-        $this->db = PlexSql::$DB;
+        $this->db             = PlexSql::$DB;
 
         if (\array_key_exists('favorites', $_REQUEST)) {
             // if (!is_object($this->favorites))
             // {
-                $this->showFavorites = true;
-                $this->favoriteList();
-            // }
+            $this->showFavorites = true;
+            $this->favoriteList();
+        // }
         } else {
             $this->getPlaylist();
         }
@@ -82,9 +87,9 @@ class Player
     private function parseParams($row)
     {
         foreach ($row as $field => $value) {
-            if (array_key_exists($field, $this->VideoParams)) {
-                if($field == 'thumbnail'){
-                    $value = __URL_HOME__ . $value;
+            if (\array_key_exists($field, $this->VideoParams)) {
+                if ('thumbnail' == $field) {
+                    $value = __URL_HOME__.$value;
                 }
                 $this->params[$this->VideoParams[$field]] = $value;
             }
@@ -100,10 +105,10 @@ class Player
         $this->VideoDetails();
 
         if (\is_object($this->favorites)) {
-            $this->params = array_merge($this->params, $this->favorites->params);
+            $this->params    = array_merge($this->params, $this->favorites->params);
             $this->js_params = array_merge($this->js_params, $this->favorites->js_params);
         } elseif (null !== $this->playlistObj) {
-            $this->params = array_merge($this->params, $this->playlistObj->params);
+            $this->params    = array_merge($this->params, $this->playlistObj->params);
             $this->js_params = array_merge($this->js_params, $this->playlistObj->js_params);
         }
         $this->getVideo();
@@ -136,6 +141,7 @@ class Player
     public function getVideo()
     {
         $this->params['Videoid'] = $this->id;
+
         // if (null === $this->playlist_id) {
         //     $this->params['hasPlaylist'] = false;
         // } else {
@@ -154,8 +160,8 @@ class Player
 
     public function VideoDetails()
     {
-        $res = (new VideoDb())->getVideoDetails($this->videoId());
-        $result = $res[0];
+        $res          = (new VideoDb())->getVideoDetails($this->videoId());
+        $result       = $res[0];
         $active_title = null;
         if (null === $active_title) {
             $result['active_title'] = $result['filename'];
@@ -169,15 +175,20 @@ class Player
 
         $result['video_file'] = $this->getVideoURL($result['id']);
         $this->parseParams($result);
+        $this->Chapters = new Chapter(['id' => $this->id]);
+
 
         // $this->params['PAGE_TITLE'] = $result['title'];
         // $this->params['thumbnail'] = APP_HOME.$result['thumbnail'];
 
-        if (true == FavoriteDB::get($this->id)) {
-            $this->params['FAVORITE'] = FavoriteDisplay::RemoveFavoriteVideo();
+        if (true === FavoriteDB::get($this->id)) {
+            $this->params['FAVORITE'] = FavoriteDisplay::RemoveFavoriteVideo($this->id);
         } else {
-            $this->params['FAVORITE'] = FavoriteDisplay::addFavoriteVideo();
+            $this->params['FAVORITE'] = FavoriteDisplay::addFavoriteVideo($this->id);
         }
+
+        $Chapters = $this->Chapters->getChapterButtons();
+        $this->params['ChapterButtons'] =         $Chapters;
 
         // $this->params['Video_studio'] = $result['studio'];
         // $this->params['Video_substudio'] = $result['substudio'];
@@ -187,9 +198,9 @@ class Player
         // $this->params['VIDEO_URL'] = $video_file;
         // $this->params['height'] = $result['height'];
         // $this->params['VIDEO_TITLE'] = $active_title;
-        // $this->params['Videoid'] = $result['id'];
+        $this->params['Videoid']   = $result['id'];
         $this->js_params['height'] = $result['height'];
-        $this->js_params['width'] = $result['width'];
+        $this->js_params['width']  = $result['width'];
     }
 
     public function videoId()
@@ -220,10 +231,9 @@ class Player
         if (null === $this->playlist_id) {
             $this->playlistObj = null;
         } else {
-            $this->id = $this->playlistObj->id;
+            $this->id                       = $this->playlistObj->id;
             $this->playlistObj->playlist_id = $this->playlist_id;
             $this->playlistObj->getPlaylist();
         }
     }
-
 }

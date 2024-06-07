@@ -203,9 +203,10 @@ class Forms
         exit;
     }
 
-    public function addChapterVideo()
+    public function addChapter()
     {
         $url = $this->VideoChapter->addChapterVideo();
+
         echo $url;
         //  echo $this->myHeader($url);
         exit;

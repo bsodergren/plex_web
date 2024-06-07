@@ -5,7 +5,7 @@ namespace Plex\Modules\Process;
 use Plex\Modules\Process\Traits\DbWrapper;
 use Plex\Modules\Database\PlexSql;
 
-class Chapter
+class Chapter extends Forms
 {
     public object $db;
 
@@ -36,14 +36,17 @@ class Chapter
             'video_id' => $this->data['videoId'],
             'name' => $this->data['name'],
         ];
-        $res = $this->insert(Db_TABLE_VIDEO_CHAPTER, $data);
+        $res = $this->db->insert(Db_TABLE_VIDEO_CHAPTER, $data);
         $urlQuery = '?id='.$this->data['videoId'];
+
         if (\array_key_exists('playlistid', $this->data)) {
             $urlQuery .= '&playlist_id='.$this->data['playlistid'];
         }
-
-        return $this->data['timeCode'];
-        // return __URL_HOME__.'/video.php'.$urlQuery;
+        //return $this->data['timeCode'];
+        $url =  __URL_HOME__.'/video.php'.$urlQuery;
+       // utmdd($url);
+        echo $this->myHeader($url);
+        exit;
     }
 
     public function updateChapter()
@@ -61,7 +64,7 @@ class Chapter
             }
         }
         $sql = 'UPDATE '.Db_TABLE_VIDEO_CHAPTER." SET name = '".$name."' WHERE video_id = ".$videoId.' and timeCode = '.$timeCode.'';
-        $this->query($sql);
+        $this->db->query($sql);
     }
 
 }

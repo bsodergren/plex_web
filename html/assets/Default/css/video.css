@@ -47,7 +47,6 @@ button:hover::before {
     display: none;
 }
 
-
 svg {
     width: 28px;
     height: 28px;
@@ -56,14 +55,14 @@ svg {
     cursor: pointer;
 }
 
-/* 
+/*
     .overlayText {
         position: absolute;
         bottom: 00;
         left: 20%;
         z-index: 1;
     } */
-/* 
+/*
     .title-text {
         color: #fff;
         font-size: 18px;
@@ -92,8 +91,7 @@ svg {
     transition: all 0.3s ease;
 }
 
-.canvas-btn-desc
-{
+.canvas-btn-desc {
     -ms-transform: rotate(270deg);
     /* IE 9 */
     -webkit-transform: rotate(270deg);
@@ -112,4 +110,3 @@ svg {
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
-

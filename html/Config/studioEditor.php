@@ -8,10 +8,10 @@ use UTMTemplate\HTML\Elements;
 
 require_once '../_config.inc.php';
 
-$pageObj = new ConfigPagenate("library = 'Studios'", $currentPage, $urlPattern);
+$pageObj = new ConfigPagenate("Library = '".$_SESSION['library']."'", $currentPage, $urlPattern);
 
 $sql = 'SELECT * FROM '.Db_TABLE_STUDIOS."
- WHERE Library = 'Studios' ORDER BY studio,path,name";
+ WHERE Library = '".$_SESSION['library']."' ORDER BY studio,path,name";
 
 $limit  = $pageObj->itemsPerPage;
 $offset = $pageObj->offset;
@@ -31,7 +31,8 @@ Layout::Header();
 
 ?>
 
-<main role="main" class="container">
+<!-- <main role="main" class="container"> -->
+<main class="container-fluid container-sidenav" >
 	<a
 		href="<?php echo '../'.__THIS_FILE__; ?>">back</a>
 	<br>

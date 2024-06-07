@@ -1,12 +1,10 @@
-var curVolume = getCookie('playerVolCookie')
-if(curVolume == null)
-    {
-        curVolume = .5
-    } else {
-        curVolume = curVolume / 100;
-    }
+var curVolume = getCookie("playerVolCookie");
+if (curVolume == null) {
+    curVolume = 0.5;
+} else {
+    curVolume = curVolume / 100;
+}
 console.log("current volume " + curVolume);
-
 
 const PlayerApp = {
     playlist: null,
@@ -36,13 +34,13 @@ const PlayerApp = {
             this.playVisibleItem();
             this.initialiseSimpleBar();
             this.selectFirstVisibleItem();
+            this.initialiseChapter();
         } else {
             this.initializePlayerEventListeners();
-
+            this.initialiseChapter();
             const leftColumn = document.querySelector(".col-sm-12.left");
             leftColumn.classList.toggle("expanded");
         }
-        this.initialiseChapter();
     },
 
     /**
@@ -135,14 +133,13 @@ const PlayerApp = {
       </div>
     `;
 
-
         /**
          * Initializes the playlist items by extracting data from the DOM.
          */
         this.player = new Plyr(".js-playerx", {
             // Plyr options
             controls: controls,
-            ratio: '16:9',
+            ratio: "16:9",
             // iconUrl: "https://cdn.plyr.io/3.7.8/plyr.svg",
             blankVideo: "https://cdn.plyr.io/static/blank.mp4",
             loadSprite: true,
@@ -341,9 +338,8 @@ const PlayerApp = {
 
         const parentElement = document.querySelector(".player_container");
 
-
         parentElement.addEventListener("click", (event) => {
-            console.log(event)
+            console.log(event);
 
             if (event.target.matches('button[data-plyr="next"]')) {
                 this.playVisibleItem("next");
@@ -387,7 +383,7 @@ const PlayerApp = {
         this.player.on("controlsshown", () => {
             //this.player.play();
             if (playlerText != null) {
-              //  playlerText.classList.remove("hidden");
+                //  playlerText.classList.remove("hidden");
             }
         });
 
@@ -409,20 +405,15 @@ const PlayerApp = {
                 .classList.remove("loading");
         });
         this.player.on("ended", () => {
-            this.playNewVideo(
-                playlerText.getAttribute("data-videoid"));
+            this.playNewVideo(playlerText.getAttribute("data-videoid"));
             resize();
         });
 
-
         const parentElement = document.querySelector(".player_container");
 
-
         parentElement.addEventListener("click", (event) => {
-
             if (event.target.matches('button[data-plyr="next"]')) {
-                this.playNewVideo(
-                    playlerText.getAttribute("data-videoid"));
+                this.playNewVideo(playlerText.getAttribute("data-videoid"));
             }
 
             if (event.target.matches('button[data-plyr="prev"]')) {
@@ -433,10 +424,8 @@ const PlayerApp = {
         document.addEventListener("keydown", (event) => {
             // console.log(event.key);
             if (event.key === "n") {
-                this.playNewVideo(
-                    playlerText.getAttribute("data-videoid"));
+                this.playNewVideo(playlerText.getAttribute("data-videoid"));
             }
-
         });
     },
 
@@ -457,7 +446,7 @@ const PlayerApp = {
         // Get the text-title span element
 
         setInfoText("text", item);
-         setInfoText("video", item)
+        setInfoText("video", item);
 
         updateOptions(item.getAttribute("data-videoid"));
         this.player.source = {
@@ -468,14 +457,15 @@ const PlayerApp = {
         };
         var isPlaying = this.player.play();
 
-        var playerControl = document.querySelector(
-            ".plyr__volume"
+        var playerControl = document.querySelector(".plyr__volume");
+        var inputNode = playerControl.children[0];
+        //    console.log(inputNode.attributes)//,
+        setCookie(
+            "playerVolCookie",
+            inputNode.getAttribute("aria-valuenow"),
+            7
         );
-       var inputNode = playerControl.children[0]
-    //    console.log(inputNode.attributes)//,
-    setCookie('playerVolCookie',inputNode.getAttribute("aria-valuenow"),7);
-    //    console.log(inputNode.getAttribute("aria-valuenow"))
-
+        //    console.log(inputNode.getAttribute("aria-valuenow"))
 
         // console.log(track.width , track.height)
         // resizeWindow(true,track.width , track.height)
@@ -653,22 +643,18 @@ const PlayerApp = {
         });
     },
 
-
-    playNewVideo(videoid)
-    {
+    playNewVideo(videoid) {
         $.ajax({
             url: "process.php",
             type: "POST",
             data: {
                 submit: "nextVideo",
-                videoid: videoid
-
+                videoid: videoid,
             },
             cache: false,
             success: function (data) {
-                 console.log(data)
-                 window.location.href = data;
-
+                console.log(data);
+                window.location.href = data;
             },
         });
     },
@@ -731,7 +717,7 @@ const PlayerApp = {
         }
     },
 
-    initialiseChapter(){
+    initialiseChapter() {
         var playlerText = document.querySelector(
             ".player_container .player_text"
         );
@@ -739,9 +725,12 @@ const PlayerApp = {
 
         parentElement.addEventListener("contextmenu", (event) => {
             event.preventDefault();
-            var timeCode = event.target.getAttribute("aria-valuenow")
-            var videoid =  playlerText.getAttribute("data-videoid")
-            console.log("line 744", timeCode,videoid)
+
+            var timeCode = event.target.getAttribute("aria-valuenow");
+            var videoid = playlerText.getAttribute("data-videoid");
+
+            togglePopup(event.pageX, event.pageY, videoid, timeCode);
+            console.log("line 744", timeCode, videoid);
         });
     },
     /**
@@ -783,7 +772,6 @@ const PlayerApp = {
 document.addEventListener("DOMContentLoaded", () => {
     PlayerApp.initialize();
 
-
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0;
     // factory(window.jQuery);
@@ -795,6 +783,25 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("resize", resize, false);
 
 // video.height = 100; /* to get an initial width to work with*/
+function togglePopup(x_pos, y_pos, videoId, timeCode) {
+    y_pos = y_pos - 100;
+    const overlay = document.getElementById("popupOverlay");
+    overlay.classList.toggle("show");
+    overlay.style.position = "absolute";
+    overlay.style.left = x_pos + "px";
+    overlay.style.top = y_pos + "px";
+
+    videoIdInput = document.getElementById("chapterVideoid");
+    videoIdInput.value = videoId;
+
+    IdInput = document.getElementById("chapterId");
+    IdInput.value = videoId;
+
+    timeCodeInput = document.getElementById("chapterTimeCode");
+    timeCodeInput.value = timeCode;
+
+    console.log(x_pos, y_pos, videoId, timeCode);
+}
 
 function resize() {
     var videoTag = document.getElementsByTagName("video");
@@ -817,7 +824,6 @@ function resize() {
     //     console.log(text)
 }
 function updateOptions(id) {
-
     $.ajax({
         url: "process.php",
         type: "POST",
@@ -909,28 +915,66 @@ function setInfoText(className, item) {
     }
 }
 
-function seektoTime(timeCode)
-{
-    PlayerApp.player.currentTime = timeCode
+function seektoTime(timeCode) {
+    PlayerApp.player.currentTime = timeCode;
 }
 
-
-function setCookie(name,value,days) {
+function setCookie(name, value, days) {
     var expires = "";
     if (days) {
         var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
+
 function getCookie(name) {
     var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
+    var ca = document.cookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        while (c.charAt(0) == " ") c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
+}
+
+function formatTime(timeInSeconds) {
+    const result = new Date(timeInSeconds * 1000).toISOString().substr(11, 8);
+
+    return {
+        minutes: result.substr(3, 2),
+        seconds: result.substr(6, 2),
+    };
+}
+
+function addChapter() {
+    var action = document.getElementById("chapterAction").value;
+
+    var timeCode = document.getElementById("chapterTimeCode").value;
+    var videoid = document.getElementById("chapterVideoid").value;
+    var playlistid = document.getElementById("chapterPlaylistId").value;
+    var name = document.getElementById("name").value;
+
+    //console.log(timeCode)
+
+    //chapterVideoid
+    $.ajax({
+        url: "process.php",
+        type: "POST",
+        data: {
+            action: action,
+            videoId: videoid,
+            id: videoid,
+            timeCode: timeCode,
+            playlist_id: playlistid,
+            name: name,
+            exit: true,
+        },
+        cache: false,
+        success: function (data) {
+            console.log(data);
+        },
+    });
 }

@@ -199,9 +199,10 @@ trait Video
 
     public function Thumbnail($matches)
     {
-        $next_id = '';
+
         $var = $this->parseVars($matches);
         $row_id = $var['id'];
+        $next_id = $var['next'];
         $params = ['FILE_ID' => $row_id,
             'PlaylistId' => $var['playlist_id'],
             'NEXT_ID' => $next_id,

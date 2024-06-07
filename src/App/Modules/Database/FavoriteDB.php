@@ -37,6 +37,12 @@ class FavoriteDB extends VideoDb
     }
     public static function add($video_id)
     {
+
+        $found = self::get($video_id);
+
+        if($found === true) {
+            return null;
+        }
             $data = [
                 'video_id' => $video_id,
                 'library' =>  $_SESSION['library'],
@@ -47,6 +53,12 @@ class FavoriteDB extends VideoDb
 
     public static function delete($video_id)
     {
+        $found = self::get($video_id);
+
+        if($found === false) {
+            return null;
+        }
+
         $sql = 'delete FROM '.Db_TABLE_FAVORITE_VIDEOS.' WHERE video_id = '.$video_id;
         $results = PlexSql::$DB->query($sql);
     }

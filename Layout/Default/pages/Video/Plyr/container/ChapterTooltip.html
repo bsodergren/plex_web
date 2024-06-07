@@ -1,0 +1,16 @@
+<div id="popupOverlay" class="overlay-container">
+    <div class="popup-box">
+        <form class="form-container" id="addChapter">
+            <input class="form-input" type="text" id="name" name="name">
+            <input type="hidden" name="action" id="chapterAction" value="addChapter">
+            <input type="hidden" id="chapterVideoid" name="videoId">
+            <input type="hidden" id="chapterId" name="id">
+            <input type="hidden" id="chapterPlaylistId" name="playlistid">
+            <input type="hidden" id="chapterTimeCode" name="timeCode">
+
+            <button class="btn-submit" type="submit" onclick="addChapter()">
+                Submit
+            </button>
+        </form>
+    </div>
+</div>

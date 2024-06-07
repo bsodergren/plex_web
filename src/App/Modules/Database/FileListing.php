@@ -4,6 +4,7 @@ namespace Plex\Modules\Database;
 
 use Plex\Core\Request;
 use Plex\Template\Pageinate\Pageinate;
+use UTMTemplate\HTML\Elements;
 
 class FileListing
 {
@@ -296,8 +297,10 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
 
         $results = $this->db->rawQuery($query);
         if (0 == \count($results)) {
-            echo 'No results in query, invalid query';
-            utmdd('No Results');
+            echo Elements::javaRefresh('/plex/', 0);
+            die();
+            //echo 'No results in query, invalid query';
+            //utmdd('No Results');
         }
 
         $vidResults = $this->loopVideos($results);

@@ -1,8 +1,5 @@
-
-
 const sideBar = document.querySelector("ul.nav-menu.nav-tabs.nav-sidebar");
 if (sideBar != null) {
-
     let SideBarHeight = sideBar.clientHeight + 20;
 
     let sideBarHeader = document.querySelector(".nav-sidebar-header");
@@ -96,12 +93,14 @@ function clickButton(e, close) {
         },
         cache: false,
         success: function (data) {
-            if (close == true) {
-                window.opener.location.reload(true);
-                window.close();
-            } else {
-                window.location.reload(true);
-            }
+            console.log(data);
+
+            // if (close == true) {
+            //     window.opener.location.reload(true);
+            //     window.close();
+            // } else {
+            //     window.location.reload(true);
+            // }
         },
     });
 
@@ -137,17 +136,19 @@ jQuery(document).ready(function () {
 
 $("#ajaxform").submit(function (e) {
     var postData = $(this).serializeArray();
+
+    console.log(postData);
     $.ajax({
         url: "process.php",
         type: "POST",
         data: postData,
         success: function (data) {
-            const substring = "video.php";
-            if (data.includes(substring) == true) {
-                popup(data, "PlaylistWindow");
-            } else {
-                window.location.href = data;
-            }
+            // const substring = "video.php";
+            // if (data.includes(substring) == true) {
+            //     popup(data, "PlaylistWindow");
+            // } else {
+            //     window.location.href = data;
+            // }
         },
     });
 });
@@ -200,23 +201,18 @@ $editMetadata.on("edit", function () {
 
 metaEditor();
 
-
-
-function getNextVideo(videoid)
-{
+function getNextVideo(videoid) {
     $.ajax({
         url: "process.php",
         type: "POST",
         data: {
             submit: "nextVideoCard",
-            videoid: videoid
-
+            videoid: videoid,
         },
         cache: false,
         success: function (data) {
-             console.log(data)
-              window.location.href = data;
-
+            console.log(data);
+            window.location.href = data;
         },
     });
 }

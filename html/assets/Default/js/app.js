@@ -1,5 +1,3 @@
-
-
 function editPlaceholder(id) {
     var x = document.getElementById(id).placeholder;
 
@@ -60,8 +58,8 @@ function openOnce(url, target) {
 }
 
 function videoCard(id) {
-    url = 'http://' + window.location.hostname + window.location.pathname;
-    url = url .replace ( "video.php","");
+    url = "http://" + window.location.hostname + window.location.pathname;
+    url = url.replace("video.php", "");
     popup(url + "videoinfo.php?id=" + id, "videoinfo_popup");
 }
 
@@ -101,15 +99,13 @@ function previewHover(e, thumb, prev) {
     }
 }
 
-function FavoriteVideo(action,videoid=null)
-{
-
-    var favButton = 'FavoriteButton'
-    if(videoid == null) {
-        const playervideoid = document.querySelector('.player_text')
-        videoid = playervideoid.getAttribute('data-videoid')
+function FavoriteVideo(action, videoid = null) {
+    var favButton = "FavoriteButton";
+    if (videoid == null) {
+        const playervideoid = document.querySelector(".player_text");
+        videoid = playervideoid.getAttribute("data-videoid");
     } else {
-        favButton = favButton + '_' +  videoid
+        favButton = favButton + "_" + videoid;
     }
     // console.log(action + ' ' + videoid)
     $.ajax({
@@ -118,19 +114,17 @@ function FavoriteVideo(action,videoid=null)
         data: {
             action: action,
             videoId: videoid,
-            exit: true
+            exit: true,
         },
         cache: false,
         success: function (data) {
-             console.log(data)
-                const videoCell = document.getElementById(favButton);
-                videoCell.innerHTML = data;
+            const videoCell = document.getElementById(favButton);
+            videoCell.innerHTML = data;
         },
     });
 }
 
-function updateFavVideo(videoid)
-{
+function updateFavVideo(videoid) {
     // const playervideoid = document.querySelector('.player_text')
     // videoid = playervideoid.getAttribute('data-videoid')
 
@@ -139,14 +133,31 @@ function updateFavVideo(videoid)
         type: "POST",
         data: {
             action: "isFavorite",
-            videoId: videoid
+            videoId: videoid,
         },
         cache: false,
         success: function (data) {
-                const videoCell = document.getElementById('FavoriteButton');
-                if(videoCell != null){
+            const videoCell = document.getElementById("FavoriteButton");
+            if (videoCell != null) {
                 videoCell.innerHTML = data;
-                }
+            }
+        },
+    });
+}
+
+function addChapter(action, videoid = null) {
+    // console.log(action + ' ' + videoid)
+    $.ajax({
+        url: "process.php",
+        type: "POST",
+        data: {
+            action: action,
+            videoId: videoid,
+            exit: true,
+        },
+        cache: false,
+        success: function (data) {
+            console.log(data);
         },
     });
 }

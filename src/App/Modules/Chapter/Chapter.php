@@ -41,6 +41,7 @@ class Chapter
             $this->db->where('video_id', $this->id);
             $this->db->orderBy('timeCode', 'ASC');
             $search_result = $this->db->get(Db_TABLE_VIDEO_CHAPTER);
+           // utmdump([__METHOD__,$search_result,$this->db->getLastQuery()]);
             foreach ($search_result as $i => $row) {
                 if (null === $row['name']) {
                     $row['name'] = 'Timestamp';
