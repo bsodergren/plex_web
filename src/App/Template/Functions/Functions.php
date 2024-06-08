@@ -8,6 +8,8 @@ use Plex\Template\Functions\Modules\AlphaSort;
 use Plex\Template\Functions\Modules\metaFilters;
 use Plex\Template\Functions\Traits\Breadcrumbs;
 use Plex\Template\Functions\Traits\Navbar;
+use Plex\Template\Functions\Traits\Chapters;
+
 use Plex\Template\Functions\Traits\PageSort;
 use Plex\Template\Functions\Traits\TagCloud;
 use Plex\Template\Functions\Traits\ThemeSwitcher;
@@ -24,6 +26,7 @@ class Functions extends Render
     use Parser;
     use TagCloud;
     use ThemeSwitcher;
+    use Chapters;
 
     use Video;
 

@@ -1,4 +1,6 @@
-<a onclick="seektoTime({$time})" class="ButtonLink ScenePlayerHeaderPlus-ActionTags-ButtonLink styles_link_triangle" title="" rel="">
-    <div class="editChapter" id="chapterEdit_{$videoId}_{$ChapterId}">{$label}</div>
-    <div class="ScenePlayerHeaderPlus-ActionTags-Triangle styles_triangle"></div>
-</a>
+{{stylesheet=Chapters/chapter.css}}
+
+<div id="videoChapterList">
+    {$ChapterButtons}
+</div>
+{{javascript=Chapters/chapter.js}}

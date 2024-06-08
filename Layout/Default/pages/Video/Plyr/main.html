@@ -33,13 +33,13 @@
 
     <div class="container row">
         <div class="col">
-            {{function=videoAddToPlaylist|id={$VideoId},pl_id={$PLAYLIST_ID},close=0}}
+            {{function=videoAddToPlaylist|id={$Videoid},pl_id={$PLAYLIST_ID},close=0}}
         </div>
         <div class="col-auto px-2">
             {$FAVORITE}
         </div>
         <div class="col-auto">
-            {{template=pages/Video/Plyr/container/chapters}}
+            {{function=showChapters|id={$Videoid}}}
         </div>
     </div>
 

@@ -44,6 +44,7 @@ class Chapter
             $this->db->where('video_id', $this->id);
             $this->db->orderBy('timeCode', 'ASC');
             $search_result = $this->db->get(Db_TABLE_VIDEO_CHAPTER);
+            utmdump($search_result);
             foreach ($search_result as $i => $row) {
                 if (null === $row['name']) {
                     $row['name'] = 'Timestamp';
@@ -80,9 +81,14 @@ class Chapter
             //         'VIDEO_KEY' => $this->id,
             //     ]
             // );
-            $html .= Render::html(Functions::$ChapterDir.'/chapter', $row);
+            $html .= Render::html(Functions::$ChapterDir.'/chapterButton', $row);
         }
 
         return $html;
+    }
+    public function displayChapters()
+    {
+        $html = $this->getChapterButtons();
+        return Render::html(Functions::$ChapterDir.'/chapter', [ 'ChapterButtons' => $html]);
     }
 }

@@ -187,9 +187,7 @@ class Player
             $this->params['FAVORITE'] = FavoriteDisplay::addFavoriteVideo($this->id);
         }
 
-        $this->Chapters = new Chapter(['id' => $this->id]);
-        $Chapters = $this->Chapters->getChapterButtons();
-        $this->params['ChapterButtons'] =         $Chapters;
+
 
         // $this->params['Video_studio'] = $result['studio'];
         // $this->params['Video_substudio'] = $result['substudio'];

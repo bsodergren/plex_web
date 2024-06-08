@@ -26,7 +26,7 @@ function formatTime (timeInSeconds) {
 //     disableContextMenu: true,
 //     seekTime: 30,
 
-//     markers: { enabled: true, points: !!ChapterIndex!! }
+//     markers: { enabled: true, points: { $ChapterIndex } }
 // })
 // window.player = player
 
@@ -47,8 +47,8 @@ function resizeWindow(large)
         large = true
     }
 
-    videoWidth = !!width!!
-    videoHeight = !!height!!
+    videoWidth = { $width }
+    videoHeight = { $height }
 
     text= "Video to W:"+videoWidth + " H:" + videoHeight;
     console.log(text)

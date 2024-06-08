@@ -75,7 +75,6 @@ $html = Render::html('pages/editor/main', ['TextBlocks' => $TextRow,
     'Javascript'                                  => $javascript,
     'Stylesheet'                                  => $stylesheet,
     'FormAction'                                  => $url]);
-utmdump($html);
 // $html = Render::html('editor/main', [ 'WordMap' => $text]);
 
 Render::Display($html);
