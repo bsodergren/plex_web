@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Database;
 
@@ -19,21 +22,21 @@ class FileListing
     public function __construct(Request $ReqObj)
     {
         $this->ReqObj = $ReqObj;
-        $this->uri = $this->ReqObj->getURI();
-        $urlPattern = $this->ReqObj->geturlPattern();
-        $url_array = $this->ReqObj->url_array();
-        $currentpage = $this->ReqObj->currentPage;
+        $this->uri    = $this->ReqObj->getURI();
+        $urlPattern   = $this->ReqObj->geturlPattern();
+        $url_array    = $this->ReqObj->url_array();
+        $currentpage  = $this->ReqObj->currentPage;
         // $this->db           = new PlexSql('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
         $this->db = PlexSql::$DB;
         // Utmdd($this->db->getlastquery());
         $this->currentpage = $currentpage;
-        $this->request = $this->ReqObj->http_request;
-        $this->urlPattern = $urlPattern;
+        $this->request     = $this->ReqObj->http_request;
+        $this->urlPattern  = $urlPattern;
     }
 
     public function saveSearch($query)
     {
-        $db = PlexSql::$DB;
+        $db  = PlexSql::$DB;
         $res = $db->rawQuery($query);
         if (\count($res) > 0) {
             foreach ($res as $k => $row) {
@@ -55,7 +58,7 @@ class FileListing
                 // "updatedAt" => $db->now()
             ];
 
-            $id = $db->insert(Db_TABLE_SEARCH_DATA, $data);
+            $id             = $db->insert(Db_TABLE_SEARCH_DATA, $data);
             self::$searchId = $id;
 
             return $id;
@@ -74,14 +77,13 @@ class FileListing
             $search = urldecode($search);
             // $WhereList[] = "{$field} like '%{$search}%'";
             $where[] = [
-                'field' => $field,
+                'field'  => $field,
                 'search' => $search,
             ];
         }
         $pageObj = new Pageinate($where, $this->currentpage, $this->urlPattern);
-utmdump($query);
-$this->db->join(Db_TABLE_VIDEO_METADATA.' m', 'v.video_key=m.video_key', 'INNER');
-$this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
+        // $this->db->join(Db_TABLE_VIDEO_METADATA.' m', 'v.video_key=m.video_key', 'INNER');
+        $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         foreach ($query as $search) {
             $search = urldecode($search);
             $this->db->where('(m.'.$field.' like ? or c.'.$field.' like ?)', ['%'.$search.'%', '%'.$search.'%']);
@@ -95,17 +97,17 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
     public function getLatest()
     {
         if (isset($_SESSION['sort'])) {
-            $uri['sort'] = $_SESSION['sort'];
+            $uri['sort']           = $_SESSION['sort'];
             $this->request['sort'] = $_SESSION['sort'];
         }
         if (isset($_SESSION['direction'])) {
-            $uri['direction'] = $_SESSION['direction'];
+            $uri['direction']           = $_SESSION['direction'];
             $this->request['direction'] = $_SESSION['direction'];
         }
         if (isset($_SESSION['days'])) {
-            $uri['days'] = $_SESSION['days'];
+            $uri['days']           = $_SESSION['days'];
             $this->request['days'] = $_SESSION['days'];
-            $days = $_SESSION['days'];
+            $days                  = $_SESSION['days'];
         }
 
         if (isset($uri)) {
@@ -143,8 +145,7 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         $request_query = [];
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
-
-                ${$tag} = urldecode($this->request[$tag]);
+                ${$tag}    = urldecode($this->request[$tag]);
                 $uri[$tag] = ${$tag};
                 if ('studio' == $tag || 'substudio' == $tag
                 || 'genre' == $tag || 'artist' == $tag || 'keyword' == $tag) {
@@ -154,12 +155,12 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         }
 
         if (isset($_SESSION['sort'])) {
-            $uri['sort'] = $_SESSION['sort'];
+            $uri['sort']           = $_SESSION['sort'];
             $this->request['sort'] = $_SESSION['sort'];
         }
 
         if (isset($_SESSION['direction'])) {
-            $uri['direction'] = $_SESSION['direction'];
+            $uri['direction']           = $_SESSION['direction'];
             $this->request['direction'] = $_SESSION['direction'];
         }
 
@@ -184,7 +185,7 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
 
         if (isset($uri)) {
             $sql_studio = '';
-            $res_array = uri_SQLQuery($uri);
+            $res_array  = uri_SQLQuery($uri);
             if (\array_key_exists('sort', $res_array)) {
                 $order_sort = $res_array['sort'];
             }
@@ -198,18 +199,15 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
             }
         }
 
-        $pageObj = new Pageinate($request_query, $this->currentpage, $this->urlPattern);
+        $pageObj   = new Pageinate($request_query, $this->currentpage, $this->urlPattern);
         $tagTables = false;
         foreach ($tag_array as $tag) {
             if (isset($this->request[$tag]) && '' != $this->request[$tag]) {
-
-                        if ('NULL' == strtoupper($this->request[$tag])) {
-                            $this->db->where('COALESCE (m.'.$tag.',c.'.$tag.')  is null');
-
-                    } else {
-                        $this->db->where("COALESCE (m.".$tag.",c.".$tag.") like '%". $this->request[$tag]."%'");
-                    }
-
+                if ('NULL' == strtoupper($this->request[$tag])) {
+                    $this->db->where('COALESCE (m.'.$tag.',c.'.$tag.')  is null');
+                } else {
+                    $this->db->where('COALESCE (m.'.$tag.',c.'.$tag.") like '%".$this->request[$tag]."%'");
+                }
 
                 $tagTables = true;
                 // $this->db->orwhere('c.'.$tag, $value, $comp);
@@ -220,11 +218,11 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
             $this->db->orderBy($this->request['sort'], $this->request['direction']);
         }
         if (true === $tagTables) {
-          //  $this->db->join(Db_TABLE_VIDEO_METADATA.' m', 'v.video_key=m.video_key', 'INNER');
+            //  $this->db->join(Db_TABLE_VIDEO_METADATA.' m', 'v.video_key=m.video_key', 'INNER');
             $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         }
         $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
-                // utmdd($results);
+        // utmdd($results);
 
         return [$results, $pageObj, $uri];
     }
@@ -232,7 +230,7 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
     private function loopVideos($results)
     {
         foreach ($results as $b => $videoRow) {
-            $vidResults[$b] = VideoDb::getVideo($videoRow['id']);
+            $vidResults[$b]           = VideoDb::getVideo($videoRow['id']);
             $vidResults[$b]['rownum'] = $videoRow['rownum'];
         }
 
@@ -298,9 +296,9 @@ $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
         $results = $this->db->rawQuery($query);
         if (0 == \count($results)) {
             echo Elements::javaRefresh('/plex/', 0);
-            die();
-            //echo 'No results in query, invalid query';
-            //utmdd('No Results');
+            exit;
+            // echo 'No results in query, invalid query';
+            // utmdd('No Results');
         }
 
         $vidResults = $this->loopVideos($results);

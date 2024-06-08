@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Chapter;
 
@@ -19,8 +22,8 @@ class Chapter
     public function __construct($data)
     {
         global $_SESSION;
-        $this->data = $data;
-        $this->db = PlexSql::$DB;
+        $this->data    = $data;
+        $this->db      = PlexSql::$DB;
         $this->library = $_SESSION['library'];
         if (isset($data['playlist_id'])) {
             $this->playlist_id = $data['playlist_id'];
@@ -41,13 +44,13 @@ class Chapter
             $this->db->where('video_id', $this->id);
             $this->db->orderBy('timeCode', 'ASC');
             $search_result = $this->db->get(Db_TABLE_VIDEO_CHAPTER);
-           // utmdump([__METHOD__,$search_result,$this->db->getLastQuery()]);
             foreach ($search_result as $i => $row) {
                 if (null === $row['name']) {
                     $row['name'] = 'Timestamp';
                 }
 
-                $this->chapterIndex[] = ['time' => $row['timeCode'], 'label' => $row['name']];
+                $this->chapterIndex[] = ['time' => $row['timeCode'], 'label' => $row['name'],
+                    'chapterId'                 => $row['id']];
             }
         }
 
@@ -56,26 +59,27 @@ class Chapter
 
     public function getChapterButtons()
     {
-        $html = '';
+        $html  = '';
         $index = $this->getChapters();
+        utmdump($index);
         if (null === $index) {
             return '';
         }
         foreach ($index as $i => $row) {
-            $editableClass = 'edit'.$row['time'];
-            $functionName = 'make'.$row['time'].'Editable';
+            // $editableClass = 'edit'.$row['time'];
+            // $functionName  = 'make'.$row['time'].'Editable';
 
-            $row['EDITABLE'] = $editableClass;
-
-            $row['VIDEOINFO_EDIT_JS'] = Render::javascript(
-                Functions::$ChapterDir.'/chapter',
-                [
-                    'ID_NAME' => $row['time'],
-                    'EDITABLE' => $editableClass,
-                    'FUNCTION' => $functionName,
-                    'VIDEO_KEY' => $this->id,
-                ]
-            );
+            $row['ChapterId'] =  $row['chapterId'];
+            $row['videoId'] =  $this->id;
+            // $row['VIDEOINFO_EDIT_JS'] = Render::javascript(
+            //     Functions::$ChapterDir.'/chapter',
+            //     [
+            //         'ChapterId'   => $row['chapterId'],
+            //         'EDITABLE'  => $editableClass,
+            //         'FUNCTION'  => $functionName,
+            //         'VIDEO_KEY' => $this->id,
+            //     ]
+            // );
             $html .= Render::html(Functions::$ChapterDir.'/chapter', $row);
         }
 

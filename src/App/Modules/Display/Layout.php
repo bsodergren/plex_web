@@ -35,7 +35,6 @@ class Layout
         $db            = PlexSql::$DB;
         $library_links = '';
         $sql           = PlexSql::query_builder(Db_TABLE_VIDEO_METADATA, 'DISTINCT(Library) as Library ');
-utmdump($sql);
         foreach ($db->query($sql) as $k => $v) {
             $library_links .= Display::navbar_left_links('home.php?library='.$v['Library'], $v['Library']);
         }

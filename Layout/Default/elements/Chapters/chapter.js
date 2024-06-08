@@ -1,8 +1,8 @@
 
-var $!!EDITABLE!! = $('.!!EDITABLE!!')
+var $chapterEdit = $('.chapterEdit')
 
-function !!FUNCTION!!() {
-    $!!EDITABLE!!.editable({
+function chapterEditor() {
+    $chapterEdit.editable({
         emptyMessage: 'Please write something...',
         callback: function (data) {
             console.log('Stopped editing ' + data.$el[0].nodeName)
@@ -12,24 +12,23 @@ function !!FUNCTION!!() {
                     url: 'process.php',
                     data: jQuery.param({
                         submit: 'updateChapter',
-                        !!ID_NAME!!: data.content,
-                        video_key: '!!VIDEO_KEY!!'
+                        chapterData: data.content
                         }),
                         success: function (data) {
-                            console.log(data);
-                            window.opener.location.reload(true);
+                            // console.log(data);
+                            // window.opener.location.reload(true);
                            // window.close();
                         }
                 })
                 console.log('   * The text was changed -> ' + data.content)
-            } 
+            }
         }
     })
 }
 
 // Listen on when elements getting edited
-$!!EDITABLE!!.on('edit', function () {
+$chapterEdit.on('edit', function () {
     console.log('Started editing element ' + this.nodeName)
 })
 
-!!FUNCTION!!()
+chapterEditor()

@@ -226,6 +226,14 @@ class Forms
         //  echo $this->myHeader($url);
         exit;
     }
+    public function deleteChapter()
+    {
+        $url = $this->VideoChapter->deleteChapter();
+        echo $url;
+        //  echo $this->myHeader($url);
+        exit;
+    }
+
 
     public function myHeader($redirect = '', $timeout = 0)
     {

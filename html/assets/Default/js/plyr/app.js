@@ -145,8 +145,8 @@ const PlayerApp = {
             loadSprite: true,
             debug: false,
             keyboard: {
-                focused: true,
-                global: true,
+                focused: false,
+                global: false,
             },
             i18n: {
                 restart: "Restart",
@@ -351,6 +351,16 @@ const PlayerApp = {
         });
 
         document.addEventListener("keydown", (event) => {
+            if (event.target.tagName === "INPUT") {
+                if(event.key === "Enter"){
+                    addChapter();
+                }
+                if(event.key === "Escape"){
+                    const overlay = document.getElementById("popupOverlay");
+                    overlay.classList.toggle("show");
+                }
+                return;
+              }
             // console.log(event.key);
             if (event.key === "n") {
                 this.playVisibleItem("next");
@@ -420,11 +430,20 @@ const PlayerApp = {
                 this.playVisibleItem("prev");
             }
         });
-
         document.addEventListener("keydown", (event) => {
-            // console.log(event.key);
+            console.log(event.target.tagName);
+            if (event.target.tagName === "INPUT") {
+                if(event.key === "Enter"){
+                    addChapter();
+                }
+                if(event.key === "Escape"){
+                    const overlay = document.getElementById("popupOverlay");
+                    overlay.classList.toggle("show");
+                }
+                return;
+              }
             if (event.key === "n") {
-                this.playNewVideo(playlerText.getAttribute("data-videoid"));
+               this.playNewVideo(playlerText.getAttribute("data-videoid"));
             }
         });
     },
@@ -472,7 +491,6 @@ const PlayerApp = {
         // resize();
         updateFavVideo(item.getAttribute("data-videoid"));
         updateVideoChapters(item.getAttribute("data-videoid"));
-
     },
 
     /**
@@ -730,9 +748,10 @@ const PlayerApp = {
 
             var timeCode = event.target.getAttribute("aria-valuenow");
             var videoid = playlerText.getAttribute("data-videoid");
-
-            togglePopup(event.pageX, event.pageY, videoid, timeCode);
-            console.log("line 744", timeCode, videoid);
+            if (timeCode != null) {
+                togglePopup(event.pageX, event.pageY, videoid, timeCode);
+                console.log("line 744", timeCode, videoid);
+            }
         });
     },
     /**
@@ -784,6 +803,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener("resize", resize, false);
 
+
+
 // video.height = 100; /* to get an initial width to work with*/
 function togglePopup(x_pos, y_pos, videoId, timeCode) {
     y_pos = y_pos - 100;
@@ -803,6 +824,7 @@ function togglePopup(x_pos, y_pos, videoId, timeCode) {
     timeCodeInput.value = timeCode;
 
     console.log(x_pos, y_pos, videoId, timeCode);
+
 }
 
 function resize() {
@@ -864,6 +886,7 @@ function updateOptions(id) {
                 opt.disabled = optionData[3];
                 outletOptions.appendChild(opt);
             });
+            return false;
         },
     });
 }
@@ -954,14 +977,11 @@ function formatTime(timeInSeconds) {
 function addChapter() {
     var action = document.getElementById("chapterAction").value;
 
-    var timeCode = document.getElementById("chapterTimeCode").value;
+    var timeCode = document.getElementById("chapterTimeCode");
     var videoid = document.getElementById("chapterVideoid").value;
     var playlistid = document.getElementById("chapterPlaylistId").value;
-    var name = document.getElementById("name").value;
+    var name = document.getElementById("name");
 
-    //console.log(timeCode)
-
-    //chapterVideoid
     $.ajax({
         url: "process.php",
         type: "POST",
@@ -969,14 +989,22 @@ function addChapter() {
             action: action,
             videoId: videoid,
             id: videoid,
-            timeCode: timeCode,
+            timeCode: timeCode.value,
             playlist_id: playlistid,
-            name: name,
+            name: name.value,
             exit: true,
         },
         cache: false,
         success: function (data) {
-            console.log(data);
+            const videoCell = document.getElementById("videoChapterList");
+            videoCell.innerHTML = data;
+            name.value = '';
+            timeCode.value = '';
+
+            const overlay = document.getElementById("popupOverlay");
+            overlay.classList.toggle("show");
+
+            return false;
         },
     });
 }

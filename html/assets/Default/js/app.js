@@ -166,19 +166,24 @@ function updateVideoChapters(videoid) {
         },
     });
 }
-function addChapter(action, videoid = null) {
-    // console.log(action + ' ' + videoid)
-    $.ajax({
-        url: "process.php",
-        type: "POST",
-        data: {
-            action: action,
-            videoId: videoid,
-            exit: true,
-        },
-        cache: false,
-        success: function (data) {
-            console.log(data);
-        },
-    });
-}
+
+// function addChapter(action, videoid = null) {
+//     // console.log(action + ' ' + videoid)
+//     $.ajax({
+//         url: "process.php",
+//         type: "POST",
+//         data: {
+//             action: action,
+//             videoId: videoid,
+//             exit: true,
+//         },
+//         cache: false,
+//         success: function (data) {
+//             const videoCell = document.getElementById("videoChapterList");
+//             console.log(videoCell)
+//            // if (videoCell != null) {
+//                 videoCell.innerHTML = data;
+//            // }
+//         },
+//     });
+// }

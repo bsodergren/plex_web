@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Template\Pageinate;
 
@@ -25,11 +28,8 @@ class Pageinate extends Paginator
     public $itemsSelection    = [10, 25, 50, 100, 250, 500, 1500];
     private $maxRecordsToShow = 6;
 
-
-
     public function __construct($query, $currentPage, $urlPattern)
     {
-
         global $_SESSION;
         $db                 = PlexSql::$DB;
         $this->itemsPerPage = $_SESSION['itemsPerPage'];
@@ -43,18 +43,18 @@ class Pageinate extends Paginator
             $db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'c.video_key=v.video_key', 'LEFT');
 
             foreach ($query as $k => $parts) {
-                if($parts['field'] == 'substudio') {
+                if ('substudio' == $parts['field']) {
                     if ('NULL' == strtoupper($parts['search'])) {
                         $db->where('COALESCE (m.'.$parts['field'].',c.'.$parts['field'].')  is null');
                     }
                 } else {
-                    $db->where("COALESCE (m.".$parts['field'].",c.".$parts['field'].") like '%".$parts['search']."%'");
+                    $db->where('COALESCE (m.'.$parts['field'].',c.'.$parts['field'].") like '%".$parts['search']."%'");
                 }
             }
         } else {
-            $libraryField = 'library';
+            $libraryField = 'Library';
 
-            $query = urlQuerystring($urlPattern, ['current', 'allfiles', 'sec', 'days','style'], true);
+            $query = urlQuerystring($urlPattern, ['current', 'allfiles', 'sec', 'days', 'style'], true);
             $table = $this->table;
             if (\count($query) > 0) {
                 $q = trim(str_replace('m.', '', $query['sql']));
@@ -63,7 +63,7 @@ class Pageinate extends Paginator
         }
         if ('v.added' == $_SESSION['sort']) {
             if (__THIS_FILE__ == 'recent.php') {
-                $db->where(PlexSQL::getLastest('added', $_SESSION['days']));
+                $db->where(PlexSql::getLastest('added', $_SESSION['days']));
             }
         }
 
@@ -74,15 +74,15 @@ class Pageinate extends Paginator
         }
 
         $this->results = $db->withTotalCount()->get($table);
+        utmdump([__METHOD__, $db->getLastQuery()]);
         $this->totalRecords = $db->totalCount;
         $this->limit_array  = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];
-        $this->offset = ($this->currentPage - 1) * $this->itemsPerPage;
+        $this->offset       = ($this->currentPage - 1) * $this->itemsPerPage;
 
-        if($this->totalRecords < $this->offset)
-        {
-            $this->currentPage = ($this->currentPage - 1);
+        if ($this->totalRecords < $this->offset) {
+            $this->currentPage  = ($this->currentPage - 1);
             $this->limit_array  = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];
-            $this->offset = ($this->currentPage - 1) * $this->itemsPerPage;
+            $this->offset       = ($this->currentPage - 1) * $this->itemsPerPage;
         }
 
         $this->paginator = new Paginator(
@@ -101,9 +101,9 @@ class Pageinate extends Paginator
         $link_list   = '';
         $hidden_text = '';
         $placeholder = '';
-        $next = '';
-        $current_url= '';
-        $previous= '';
+        $next        = '';
+        $current_url = '';
+        $previous    = '';
         if ($this->paginator->numPages <= 1) {
             // $placeholder = '<li class="page-item page-link">Show</li>';
 
@@ -153,8 +153,8 @@ class Pageinate extends Paginator
                 $pill_end_class = '';
             }
 
-            if($i == $lastKey) {
-                $pill_end_class = $pill_end_class.' lastPage';
+            if ($i == $lastKey) {
+                $pill_end_class .= ' lastPage';
             }
 
             if ($page['url']) {

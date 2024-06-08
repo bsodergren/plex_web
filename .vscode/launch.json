@@ -14,6 +14,10 @@
                 "-t",
                 "."
             ],
+            "pathMappings": {
+                "/home/bjorn/www/public_html/plex_web": "${workspaceRoot}"
+
+            },
             "port": 9003,
             "serverReadyAction": {
                 "action": "openExternally"
@@ -32,7 +36,7 @@
             "name": "Listen for Xdebug",
             "type": "php",
             "request": "launch",
-            "port": 9000,
+            "port": 9003,
             "pathMappings": {
                 "/home/bjorn/www/public_html/plex_web": "${workspaceRoot}"
 
