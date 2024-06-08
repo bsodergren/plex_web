@@ -145,6 +145,27 @@ function updateFavVideo(videoid) {
     });
 }
 
+function updateVideoChapters(videoid) {
+    // const playervideoid = document.querySelector('.player_text')
+    // videoid = playervideoid.getAttribute('data-videoid')
+
+    $.ajax({
+        url: "process.php",
+        type: "POST",
+        data: {
+            action: "getChapter",
+            id: videoid,
+        },
+        cache: false,
+        success: function (data) {
+            const videoCell = document.getElementById("videoChapterList");
+            console.log(videoCell)
+           // if (videoCell != null) {
+                videoCell.innerHTML = data;
+           // }
+        },
+    });
+}
 function addChapter(action, videoid = null) {
     // console.log(action + ' ' + videoid)
     $.ajax({

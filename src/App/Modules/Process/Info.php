@@ -37,7 +37,7 @@ class Info
             $data[$tag] = null;
 
             $query = 'UPDATE `'.Db_TABLE_VIDEO_CUSTOM.'` SET ';
-            $query .= ' `'.$tag."` = NULL WHERE `'.Db_TABLE_VIDEO_CUSTOM.'`.`video_key` = '".$this->video_key."'";
+            $query .= " `".$tag."` = NULL WHERE `".Db_TABLE_VIDEO_CUSTOM."`.`video_key` = '".$this->video_key."'";
 
             $this->rawQuery($query);
         } else {

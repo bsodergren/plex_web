@@ -471,6 +471,8 @@ const PlayerApp = {
         // resizeWindow(true,track.width , track.height)
         // resize();
         updateFavVideo(item.getAttribute("data-videoid"));
+        updateVideoChapters(item.getAttribute("data-videoid"));
+
     },
 
     /**

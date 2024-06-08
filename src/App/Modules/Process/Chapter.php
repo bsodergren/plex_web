@@ -4,11 +4,13 @@ namespace Plex\Modules\Process;
 
 use Plex\Modules\Process\Traits\DbWrapper;
 use Plex\Modules\Database\PlexSql;
+use Plex\Modules\Chapter\Chapter as Chapters;
+
 
 class Chapter extends Forms
 {
     public object $db;
-
+    public object $Chapters;
     public $data;
     public $library;
     public $playlist_id;
@@ -29,6 +31,12 @@ class Chapter extends Forms
         }
     }
 
+    public function getChapterVideos()
+    {
+        utmdump($this->id);
+        $this->Chapters = new Chapters(['id' => $this->id]);
+        return $this->Chapters->getChapterButtons();
+    }
     public function addChapterVideo()
     {
         $data = [

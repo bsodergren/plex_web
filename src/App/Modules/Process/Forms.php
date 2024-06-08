@@ -211,7 +211,14 @@ class Forms
         //  echo $this->myHeader($url);
         exit;
     }
+    public function getChapter()
+    {
+        $out = $this->VideoChapter->getChapterVideos();
 
+        echo $out;
+        //  echo $this->myHeader($url);
+        exit;
+    }
     public function updateChapter()
     {
         $url = $this->VideoChapter->updateChapter();

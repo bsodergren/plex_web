@@ -175,7 +175,7 @@ class Player
 
         $result['video_file'] = $this->getVideoURL($result['id']);
         $this->parseParams($result);
-        $this->Chapters = new Chapter(['id' => $this->id]);
+
 
 
         // $this->params['PAGE_TITLE'] = $result['title'];
@@ -187,6 +187,7 @@ class Player
             $this->params['FAVORITE'] = FavoriteDisplay::addFavoriteVideo($this->id);
         }
 
+        $this->Chapters = new Chapter(['id' => $this->id]);
         $Chapters = $this->Chapters->getChapterButtons();
         $this->params['ChapterButtons'] =         $Chapters;
 
