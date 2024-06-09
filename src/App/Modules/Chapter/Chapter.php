@@ -18,10 +18,12 @@ class Chapter
     public $playlist_id;
     public $id;
     public $chapterIndex;
+    private $displayVideo = "true";
 
     public function __construct($data)
     {
         global $_SESSION;
+        utmdump($data);
         $this->data    = $data;
         $this->db      = PlexSql::$DB;
         $this->library = $_SESSION['library'];
@@ -31,6 +33,17 @@ class Chapter
         if (isset($data['id'])) {
             $this->id = $data['id'];
         }
+        if (isset($data['video'])) {
+
+
+            // if($data['video'] == "false" ) {
+            //     $data['video'] = false;
+            // }
+            $this->displayVideo = $data['video'];
+
+        }
+
+        utmdump($data);
     }
 
     public function getChapterJson()
@@ -44,14 +57,16 @@ class Chapter
             $this->db->where('video_id', $this->id);
             $this->db->orderBy('timeCode', 'ASC');
             $search_result = $this->db->get(Db_TABLE_VIDEO_CHAPTER);
-            utmdump($search_result);
             foreach ($search_result as $i => $row) {
                 if (null === $row['name']) {
                     $row['name'] = 'Timestamp';
                 }
 
-                $this->chapterIndex[] = ['time' => $row['timeCode'], 'label' => $row['name'],
-                    'chapterId'                 => $row['id']];
+                $this->chapterIndex[] = [
+                    'time' => $row['timeCode'],
+                    'label' => $row['name'],
+                    'chapterId' => $row['id'],
+                ];
             }
         }
 
@@ -62,7 +77,6 @@ class Chapter
     {
         $html  = '';
         $index = $this->getChapters();
-        utmdump($index);
         if (null === $index) {
             return '';
         }
@@ -72,6 +86,15 @@ class Chapter
 
             $row['ChapterId'] =  $row['chapterId'];
             $row['videoId'] =  $this->id;
+            $row['javascript'] = '';
+
+            $row['DisplayVideo'] = $this->displayVideo ;
+
+            if( $this->displayVideo  == "true")
+            {
+                $row['javascript'] = ' onclick="seektoTime('. $row['time'].')" ';
+
+            }
             // $row['VIDEOINFO_EDIT_JS'] = Render::javascript(
             //     Functions::$ChapterDir.'/chapter',
             //     [
@@ -84,11 +107,13 @@ class Chapter
             $html .= Render::html(Functions::$ChapterDir.'/chapterButton', $row);
         }
 
-        return $html;
+        $buttonHtml = Render::html(Functions::$ChapterDir.'/chapterButtons', [ 'ChapterButtons' => $html]);
+        return $buttonHtml;
+
     }
     public function displayChapters()
     {
         $html = $this->getChapterButtons();
-        return Render::html(Functions::$ChapterDir.'/chapter', [ 'ChapterButtons' => $html]);
+        return Render::html(Functions::$ChapterDir.'/chapter', [ 'ChapterButton' => $html]);
     }
 }

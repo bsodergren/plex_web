@@ -31,7 +31,7 @@ class Chapter extends Forms
         if (isset($data['id'])) {
             $this->id = $data['id'];
         }
-        $this->Chapters = new Chapters(['id' => $this->id]);
+        $this->Chapters = new Chapters($data);
     }
 
     public function getChapterVideos()

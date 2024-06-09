@@ -76,11 +76,6 @@ function nextPage() {
     window.location.href = url;
 }
 
-const writeLog = function (msg) {
-    let date = new Date();
-    window.console.log(date.toISOString() + " " + msg);
-};
-
 function clickButton(e, close) {
     let video_id = document.getElementById("DorRvideoId");
 

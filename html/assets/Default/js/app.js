@@ -1,3 +1,11 @@
+ function writeLog (msg) {
+    let date = new Date();
+    // console.log (writeLog.caller.callee)
+    console.trace (msg)
+    // window.console.log(date.toISOString() + " " + msg);
+}
+
+
 function editPlaceholder(id) {
     var x = document.getElementById(id).placeholder;
 

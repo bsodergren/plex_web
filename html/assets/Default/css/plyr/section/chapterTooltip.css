@@ -18,16 +18,16 @@
     display: none;
     top: 0;
     left: 0;
-    /* background: rgba(0, 0, 0, 0.6); */
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 12px;
     justify-content: center;
     align-items: center;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
-
 .popup-box {
-    background: #fff;
-    padding: 12px;
+    /* background: #fff; */
+    padding: 10px 10px 10px 10px;
     border-radius: 12px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     /* width: 320px; */
@@ -36,32 +36,24 @@
     transform: scale(0.8);
     animation: fadeInUp 0.5s ease-out forwards;
 }
-
 .form-container {
     display: flex;
     flex-direction: column;
 }
 
-.form-label {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #444;
-    text-align: left;
-}
-
 .form-input {
-    padding: 10px;
-    margin-bottom: 20px;
+    /* padding: 10px; */
+    /* margin-bottom: 20px; */
     border: 1px solid #ccc;
     border-radius: 8px;
-    font-size: 16px;
-    width: 100%;
+    font-size: 12px;
+    /* width: 100%; */
     box-sizing: border-box;
 }
 
 .btn-submit,
 .btn-close-popup {
-    padding: 12px 24px;
+    padding: 5px 5px 5px 5px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -69,7 +61,7 @@
 }
 
 .btn-submit {
-    background-color: green;
+    background-color: #00800000;
     color: #fff;
 }
 
@@ -81,7 +73,7 @@
 
 .btn-submit:hover,
 .btn-close-popup:hover {
-    background-color: #4caf50;
+    background-color: hsl(0, 0%, 42%);
 }
 
 /* Keyframes for fadeInUp animation */

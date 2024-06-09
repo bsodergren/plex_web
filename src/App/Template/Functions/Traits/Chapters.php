@@ -14,14 +14,13 @@ use Plex\Modules\Chapter\Chapter;
 
 trait Chapters
 {
-
+    public object $Chapters;
     public function showChapters($matches)
     {
         $var = $this->parseVars($matches);
+        utmdump($var);
         $this->Chapters = new Chapter($var);
         $Chapters = $this->Chapters->displayChapters();
-        utmdump($Chapters);
         return $Chapters;
-        // $this->params['ChapterButtons'] =         $Chapters;
     }
 }

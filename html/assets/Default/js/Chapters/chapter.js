@@ -7,11 +7,14 @@ function chapterEditor() {
         callback: function (data) {
             console.log('Stopped editing ' + data.$el[0].nodeName)
 
+
             editBox = data.$el[0].id;
+            writeLog(editBox)
             const editBoxArr = editBox.split("_");
             var metafield = editBoxArr[0];
             var videoId = editBoxArr[1];
             var chapterId = editBoxArr[2];
+            var displayVid = editBoxArr[3];
 
             chapterAction = 'updateChapter'
             let value = "";
@@ -32,6 +35,7 @@ function chapterEditor() {
                         id: videoId,
                         chapterText: value,
                         chapterId: chapterId,
+                        video: displayVid,
                         }),
                         success: function (data) {
                             const videoCell = document.getElementById("videoChapterList");
@@ -51,9 +55,11 @@ function chapterEditor() {
     })
 }
 
-// Listen on when elements getting edited
+
 $editChapter.on('edit', function () {
-    console.log('Started editing element ' + this.nodeName)
+    writeLog('Started editing element ' + this.nodeName)
 })
 
 chapterEditor()
+
+

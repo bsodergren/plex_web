@@ -807,7 +807,7 @@ window.addEventListener("resize", resize, false);
 
 // video.height = 100; /* to get an initial width to work with*/
 function togglePopup(x_pos, y_pos, videoId, timeCode) {
-    y_pos = y_pos - 100;
+    y_pos = y_pos - 50;
     const overlay = document.getElementById("popupOverlay");
     overlay.classList.toggle("show");
     overlay.style.position = "absolute";

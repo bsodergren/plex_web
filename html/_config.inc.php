@@ -28,7 +28,11 @@ define('__PLEX_APP_DIR__', __ROOT_DIRECTORY__.'/src');
 define('__PHP_CONFIG_DIR__', __PLEX_APP_DIR__.'/Config');
 define('__PHP_YAML_DIR__', __PHP_CONFIG_DIR__.'/Routes');
 define('__COMPOSER_LIB__', __ROOT_DIRECTORY__.'/vendor');
+
+define('__GLOBAL_COMPOSER_LIB__', '/home/bjorn/.config/composer/vendor');
 set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
+
+// require_once __GLOBAL_COMPOSER_LIB__.'/autoload.php';
 
 require_once __COMPOSER_LIB__.'/autoload.php';
 // Debugger::enable();
