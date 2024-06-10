@@ -1,8 +1,8 @@
 
-var $editChapter = $('.editChapter')
+var $editMarker = $('.editMarker')
 
-function chapterEditor() {
-    $editChapter.editable({
+function markerEditor() {
+    $editMarker.editable({
         emptyMessage: 'Please write something...',
         callback: function (data) {
             console.log('Stopped editing ' + data.$el[0].nodeName)
@@ -13,17 +13,17 @@ function chapterEditor() {
             const editBoxArr = editBox.split("_");
             var metafield = editBoxArr[0];
             var videoId = editBoxArr[1];
-            var chapterId = editBoxArr[2];
+            var markerId = editBoxArr[2];
             var displayVid = editBoxArr[3];
 
-            chapterAction = 'updateChapter'
+            markerAction = 'updateMarker'
             let value = "";
 
             if (data.content !== false) {
                  value = data.content.trim();
 
                 if (value == "") {
-                    chapterAction = 'deleteChapter'
+                    markerAction = 'deleteMarker'
                 }
 
 
@@ -31,14 +31,14 @@ function chapterEditor() {
                     type: 'post',
                     url: 'process.php',
                     data: jQuery.param({
-                        submit: chapterAction,
+                        submit: markerAction,
                         id: videoId,
-                        chapterText: value,
-                        chapterId: chapterId,
+                        markerText: value,
+                        markerId: markerId,
                         video: displayVid,
                         }),
                         success: function (data) {
-                            const videoCell = document.getElementById("videoChapterList");
+                            const videoCell = document.getElementById("videoMarkerList");
                             console.log(videoCell)
                            // if (videoCell != null) {
                                 videoCell.innerHTML = data;
@@ -56,10 +56,10 @@ function chapterEditor() {
 }
 
 
-$editChapter.on('edit', function () {
+$editMarker.on('edit', function () {
     writeLog('Started editing element ' + this.nodeName)
 })
 
-chapterEditor()
+markerEditor()
 
 

@@ -33,7 +33,7 @@ class Forms
     public $tagValue;
 
     public object $VideoInfo;
-    public object $VideoChapter;
+    public object $VideoMarker;
     public object $db;
     public object $playlist;
     public static $registeredCallbacks = false;
@@ -92,7 +92,7 @@ class Forms
 
         $redirect           = false;
         $this->VideoInfo    = new Info($this->postArray);
-        $this->VideoChapter = new Chapter($this->postArray);
+        $this->VideoMarker  = new Marker($this->postArray);
         if (isset($this->postArray['submit'])) {
             $method = $this->postArray['submit'];
             unset($this->postArray['submit']);
@@ -203,37 +203,39 @@ class Forms
         exit;
     }
 
-    public function addChapter()
+    public function addMarker()
     {
-        $url = $this->VideoChapter->addChapterVideo();
+        $url = $this->VideoMarker->addMarkerVideo();
 
         echo $url;
         //  echo $this->myHeader($url);
         exit;
     }
-    public function getChapter()
+
+    public function getMarker()
     {
-        $out = $this->VideoChapter->getChapterVideos();
+        $out = $this->VideoMarker->getMarkerVideos();
 
         echo $out;
         //  echo $this->myHeader($url);
         exit;
     }
-    public function updateChapter()
+
+    public function updateMarker()
     {
-        $url = $this->VideoChapter->updateChapter();
-        echo $url;
-        //  echo $this->myHeader($url);
-        exit;
-    }
-    public function deleteChapter()
-    {
-        $url = $this->VideoChapter->deleteChapter();
+        $url = $this->VideoMarker->updateMarker();
         echo $url;
         //  echo $this->myHeader($url);
         exit;
     }
 
+    public function deleteMarker()
+    {
+        $url = $this->VideoMarker->deleteMarker();
+        echo $url;
+        //  echo $this->myHeader($url);
+        exit;
+    }
 
     public function myHeader($redirect = '', $timeout = 0)
     {

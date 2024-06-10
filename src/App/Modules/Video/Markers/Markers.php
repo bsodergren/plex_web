@@ -3,13 +3,13 @@
  *  Plexweb
  */
 
-namespace Plex\Modules\Chapter;
+namespace Plex\Modules\Video\Markers;
 
 use Plex\Modules\Database\PlexSql;
 use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
 
-class Chapter
+class Markers
 {
     public object $db;
 
@@ -17,8 +17,8 @@ class Chapter
     public $library;
     public $playlist_id;
     public $id;
-    public $chapterIndex;
-    private $displayVideo = "true";
+    public $markerIndex;
+    private $displayVideo = 'true';
 
     public function __construct($data)
     {
@@ -34,26 +34,23 @@ class Chapter
             $this->id = $data['id'];
         }
         if (isset($data['video'])) {
-
-
             // if($data['video'] == "false" ) {
             //     $data['video'] = false;
             // }
             $this->displayVideo = $data['video'];
-
         }
 
         utmdump($data);
     }
 
-    public function getChapterJson()
+    public function getMarkerJson()
     {
-        return json_encode($this->Chapters->getChapters());
+        return json_encode($this->Markers->getMarkers());
     }
 
-    public function getChapters()
+    public function getMarkers()
     {
-        if (null == $this->chapterIndex) {
+        if (null == $this->markerIndex) {
             $this->db->where('video_id', $this->id);
             $this->db->orderBy('timeCode', 'ASC');
             $search_result = $this->db->get(Db_TABLE_VIDEO_CHAPTER);
@@ -62,21 +59,21 @@ class Chapter
                     $row['name'] = 'Timestamp';
                 }
 
-                $this->chapterIndex[] = [
-                    'time' => $row['timeCode'],
-                    'label' => $row['name'],
-                    'chapterId' => $row['id'],
+                $this->markerIndex[] = [
+                    'time'     => $row['timeCode'],
+                    'label'    => $row['name'],
+                    'markerId' => $row['id'],
                 ];
             }
         }
 
-        return $this->chapterIndex;
+        return $this->markerIndex;
     }
 
-    public function getChapterButtons()
+    public function getMarkerButtons()
     {
         $html  = '';
-        $index = $this->getChapters();
+        $index = $this->getMarkers();
         if (null === $index) {
             return '';
         }
@@ -84,36 +81,36 @@ class Chapter
             // $editableClass = 'edit'.$row['time'];
             // $functionName  = 'make'.$row['time'].'Editable';
 
-            $row['ChapterId'] =  $row['chapterId'];
-            $row['videoId'] =  $this->id;
+            $row['MarkerId']   =  $row['markerId'];
+            $row['videoId']    =  $this->id;
             $row['javascript'] = '';
 
-            $row['DisplayVideo'] = $this->displayVideo ;
+            $row['DisplayVideo'] = $this->displayVideo;
 
-            if( $this->displayVideo  == "true")
-            {
-                $row['javascript'] = ' onclick="seektoTime('. $row['time'].')" ';
-
+            if ('true' == $this->displayVideo) {
+                $row['javascript'] = ' onclick="seektoTime('.$row['time'].')" ';
             }
             // $row['VIDEOINFO_EDIT_JS'] = Render::javascript(
-            //     Functions::$ChapterDir.'/chapter',
+            //     Functions::$MarkerDir.'/marker',
             //     [
-            //         'ChapterId'   => $row['chapterId'],
+            //         'MarkerId'   => $row['markerId'],
             //         'EDITABLE'  => $editableClass,
             //         'FUNCTION'  => $functionName,
             //         'VIDEO_KEY' => $this->id,
             //     ]
             // );
-            $html .= Render::html(Functions::$ChapterDir.'/chapterButton', $row);
+            $html .= Render::html(Functions::$MarkerDir.'/markerButton', $row);
         }
 
-        $buttonHtml = Render::html(Functions::$ChapterDir.'/chapterButtons', [ 'ChapterButtons' => $html]);
-        return $buttonHtml;
+        $buttonHtml = Render::html(Functions::$MarkerDir.'/markerButtons', ['MarkerButtons' => $html]);
 
+        return $buttonHtml;
     }
-    public function displayChapters()
+
+    public function displayMarkers()
     {
-        $html = $this->getChapterButtons();
-        return Render::html(Functions::$ChapterDir.'/chapter', [ 'ChapterButton' => $html]);
+        $html = $this->getMarkerButtons();
+
+        return Render::html(Functions::$MarkerDir.'/marker', ['MarkerButton' => $html]);
     }
 }

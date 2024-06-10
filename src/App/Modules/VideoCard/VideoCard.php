@@ -1,8 +1,10 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\VideoCard;
 
-use Plex\Modules\Chapter\Chapter;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\VideoCard\Traits\VideoRow;
 use Plex\Template\Render;
@@ -20,8 +22,8 @@ class VideoCard
     use VideoRow;
 
     public $showVideoDetails = false;
-    private $template_base = 'pages/Video/Card';
-    public static $template = 'pages/Video/Card';
+    private $template_base   = 'pages/Video/Card';
+    public static $template  = 'pages/Video/Card';
 
     public $AltClass;
     public $fileInfoArray;
@@ -43,16 +45,16 @@ class VideoCard
 
     public function VideoInfo($fileInfoArray, $total_files)
     {
-        $result_number = null;
-        $db = PlexSql::$DB;
+        $result_number       = null;
+        $db                  = PlexSql::$DB;
         $this->fileInfoArray = $fileInfoArray;
-        $this->params = [];
-        $table_body_html = [];
-        $row_id = $fileInfoArray['id'];
+        $this->params        = [];
+        $table_body_html     = [];
+        $row_id              = $fileInfoArray['id'];
         // $row_filename = $row_id.":".$row['filename'];
-        $row_filename = $fileInfoArray['filename'];
-        $row_fullpath = $fileInfoArray['fullpath'];
-        $row_video_key = $fileInfoArray['video_key'];
+        $row_filename              = $fileInfoArray['filename'];
+        $row_fullpath              = $fileInfoArray['fullpath'];
+        $row_video_key             = $fileInfoArray['video_key'];
         $this->params['video_key'] = $row_video_key;
 
         if (isset($fileInfoArray['rownum'])) {
@@ -72,12 +74,12 @@ class VideoCard
         }
 
         // $this->params['DELETE_ID']          = 'delete_'.$row_id;
-        $this->params['FILE_NAME_ID'] = $row_id.'_filename';
-        $this->params['FULL_PATH'] = $row_fullpath;
-        $this->params['FILE_ID'] = $row_id;
-        $this->params['WRAPPER_CLASS'] = 'm-3';
-        $this->params['RATING_WIDTH'] = 345;
-        $this->params['FavTextClass'] = 'text-start';
+        $this->params['FILE_NAME_ID']   = $row_id.'_filename';
+        $this->params['FULL_PATH']      = $row_fullpath;
+        $this->params['FILE_ID']        = $row_id;
+        $this->params['WRAPPER_CLASS']  = 'm-3';
+        $this->params['RATING_WIDTH']   = 345;
+        $this->params['FavTextClass']   = 'text-start';
         $this->params['RatingColWidth'] = 'visually-hidden';
         if (OptionIsTrue(SHOW_RATING)) {
             $this->params['FavTextClass'] = 'text-end';
@@ -85,16 +87,15 @@ class VideoCard
             $this->params['RatingColWidth'] = '';
         }
 
-
         if (OptionIsFalse(NAVBAR)) {
             $this->params['RatingColWidth'] = '';
-            $this->params['FavTextClass'] = 'text-end';
-            $this->params['WRAPPER_CLASS'] = 'm-0';
-            $this->params['RATING_WIDTH'] = 320;
+            $this->params['FavTextClass']   = 'text-end';
+            $this->params['WRAPPER_CLASS']  = 'm-0';
+            $this->params['RATING_WIDTH']   = 320;
             $this->params['DELETE_BUTTONS'] = Render::html(
                 $this->template_base.'/deletebuttons',
-                ['DELETE_ID' => Elements::add_hidden('id', $row_id, 'id="DorRvideoId"'),
-            'FILE_ID' => $row_id]);
+                ['DELETE_ID'  => Elements::add_hidden('id', $row_id, 'id="DorRvideoId"'),
+                    'FILE_ID' => $row_id]);
         }
 
         $fileArray = [
@@ -111,10 +112,10 @@ class VideoCard
             'format',
             'added',
         ];
-        $x = 0;
-        $this->params['FIELD_ROW_HTML'] = '';
+        $x                                 = 0;
+        $this->params['FIELD_ROW_HTML']    = '';
         $this->params['VIDEOINFO_EDIT_JS'] = '';
-        $this->videoid = $row_id;
+        $this->videoid                     = $row_id;
         foreach ($fileArray as $field) {
             if (\array_key_exists($field, $this->fileInfoArray)) {
                 if (null === $this->fileInfoArray[$field]) {
@@ -129,11 +130,11 @@ class VideoCard
                 }
             }
         }
-      //  $this->favorite($row_id);
+        //  $this->favorite($row_id);
 
         // utmdd($this->params['HIDDEN_STUDIO']);
-        $table_body_html['VIDEO'] = Render::html($this->template_base.'/Video', $this->params);
-        $table_body_html['VIDEO_KEY'] = $row_video_key;
+        $table_body_html['VIDEO']         = Render::html($this->template_base.'/Video', $this->params);
+        $table_body_html['VIDEO_KEY']     = $row_video_key;
         $table_body_html['HIDDEN_STUDIO'] = $row_studio;
 
         return $table_body_html;

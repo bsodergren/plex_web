@@ -13,11 +13,7 @@ use Plex\Modules\Playlist\Playlist;
 use Plex\Modules\Video\Player\Plyr;
 use Plex\Modules\Video\Playlist\Favorites;
 use Plex\Modules\Video\Playlist\PlyrList;
-use Plex\Modules\Chapter\Chapter;
 use Plex\Template\Render;
-use UTMTemplate\HTML\Elements;
-use Plex\Modules\VideoCard\VideoCard;
-
 
 class Player
 {
@@ -176,8 +172,6 @@ class Player
         $result['video_file'] = $this->getVideoURL($result['id']);
         $this->parseParams($result);
 
-
-
         // $this->params['PAGE_TITLE'] = $result['title'];
         // $this->params['thumbnail'] = APP_HOME.$result['thumbnail'];
 
@@ -186,8 +180,6 @@ class Player
         } else {
             $this->params['FAVORITE'] = FavoriteDisplay::addFavoriteVideo($this->id);
         }
-
-
 
         // $this->params['Video_studio'] = $result['studio'];
         // $this->params['Video_substudio'] = $result['substudio'];

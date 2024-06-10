@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Template\Functions;
 
@@ -7,9 +10,8 @@ use Plex\Modules\Playlist\Playlist;
 use Plex\Template\Functions\Modules\AlphaSort;
 use Plex\Template\Functions\Modules\metaFilters;
 use Plex\Template\Functions\Traits\Breadcrumbs;
+use Plex\Template\Functions\Traits\Markers;
 use Plex\Template\Functions\Traits\Navbar;
-use Plex\Template\Functions\Traits\Chapters;
-
 use Plex\Template\Functions\Traits\PageSort;
 use Plex\Template\Functions\Traits\TagCloud;
 use Plex\Template\Functions\Traits\ThemeSwitcher;
@@ -21,20 +23,20 @@ use UTMTemplate\HTML\Elements;
 class Functions extends Render
 {
     use Breadcrumbs;
+    use Markers;
     use Navbar;
     use PageSort;
     use Parser;
     use TagCloud;
     use ThemeSwitcher;
-    use Chapters;
 
     use Video;
 
-    public static $ElementsDir = 'elements';
-    public static $PlaylistDir = 'elements/Playlist';
-    public static $ChapterDir = 'elements/Chapters';
-    public static $ButtonDir = 'elements/Buttons';
-    public static $RatingsDir = 'elements/Rating';
+    public static $ElementsDir    = 'elements';
+    public static $PlaylistDir    = 'elements/Playlist';
+    public static $MarkerDir      = 'elements/Markers';
+    public static $ButtonDir      = 'elements/Buttons';
+    public static $RatingsDir     = 'elements/Rating';
     public static $BreadcrumbsDir = 'elements/Breadcrumb';
     public $playlist_id;
 
@@ -69,9 +71,9 @@ class Functions extends Render
 
     public function playListButton()
     {
-        $playlists = (new Playlist())->getPlaylistSelectOptions();
+        $playlists               = (new Playlist())->getPlaylistSelectOptions();
         $params['CANVAS_HEADER'] = Render::html(self::$ButtonDir.'/Playlist/canvas_header', []);
-        $params['CANVAS_BODY'] = Render::html(self::$ButtonDir.'/Playlist/canvas_body', ['SelectPlaylists' => $playlists]);
+        $params['CANVAS_BODY']   = Render::html(self::$ButtonDir.'/Playlist/canvas_body', ['SelectPlaylists' => $playlists]);
         // $params['CANVAS_BODY'] = Render::html('elements/Playlist/canvas_body', []);
 
         return Render::html(self::$ButtonDir.'/Playlist/canvas', $params);
@@ -81,6 +83,4 @@ class Functions extends Render
     {
         return (new AlphaSort())->displayAlphaBlock();
     }
-
-
 }

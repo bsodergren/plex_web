@@ -39,7 +39,7 @@
             {$FAVORITE}
         </div>
         <div class="col-auto">
-            {{function=showChapters|id={$Videoid}}}
+            {{function=showMarkers|id={$Videoid}}}
         </div>
     </div>
 
@@ -53,7 +53,7 @@
     {{javascript=plyr/simplebar.js}}
     {{javascript=plyr/app.js}}
 
-    {{template=pages/Video/Plyr/container/ChapterTooltip}}
+    {{template=pages/Video/Plyr/container/MarkerTooltip}}
 
 </body>
 {$VIDEO_JS}

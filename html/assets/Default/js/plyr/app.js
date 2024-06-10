@@ -34,10 +34,10 @@ const PlayerApp = {
             this.playVisibleItem();
             this.initialiseSimpleBar();
             this.selectFirstVisibleItem();
-            this.initialiseChapter();
+            this.initialiseMarker();
         } else {
             this.initializePlayerEventListeners();
-            this.initialiseChapter();
+            this.initialiseMarker();
             const leftColumn = document.querySelector(".col-sm-12.left");
             leftColumn.classList.toggle("expanded");
         }
@@ -353,7 +353,7 @@ const PlayerApp = {
         document.addEventListener("keydown", (event) => {
             if (event.target.tagName === "INPUT") {
                 if(event.key === "Enter"){
-                    addChapter();
+                    addMarker();
                 }
                 if(event.key === "Escape"){
                     const overlay = document.getElementById("popupOverlay");
@@ -434,7 +434,7 @@ const PlayerApp = {
             console.log(event.target.tagName);
             if (event.target.tagName === "INPUT") {
                 if(event.key === "Enter"){
-                    addChapter();
+                    addMarker();
                 }
                 if(event.key === "Escape"){
                     const overlay = document.getElementById("popupOverlay");
@@ -490,7 +490,7 @@ const PlayerApp = {
         // resizeWindow(true,track.width , track.height)
         // resize();
         updateFavVideo(item.getAttribute("data-videoid"));
-        updateVideoChapters(item.getAttribute("data-videoid"));
+        updateVideoMarkers(item.getAttribute("data-videoid"));
     },
 
     /**
@@ -737,7 +737,7 @@ const PlayerApp = {
         }
     },
 
-    initialiseChapter() {
+    initialiseMarker() {
         var playlerText = document.querySelector(
             ".player_container .player_text"
         );
@@ -814,13 +814,13 @@ function togglePopup(x_pos, y_pos, videoId, timeCode) {
     overlay.style.left = x_pos + "px";
     overlay.style.top = y_pos + "px";
 
-    videoIdInput = document.getElementById("chapterVideoid");
+    videoIdInput = document.getElementById("markerVideoid");
     videoIdInput.value = videoId;
 
-    IdInput = document.getElementById("chapterId");
+    IdInput = document.getElementById("markerId");
     IdInput.value = videoId;
 
-    timeCodeInput = document.getElementById("chapterTimeCode");
+    timeCodeInput = document.getElementById("markerTimeCode");
     timeCodeInput.value = timeCode;
 
     console.log(x_pos, y_pos, videoId, timeCode);
@@ -974,12 +974,12 @@ function formatTime(timeInSeconds) {
     };
 }
 
-function addChapter() {
-    var action = document.getElementById("chapterAction").value;
+function addMarker() {
+    var action = document.getElementById("markerAction").value;
 
-    var timeCode = document.getElementById("chapterTimeCode");
-    var videoid = document.getElementById("chapterVideoid").value;
-    var playlistid = document.getElementById("chapterPlaylistId").value;
+    var timeCode = document.getElementById("markerTimeCode");
+    var videoid = document.getElementById("markerVideoid").value;
+    var playlistid = document.getElementById("markerPlaylistId").value;
     var name = document.getElementById("name");
 
     $.ajax({
@@ -996,7 +996,7 @@ function addChapter() {
         },
         cache: false,
         success: function (data) {
-            const videoCell = document.getElementById("videoChapterList");
+            const videoCell = document.getElementById("videoMarkerList");
             videoCell.innerHTML = data;
             name.value = '';
             timeCode.value = '';

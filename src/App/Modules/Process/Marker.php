@@ -5,15 +5,15 @@
 
 namespace Plex\Modules\Process;
 
-use Plex\Modules\Chapter\Chapter as Chapters;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Process\Traits\DbWrapper;
+use Plex\Modules\Video\Markers\Markers;
 
-class Chapter extends Forms
+class Marker extends Forms
 {
     use DbWrapper;
     public object $db;
-    public object $Chapters;
+    public object $Markers;
     public $data;
     public $library;
     public $playlist_id;
@@ -31,15 +31,15 @@ class Chapter extends Forms
         if (isset($data['id'])) {
             $this->id = $data['id'];
         }
-        $this->Chapters = new Chapters($data);
+        $this->Markers = new Markers($data);
     }
 
-    public function getChapterVideos()
+    public function getMarkerVideos()
     {
-        return $this->Chapters->getChapterButtons();
+        return $this->Markers->getMarkerButtons();
     }
 
-    public function addChapterVideo()
+    public function addMarkerVideo()
     {
         $data = [
             'timeCode' => $this->data['timeCode'],
@@ -48,7 +48,7 @@ class Chapter extends Forms
         ];
         $res = $this->db->insert(Db_TABLE_VIDEO_CHAPTER, $data);
 
-        return $this->getChapterVideos();
+        return $this->getMarkerVideos();
         //     $urlQuery = '?id='.$this->data['videoId'];
 
         //     if (\array_key_exists('playlistid', $this->data)) {
@@ -61,32 +61,29 @@ class Chapter extends Forms
         //     exit;
     }
 
-    public function updateChapter()
+    public function updateMarker()
     {
-        if (\array_key_exists('chapterText', $this->data))
-        {
-            $chapterText = $this->data['chapterText'];
-            if (\array_key_exists('chapterId', $this->data))
-            {
-                $chapterId = $this->data['chapterId'];
-                $sql = 'UPDATE '.Db_TABLE_VIDEO_CHAPTER." SET name = '".$chapterText."' WHERE id = ".$chapterId.'';
+        if (\array_key_exists('markerText', $this->data)) {
+            $markerText = $this->data['markerText'];
+            if (\array_key_exists('markerId', $this->data)) {
+                $markerId = $this->data['markerId'];
+                $sql      = 'UPDATE '.Db_TABLE_VIDEO_CHAPTER." SET name = '".$markerText."' WHERE id = ".$markerId.'';
                 $this->db->query($sql);
             }
         }
 
-        return $this->getChapterVideos();
+        return $this->getMarkerVideos();
     }
 
-    public function deleteChapter()
+    public function deleteMarker()
     {
-        if (\array_key_exists('chapterId', $this->data))
-        {
-            $chapterId = $this->data['chapterId'];
-            $sql       = 'DELETE FROM '.Db_TABLE_VIDEO_CHAPTER.' WHERE id = '.$chapterId;
+        if (\array_key_exists('markerId', $this->data)) {
+            $markerId  = $this->data['markerId'];
+            $sql       = 'DELETE FROM '.Db_TABLE_VIDEO_CHAPTER.' WHERE id = '.$markerId;
             utmdump($sql);
             $this->db->query($sql);
         }
 
-        return $this->getChapterVideos();
+        return $this->getMarkerVideos();
     }
 }

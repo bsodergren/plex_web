@@ -1,30 +1,28 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\VideoCard\Traits;
 
 use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
-use Plex\Modules\Database\FavoriteDB;
-use Plex\Modules\Display\FavoriteDisplay;
-
 
 trait VideoRow
 {
-
-
-   public static function videoDuration($duration)
+    public static function videoDuration($duration)
     {
-        $seconds = intval(round($duration / 1000));
-        $secs = $seconds % 60;
-        $hrs = $seconds / 60;
-        $hrs = floor($hrs);
-        $mins = $hrs % 60;
-        $hrs = $hrs / 60;
+        $seconds = (int) round($duration / 1000);
+        $secs    = $seconds % 60;
+        $hrs     = $seconds / 60;
+        $hrs     = floor($hrs);
+        $mins    = $hrs % 60;
+        $hrs /= 60;
 
         return sprintf('%02d:%02d:%02d', $hrs, $mins, $secs);
     }
 
-   public static function display_size($bytes, $precision = 2)
+    public static function display_size($bytes, $precision = 2)
     {
         $units = [
             'B',
@@ -35,7 +33,7 @@ trait VideoRow
         ];
         $bytes = max($bytes, 0);
         $pow   = floor(($bytes ? log($bytes) : 0) / log(1024));
-        $pow   = min($pow, count($units) - 1);
+        $pow   = min($pow, \count($units) - 1);
         $bytes /= (1 << (10 * $pow));
 
         return round($bytes, $precision).'<span class="fs-0-8 bold">'.$units[$pow].'</span>';
@@ -67,22 +65,20 @@ trait VideoRow
         return sprintf('%4.2f TB', $size / 1073741824);
     } // end byte_convert()
 
-
-    public function ChapterRow()
+    public function MarkerRow()
     {
-        $this->params['FIELD_ROW_HTML'] .= Render::html($this->template_base.'/Rows/Chapters',
-        ['ChapterButtons' => $this->Chapters->getChapterButtons()]);
+        $this->params['FIELD_ROW_HTML'] .= Render::html($this->template_base.'/Rows/Markers',
+            ['MarkerButtons' => $this->Markers->getMarkerButtons()]);
     }
 
-
-    private function metaValue($key,$cloud = false)
+    private function metaValue($key, $cloud = false)
     {
         $value = $this->fileInfoArray[$key];
         $value = trim($value);
         $value = str_replace(__PLEX_LIBRARY__.'/', '', $value);
 
         if (OptionIsTrue(NAVBAR)) {
-            if($cloud === true){
+            if (true === $cloud) {
                 $value = $this->keyword_list($key, $value);
             }
         }
@@ -90,29 +86,27 @@ trait VideoRow
         return $value;
     }
 
-
-    public function row($field, $value, $id = '',$editable = false)
+    public function row($field, $value, $id = '', $editable = false)
     {
-
         // utmdump( $this->videoid);
-        $editableClass = '';
+        $editableClass  = '';
         $editableBorder = '';
-            if ('' != $id) {
-                if ($editable === true) {
-                    $id = ucfirst($id);
-                    $editableClass = $id;
-                 //  $editableBorder = '  border-bottom border-4 border-info ';
-                }
+        if ('' != $id) {
+            if (true === $editable) {
+                $id            = ucfirst($id);
+                $editableClass = $id;
+                //  $editableBorder = '  border-bottom border-4 border-info ';
             }
+        }
 
         $this->params['FIELD_ROW_HTML'] .= Render::html(
             $this->template_base.'/Rows/row',
             [
-                'FIELD' => $field,
-                'VALUE' => $value,
-                'ALT_CLASS' => $this->AltClass,
-                'EDITABLE' => $editableClass,
-                'VideoId' =>  $this->videoid,
+                'FIELD'           => $field,
+                'VALUE'           => $value,
+                'ALT_CLASS'       => $this->AltClass,
+                'EDITABLE'        => $editableClass,
+                'VideoId'         => $this->videoid,
                 'EDITABLE_BORDER' => $editableBorder,
             ]
         );
@@ -127,10 +121,10 @@ trait VideoRow
             [
                 'DUR_FIELD' => 'Duration',
                 'DUR_VALUE' => $duration,
-                'FS_FIELD' => $field,
-                'FS_VALUE' => $value,
+                'FS_FIELD'  => $field,
+                'FS_VALUE'  => $value,
                 'ALT_CLASS' => $this->AltClass,
-                'EDITABLE' => $editable,
+                'EDITABLE'  => $editable,
             ]
         );
     }
@@ -142,53 +136,49 @@ trait VideoRow
         }
 
         $link_array = [];
-        $value = '';
+        $value      = '';
         $list_array = explode(',', $list);
 
         foreach ($list_array as $k => $keyword) {
-            $keyword = trim($keyword);
+            $keyword      = trim($keyword);
             $link_array[] = Render::html(
                 $this->template_base.'/search_link',
                 [
-                    'KEY' => $key,
-                    'QUERY' => urlencode($keyword),
+                    'KEY'      => $key,
+                    'QUERY'    => urlencode($keyword),
                     'URL_TEXT' => $keyword,
                     //  'CLASS'    => ' class="badge fs-6 blueTable-thead" ',
                 ]
             );
         }
+
         return implode('  ', $link_array);
     }
 
-
-    public function Artistrow($key,$cloud = false)
+    public function Artistrow($key, $cloud = false)
     {
-
         $value = $this->fileInfoArray[$key];
         $value = trim($value);
+
         return Render::html(
             $this->template_base.'/Rows/artist',
             [
                 'Artist_Name_txt' => $value,
-                'Artist_Name' => urlencode($value),
+                'Artist_Name'     => urlencode($value),
                 //  'CLASS'    => ' class="badge fs-6 blueTable-thead" ',
             ]
         );
         // utmdump($value);
-
     }
-
-
-
 
     public function cloudRow($key)
     {
-        $this->row(ucfirst($key), $this->metaValue($key,true), $key,true);
+        $this->row(ucfirst($key), $this->metaValue($key, true), $key, true);
     }
 
     public function metaRow($key)
     {
-        $this->row(ucfirst($key), $this->metaValue($key), $key,true);
+        $this->row(ucfirst($key), $this->metaValue($key), $key, true);
     }
 
     public function info($key)
@@ -203,7 +193,6 @@ trait VideoRow
 
     public function Studio($key)
     {
-
         $this->params['HIDDEN_STUDIO'] = Elements::add_hidden(strtolower($key), $this->metaValue($key));
 
         $this->cloudRow($key);
@@ -242,7 +231,6 @@ trait VideoRow
 
     public function Fullpath($key)
     {
-
         $filename = $this->metaValue('filename');
         $fullpath = $this->metaValue('fullpath');
 
@@ -253,7 +241,7 @@ trait VideoRow
             $class_missing = 'bg-danger';
         }
 
-        $this->row(ucfirst($key), $full_filename, 'fullpath',true);
+        $this->row(ucfirst($key), $full_filename, 'fullpath', true);
         $this->params['FILE_MISSING'] = $class_missing;
     }
 
@@ -273,7 +261,7 @@ trait VideoRow
             'format',
         ];
         foreach ($fileInfo as $key) {
-            $value = $this->metaValue($key);
+            $value                        = $this->metaValue($key);
             $infoParams[strtoupper($key)] = $value;
         }
 
@@ -288,5 +276,4 @@ trait VideoRow
         }
         // }
     }
-
 }
