@@ -13,7 +13,7 @@
 }
 .styles_link_triangle {
     position: relative;
-    /* margin: 0 20px 5px 0; */
+    margin: 0 10px 5px 0;
     height: 23px;
     user-select: none;
 }
@@ -29,7 +29,8 @@
 
 .ButtonLink {
     font-family: Hind;
-    /* background: linear-gradient(#01f4e0, #09c6cd); */
+    /* background: linear-gradient(#000000, #535353); */
+    opacity: .5;
     /* color: #0a0a0c; */
     text-decoration: none;
     /* border: #09c6cd 1px solid; */

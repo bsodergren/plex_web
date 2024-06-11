@@ -44,7 +44,7 @@ class Marker extends Forms
         $data = [
             'timeCode' => $this->data['timeCode'],
             'video_id' => $this->data['videoId'],
-            'name'     => $this->data['name'],
+            'markerText'     => $this->data['markerText'],
         ];
         $res = $this->db->insert(Db_TABLE_VIDEO_CHAPTER, $data);
 
@@ -67,7 +67,7 @@ class Marker extends Forms
             $markerText = $this->data['markerText'];
             if (\array_key_exists('markerId', $this->data)) {
                 $markerId = $this->data['markerId'];
-                $sql      = 'UPDATE '.Db_TABLE_VIDEO_CHAPTER." SET name = '".$markerText."' WHERE id = ".$markerId.'';
+                $sql      = 'UPDATE '.Db_TABLE_VIDEO_CHAPTER." SET markerText = '".$markerText."' WHERE id = ".$markerId.'';
                 $this->db->query($sql);
             }
         }

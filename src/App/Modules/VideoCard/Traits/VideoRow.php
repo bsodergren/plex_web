@@ -10,9 +10,9 @@ use UTMTemplate\HTML\Elements;
 
 trait VideoRow
 {
-    public static function videoDuration($duration)
+    public static function videoDuration($duration,$round=1000)
     {
-        $seconds = (int) round($duration / 1000);
+        $seconds = (int) round($duration / $round);
         $secs    = $seconds % 60;
         $hrs     = $seconds / 60;
         $hrs     = floor($hrs);

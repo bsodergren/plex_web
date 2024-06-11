@@ -1,3 +1,11 @@
+var delay = (function () {
+    var timer = 0;
+    return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+
 var curVolume = getCookie("playerVolCookie");
 if (curVolume == null) {
     curVolume = 0.5;
@@ -41,6 +49,10 @@ const PlayerApp = {
             const leftColumn = document.querySelector(".col-sm-12.left");
             leftColumn.classList.toggle("expanded");
         }
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        this.videoTimeCode = urlParams.get("tc");
     },
 
     /**
@@ -352,15 +364,15 @@ const PlayerApp = {
 
         document.addEventListener("keydown", (event) => {
             if (event.target.tagName === "INPUT") {
-                if(event.key === "Enter"){
+                if (event.key === "Enter") {
                     addMarker();
                 }
-                if(event.key === "Escape"){
+                if (event.key === "Escape") {
                     const overlay = document.getElementById("popupOverlay");
                     overlay.classList.toggle("show");
                 }
                 return;
-              }
+            }
             // console.log(event.key);
             if (event.key === "n") {
                 this.playVisibleItem("next");
@@ -382,6 +394,13 @@ const PlayerApp = {
 
         this.player.on("ready", () => {
             this.player.play();
+            delay(function () {
+                if (PlayerApp.videoTimeCode != "") {
+                    PlayerApp.player.currentTime = Number(
+                        PlayerApp.videoTimeCode
+                    );
+                }
+            }, 500);
         });
 
         this.player.on("controlshidden", () => {
@@ -433,17 +452,17 @@ const PlayerApp = {
         document.addEventListener("keydown", (event) => {
             console.log(event.target.tagName);
             if (event.target.tagName === "INPUT") {
-                if(event.key === "Enter"){
+                if (event.key === "Enter") {
                     addMarker();
                 }
-                if(event.key === "Escape"){
+                if (event.key === "Escape") {
                     const overlay = document.getElementById("popupOverlay");
                     overlay.classList.toggle("show");
                 }
                 return;
-              }
+            }
             if (event.key === "n") {
-               this.playNewVideo(playlerText.getAttribute("data-videoid"));
+                this.playNewVideo(playlerText.getAttribute("data-videoid"));
             }
         });
     },
@@ -803,8 +822,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener("resize", resize, false);
 
-
-
 // video.height = 100; /* to get an initial width to work with*/
 function togglePopup(x_pos, y_pos, videoId, timeCode) {
     y_pos = y_pos - 50;
@@ -824,7 +841,6 @@ function togglePopup(x_pos, y_pos, videoId, timeCode) {
     timeCodeInput.value = timeCode;
 
     console.log(x_pos, y_pos, videoId, timeCode);
-
 }
 
 function resize() {
@@ -980,7 +996,7 @@ function addMarker() {
     var timeCode = document.getElementById("markerTimeCode");
     var videoid = document.getElementById("markerVideoid").value;
     var playlistid = document.getElementById("markerPlaylistId").value;
-    var name = document.getElementById("name");
+    var markerText = document.getElementById("markerText");
 
     $.ajax({
         url: "process.php",
@@ -991,15 +1007,15 @@ function addMarker() {
             id: videoid,
             timeCode: timeCode.value,
             playlist_id: playlistid,
-            name: name.value,
+            markerText: markerText.value,
             exit: true,
         },
         cache: false,
         success: function (data) {
             const videoCell = document.getElementById("videoMarkerList");
             videoCell.innerHTML = data;
-            name.value = '';
-            timeCode.value = '';
+            markerText.value = "";
+            timeCode.value = "";
 
             const overlay = document.getElementById("popupOverlay");
             overlay.classList.toggle("show");

@@ -69,6 +69,11 @@ tag:
     text: !php/const NavBar_Text_Tags
     icon: fa-tag
     studio: false
+marker:
+    url: markers.php
+    text: !php/const NavBar_Text_Markers
+    icon: fa-tag
+    studio: false
 artist:
     url: artist.php
     text: !php/const NavBar_Text_Artists

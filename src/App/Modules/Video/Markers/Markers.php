@@ -5,9 +5,10 @@
 
 namespace Plex\Modules\Video\Markers;
 
-use Plex\Modules\Database\PlexSql;
-use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
+use Plex\Modules\Database\PlexSql;
+use Plex\Modules\VideoCard\VideoCard;
+use Plex\Template\Functions\Functions;
 
 class Markers
 {
@@ -55,13 +56,13 @@ class Markers
             $this->db->orderBy('timeCode', 'ASC');
             $search_result = $this->db->get(Db_TABLE_VIDEO_CHAPTER);
             foreach ($search_result as $i => $row) {
-                if (null === $row['name']) {
-                    $row['name'] = 'Timestamp';
+                if (null === $row['markerText']) {
+                    $row['markerText'] = 'Timestamp';
                 }
 
                 $this->markerIndex[] = [
                     'time'     => $row['timeCode'],
-                    'label'    => $row['name'],
+                    'markerText'    => $row['markerText'],
                     'markerId' => $row['id'],
                 ];
             }
@@ -86,9 +87,18 @@ class Markers
             $row['javascript'] = '';
 
             $row['DisplayVideo'] = $this->displayVideo;
+            $row['DurationText'] = VideoCard::videoDuration($row['time'],1);
 
             if ('true' == $this->displayVideo) {
                 $row['javascript'] = ' onclick="seektoTime('.$row['time'].')" ';
+            } else {
+
+                $window = 'video_popup';
+                $url = __URL_HOME__.'/video.php?id='.$this->id."&tc=".$row['time'];
+                $row['javascript'] = " onclick=\"popup('".$url."', '".$window."')\"";
+
+
+//                $row['javascript'] = ' onclick="('.$row['time'].')" ';
             }
             // $row['VIDEOINFO_EDIT_JS'] = Render::javascript(
             //     Functions::$MarkerDir.'/marker',

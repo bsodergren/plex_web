@@ -1,10 +1,14 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Template\Functions\Traits;
 
 use Plex\Core\RoboLoader;
 use Plex\Modules\Display\Display;
 use Plex\Template\Render;
+use UTMTemplate\Template;
 
 trait ThemeSwitcher
 {
@@ -22,15 +26,15 @@ trait ThemeSwitcher
 
     public function themeSwitcher($matches)
     {
-        $css_dir = __LAYOUT_PATH__.'/css/themes/';
-        $files = RoboLoader::get_filelist($css_dir, 'bootstrap.min.css', 0);
-
+        $css_dir = Template::$ASSETS_PATH.'/css/themes/';
+        $files   = RoboLoader::get_filelist($css_dir, 'bootstrap.min.css', 0);
+$css_html = '';
         foreach ($files as $stylesheet) {
             $dirArray = explode('/', $stylesheet);
             array_pop($dirArray);
-            $theme = end($dirArray);
+            $theme                 = end($dirArray);
             Display::$CSS_THEMES[] = $theme;
-            $stylesheet = str_replace(__LAYOUT_PATH__, __LAYOUT_URL__, $stylesheet);
+            $stylesheet            = str_replace(Template::$ASSETS_PATH, Template::$ASSETS_URL, $stylesheet);
 
             $css_html .= Render::html($this->ThemeSwitcherDir.'/stylesheet', ['CSS_NAME' => $theme, 'CSS_URL' => $stylesheet]);
         }
