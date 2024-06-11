@@ -9,7 +9,6 @@ function markerEditor() {
 
 
             editBox = data.$el[0].id;
-            writeLog(editBox)
             const editBoxArr = editBox.split("_");
             var metafield = editBoxArr[0];
             var videoId = editBoxArr[1];
@@ -39,7 +38,6 @@ function markerEditor() {
                         }),
                         success: function (data) {
                             const videoCell = document.getElementById("videoMarkerList");
-                            console.log(videoCell)
                            // if (videoCell != null) {
                                 videoCell.innerHTML = data;
                            // }

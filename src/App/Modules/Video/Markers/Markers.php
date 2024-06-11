@@ -5,10 +5,10 @@
 
 namespace Plex\Modules\Video\Markers;
 
-use Plex\Template\Render;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\VideoCard\VideoCard;
 use Plex\Template\Functions\Functions;
+use Plex\Template\Render;
 
 class Markers
 {
@@ -61,9 +61,9 @@ class Markers
                 }
 
                 $this->markerIndex[] = [
-                    'time'     => $row['timeCode'],
+                    'time'          => $row['timeCode'],
                     'markerText'    => $row['markerText'],
-                    'markerId' => $row['id'],
+                    'markerId'      => $row['id'],
                 ];
             }
         }
@@ -79,36 +79,24 @@ class Markers
             return '';
         }
         foreach ($index as $i => $row) {
-            // $editableClass = 'edit'.$row['time'];
-            // $functionName  = 'make'.$row['time'].'Editable';
-
             $row['MarkerId']   =  $row['markerId'];
+            $row['timeCode']   =  $row['time'];
             $row['videoId']    =  $this->id;
             $row['javascript'] = '';
 
             $row['DisplayVideo'] = $this->displayVideo;
-            $row['DurationText'] = VideoCard::videoDuration($row['time'],1);
+            $row['DurationText'] = VideoCard::videoDuration($row['time'], 1);
+
 
             if ('true' == $this->displayVideo) {
                 $row['javascript'] = ' onclick="seektoTime('.$row['time'].')" ';
             } else {
-
-                $window = 'video_popup';
-                $url = __URL_HOME__.'/video.php?id='.$this->id."&tc=".$row['time'];
+                $window            = 'video_popup';
+                $url               = __URL_HOME__.'/video.php?id='.$this->id.'&tc='.$row['time'];
                 $row['javascript'] = " onclick=\"popup('".$url."', '".$window."')\"";
 
-
-//                $row['javascript'] = ' onclick="('.$row['time'].')" ';
             }
-            // $row['VIDEOINFO_EDIT_JS'] = Render::javascript(
-            //     Functions::$MarkerDir.'/marker',
-            //     [
-            //         'MarkerId'   => $row['markerId'],
-            //         'EDITABLE'  => $editableClass,
-            //         'FUNCTION'  => $functionName,
-            //         'VIDEO_KEY' => $this->id,
-            //     ]
-            // );
+
             $html .= Render::html(Functions::$MarkerDir.'/markerButton', $row);
         }
 

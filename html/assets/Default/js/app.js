@@ -1,10 +1,17 @@
- function writeLog (msg) {
+var delay = (function () {
+    var timer = 0;
+    return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+
+function writeLog(msg) {
     let date = new Date();
     // console.log (writeLog.caller.callee)
-    console.trace (msg)
+    console.trace(msg);
     // window.console.log(date.toISOString() + " " + msg);
 }
-
 
 function editPlaceholder(id) {
     var x = document.getElementById(id).placeholder;
@@ -131,67 +138,3 @@ function FavoriteVideo(action, videoid = null) {
         },
     });
 }
-
-function updateFavVideo(videoid) {
-    // const playervideoid = document.querySelector('.player_text')
-    // videoid = playervideoid.getAttribute('data-videoid')
-
-    $.ajax({
-        url: "process.php",
-        type: "POST",
-        data: {
-            action: "isFavorite",
-            videoId: videoid,
-        },
-        cache: false,
-        success: function (data) {
-            const videoCell = document.getElementById("FavoriteButton");
-            if (videoCell != null) {
-                videoCell.innerHTML = data;
-            }
-        },
-    });
-}
-
-function updateVideoChapters(videoid) {
-    // const playervideoid = document.querySelector('.player_text')
-    // videoid = playervideoid.getAttribute('data-videoid')
-
-    $.ajax({
-        url: "process.php",
-        type: "POST",
-        data: {
-            action: "getChapter",
-            id: videoid,
-        },
-        cache: false,
-        success: function (data) {
-            const videoCell = document.getElementById("videoChapterList");
-            console.log(videoCell)
-           // if (videoCell != null) {
-                videoCell.innerHTML = data;
-           // }
-        },
-    });
-}
-
-// function addChapter(action, videoid = null) {
-//     // console.log(action + ' ' + videoid)
-//     $.ajax({
-//         url: "process.php",
-//         type: "POST",
-//         data: {
-//             action: action,
-//             videoId: videoid,
-//             exit: true,
-//         },
-//         cache: false,
-//         success: function (data) {
-//             const videoCell = document.getElementById("videoChapterList");
-//             console.log(videoCell)
-//            // if (videoCell != null) {
-//                 videoCell.innerHTML = data;
-//            // }
-//         },
-//     });
-// }

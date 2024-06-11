@@ -1,18 +1,3 @@
-var delay = (function () {
-    var timer = 0;
-    return function (callback, ms) {
-        clearTimeout(timer);
-        timer = setTimeout(callback, ms);
-    };
-})();
-
-var curVolume = getCookie("playerVolCookie");
-if (curVolume == null) {
-    curVolume = 0.5;
-} else {
-    curVolume = curVolume / 100;
-}
-console.log("current volume " + curVolume);
 
 const PlayerApp = {
     playlist: null,
@@ -28,6 +13,14 @@ const PlayerApp = {
         // Get the DOM element
         this.playlist = document.getElementById("playlist");
         this.playerContainer = document.getElementById("player_container");
+
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        this.videoTimeCode = urlParams.get("tc");
+
+
+
         // prepare objects
         this.createPlayer();
 
@@ -36,7 +29,7 @@ const PlayerApp = {
             this.populateAccordionContent();
             this.initializeEventListeners();
             this.showAllPlaylistItems();
-            this.initializePlPlayerEventListeners();
+            this.initializePlaylistPlayerEventListeners();
             this.initializePlaylistIcon();
             this.initializeSearch();
             this.playVisibleItem();
@@ -50,9 +43,6 @@ const PlayerApp = {
             leftColumn.classList.toggle("expanded");
         }
 
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        this.videoTimeCode = urlParams.get("tc");
     },
 
     /**
@@ -163,16 +153,16 @@ const PlayerApp = {
             i18n: {
                 restart: "Restart",
             },
-            // tooltips: {
-            //   controls: true,
-            //   seek: true
-            // },
+            tooltips: {
+              controls: true,
+              seek: true
+            },
             autoplay: false,
-            seekTime: 30,
+            seekTime: 10,
             volume: curVolume,
             clickToPlay: true,
             hideControlsOnPause: false,
-            hideControls: true,
+            hideControls: false,
             disableContextMenu: true,
             storage: {
                 enabled: false,
@@ -260,15 +250,143 @@ const PlayerApp = {
     /**
      * Initializes event listeners for the Plyr player.
      */
-    initializePlPlayerEventListeners() {
+    PlayerCommonEvents(playlist) {
+        const playlistIcon = document.querySelector(".playlist-icon");
+
+        var playerText = document.querySelector(
+            ".player_container .player_text"
+        );
+
+        this.player.on("ready", () => {
+            this.player.play();
+            updateFavVideo(playerText.getAttribute("data-videoid"));
+            updateVideoMarkers(playerText.getAttribute("data-videoid"));
+
+            delay(function () {
+                if (PlayerApp.videoTimeCode != "") {
+                    PlayerApp.player.currentTime = Number(
+                        PlayerApp.videoTimeCode
+                    );
+                }
+            }, 500);
+        });
+
+        this.player.on("controlshidden", () => {
+            //this.player.play();
+            if (playerText != null) {
+                if (playlist === true) {
+                    playlistIcon.classList.add("hidden");
+                    playerText.classList.add("hidden");
+                } else {
+                    // playerText.classList.add("hidden");
+                }
+            }
+        });
+        this.player.on("controlsshown", () => {
+            //this.player.play();
+            if (playerText != null) {
+                // playlistIcon.classList.remove("hidden");
+                // playerText.classList.remove("hidden");
+            }
+        });
+
+        this.player.on("ended", () => {
+            if (playlist === true) {
+                this.playVisibleItem("next");
+            } else {
+                this.playNewVideo(playerText.getAttribute("data-videoid"));
+            }
+
+            resize();
+        });
+
+        this.player.on("progress", () => {
+            document
+                .querySelector(".player_container")
+                .classList.add("loading");
+        });
+
+        this.player.off("canplaythrough", () => {
+            document
+                .querySelector(".player_container")
+                .classList.remove("loading");
+        });
+
+        this.player.off("canplay", () => {
+            document
+                .querySelector(".player_container")
+                .classList.remove("loading");
+        });
+
+        const parentElement = document.querySelector(".player_container");
+
+
+        parentElement.addEventListener("mousemove",(event) => {
+            this.mousePos_x = event.x
+            this.mousePos_y = event.y
+        });
+
+
+        parentElement.addEventListener("click", (event) => {
+            if (event.target.matches('button[data-plyr="next"]')) {
+                if (playlist === true) {
+                    this.playVisibleItem("next");
+                } else {
+                    this.playNewVideo(playerText.getAttribute("data-videoid"));
+                }
+            }
+
+            if (event.target.matches('button[data-plyr="prev"]')) {
+                this.playVisibleItem("prev");
+            }
+        });
+
+        document.addEventListener("keydown", (event) => {
+
+            if (event.target.tagName === "INPUT") {
+                if (event.key === "Enter") {
+                    addMarker();
+                }
+                if (event.key === "Escape") {
+                    const overlay = document.getElementById("popupOverlay");
+                    overlay.classList.toggle("show");
+                }
+                if (event.key === "m") {
+                    event.preventDefault();
+
+                    this.getMarkerTimeCode(event);
+                    // addMarker();
+                }
+                return;
+            }
+            if (event.target.tagName === "BODY") {
+                if (event.key === "m") {
+                    event.preventDefault();
+
+                    this.getMarkerTimeCode(event);
+                    // addMarker();
+                }
+                return;
+            }
+            if (event.key === "n") {
+                if (playlist === true) {
+                    this.playVisibleItem("next");
+                } else {
+                    this.playNewVideo(playerText.getAttribute("data-videoid"));
+                }
+            }
+            if (event.key === "p") {
+                this.playVisibleItem("prev");
+            }
+        });
+    },
+
+    initializePlaylistPlayerEventListeners() {
         // begin player Ready Count
         var readyCount = 0;
 
         // Get the currently playing track
 
-        this.player.on("ready", () => {
-            this.player.play();
-        });
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const videoid = urlParams.get("id");
@@ -295,51 +413,6 @@ const PlayerApp = {
             }
             readyCount++;
         });
-
-        const playlistIcon = document.querySelector(".playlist-icon");
-
-        var playlerText = document.querySelector(
-            ".player_container .player_text"
-        );
-
-        this.player.on("controlshidden", () => {
-            //this.player.play();
-            if (playlerText != null) {
-                playlistIcon.classList.add("hidden");
-                playlerText.classList.add("hidden");
-            }
-        });
-        this.player.on("controlsshown", () => {
-            //this.player.play();
-            if (playlerText != null) {
-                // playlistIcon.classList.remove("hidden");
-                // playlerText.classList.remove("hidden");
-            }
-        });
-
-        this.player.on("ended", () => {
-            this.playVisibleItem("next");
-            resize();
-        });
-
-        this.player.on("progress", () => {
-            document
-                .querySelector(".player_container")
-                .classList.add("loading");
-        });
-
-        this.player.off("canplaythrough", () => {
-            document
-                .querySelector(".player_container")
-                .classList.remove("loading");
-        });
-
-        this.player.off("canplay", () => {
-            document
-                .querySelector(".player_container")
-                .classList.remove("loading");
-        });
-
         this.playlistItems.forEach((item) => {
             item.addEventListener("click", () => {
                 const index = this.playlistItems.indexOf(item);
@@ -347,40 +420,7 @@ const PlayerApp = {
                 this.handlePlaylistItemClick(item, track);
             });
         });
-
-        const parentElement = document.querySelector(".player_container");
-
-        parentElement.addEventListener("click", (event) => {
-            console.log(event);
-
-            if (event.target.matches('button[data-plyr="next"]')) {
-                this.playVisibleItem("next");
-            }
-
-            if (event.target.matches('button[data-plyr="prev"]')) {
-                this.playVisibleItem("prev");
-            }
-        });
-
-        document.addEventListener("keydown", (event) => {
-            if (event.target.tagName === "INPUT") {
-                if (event.key === "Enter") {
-                    addMarker();
-                }
-                if (event.key === "Escape") {
-                    const overlay = document.getElementById("popupOverlay");
-                    overlay.classList.toggle("show");
-                }
-                return;
-            }
-            // console.log(event.key);
-            if (event.key === "n") {
-                this.playVisibleItem("next");
-            }
-            if (event.key === "p") {
-                this.playVisibleItem("prev");
-            }
-        });
+        this.PlayerCommonEvents(true);
     },
 
     /**
@@ -388,83 +428,8 @@ const PlayerApp = {
      */
     initializePlayerEventListeners() {
         // Get the currently playing track
-        var playlerText = document.querySelector(
-            ".player_container .player_text"
-        );
 
-        this.player.on("ready", () => {
-            this.player.play();
-            delay(function () {
-                if (PlayerApp.videoTimeCode != "") {
-                    PlayerApp.player.currentTime = Number(
-                        PlayerApp.videoTimeCode
-                    );
-                }
-            }, 500);
-        });
-
-        this.player.on("controlshidden", () => {
-            //this.player.play();
-            if (playlerText != null) {
-                playlerText.classList.add("hidden");
-            }
-        });
-        this.player.on("controlsshown", () => {
-            //this.player.play();
-            if (playlerText != null) {
-                //  playlerText.classList.remove("hidden");
-            }
-        });
-
-        this.player.on("progress", () => {
-            document
-                .querySelector(".player_container")
-                .classList.add("loading");
-        });
-
-        this.player.off("canplaythrough", () => {
-            document
-                .querySelector(".player_container")
-                .classList.remove("loading");
-        });
-
-        this.player.off("canplay", () => {
-            document
-                .querySelector(".player_container")
-                .classList.remove("loading");
-        });
-        this.player.on("ended", () => {
-            this.playNewVideo(playlerText.getAttribute("data-videoid"));
-            resize();
-        });
-
-        const parentElement = document.querySelector(".player_container");
-
-        parentElement.addEventListener("click", (event) => {
-            if (event.target.matches('button[data-plyr="next"]')) {
-                this.playNewVideo(playlerText.getAttribute("data-videoid"));
-            }
-
-            if (event.target.matches('button[data-plyr="prev"]')) {
-                this.playVisibleItem("prev");
-            }
-        });
-        document.addEventListener("keydown", (event) => {
-            console.log(event.target.tagName);
-            if (event.target.tagName === "INPUT") {
-                if (event.key === "Enter") {
-                    addMarker();
-                }
-                if (event.key === "Escape") {
-                    const overlay = document.getElementById("popupOverlay");
-                    overlay.classList.toggle("show");
-                }
-                return;
-            }
-            if (event.key === "n") {
-                this.playNewVideo(playlerText.getAttribute("data-videoid"));
-            }
-        });
+        this.PlayerCommonEvents(false);
     },
 
     /**
@@ -508,8 +473,8 @@ const PlayerApp = {
         // console.log(track.width , track.height)
         // resizeWindow(true,track.width , track.height)
         // resize();
-        updateFavVideo(item.getAttribute("data-videoid"));
-        updateVideoMarkers(item.getAttribute("data-videoid"));
+        // updateFavVideo(item.getAttribute("data-videoid"));
+        // updateVideoMarkers(item.getAttribute("data-videoid"));
     },
 
     /**
@@ -748,6 +713,8 @@ const PlayerApp = {
             const index = this.playlistItems.indexOf(visibleItem);
             const track = this.tracks[index];
             this.handlePlaylistItemClick(visibleItem, track);
+        //     updateFavVideo(activeVisibleItem.getAttribute("data-videoid"));
+        // updateVideoMarkers(activeVisibleItem.getAttribute("data-videoid"));
             // Scroll to the active visible item
             visibleItem.scrollIntoView({
                 behavior: "smooth",
@@ -757,20 +724,12 @@ const PlayerApp = {
     },
 
     initialiseMarker() {
-        var playlerText = document.querySelector(
-            ".player_container .player_text"
-        );
+
         const parentElement = document.querySelector(".player_container");
 
         parentElement.addEventListener("contextmenu", (event) => {
             event.preventDefault();
-
-            var timeCode = event.target.getAttribute("aria-valuenow");
-            var videoid = playlerText.getAttribute("data-videoid");
-            if (timeCode != null) {
-                togglePopup(event.pageX, event.pageY, videoid, timeCode);
-                console.log("line 744", timeCode, videoid);
-            }
+            this.getMarkerTimeCode(event);
         });
     },
     /**
@@ -807,220 +766,38 @@ const PlayerApp = {
             }
         }
     },
+
+    getMarkerTimeCode(e) {
+        var playerText = document.querySelector(
+            ".player_container .player_text"
+        );
+        if(e.target.tagName === "BODY"){
+            var progressBar = document.querySelector(".plyr__progress")
+            var timeCode = progressBar.childNodes[1].getAttribute("aria-valuenow");
+        } else {
+            var timeCode = e.target.getAttribute("aria-valuenow");
+        }
+
+        var videoid = playerText.getAttribute("data-videoid");
+        if (timeCode != null) {
+            if(e.pageX === undefined){
+                pageX = this.mousePos_x
+                pageY = this.mousePos_y
+            } else {
+                pageX = e.pageX
+                pageY = e.pageY
+            }
+
+            togglePopup(pageX, pageY, videoid, timeCode);
+            console.log("line 770",pageX,pageY,timeCode, videoid);
+        }
+    },
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", (e) => {
     PlayerApp.initialize();
-
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0;
-    // factory(window.jQuery);
 
-    // resizeWindow(false)
     resize();
 });
-
-window.addEventListener("resize", resize, false);
-
-// video.height = 100; /* to get an initial width to work with*/
-function togglePopup(x_pos, y_pos, videoId, timeCode) {
-    y_pos = y_pos - 50;
-    const overlay = document.getElementById("popupOverlay");
-    overlay.classList.toggle("show");
-    overlay.style.position = "absolute";
-    overlay.style.left = x_pos + "px";
-    overlay.style.top = y_pos + "px";
-
-    videoIdInput = document.getElementById("markerVideoid");
-    videoIdInput.value = videoId;
-
-    IdInput = document.getElementById("markerId");
-    IdInput.value = videoId;
-
-    timeCodeInput = document.getElementById("markerTimeCode");
-    timeCodeInput.value = timeCode;
-
-    console.log(x_pos, y_pos, videoId, timeCode);
-}
-
-function resize() {
-    var videoTag = document.getElementsByTagName("video");
-    const video = videoTag[0];
-
-    //     videoRatio = video.height / video.width;
-    // windowRatio = window.innerHeight / window.innerWidth; /* browser size */
-
-    //     if (windowRatio < videoRatio) {
-    //         if (window.innerHeight > 50) { /* smallest video height */
-    //         video.height = window.innerHeight;
-
-    //         } else {
-    //             video.height = 50;
-    //     }
-    //     } else {
-    //         video.width = window.innerWidth;
-    //     }
-    //     text= "Resising Window to W:"+video.width + " H:" + video.height;
-    //     console.log(text)
-}
-function updateOptions(id) {
-    $.ajax({
-        url: "process.php",
-        type: "POST",
-        data: {
-            submit: "jquery",
-            id: id,
-        },
-        success: function (data) {
-            var outletOptions = document.querySelector(".videoPlaylistButton");
-            Array.from(outletOptions).forEach((option) => {
-                outletOptions.removeChild(option);
-            });
-
-            var myArray = JSON.parse(data);
-            var opt = document.createElement("option");
-
-            opt.appendChild(document.createTextNode("Select from List"));
-            opt.classList.add("filter-option");
-            opt.disabled = true;
-            outletOptions.appendChild(opt);
-
-            myArray.map((optionData) => {
-                var opt = document.createElement("option");
-
-                opt.appendChild(document.createTextNode(optionData[1]));
-                opt.classList.add("filter-option");
-                opt.value = optionData[0];
-                if (optionData[2] == true) {
-                    opt.classList.add("selected");
-                }
-                if (optionData[3] == true) {
-                    opt.classList.add("disabled");
-                }
-
-                opt.selected = optionData[2];
-                opt.disabled = optionData[3];
-                outletOptions.appendChild(opt);
-            });
-            return false;
-        },
-    });
-}
-
-function setInfoText(className, item) {
-    // console.log("setInfoText" , className, item.getAttribute("data-title"))
-    var TitleId = "." + className + "_title";
-    const textTitle = document.querySelector(TitleId);
-    if (textTitle != null) {
-        textTitle.textContent = item.getAttribute("data-title");
-    }
-
-    var artistId = "." + className + "_artist";
-    const textartist = document.querySelector(artistId);
-    if (textartist != null) {
-        if (item.getAttribute("data-artist") == "") {
-            textartist.classList.add("hidden"); // Add 'hidden' class
-            textartist.textContent = "";
-        } else {
-            textartist.textContent = item.getAttribute("data-artist");
-        }
-    }
-
-    var genreId = "." + className + "_genre";
-    const textgenre = document.querySelector(genreId);
-    if (textgenre != null) {
-        textgenre.textContent = item.getAttribute("data-genre");
-    }
-
-    var studioId = "." + className + "_studio";
-    const textstudio = document.querySelector(studioId);
-    if (textstudio != null) {
-        textstudio.textContent = item.getAttribute("data-studio");
-    }
-
-    const textvideoid = document.querySelector("#videoPlaylistVideoId");
-
-    const playerTextInfo = document.querySelector(".player_" + className);
-    if (playerTextInfo != null) {
-        playerTextInfo.setAttribute("href", item.getAttribute("data-pUrl"));
-
-        textvideoid.value = item.getAttribute("data-videoid");
-        playerTextInfo.setAttribute(
-            "data-videoid",
-            item.getAttribute("data-videoid")
-        );
-        playerTextInfo.setAttribute(
-            "onclick",
-            "videoCard(" + textvideoid.value + ")"
-        );
-    }
-}
-
-function seektoTime(timeCode) {
-    PlayerApp.player.currentTime = timeCode;
-}
-
-function setCookie(name, value, days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
-}
-
-function getCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(";");
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == " ") c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
-}
-
-function formatTime(timeInSeconds) {
-    const result = new Date(timeInSeconds * 1000).toISOString().substr(11, 8);
-
-    return {
-        minutes: result.substr(3, 2),
-        seconds: result.substr(6, 2),
-    };
-}
-
-function addMarker() {
-    var action = document.getElementById("markerAction").value;
-
-    var timeCode = document.getElementById("markerTimeCode");
-    var videoid = document.getElementById("markerVideoid").value;
-    var playlistid = document.getElementById("markerPlaylistId").value;
-    var markerText = document.getElementById("markerText");
-
-    $.ajax({
-        url: "process.php",
-        type: "POST",
-        data: {
-            action: action,
-            videoId: videoid,
-            id: videoid,
-            timeCode: timeCode.value,
-            playlist_id: playlistid,
-            markerText: markerText.value,
-            exit: true,
-        },
-        cache: false,
-        success: function (data) {
-            const videoCell = document.getElementById("videoMarkerList");
-            videoCell.innerHTML = data;
-            markerText.value = "";
-            timeCode.value = "";
-
-            const overlay = document.getElementById("popupOverlay");
-            overlay.classList.toggle("show");
-
-            return false;
-        },
-    });
-}
