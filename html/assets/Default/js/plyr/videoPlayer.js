@@ -343,6 +343,7 @@ const PlayerApp = {
 
         document.addEventListener("keydown", (event) => {
 
+
             if (event.target.tagName === "INPUT") {
                 if (event.key === "Enter") {
                     addMarker();
@@ -378,6 +379,8 @@ const PlayerApp = {
             if (event.key === "p") {
                 this.playVisibleItem("prev");
             }
+
+
         });
     },
 

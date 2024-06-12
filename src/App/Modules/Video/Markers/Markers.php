@@ -61,9 +61,11 @@ class Markers
                 }
 
                 $this->markerIndex[] = [
-                    'time'          => $row['timeCode'],
+                    'markerTime'          => $row['timeCode'],
                     'markerText'    => $row['markerText'],
                     'markerId'      => $row['id'],
+                    'markerThumbnail' => @str_replace(APP_HTML_ROOT,__URL_HOME__,$row['markerThumbnail']),
+                    'videoId'=>$row['video_id'],
                 ];
             }
         }
@@ -71,43 +73,76 @@ class Markers
         return $this->markerIndex;
     }
 
-    public function getMarkerButtons()
+    private function markerButton($markerArray, $type)
+    {
+        if ('player' == $type) {
+            $markerArray['javascript']   = ' onclick="seektoTime('.$markerArray['markerTime'].')" ';
+            $markerArray['DisplayVideo'] = true;
+        }
+        if ('card' == $type) {
+            $window                 = 'video_popup';
+            $url                    = __URL_HOME__.'/video.php?id='.$markerArray['videoId'].'&tc='.$markerArray['markerTime'];
+            $markerArray['javascript']   = " onclick=\"popup('".$url."', '".$window."')\"";
+            $markerArray['DisplayVideo'] = false;
+        }
+        if ('Editor' == $type) {
+            $markerArray['javascript']   = '';
+            $markerArray['DisplayVideo'] = false;
+            $markerArray['btnClass'] = ' btnHover';
+
+            $markerArray['thumb'] = Render::html(Functions::$MarkerDir.'/image',['THUMBNAIL' => $markerArray['markerThumbnail']]);
+            $markerArray['prefix'] = "<div class='btnContaner'>";
+            $markerArray['end'] = "</div>";
+        }
+
+
+        $markerArray['DurationText'] = VideoCard::videoDuration($markerArray['markerTime'], 1);
+
+        return Render::html(Functions::$MarkerDir.'/markerButton', $markerArray);
+    }
+
+    public function getMarkerButtons($displayType=null)
     {
         $html  = '';
         $index = $this->getMarkers();
         if (null === $index) {
             return '';
         }
+        $editButton = '';
+
         foreach ($index as $i => $row) {
-            $row['MarkerId']   =  $row['markerId'];
-            $row['timeCode']   =  $row['time'];
-            $row['videoId']    =  $this->id;
-            $row['javascript'] = '';
+            $jsEditURL = __URL_HOME__.'/markers.php?edit='.$this->id;
 
-            $row['DisplayVideo'] = $this->displayVideo;
-            $row['DurationText'] = VideoCard::videoDuration($row['time'], 1);
-
-
-            if ('true' == $this->displayVideo) {
-                $row['javascript'] = ' onclick="seektoTime('.$row['time'].')" ';
+            if($displayType === null){
+                if ('true' == $this->displayVideo) {
+                    $type = 'player';
+                } else {
+                    $type = 'card';
+                }
             } else {
-                $window            = 'video_popup';
-                $url               = __URL_HOME__.'/video.php?id='.$this->id.'&tc='.$row['time'];
-                $row['javascript'] = " onclick=\"popup('".$url."', '".$window."')\"";
-
+                $type = $displayType;
             }
 
-            $html .= Render::html(Functions::$MarkerDir.'/markerButton', $row);
+            $html .= $this->markerButton(
+                $row,
+                $type);
         }
+    if($type != 'Editor') {
+            $editButton = Render::html(Functions::$MarkerDir.'/markerEditBtn', ['javascript'=> " onclick=\"popup('".$jsEditURL."', 'markerPopup')\"", 'markerText'=>'Edit']);
+    }
 
-        $buttonHtml = Render::html(Functions::$MarkerDir.'/markerButtons', ['MarkerButtons' => $html]);
+        $buttonHtml = Render::html(Functions::$MarkerDir.'/markerButtons', [
+            'MarkerButtons'     => $html,
+            'MarkerEditButtons' => $editButton,
+        ]);
 
         return $buttonHtml;
     }
 
-    public function displayMarkers()
+    public function displayMarkers($type=null)
     {
-        $html = $this->getMarkerButtons();
+
+        $html = $this->getMarkerButtons($type);
 
         return Render::html(Functions::$MarkerDir.'/marker', ['MarkerButton' => $html]);
     }

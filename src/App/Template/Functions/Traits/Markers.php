@@ -17,12 +17,24 @@ trait Markers
     public function showMarkers($matches)
     {
         $var = $this->parseVars($matches);
+
         $this->Markers = new vMarkers($var);
         $Markers       = $this->Markers->displayMarkers();
 
         return $Markers;
     }
 
+    public function markerEditor($matches)
+    {
+
+        $var = $this->parseVars($matches);
+        $var['id'] = $_GET['edit'];
+        utmdump($var);
+        $this->Markers = new vMarkers($var);
+        $Markers       = $this->Markers->displayMarkers('Editor');
+
+        return $Markers;
+    }
 
 
     public function markerCloud($matches)

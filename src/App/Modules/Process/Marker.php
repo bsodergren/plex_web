@@ -36,7 +36,12 @@ class Marker extends Forms
 
     public function getMarkerVideos()
     {
-        return $this->Markers->getMarkerButtons();
+        utmdump($this->data);
+        $type=null;
+        if (\array_key_exists('edit', $this->data)) {
+            $type = "Editor";
+        }
+        return $this->Markers->getMarkerButtons($type);
     }
 
     public function addMarkerVideo()

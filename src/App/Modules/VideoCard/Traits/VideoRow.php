@@ -74,13 +74,14 @@ trait VideoRow
     private function metaValue($key, $cloud = false)
     {
         $value = $this->fileInfoArray[$key];
-        $value = trim($value);
-        $value = str_replace(__PLEX_LIBRARY__.'/', '', $value);
-
+        if($value !== null){
+            $value = trim($value);
+            $value = str_replace(__PLEX_LIBRARY__.'/', '', $value);
         if (OptionIsTrue(NAVBAR)) {
             if (true === $cloud) {
                 $value = $this->keyword_list($key, $value);
             }
+        }
         }
 
         return $value;

@@ -35,6 +35,7 @@ function markerEditor() {
                         markerText: value,
                         markerId: markerId,
                         video: displayVid,
+                        edit: videoId,
                         }),
                         success: function (data) {
                             const videoCell = document.getElementById("videoMarkerList");

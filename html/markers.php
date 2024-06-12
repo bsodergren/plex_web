@@ -15,6 +15,14 @@ use Plex\Modules\Display\VideoDisplay;
 
 require_once '_config.inc.php';
 
+if(array_key_exists('edit', $_GET)) {
+    $html = Render::html('pages/Markers/edit',
+    [
+
+        // 'TAG_CLOUD_HTML' => Elements::keyword_cloud('genre'),
+        //    'TAG_CLOUD_KEYWORD' => Elements::keyword_cloud('keyword'),
+    ]);
+} else {
 
 $html = Render::html('pages/Markers/main',
     [
@@ -22,4 +30,6 @@ $html = Render::html('pages/Markers/main',
         // 'TAG_CLOUD_HTML' => Elements::keyword_cloud('genre'),
         //    'TAG_CLOUD_KEYWORD' => Elements::keyword_cloud('keyword'),
     ]);
+}
+
 Render::Display($html,'pages/Markers/body');
