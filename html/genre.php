@@ -75,7 +75,7 @@ $genre_links = Render::html(
     ]
 );
 asort($genre_array);
-utmdump($genre_array);
+utminfo($genre_array);
 foreach ($genre_array as $k => $v) {
     $link_array = [];
     // $v["cnt"]=1; ".$v["cnt"]."

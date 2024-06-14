@@ -129,6 +129,7 @@ class Request
 
         if (isset($_REQUEST['submit'])) {
             if ('Search' == $_REQUEST['submit']) {
+                if (!isset($_REQUEST['field'])) {
                 $delim = ',';
                 $q_str[] = 'submit=Search';
                 foreach (self::$tag_array as $tag) {
@@ -142,9 +143,12 @@ class Request
                         }
                     }
                 }
-                $genreStr = implode('&', $q_str);
-                $_SERVER['QUERY_STRING'] = $_SERVER['QUERY_STRING'].'&'.$genreStr.'&grp='.$_REQUEST['grp'];
                 $_REQUEST['field'] = $fields;
+                $genreStr = implode('&', $q_str);
+            }
+
+                $_SERVER['QUERY_STRING'] = $_SERVER['QUERY_STRING'].'&'.$genreStr.'&grp='.$_REQUEST['grp'];
+
             }
         }
 
@@ -346,7 +350,7 @@ class Request
 
         // $start_string = implode(", ",$start);
 
-        // utmdump("start ". $start_string ." --------". date("F j, Y, g:i a")."--------");
+        // utminfo("start ". $start_string ." --------". date("F j, Y, g:i a")."--------");
 
     }
 
@@ -355,7 +359,7 @@ class Request
 
         $var_array = $GLOBALS[$var];
         $start = '';
-        utmdump($var_array);
+        utminfo($var_array);
         if(is_array($var_array)) {
         if(count($var_array) > 0){
             foreach($var_array as $f=>$v) {

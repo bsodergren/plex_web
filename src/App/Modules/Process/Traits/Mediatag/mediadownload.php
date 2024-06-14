@@ -13,7 +13,7 @@ trait mediadownload
         $cmd = [$this->mediadownload, '-q', '--path', '/home/bjorn/plex/XXX/Downloads'];
         $this->p = new Render();
 
-        utmdump($cmd);
+        utminfo($cmd);
 
         $this->runCmd($cmd, 'downloadOutput');
     }

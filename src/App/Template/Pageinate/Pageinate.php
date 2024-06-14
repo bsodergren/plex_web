@@ -41,14 +41,15 @@ class Pageinate extends Paginator
             $libraryField = 'v.Library';
             $db->join(Db_TABLE_VIDEO_METADATA.' m', 'm.video_key=v.video_key', 'INNER');
             $db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'c.video_key=v.video_key', 'LEFT');
+            $dbwhere = PlexSql::$search;
 
             foreach ($query as $k => $parts) {
                 if ('substudio' == $parts['field']) {
                     if ('NULL' == strtoupper($parts['search'])) {
-                        $db->where('COALESCE (m.'.$parts['field'].',c.'.$parts['field'].')  is null');
+                        $db->$dbwhere('COALESCE (m.'.$parts['field'].',c.'.$parts['field'].')  is null');
                     }
                 } else {
-                    $db->where('COALESCE (m.'.$parts['field'].',c.'.$parts['field'].") like '%".$parts['search']."%'");
+                    $db->$dbwhere('COALESCE (m.'.$parts['field'].',c.'.$parts['field'].") like '%".$parts['search']."%'");
                 }
             }
         } else {
@@ -74,7 +75,7 @@ class Pageinate extends Paginator
         }
 
         $this->results = $db->withTotalCount()->get($table);
-        utmdump([__METHOD__, $db->getLastQuery()]);
+        utminfo([__METHOD__, $db->getLastQuery()]);
         $this->totalRecords = $db->totalCount;
         $this->limit_array  = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];
         $this->offset       = ($this->currentPage - 1) * $this->itemsPerPage;

@@ -59,7 +59,7 @@ class PlyrList extends Player
             $title = $row['filename'];
         }
         $thumbImg =  ( new Functions())->fileThumbnail($row['playlist_video_id'], 'alt="#" class="img-fluid" ');
-        // utmdump($thumbImg);
+        // utminfo($thumbImg);
         return Render::html(
             $this->videoTemplate.'/container/item',
             [

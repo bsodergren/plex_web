@@ -36,7 +36,7 @@ trait Video
 
         //     ]
         // );
-        // utmdump($favoriteBtn);
+        // utminfo($favoriteBtn);
 
         return $favoriteBtn;
     }

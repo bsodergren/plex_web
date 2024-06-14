@@ -8,6 +8,7 @@ namespace Plex\Modules\Database;
 use Plex\Core\Request;
 use Plex\Template\Pageinate\Pageinate;
 use UTMTemplate\HTML\Elements;
+use Plex\Modules\Database\PlexSql;
 
 class FileListing
 {
@@ -67,27 +68,48 @@ class FileListing
         return 0;
     }
 
-    public function getSearchResults($field, $query)
+    public function getSearchResults($fieldArray, $queryArray)
     {
-        if (!\is_array($query)) {
-            $query = [$query];
+        if (!\is_array($queryArray)) {
+            $queryArray = [$queryArray];
+        }
+        if (!\is_array($fieldArray)) {
+            $fieldArray = [$fieldArray];
         }
 
-        foreach ($query as $search) {
-            $search = urldecode($search);
-            // $WhereList[] = "{$field} like '%{$search}%'";
-            $where[] = [
-                'field'  => $field,
-                'search' => $search,
-            ];
+        foreach($fieldArray as $field){
+            foreach($queryArray as $query)
+            {
+                $searchArray[$field][] = $query;
+            }
         }
+        // $field_cont = count($field);
+        // $query_cont = count($query);
+
+        foreach ($searchArray as $field => $query) {
+            foreach($query as $search) {
+                $search = urldecode($search);
+                // $WhereList[] = "{$field} like '%{$search}%'";
+                $where[] = [
+                    'field'  => $field,
+                    'search' => $search,
+                ];
+            }
+        }
+
+
+        $dbwhere = PlexSql::$search;
+
         $pageObj = new Pageinate($where, $this->currentpage, $this->urlPattern);
         // $this->db->join(Db_TABLE_VIDEO_METADATA.' m', 'v.video_key=m.video_key', 'INNER');
         $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
-        foreach ($query as $search) {
-            $search = urldecode($search);
-            $this->db->where('(m.'.$field.' like ? or c.'.$field.' like ?)', ['%'.$search.'%', '%'.$search.'%']);
+
+        foreach ($searchArray as $field => $query) {
+            foreach($query as $search) {
+                $search = urldecode($search);
+            $this->db->$dbwhere('(m.'.$field.' like ? or c.'.$field.' like ?)', ['%'.$search.'%', '%'.$search.'%']);
         }
+    }
 
         $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
 

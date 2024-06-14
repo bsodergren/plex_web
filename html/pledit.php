@@ -23,7 +23,7 @@ if (isset($_POST['text'])) {
     $pl->playlistClean($file);
     if ('Download' == $_POST['submit']) {
         $url .= '?download=true';
-        //     utmdump($popurl);
+        //     utminfo($popurl);
 
         //     echo '<script>';
         //     echo "window.open('$popurl','ff');".\PHP_EOL;

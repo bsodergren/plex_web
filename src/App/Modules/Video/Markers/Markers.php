@@ -24,7 +24,7 @@ class Markers
     public function __construct($data)
     {
         global $_SESSION;
-        utmdump($data);
+        utminfo($data);
         $this->data    = $data;
         $this->db      = PlexSql::$DB;
         $this->library = $_SESSION['library'];
@@ -41,7 +41,7 @@ class Markers
             $this->displayVideo = $data['video'];
         }
 
-        utmdump($data);
+        utminfo($data);
     }
 
     public function getMarkerJson()

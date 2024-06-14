@@ -89,7 +89,7 @@ trait VideoRow
 
     public function row($field, $value, $id = '', $editable = false)
     {
-        // utmdump( $this->videoid);
+        // utminfo( $this->videoid);
         $editableClass  = '';
         $editableBorder = '';
         if ('' != $id) {
@@ -169,7 +169,7 @@ trait VideoRow
                 //  'CLASS'    => ' class="badge fs-6 blueTable-thead" ',
             ]
         );
-        // utmdump($value);
+        // utminfo($value);
     }
 
     public function cloudRow($key)

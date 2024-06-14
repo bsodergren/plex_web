@@ -29,7 +29,7 @@ trait Markers
 
         $var = $this->parseVars($matches);
         $var['id'] = $_GET['edit'];
-        utmdump($var);
+        utminfo($var);
         $this->Markers = new vMarkers($var);
         $Markers       = $this->Markers->displayMarkers('Editor');
 

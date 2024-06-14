@@ -71,7 +71,7 @@ class Render extends UTMTemplateRender
 
     public function setProgressBarProgress($percentDone, $text = '')
     {
-        // utmdump([__METHOD__,$percentDone]);
+        // utminfo([__METHOD__,$percentDone]);
         $this->percentDone = $percentDone;
         $text = $text ?: number_format($this->percentDone, $this->decimals, '.', '');
 

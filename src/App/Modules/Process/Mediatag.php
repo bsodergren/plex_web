@@ -67,7 +67,7 @@ class Mediatag
     {
         $buffer = str_replace("\n", '', $buffer);
 
-        utmdump($buffer);
+        utminfo($buffer);
         $this->p->setProgressBarHeader($buffer);
 
         // switch ($buffer) {
@@ -81,7 +81,7 @@ class Mediatag
         $buffer = str_replace("\n", '', $buffer);
         $buffer = str_replace("\r", '', $buffer);
 
-        utmdump($buffer);
+        utminfo($buffer);
 
         switch ($buffer) {
             case str_contains($buffer, '[download]'):
@@ -105,13 +105,13 @@ class Mediatag
     public function ProcessOutput($type, $buffer)
     {
         $buffer = str_replace('\n\n', '\n', $buffer);
-        utmdump($buffer);
+        utminfo($buffer);
         echo Template::put($buffer);
     }
 
     public function ProcessProgressBar($type, $buffer)
     {
-        //  utmdump($buffer);
+        //  utminfo($buffer);
         $timeout = $buffer / 60;
         //  echo Template::ProgressBar($timeout, 'UpdateBar');
     }

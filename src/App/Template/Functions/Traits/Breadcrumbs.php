@@ -87,7 +87,7 @@ trait Breadcrumbs
                     $substudio_key             = urldecode($request_tag['substudio']);
                     $studio_query['substudio'] = $request_tag['substudio'];
                     $res                       = PlexSql::$DB->rawQueryOne("SELECT studio FROM `mediatag_video_metadata` WHERE substudio = '".$substudio_key."';");
-                    // utmdump($res);
+                    // utminfo($res);
                     if (\count($res) > 0) {
                         $studio_query['studio'] = $res['studio'];
                         $request_tag['studio']  = $res['studio'];
@@ -140,7 +140,7 @@ trait Breadcrumbs
         }
 
         if (__THIS_FILE__ == 'search.php') {
-            $crumbs['List'] = $crumb_url;
+         //   $crumbs['List'] = $crumb_url;
         }
 
         $crumbs['All'] = $allUrl.'?allfiles=1'.$req;

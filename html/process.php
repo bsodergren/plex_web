@@ -9,7 +9,7 @@ use UTMTemplate\Template;
 
 require_once '_config.inc.php';
 
-utmdump(['Process form', $_REQUEST]);
+utminfo(['Process form', $_REQUEST]);
 
 if (array_key_exists('q', $_GET)) {
     $q = $_GET['q'];

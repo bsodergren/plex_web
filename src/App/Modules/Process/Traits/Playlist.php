@@ -21,7 +21,7 @@ trait Playlist
     public function addAllPlaylist()
     {
         $url = $this->createPlaylist();
-        utmdump([__METHOD__, $url]);
+        utminfo([__METHOD__, $url]);
         echo $this->myHeader($url);
     }
 
@@ -53,7 +53,7 @@ trait Playlist
             return $this->postArray['PlaylistID'];
         }
 
-        utmdump([__METHOD__, $this->postArray]);
+        utminfo([__METHOD__, $this->postArray]);
 
         if (\array_key_exists('PlayAll', $this->postArray)) {
             if (\array_key_exists('search_id', $this->postArray)) {
@@ -84,14 +84,14 @@ trait Playlist
                 $search_id,
                 $hide);
         }
-        utmdump([__METHOD__, $playlist_id]);
+        utminfo([__METHOD__, $playlist_id]);
 
         return $playlist_id;
     }
 
     public function deletePlaylist()
     {
-        utmdump([__METHOD__, $this->postArray]);
+        utminfo([__METHOD__, $this->postArray]);
         $playlist_id = $this->postArray['playlist_id'];
         PlaylistDB::deletePlaylist($playlist_id);
         $this->myHeader(__URL_HOME__.'/playlist.php');
@@ -99,7 +99,7 @@ trait Playlist
 
     public function createPlaylist()
     {
-        utmdump([__METHOD__, $this->postArray]);
+        utminfo([__METHOD__, $this->postArray]);
         $playlist_id = $this->addPlaylistData();
 
         if (!\array_key_exists('playlist', $this->postArray)) {
@@ -136,7 +136,7 @@ trait Playlist
                 $grid               = (new VideoDisplay('Grid'))->init();
                 $grid->totalRecords = $this->postArray['total'];
                 $html               = $grid->videoCell($videoInfo[0]);
-                utmdump($videoInfo[0]);
+                utminfo($videoInfo[0]);
 
                 return $html;
             }
@@ -147,7 +147,7 @@ trait Playlist
 
     public function savePlaylist()
     {
-        utmdump([__METHOD__, $this->postArray]);
+        utminfo([__METHOD__, $this->postArray]);
         if (isset($this->postArray['playlist_name'])) {
             $playlist_name = $this->postArray['playlist_name'];
             if ('' != $playlist_name) {

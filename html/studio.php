@@ -40,7 +40,7 @@ $rows = count($result);
 $all_url = 'list.php?'.$request_key.'&allfiles=1';
 
 foreach ($result as $k => $v) {
-    UtmDump([$k, $v]);
+    utminfo([$k, $v]);
     $len = strlen($studio) * 2;
     // $v["cnt"]=1; ".$v["cnt"]."
     $link_array = [];

@@ -16,7 +16,7 @@ trait TagCloud
         $sql .= ", ',', n.digit+1), ',', -1) val FROM ".$table;
         $sql .= ' INNER JOIN (SELECT 0 digit UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n';
         $sql .= ' ON LENGTH(REPLACE('.$field.", ',' , '')) <= LENGTH(".$field.')-n.digit '.$where.' ORDER BY `val` ASC';
-        utmdump($sql);
+        utminfo($sql);
 
         return $sql;
     }

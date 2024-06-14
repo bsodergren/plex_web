@@ -38,7 +38,7 @@ public $playlist_id = null;
             $preview = $this->playlist->showPlaylistPreview($results[$i]['playlist_id']);
             foreach ($preview as $r => $row) {
                 $playlist_image .= Render::html( $this->template_base . '/List/image', ['image' => __URL_HOME__.$row['thumbnail']]);
-                // UtmDump($row);
+                // utminfo($row);
             }
 
             $params = [

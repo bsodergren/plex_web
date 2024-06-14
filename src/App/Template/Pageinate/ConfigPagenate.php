@@ -61,7 +61,7 @@ class ConfigPagenate extends Pageinate
         }
 
         // $this->results =
-        utmdump($db->getQuery($table));
+        utminfo($db->getQuery($table));
         $this->results = $db->withTotalCount()->get($table);
 
         $this->totalRecords = $db->totalCount;

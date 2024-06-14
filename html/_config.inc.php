@@ -5,13 +5,14 @@
 
 ob_start();
 
-use Camoo\Config\Config;
-use Plex\Core\Request;
-use Plex\Core\RoboLoader;
 use Plex\EnvLoader;
 use Tracy\Debugger;
+use Plex\Core\Request;
+use Camoo\Config\Config;
+use Plex\Core\RoboLoader;
 use UTMTemplate\Template;
 use UTMTemplate\UtmDevice;
+use UTM\Utilities\Debug\Debug;
 
 // error_reporting(\E_ALL & ~\E_NOTICE & ~\E_WARNING);
 
@@ -41,7 +42,8 @@ Debugger::enable(Debugger::Development);
 $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
 EnvLoader::LoadEnv($config['path']['HOME'])->load();
-
+register_shutdown_function('utmddump');
+utminfo("---- START OF PAGE VIEW " . basename($_SERVER['SCRIPT_FILENAME']));
 Request::startPage();
 // foreach ($config['constants'] as $name => $value) {
 //     define($name, $value);
@@ -80,4 +82,7 @@ $device = new UtmDevice();
 RoboLoader::loadPage();
 $const_keys = array_keys(get_defined_constants(true)['user']);
 define('__TEMPLATE_CONSTANTS__', $const_keys);
+utminfo("---- end of config ");
+
 logger('____________________________________________________________________________________________________________________');
+

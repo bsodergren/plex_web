@@ -47,7 +47,7 @@ class Playlist
 
         // $sql = 'select id, name, Library from '.Db_TABLE_PLAYLIST_DATA.'  where hide = 0 '.$where.'  ORDER BY Library ASC;';
 
-        // utmdump($sql);
+        // utminfo($sql);
         $results = $this->db->query($sql);
 
         return $results;

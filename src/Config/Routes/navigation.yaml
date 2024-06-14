@@ -79,11 +79,11 @@ artist:
     text: !php/const NavBar_Text_Artists
     icon: fa-female
     studio: false
-# search:
-#     url: search.php
-#     text: !php/const NavBar_Text_Search
-#     icon: ""
-#     studio: false
+search:
+    url: search.php
+    text: !php/const NavBar_Text_Search
+    icon: ""
+    studio: false
 extra:
     text: "Settings"
     icon: fa-cog

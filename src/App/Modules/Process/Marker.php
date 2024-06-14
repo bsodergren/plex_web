@@ -36,7 +36,7 @@ class Marker extends Forms
 
     public function getMarkerVideos()
     {
-        utmdump($this->data);
+        utminfo($this->data);
         $type=null;
         if (\array_key_exists('edit', $this->data)) {
             $type = "Editor";
@@ -85,7 +85,7 @@ class Marker extends Forms
         if (\array_key_exists('markerId', $this->data)) {
             $markerId  = $this->data['markerId'];
             $sql       = 'DELETE FROM '.Db_TABLE_VIDEO_CHAPTER.' WHERE id = '.$markerId;
-            utmdump($sql);
+            utminfo($sql);
             $this->db->query($sql);
         }
 

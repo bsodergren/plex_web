@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 use Plex\Core\Request;
 use Plex\Modules\Database\FileListing;
@@ -7,9 +10,13 @@ use Plex\Template\Render;
 use UTMTemplate\HTML\Elements;
 
 require_once '_config.inc.php';
-$playlist_ids = [];
-$queries      = [];
-utmdump($_REQUEST);
+$playlist_ids_str = '';
+$html_msg         = '';
+$string           = '';
+$search_results   = '';
+$playlist_ids     = [];
+$queries          = [];
+
 foreach (Request::$tag_array as $tag) {
     if (isset($_REQUEST[$tag])) {
         if (is_array($_REQUEST[$tag])) {
@@ -20,16 +27,24 @@ foreach (Request::$tag_array as $tag) {
     }
 }
 
-if (!is_array($_REQUEST['field'])) {
-    $fieldArray[]      = $_REQUEST['field'];
-    $_REQUEST['field'] = $fieldArray;
+if (isset($_REQUEST['fieldCheckbox'])) {
+    $_REQUEST['grp'] = 'OR';
+    foreach ($_REQUEST['fieldCheckbox'] as $key => $_) {
+        $_REQUEST['field'][] = $key;
+    }
+    unset($_REQUEST['fieldCheckbox']);
 }
 
+if (isset($_REQUEST['field'])) {
+    if (!is_array($_REQUEST['field'])) {
+        $fieldArray[]      = $_REQUEST['field'];
+        $_REQUEST['field'] = $fieldArray;
+    }
+}
 
 if (count($queries) > 0) {
     $_REQUEST['query'] = $queries;
 }
-
 
 if (isset($_REQUEST['sort'])) {
     $uri['sort'] = $_REQUEST['sort'];
@@ -57,8 +72,7 @@ $redirect_string = 'search.php'.$request_key;
 
 if ('Search' == isset($_REQUEST['submit']) || isset($_REQUEST['query'])) {
     $search = new FileListing(new Request());
-
-    [$results,$pageObj] = $search->getSearchResults($_REQUEST['field'][0], $_REQUEST['query']);
+    [$results,$pageObj] = $search->getSearchResults($_REQUEST['field'], $_REQUEST['query']);
     foreach ($results as $n => $row) {
         $playlist_ids[] = $row['id'];
     }
@@ -69,12 +83,12 @@ if ('Search' == isset($_REQUEST['submit']) || isset($_REQUEST['query'])) {
     if (array_key_exists('view', $_REQUEST)) {
         $view = $_REQUEST['view'];
     }
-    if(is_array($_REQUEST['query'])) {
-        $string = implode(", ", $_REQUEST['query']);
+    if (is_array($_REQUEST['query'])) {
+        $string = implode(', ', $_REQUEST['query']);
     } else {
         $string = $_REQUEST['query'];
     }
-   // utmdump($_REQUEST['query']);
+    // utminfo($_REQUEST['query']);
     $msg      = 'Showing '.$pageObj->totalRecords.' results for for '.$string;
     $msg      = strtolower(str_replace('-', '.', $msg));
     $msg      = strtolower(str_replace('_', ' ', $msg));
@@ -94,18 +108,24 @@ $search_types = [
     'keyword',
     'genre',
 ];
-$checkboxes = '';
-foreach ($search_types as $key) {
-    // $checkbox = Elements::draw_checkbox("searchField[]", $key, $key);
-    $checkboxes .= Render::html('pages/search/checkboxes', ['NAME' => $key]);
+$checkboxes   = '';
+$search_htmnl = '';
+if ('' == $search_results) {
+    foreach ($search_types as $key) {
+        // $checkbox = Elements::draw_checkbox("searchField[]", $key, $key);
+        $checkboxes .= Render::html('pages/search/checkboxes', ['NAME' => $key]);
+    }
+
+    $search_htmnl = Render::html('pages/search/search_form', ['CHECKBOXES' => $checkboxes]);
 }
 
+// $checkboxes = Render::html('pages/search/selectbox', ['FIELD_OPTIONS'=> Elements::SelectOptions($search_types)]);
 $body = Render::html('pages/search/search', [
-    'HIDDEN_IDS'     => Elements::add_hidden('playlist', $playlist_ids_str),
-    'HIDDEN_STUDIO'  => Elements::add_hidden('studio', $string.' Search'),
-    'SEARCH_RESULTS' => $search_results,
-    'CHECKBOXES'     => $checkboxes,
-    'HTML_MSG'       => $html_msg,
+    // 'HIDDEN_IDS'     => Elements::add_hidden('playlist', $playlist_ids_str),
+    'HIDDEN_STUDIO'    => Elements::add_hidden('studio', $string.' Search'),
+    'SEARCH_RESULTS'   => $search_results,
+    'search_htmnl'     => $search_htmnl,
+    'HTML_MSG'         => $html_msg,
 ]);
 
-Render::Display($body,'pages/search/body');
+Render::Display($body, 'pages/search/body');

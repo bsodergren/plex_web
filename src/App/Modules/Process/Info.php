@@ -48,12 +48,12 @@ class Info
             $this->onDuplicate($fieldArray, 'id');
             $this->insert(Db_TABLE_VIDEO_CUSTOM, $data);
         }
-        //   utmdump($this->getLastQuery());
+        //   utminfo($this->getLastQuery());
     }
 
     public function save($tag, $data)
     {
-        utmdump($tag, $data);
+        utminfo($tag, $data);
     }
 
     public function updateRating($video_id, $rating)

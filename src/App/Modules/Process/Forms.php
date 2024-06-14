@@ -84,7 +84,7 @@ class Forms
         //         $class = $this;
         //     } else {
         //         $parts = explode('::', $pattern);
-        //         // UtmDump([$pattern,$parts,$function]);
+        //         // utminfo([$pattern,$parts,$function]);
         //         $class = (new $parts[0]());
         //         // $function = $parts[1];
         //     }
@@ -137,13 +137,13 @@ class Forms
     {
         $out = (new Functions())->getVideoPlaylistJson($this->postArray['id']);
         echo $out;
-        // utmdump([$out,$this->postArray]);
+        // utminfo([$out,$this->postArray]);
         exit;
     }
 
     public function rating()
     {
-        utmdump([__METHOD__, 'fasd']);
+        utminfo([__METHOD__, 'fasd']);
         [$_,$videoId] = explode('_', $this->postArray['id']);
         $rating       = $this->postArray['rating'];
         $this->VideoInfo->updateRating($videoId, $rating);
@@ -242,7 +242,7 @@ class Forms
         if ('' != $redirect) {
             $this->redirect = $redirect;
         }
-        // UtmDump($this->redirect);
+        // utminfo($this->redirect);
         echo Elements::javaRefresh($this->redirect, $timeout);
 
         exit;

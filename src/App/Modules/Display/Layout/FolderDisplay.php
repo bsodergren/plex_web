@@ -27,7 +27,7 @@ class FolderDisplay extends VideoDisplay
     public function Display($folders, $files, $page_array = [])
     {
         $videohtml = $this->fileDisplay($files);
-        // utmdump($videohtml);
+        // utminfo($videohtml);
         $videohtml['FolderListing'] = $this->folderDisplay($folders);
 
         return Render::html($this->template_base.'/page', $videohtml);

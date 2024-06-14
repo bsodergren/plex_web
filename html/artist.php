@@ -34,7 +34,7 @@ foreach ($results as $k => $value) {
         if (str_contains($value['artist'], ',')) {
             $name_arr = explode(',', $value['artist']);
             // if (null === $vname_arr) {
-            //     utmdump($name_arr, $value['artist']);
+            //     utminfo($name_arr, $value['artist']);
             //     continue;
             // }
             foreach ($name_arr as $name) {
