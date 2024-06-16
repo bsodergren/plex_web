@@ -1,0 +1,22 @@
+<main class="container-fluid container-sidenav">
+    <div class="d-flex flex-wrap">
+
+    {$TextBlocks}
+    </div>
+    <div id="logBody" class="mx-2">
+    </div>
+</main>
+
+<script>
+
+    $(document).ready(function () {
+        $(".loadLog").on("click", function () {
+            var url = this.value
+            console.log(url);
+            $("#logBody").load(url);
+        });
+    });
+
+
+
+</script>

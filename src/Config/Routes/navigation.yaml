@@ -105,7 +105,7 @@ extra:
             {
                 refresh: { url: "process.php?action=refresh", icon: "" },
                 "Export SQL": { url: "process.php?action=exportSql", icon: "" },
-
+                "Logs":{ url: logs.php, icon: fa-gear },
                 settings: { url: settings.php, icon: fa-gear },
             },
         ]
