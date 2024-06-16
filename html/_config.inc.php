@@ -67,8 +67,6 @@ utm::$LOG_DIR = __ERROR_LOG_DIRECTORY__.DIRECTORY_SEPARATOR.__THIS_PAGE__;
 new Utm();
 
 Utm::$SHOW_HTML_DUMP = true;
-utm::log("fdfds");
-utm::notice(["notice","fdfds"]);
 
 Template::$registeredCallbacks = [
     '\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK'      => 'callback_parse_function',

@@ -14,7 +14,7 @@ use Plex\Modules\Process\Traits\Playlist;
 use Plex\Modules\Process\Traits\VideoPlayer;
 use Plex\Template\Functions\Functions;
 use UTMTemplate\HTML\Elements;
-
+use Nette\Utils\FileSystem;
 class Forms
 {
     use DbWrapper;
@@ -195,7 +195,14 @@ class Forms
     {
         $this->VideoInfo->deleteFile();
     }
+    public function removelogs()
+    {
+        $logdir = __ERROR_LOG_DIRECTORY__.DIRECTORY_SEPARATOR.$this->postArray['logcat'];
+        utminfo($logdir);
+        FileSystem::delete($logdir);
 
+
+    }
     public function playlist()
     {
         $url = $this->createPlaylist();

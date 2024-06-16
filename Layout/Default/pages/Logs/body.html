@@ -1,7 +1,7 @@
 <main class="container-fluid container-sidenav">
     <div class="d-flex flex-wrap">
 
-    {$TextBlocks}
+        {$TextBlocks}
     </div>
     <div id="logBody" class="mx-2">
     </div>
@@ -14,6 +14,25 @@
             var url = this.value
             console.log(url);
             $("#logBody").load(url);
+        });
+
+        $(".removelog").on("click", function () {
+            var logCat = this.value
+
+            $.ajax({
+                type: "post",
+                url: "process.php",
+                data: {
+                    submit: 'removelogs',
+                    logcat: logCat,
+                },
+                cache: false,
+                success: function (data) {
+                    window.location.reload(true);
+                    return false;
+        },
+            });
+            console.log(logCat);
         });
     });
 

@@ -52,11 +52,13 @@ foreach($err_array as $file )
 
 }
 utminfo($paths);
-
+$groups = '';
 foreach($paths as $cat => $files )
 {
     $fileButtons = '';
-    $block = '';
+    if($cat == 'logs'){
+        continue;
+    }
     foreach($files as $file) {
         $file_link = str_replace(APP_HTML_ROOT,APP_HOME,$file);
         $file_text = basename($file_link);
