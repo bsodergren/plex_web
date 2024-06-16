@@ -96,7 +96,7 @@ trait FolderFunc
         if ($path) {
             $ite = new \DirectoryIterator($path);
             // $rii = new \RegexIterator($ite, '/('.$filter.')/i');
-            //  utminfo([__METHOD__,$ite]);
+            //  utminfo($ite);
 
             $files = [];
             foreach ($ite as $file) {

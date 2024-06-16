@@ -26,17 +26,15 @@ class PlexSql extends \MysqliDb
 
     public function __construct()
     {
-
-        if(isset($_REQUEST['grp']))
-        {
-            if($_REQUEST['grp'] == 'AND'){
-                 self::$search = 'where';
+        if (isset($_REQUEST['grp'])) {
+            if ('AND' == $_REQUEST['grp']) {
+                self::$search = 'where';
             }
-            if($_REQUEST['grp'] == 'OR'){
+            if ('OR' == $_REQUEST['grp']) {
                 self::$search = 'orwhere';
             }
+            utminfo($_REQUEST['grp'], self::$search);
         }
-        utminfo($_REQUEST['grp'], $db, self::$search);
         $db = parent::getInstance();
         if (null === $db) {
             parent::__construct('localhost', DB_USERNAME, DB_PASSWORD, DB_DATABASE);
@@ -48,7 +46,6 @@ class PlexSql extends \MysqliDb
 
         // return $this->db;
     }
-
 
     public static function getLastest($field, $days = 1)
     {
@@ -349,6 +346,8 @@ class PlexSql extends \MysqliDb
 
         $sql = $query->pselect($table, $fields);
         logger('SQL Builder', $sql);
+
+        utminfo($sql);
 
         return $sql;
     }

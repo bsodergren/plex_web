@@ -12,7 +12,8 @@ use Camoo\Config\Config;
 use Plex\Core\RoboLoader;
 use UTMTemplate\Template;
 use UTMTemplate\UtmDevice;
-use UTM\Utilities\Debug\Debug;
+use UTM\Utm;
+
 
 // error_reporting(\E_ALL & ~\E_NOTICE & ~\E_WARNING);
 
@@ -23,9 +24,11 @@ if (!array_key_exists('library', $_REQUEST)) {
     }
 }
 
+
 define('__ROOT_DIRECTORY__', dirname(realpath($_SERVER['CONTEXT_DOCUMENT_ROOT']), 1));
 define('__PLEX_APP_DIR__', __ROOT_DIRECTORY__.'/src');
 
+define('__APP_LOG_DIR__',__ROOT_DIRECTORY__ . '/src/var/log');
 define('__PHP_CONFIG_DIR__', __PLEX_APP_DIR__.'/Config');
 define('__PHP_YAML_DIR__', __PHP_CONFIG_DIR__.'/Routes');
 define('__COMPOSER_LIB__', __ROOT_DIRECTORY__.'/vendor');
@@ -37,17 +40,13 @@ set_include_path(get_include_path().\PATH_SEPARATOR.__COMPOSER_LIB__);
 
 require_once __COMPOSER_LIB__.'/autoload.php';
 // Debugger::enable();
+
 Debugger::enable(Debugger::Development);
+Debugger::$logDirectory =__APP_LOG_DIR__ ;
 
 $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
 EnvLoader::LoadEnv($config['path']['HOME'])->load();
-register_shutdown_function('utmddump');
-utminfo("---- START OF PAGE VIEW " . basename($_SERVER['SCRIPT_FILENAME']));
-Request::startPage();
-// foreach ($config['constants'] as $name => $value) {
-//     define($name, $value);
-// }
 
 require_once __PHP_CONFIG_DIR__.'/Language.php';
 require_once __PHP_CONFIG_DIR__.'/paths.php';
@@ -56,6 +55,19 @@ require_once __PHP_CONFIG_DIR__.'/urlpaths.php';
 require_once __PHP_CONFIG_DIR__.'/database.php';
 require_once __PHP_CONFIG_DIR__.'/Functions.php';
 
+register_shutdown_function('utmddump');
+utminfo("---- START OF PAGE VIEW " . basename($_SERVER['SCRIPT_FILENAME']));
+Request::startPage();
+// foreach ($config['constants'] as $name => $value) {
+//     define($name, $value);
+// }
+
+utm::$LOG_STYLE = 'html';
+utm::$LOG_DIR = __ERROR_LOG_DIRECTORY__;
+new Utm();
+
+Utm::$SHOW_HTML_DUMP = true;
+utm::log("fdfds");
 Template::$registeredCallbacks = [
     '\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK'      => 'callback_parse_function',
     '\Plex\Template\Callbacks\FunctionCallback::SCRIPTINCLUDE_CALLBACK' => 'callback_script_include'];
@@ -82,7 +94,4 @@ $device = new UtmDevice();
 RoboLoader::loadPage();
 $const_keys = array_keys(get_defined_constants(true)['user']);
 define('__TEMPLATE_CONSTANTS__', $const_keys);
-utminfo("---- end of config ");
-
-logger('____________________________________________________________________________________________________________________');
 

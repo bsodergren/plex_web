@@ -27,6 +27,6 @@ class Plyr extends Player
 
         $this->VideoDetails();
 
-        utminfo([__METHOD__,$this->videoId()]);
+        utminfo($this->videoId());
     }
 }

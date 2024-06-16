@@ -41,7 +41,7 @@
       "doctrine/orm": "^2.14",
       "vlucas/phpdotenv": "^5.5",
       "doctrine/migrations": "^3.6",
-      "symfony/stopwatch": "^6.2",
+      "symfony/stopwatch": "^6.4",
       "bhittani/download": "^0.3.0",
       "nelexa/zip": "^4.0",
       "nesbot/carbon": "^2.66",
@@ -63,11 +63,15 @@
       "spatie/db-dumper": "^3.6",
       "druidfi/mysqldump-php": "^1.1",
       "bsodergren/utm": "dev-main",
-      "bsodergren/utmtemplate": "dev-main"
+      "bsodergren/utmtemplate": "dev-main",
+        "symfony/var-exporter": "^7.1",
+        "yuseferi/zhilify": "^1.0",
+        "salibhdr/php-dump-logger": "^2.1"
 
       },
     "require-dev": {
-      "symfony/var-dumper": "^6.2"
+      "symfony/var-dumper": "^6.2",
+        "symfony/debug-bundle": "^7.1"
     },
     "config": {
       "allow-plugins": {

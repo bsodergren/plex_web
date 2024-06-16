@@ -143,7 +143,7 @@ class Forms
 
     public function rating()
     {
-        utminfo([__METHOD__, 'fasd']);
+        utminfo( 'fasd');
         [$_,$videoId] = explode('_', $this->postArray['id']);
         $rating       = $this->postArray['rating'];
         $this->VideoInfo->updateRating($videoId, $rating);
@@ -157,6 +157,7 @@ class Forms
         $mediatag = new Mediatag();
         $mediatag->addFile($file);
         $mediatag->refreshFile();
+        utminfo($this->redirect);
         $this->myHeader($this->redirect.'&jo');
 
         exit;

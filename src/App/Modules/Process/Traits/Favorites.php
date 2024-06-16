@@ -23,7 +23,7 @@ trait Favorites
 
     public function RemoveFavorite()
     {
-      //  utminfo([__METHOD__, $_REQUEST]);
+      //  utminfo( $_REQUEST);
 
         if (!\array_key_exists('videoId', $_REQUEST)) {
             return '';
@@ -34,7 +34,7 @@ trait Favorites
 
     public function isFavorite()
     {
-        utminfo([__METHOD__, $_REQUEST]);
+        utminfo( $_REQUEST);
 
         if (!\array_key_exists('videoId', $_REQUEST)) {
             return '';

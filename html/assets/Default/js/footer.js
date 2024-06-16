@@ -90,12 +90,12 @@ function clickButton(e, close) {
         success: function (data) {
             console.log(data);
 
-            // if (close == true) {
-            //     window.opener.location.reload(true);
-            //     window.close();
-            // } else {
-            //     window.location.reload(true);
-            // }
+            if (close == true) {
+                window.opener.location.reload(true);
+                window.close();
+            } else {
+                window.location.reload(true);
+            }
         },
     });
 

@@ -15,7 +15,7 @@ class PlaylistDB extends VideoDb
         $sql .= ' INNER JOIN '.Db_TABLE_VIDEO_METADATA.'  m on v.video_key=m.video_key '; // .PlexSql::getLibrary();
         $sql .= ' LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.'  c on m.video_key=c.video_key ';
         $sql .= ' WHERE  ( p.playlist_id = '.$playlist_id.' and p.playlist_video_id = v.id)';
-        utminfo([__METHOD__, $sql]);
+        utminfo( $sql);
 
         return PlexSql::$DB->query($sql);
     }
@@ -31,7 +31,7 @@ class PlaylistDB extends VideoDb
         ];
 
         $plid = PlexSql::$DB->insert(Db_TABLE_PLAYLIST_DATA, $data);
-        // utminfo([__METHOD__,  PlexSql::$DB->getLastQuery(), $plid]);
+        // utminfo(  PlexSql::$DB->getLastQuery(), $plid);
 
         return $plid;
     }
@@ -42,7 +42,7 @@ class PlaylistDB extends VideoDb
         join '.Db_TABLE_PLAYLIST_VIDEOS.' v on d.id = v.playlist_id where d.id = '.$playlist_id.'';
         $results = PlexSql::$DB->query($sql);
 
-        // utminfo([__METHOD__, $results, $playlist_id]);
+        // utminfo( $results, $playlist_id);
 
         return 0;
     }
@@ -73,7 +73,7 @@ class PlaylistDB extends VideoDb
                 'playlist_video_id' => $id,
                 'library' =>  $_SESSION['library'],
             ];
-            // utminfo([__METHOD__, $data]);
+            // utminfo( $data);
             $ids[] = PlexSql::$DB->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
         }
     }
