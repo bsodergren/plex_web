@@ -57,15 +57,14 @@ class Playlist
     {
         $where = '';
         if (false !== $library) {
-            $where = ' and Library = "'.$this->library.'"';
+            $where = ' and Library = "'.$this->library.'"   ';
         }
 
         // $sql = 'select count(p.playlist_video_id) as count, p.playlist_id, d.name,
         // d.Library from '.Db_TABLE_PLAYLIST_DATA.' as d, '.Db_TABLE_PLAYLIST_VIDEOS.' as
         // p where (p.playlist_id = d.id) and d.hide = 0 '.$where.' group by p.playlist_id ORDER BY Library ASC;';
 
-        $sql = 'select id, name, Library from '.Db_TABLE_PLAYLIST_DATA.'  where hide = 0 '.$where.'  ORDER BY Library ASC;';
-
+        $sql     = 'select id, name, Library from '.Db_TABLE_PLAYLIST_DATA.'  where hide = 0 '.$where.'  ORDER BY Library ASC;';
         $results = $this->db->query($sql);
 
         return $results;
@@ -89,6 +88,9 @@ class Playlist
         foreach ($res as $i => $row) {
             $selected       = false;
             $optionDisabled = false;
+            if ( $row['name'] == 'Favorites'){
+                continue;
+            }
             if ($row['Library'] == $this->library) {
                 if (str_contains($disabled_id, $row['id'])) {
                     $optionDisabled = true;
@@ -123,6 +125,9 @@ class Playlist
         }
         $res = $this->showPlaylists();
         foreach ($res as $i => $row) {
+            if ( $row['name'] == 'Favorites'){
+                continue;
+            }
             if ($row['Library'] == $this->library) {
                 $plArray[] = [
                     'value' => $row['id'],
@@ -144,8 +149,12 @@ class Playlist
         }
 
         $sql = 'SELECT * FROM '.Db_TABLE_PLAYLIST_VIDEOS.' v, '.Db_TABLE_PLAYLIST_DATA.' as d WHERE
-         v.playlist_video_id = '.$id.' and v.playlist_id = d.id and d.hide = 0';
+         v.playlist_video_id = '.$id.' and v.playlist_id = d.id and d.hide = 0 ';
+
+        //  SELECT * FROM plexweb_playlist_videos v, plexweb_playlist_data as d WHERE
+        //          v.playlist_video_id = 7982 and v.playlist_id = d.id and d.hide = 0 and d.name not like 'favorites'
         // $sql = 'SELECT * FROM '.Db_TABLE_PLAYLIST_VIDEOS.' WHERE playlist_video_id = '.$id;
+
         $results = (new self())->db->query($sql);
 
         return $results;

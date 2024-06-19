@@ -1,7 +1,23 @@
 <label class="custom-control-label position-relative " for="ck1a_{$ROW_ID}">
-    <img src="{$THUMBNAIL}" alt="#" class="img-fluid" onerror="this.onerror=null;this.src='{$__URL_HOME__}/images/default.jpg'">
-    <span class=" position-absolute  top-0 start-0  p-2 bg-dark border border-light rounded-circle"
-    id="VideoResults_{$ROW_ID}" data-current="{$ROWNUM}" data-total="{$ROW_TOTAL}">{$ROWNUM}
-        of {$ROW_TOTAL}</span>
+    <img src="{$THUMBNAIL}" alt="#" class="img-fluid"
+        onerror="this.onerror=null;this.src='{$__URL_HOME__}/images/default.jpg'">
 
+
+<span class=" position-absolute  top-0 start-0  p-2 bg-dark border border-light rounded-circle"
+    id="VideoResults_{$ROW_ID}" data-current="{$ROWNUM}" data-total="{$ROW_TOTAL}">{$ROWNUM}
+    of {$ROW_TOTAL}</span>
+
+<div class="btn-group dropdown-center playlist-dropdown">
+    <svg class="bi dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false"
+        width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd"
+        clip-rule="evenodd">
+        <path
+            d="M9.484 15.696l-.711-.696-2.552 2.607-1.539-1.452-.698.709 2.25 2.136 3.25-3.304zm0-5l-.711-.696-2.552 2.607-1.539-1.452-.698.709 2.25 2.136 3.25-3.304zm0-5l-.711-.696-2.552 2.607-1.539-1.452-.698.709 2.25 2.136 3.25-3.304zm10.516 11.304h-8v1h8v-1zm0-5h-8v1h8v-1zm0-5h-8v1h8v-1zm4-5h-24v20h24v-20zm-1 19h-22v-18h22v18z" />
+    </svg>
+
+
+    <ul class="dropdown-menu dd-menu" id="dropdown-menu_{$ROW_ID}">
+        {$PLAYLIST_LINKS}
+    </ul>
+</div>
 </label>

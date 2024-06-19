@@ -119,7 +119,7 @@ class Forms
                     utmdd('No Method for '.$method.' Found in this');
                 }
             }
-            $redirect = true;
+            // $redirect = true;
         }
 
         if (isset($this->postArray['exit'])) {

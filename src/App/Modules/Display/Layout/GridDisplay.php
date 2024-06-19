@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Display\Layout;
 
@@ -20,21 +23,21 @@ class GridDisplay extends VideoDisplay
     use Video;
     public $totalRecords;
     public $showVideoDetails = false;
-    public $template_base = '';
-    public $VideoPlaylists = [];
+    public $template_base    = '';
+    public $VideoPlaylists   = [];
     private $AltClass;
 
     public function __construct($template_base = 'Grid')
     {
-        $this->template_base = 'pages'.DIRECTORY_SEPARATOR. $template_base;
+        $this->template_base  = 'pages'.\DIRECTORY_SEPARATOR.$template_base;
         $this->VideoPlaylists = (new Playlist())->showPlaylists(true);
     }
 
     public function gridPlaylistDropdown($playlists, $video_id)
     {
-        $current = [];
+        $current       = [];
         $playlist_html = '';
-        $ids = Playlist::getVideoPlaylists($video_id);
+        $ids           = Playlist::getVideoPlaylists($video_id);
         if (\count($ids) > 0) {
             foreach ($ids as $k => $pl) {
                 $current[$pl['playlist_id']] = true;
@@ -42,6 +45,9 @@ class GridDisplay extends VideoDisplay
         }
 
         foreach ($playlists as $p) {
+            if($p['name'] == 'Favorites'){
+                continue;
+            }
             if (\array_key_exists('id', $p)) {
                 if (\array_key_exists($p['id'], $current)) {
                     continue;
@@ -50,9 +56,9 @@ class GridDisplay extends VideoDisplay
                 $playlist_html .= Render::html(
                     'pages/Grid/playlist_link',
                     [
-                        'PL_NAME' => $p['name'],
-                        'PL_ID' => $p['id'],
-                        'VIDEO_DATA' => 'VIDEO_ID',
+                        'PL_NAME'    => $p['name'],
+                        'PL_ID'      => $p['id'],
+                        'VIDEO_DATA' => $video_id,
                     ]
                 );
             }
@@ -65,7 +71,6 @@ class GridDisplay extends VideoDisplay
     {
         $playlist_html = $this->gridPlaylistDropdown($this->VideoPlaylists, $videoInfo['id']);
         $full_filename = $videoInfo['fullpath'].\DIRECTORY_SEPARATOR.$videoInfo['filename'];
-
         // %%FILE_MISSING%%
         $class_missing = '';
         if (!file_exists($full_filename)) {
@@ -73,13 +78,13 @@ class GridDisplay extends VideoDisplay
         }
 
         $file_info = [
-            'title' => $videoInfo['title'],
-            'library' => $videoInfo['Library'],
-            'studio' => $videoInfo['studio'],
+            'title'     => $videoInfo['title'],
+            'library'   => $videoInfo['Library'],
+            'studio'    => $videoInfo['studio'],
             'substudio' => $videoInfo['substudio'],
-            'artist' => $videoInfo['artist'],
-            'genre' => $videoInfo['genre'],
-            'added' => $videoInfo['added'],
+            'artist'    => $videoInfo['artist'],
+            'genre'     => $videoInfo['genre'],
+            'added'     => $videoInfo['added'],
             // 'filename'  => $videoInfo['filename'],
             'duration' => VideoCard::videoDuration($videoInfo['duration']),
 
@@ -97,8 +102,8 @@ class GridDisplay extends VideoDisplay
             $videoFields .= Render::html(
                 'pages/Grid/cell/video_data',
                 [
-                    'FILE_FIELD' => ucfirst($field),
-                    'FILE_INFO' => $value,
+                    'FILE_FIELD'   => ucfirst($field),
+                    'FILE_INFO'    => $value,
                     'FILE_MISSING' => $class_missing,
                 ]
             );
@@ -112,12 +117,14 @@ class GridDisplay extends VideoDisplay
             }
             $thumbnail = Render::html(
                 'pages/Grid/cell/thumbnail',
-                ['PLAYLIST_LINKS' => $plLinks,
-                    'THUMBNAIL' => $this->fileThumbnail($videoInfo['id']),
-                    'ROW_ID' => $videoInfo['id'],
+                [
+                    'PLAYLIST_LINKS' => $plLinks,
+                    'THUMBNAIL'  => $this->fileThumbnail($videoInfo['id']),
+                    'ROW_ID'     => $videoInfo['id'],
                     'VIDEO_DATA' => $videoFields,
-                    'ROWNUM' => $videoInfo['rownum'],
-                    'ROW_TOTAL' => $this->totalRecords, ]);
+                    'ROWNUM'     => $videoInfo['rownum'],
+                    'ROW_TOTAL'  => $this->totalRecords,
+                ]);
         }
         $favRow = $this->favorite($videoInfo['id']);
 
@@ -125,13 +132,13 @@ class GridDisplay extends VideoDisplay
             'FILE_MISSING' => $class_missing,
 
             'PLAYLIST_LINKS' => str_replace('VIDEO_ID', $videoInfo['id'], $playlist_html),
-            'THUMBNAIL' => $thumbnail,
-            'ROW_ID' => $videoInfo['id'],
-            'VIDEO_DATA' => $videoFields,
-            'ROWNUM' => $videoInfo['rownum'],
-            'ROW_TOTAL' => $this->totalRecords,
-            'STAR_RATING' => $videoInfo['rating'],
-            'FAVRow' => $favRow,
+            'THUMBNAIL'      => $thumbnail,
+            'ROW_ID'         => $videoInfo['id'],
+            'VIDEO_DATA'     => $videoFields,
+            'ROWNUM'         => $videoInfo['rownum'],
+            'ROW_TOTAL'      => $this->totalRecords,
+            'STAR_RATING'    => $videoInfo['rating'],
+            'FAVRow'         => $favRow,
         ];
 
         // THUMB_EXTRA = ' alt="#" class="img-fluid" '
@@ -140,13 +147,12 @@ class GridDisplay extends VideoDisplay
         );
     }
 
-
     public function getDisplay($results, $page_array = [])
     {
         global $_SESSION,$_REQUEST;
         global $sort_type_map;
         $cell_html = '';
-        $db = PlexSql::$DB;
+        $db        = PlexSql::$DB;
         if (isset($page_array['total_files'])) {
             $this->totalRecords = $page_array['total_files'];
         }
@@ -163,14 +169,15 @@ class GridDisplay extends VideoDisplay
         foreach ($results as $k => $videoRow) {
             $cell_html .= Render::html('pages/Grid/cell', [
                 'VIDEO_CELL' => $this->videoCell($videoRow),
-                'ROW_ID' => $videoRow['id']]
+                'ROW_ID'     => $videoRow['id']]
             );
         }
         $table_body_html = Render::html('/pages/Grid/table', [
-          //  'HIDDEN_STUDIO_NAME' => Elements::add_hidden('studio', $studio).Elements::add_hidden('substudio', $substudio),
+            //  'HIDDEN_STUDIO_NAME' => Elements::add_hidden('studio', $studio).Elements::add_hidden('substudio', $substudio),
             'ROWS_HTML' => $cell_html,
-          //  'INFO_NAME' => $sort_type_map['map'][$_REQUEST['sort']],
+            //  'INFO_NAME' => $sort_type_map['map'][$_REQUEST['sort']],
         ]);
+
         return $table_body_html;
     }
 

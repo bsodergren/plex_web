@@ -1,2 +1,6 @@
-<li><a class="dropdown-item" href="playlist.php?action=addPlaylist&playlist_id={$PL_ID}&video_id={$VIDEO_DATA}"
-        target="_blank">{$PL_NAME}</a></li>
+<li><span class="dropdown-item dd-item" id="videoPlaylist_{$VIDEO_DATA}"
+    onclick="videoPlaylistButton({$VIDEO_DATA},{$PL_ID},'{$__THIS_PAGE__}')">{$PL_NAME}</span>
+        <span class="text-bg-danger bg-opacity-25" for="videoPlaylist_{$VIDEO_DATA}" id="VideoPlaylistLabel_{$VIDEO_DATA}"></span>
+
+    </li>
+

@@ -1,8 +1,11 @@
 <div class="col categories-wrapper" style="max-width:{$width}px;">
     {$Thumbnail_html}
     <div class="d-flex flex-row btn-group">
+        <ul class="nav nav-pills nav-pill-link" id="ex-with-icons" role="tablist">
+
         {{function=videoPlayer|query?id={$FILE_ID},href=video.php,text={L Play_Video_Text}}}
         {{function=videoPlayer|query?id={$FILE_ID},query?next={$NEXT_ID},href=videoinfo.php,text={L Video_Info_Text}}}
+        </ul>
     </div>
 
         <div class="">

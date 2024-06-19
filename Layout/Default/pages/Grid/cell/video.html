@@ -9,12 +9,15 @@
         />
         {$THUMBNAIL}
         <br />
+        <ul class="nav nav-pills nav-pill-link" id="ex-with-icons" role="tablist">
+
         {{function=videoPlayer|query?id={$ROW_ID},href=video.php,text={L Play_Video_Text}}}
         {{function=videoPlayer|query?id={$ROW_ID},href=videoinfo.php,text={L Video_Info_Text}}}
-        <br>
+        </ul>
+        <!-- <br>
         {{function=videoPlaylistBtn|query?id={$ROW_ID},query?playlist_id={$PlaylistId},href=video.php}}
         <br>
-        {{function=videoAddToPlaylist|id={$ROW_ID},pl_id={$PlaylistId},close=0}}
+        < {{function=videoAddToPlaylist|id={$ROW_ID},pl_id={$PlaylistId},close=0}} -->
     </div>
     <div class="container text-start">{$VIDEO_DATA}</div>
     <div class="container text-start">

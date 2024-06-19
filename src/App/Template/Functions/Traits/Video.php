@@ -76,7 +76,7 @@ trait Video
         }
         $window = basename($var['href'], '.php').'_popup';
         $url = __URL_HOME__.'/'.$var['href'].$req.'&sid='.FileListing::$searchId;
-        $class = 'btn btn-primary';
+        $class = 'nav-menu nav-tabs nav-link nav-item';// 'btn btn-primary';
         $extra = ' style="--bs-bg-opacity: .5;"';
         $javascript = " onclick=\"popup('".$url."', '".$window."')\"";
         $text = str_replace('_', ' ', $var['text']);
@@ -91,7 +91,12 @@ trait Video
             }
         }
 
-        return Elements::addButton($text, 'button', $class, $extra, $javascript);
+        return Render::html(Functions::$ButtonDir.'/Video/link', ['EXTRA' => $extra,
+        'JAVASCRIPT' => $javascript,
+
+        'TEXT' => $text, ]);
+
+        // return Elements::addButton($text, 'button', $class, $extra, $javascript);
     }
 
     public function getPlaylistsfromId($id, $playlist_id)

@@ -136,9 +136,9 @@ trait Playlist
                 $grid               = (new VideoDisplay('Grid'))->init();
                 $grid->totalRecords = $this->postArray['total'];
                 $html               = $grid->videoCell($videoInfo[0]);
-                utminfo($videoInfo[0]);
 
-                return $html;
+               // echo $html;
+                exit;
             }
         }
 
