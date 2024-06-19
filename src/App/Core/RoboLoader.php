@@ -37,7 +37,7 @@ class RoboLoader extends RobotLoader
             }
             \define($key, $page_setting);
         }
-         utminfo('Page Config','fdfd');
+         utminfo('Page Config', $defaults);
     }
 
     public static function echo($value, $exit = 0)

@@ -53,6 +53,9 @@ $(document).ready(function () {
         var text = $(this).attr("id");
         console.log(text);
         if (text == "PlayAll") {
+            if( GetFilename(window.location.href) == 'favorites'){
+                return false;
+            }
             playlistSubmit(text);
         }
 
@@ -84,11 +87,24 @@ $(document).ready(function () {
 });
 
 function playlistSubmit(action, playlistid = null) {
+
+
+
     var playlistName = "";
-    var searchId = document.getElementById("searchId").value;
+    var searchId = null;
+    var searchName = document.getElementById("searchId");
+
+    if(searchName != null){
+        var searchId = searchName.value;
+    }
+
+
     var playlistNameItem = document.getElementById("playlistInputTextBox");
     if (playlistNameItem != null) {
         playlistName = playlistNameItem.value;
+    }
+    if( GetFilename(window.location.href) == 'favorites'){
+        playlistName ='Favorites'
     }
 
     var linkList = document.querySelectorAll(".playlist_selector");
@@ -131,3 +147,17 @@ function playlistSubmit(action, playlistid = null) {
         },
     });
 }
+
+function GetFilename(url)
+{
+   if (url)
+   {
+      var m = url.toString().match(/.*\/(.+?)\./);
+      if (m && m.length > 1)
+      {
+         return m[1];
+      }
+   }
+   return "";
+}
+

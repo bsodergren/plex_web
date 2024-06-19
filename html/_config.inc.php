@@ -92,6 +92,6 @@ UtmDevice::$MOBILE_ASSETS_PATH    = __LAYOUT_PATH__.\DIRECTORY_SEPARATOR.'Mobile
 
 $device = new UtmDevice();
 RoboLoader::loadPage();
-$const_keys = array_keys(get_defined_constants(true)['user']);
+$const_keys = get_defined_constants(true)['user'];
 define('__TEMPLATE_CONSTANTS__', $const_keys);
 

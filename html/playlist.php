@@ -8,6 +8,7 @@ use Plex\Modules\Display\VideoDisplay;
 use Plex\Modules\Playlist\Playlist;
 use Plex\Modules\Process\Forms;
 use Plex\Template\Render;
+use UTMTemplate\HTML\Elements;
 
 /**
  * plex web viewer.
@@ -51,6 +52,10 @@ if (isset($_REQUEST['playlist_id'])) {
 }
 if (null === $playlist_id) {
     $results = (new Playlist())->showAllPlaylists();
+    if(!count($results) ){
+        echo Elements::javaRefresh('/plex/', 0);
+    }
+
 } else {
     $results = (new Playlist())->getPlaylist($playlist_id);
 }

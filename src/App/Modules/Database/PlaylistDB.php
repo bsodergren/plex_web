@@ -38,8 +38,7 @@ class PlaylistDB extends VideoDb
 
     public static function deletePlaylist($playlist_id)
     {
-        $sql = 'delete d,v from '.Db_TABLE_PLAYLIST_DATA.'  d
-        join '.Db_TABLE_PLAYLIST_VIDEOS.' v on d.id = v.playlist_id where d.id = '.$playlist_id.'';
+        $sql = 'delete from '.Db_TABLE_PLAYLIST_DATA.'  where id = '.$playlist_id.'';
         $results = PlexSql::$DB->query($sql);
 
         // utminfo( $results, $playlist_id);

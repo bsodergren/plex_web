@@ -3,6 +3,7 @@
 namespace Plex\Template\Functions\Traits;
 
 use Plex\Modules\Database\FavoriteDB;
+use Plex\Modules\Database\FileListing;
 use Plex\Modules\Database\PlexSql;
 use Plex\Modules\Display\FavoriteDisplay;
 use Plex\Modules\Playlist\Playlist;
@@ -73,9 +74,8 @@ trait Video
         if (\is_array($var['query'])) {
             $req = '?'.http_build_query($var['query']);
         }
-
         $window = basename($var['href'], '.php').'_popup';
-        $url = __URL_HOME__.'/'.$var['href'].$req;
+        $url = __URL_HOME__.'/'.$var['href'].$req.'&sid='.FileListing::$searchId;
         $class = 'btn btn-primary';
         $extra = ' style="--bs-bg-opacity: .5;"';
         $javascript = " onclick=\"popup('".$url."', '".$window."')\"";

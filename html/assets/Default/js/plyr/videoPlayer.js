@@ -651,11 +651,16 @@ const PlayerApp = {
     },
 
     playNewVideo(videoid) {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const searchid = urlParams.get("sid");
+
         $.ajax({
             url: "process.php",
             type: "POST",
             data: {
                 submit: "nextVideo",
+                sid: searchid,
                 videoid: videoid,
             },
             cache: false,
