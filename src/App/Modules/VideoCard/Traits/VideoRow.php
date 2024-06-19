@@ -10,7 +10,7 @@ use UTMTemplate\HTML\Elements;
 
 trait VideoRow
 {
-    public static function videoDuration($duration,$round=1000)
+    public static function videoDuration($duration, $round=1000)
     {
         $seconds = (int) round($duration / $round);
         $secs    = $seconds % 60;
@@ -74,14 +74,14 @@ trait VideoRow
     private function metaValue($key, $cloud = false)
     {
         $value = $this->fileInfoArray[$key];
-        if($value !== null){
+        if (null !== $value) {
             $value = trim($value);
             $value = str_replace(__PLEX_LIBRARY__.'/', '', $value);
-        if (OptionIsTrue(NAVBAR)) {
-            if (true === $cloud) {
-                $value = $this->keyword_list($key, $value);
+            if (OptionIsTrue(NAVBAR)) {
+                if (true === $cloud) {
+                    $value = $this->keyword_list($key, $value);
+                }
             }
-        }
         }
 
         return $value;

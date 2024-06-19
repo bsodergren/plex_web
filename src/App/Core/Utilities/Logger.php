@@ -1,10 +1,14 @@
 <?php
-namespace Plex\Core\Utilities;
 /**
+ *  Plexweb
+ */
+
+namespace Plex\Core\Utilities;
+
+/*
  * plex web viewer
  */
 
-use Nette\Utils\Arrays;
 use Nette\Utils\DateTime;
 use Nette\Utils\FileSystem;
 
@@ -18,7 +22,7 @@ class Logger
             while ($file = readdir($all)) {
                 if (!is_dir(__ERROR_LOG_DIRECTORY__.'/'.$file)) {
                     if (preg_match('/(log)$/', $file)) {
-                        $err_array[] = filesystem::normalizePath(__ERROR_LOG_DIRECTORY__.'/'.$file);
+                        $err_array[] = FileSystem::normalizePath(__ERROR_LOG_DIRECTORY__.'/'.$file);
                     } // end if
                 } // end if
             } // end while
@@ -34,7 +38,7 @@ class Logger
 
         //  if (Settings::isTrue('__SHOW_DEBUG_PANEL__')) {
         if (!file_exists(__ERROR_LOG_DIRECTORY__)) {
-            filesystem::createdir(__ERROR_LOG_DIRECTORY__, 0755);
+            FileSystem::createdir(__ERROR_LOG_DIRECTORY__, 0755);
         }
 
         $function_list = self::get_caller_info();
@@ -44,7 +48,7 @@ class Logger
         $html_msg      = '';
         $html_func     = '';
 
-        if (is_array($var) || is_object($var)) {
+        if (\is_array($var) || \is_object($var)) {
             $html_var = self::printCode($var);
         } else {
             $html_var = $var;
@@ -78,10 +82,10 @@ class Logger
         $delimiter = '~~|~~';
 
         $p         = null;
-        if (is_array($array)) {
+        if (\is_array($array)) {
             foreach ($array as $key => $a) {
-                if (!is_array($a) || empty($a)) {
-                    if (is_array($a)) {
+                if (!\is_array($a) || empty($a)) {
+                    if (\is_array($a)) {
                         $data .= $path."['{$key}'] = array();".$delimiter;
                     } else {
                         $data .= $path."['{$key}'] = \"".htmlentities(addslashes($a)).'";'.$delimiter;

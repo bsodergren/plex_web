@@ -1,8 +1,10 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Template\Functions\Traits;
 
-use Plex\Template\Functions\Functions;
 use Plex\Template\Render;
 use Symfony\Component\Yaml\Yaml;
 use UTMTemplate\Template;
@@ -14,19 +16,19 @@ trait Navbar
     public static function dropdownLink($url, $name, $active, $badge, $Icon = '')
     {
         return Render::html('base/navbar/menu_dropdown_link', [
-            'ACTIVE' => $active,
+            'ACTIVE'            => $active,
             'DROPDOWN_URL_TEXT' => $name,
-            'DROPDOWN_URL' => $url,
-            'DROPDOWN_BADGE' => $badge,
-            'Icon_Class' => $Icon,
+            'DROPDOWN_URL'      => $url,
+            'DROPDOWN_BADGE'    => $badge,
+            'Icon_Class'        => $Icon,
         ]);
     }
 
     public static function dropdown($array)
     {
         $dropdown_link_html = [];
-        $badge = '';
-        $pop = false;
+        $badge              = '';
+        $pop                = false;
         foreach ($array['dropdown'] as $d_name => $d_values) {
             $is_active = '';
 
@@ -36,7 +38,7 @@ trait Navbar
                     if (\is_array($dd_url)) {
                         $tmp_arr = $dd_url;
                         unset($dd_url);
-                        $icon = $tmp_arr['icon'];
+                        $icon   = $tmp_arr['icon'];
                         $dd_url = $tmp_arr['url'];
                     }
                     $is_active = '';
@@ -46,7 +48,7 @@ trait Navbar
                     $dropdown_link_html[] = self::dropdownLink($dd_url, $dd_name, $is_active, $badge, $icon);
                 }
                 $dropdown_link_html[] = '<li><hr class="dropdown-divider-settings"></li>';
-                $pop = true;
+                $pop                  = true;
                 continue;
             }
 
@@ -60,7 +62,7 @@ trait Navbar
             }
 
             $parts = explode('|', $d_values);
-            $url = $parts[0];
+            $url   = $parts[0];
 
             if (\array_key_exists(1, $parts)) {
                 $badge = Render::html('base/navbar/menu_dropdown_badge', ['COUNT' => $parts[1]]);
@@ -76,7 +78,7 @@ trait Navbar
 
         return Render::html('base/navbar/menu_dropdown', [
             'DROPDOWN_TEXT' => $array['text'],
-            'Icon_Class' => self::navbarIcon($array),
+            'Icon_Class'    => self::navbarIcon($array),
 
             'DROPDOWN_LINKS' => implode("\n", $dropdown_link_html),
         ]);
@@ -119,22 +121,21 @@ trait Navbar
             $favPopup = '';
             $template = 'menu_link';
             if (\array_key_exists('js', $link_array)) {
-                $favPopup = ' onclick="popup(\''.__URL_HOME__.'/video.php?favorites=true\', \'video_popup\')" ';
+                $favPopup          = ' onclick="popup(\''.__URL_HOME__.'/video.php?favorites=true\', \'video_popup\')" ';
                 $link_array['url'] = null;
-                $template = 'menu_popup';
+                $template          = 'menu_popup';
             }
 
             $array = [
-                'MENULINK_URL' => $link_array['url'],
-                'MENULINK_JS' => $favPopup,
+                'MENULINK_URL'  => $link_array['url'],
+                'MENULINK_JS'   => $favPopup,
                 'MENULINK_TEXT' => $link_array['text'],
-                'Icon_Class' => self::navbarIcon($link_array),
-               // '' => ' fa-home',
+                'Icon_Class'    => self::navbarIcon($link_array),
+                // '' => ' fa-home',
                 'ACTIVE' => $is_active,
             ];
 
             $url_text = Render::html('base/navbar/'.$template, $array);
-
 
             $html = $html.$url_text."\n";
         } // end foreach

@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 trait ConfigSave
 {
@@ -15,9 +18,9 @@ trait ConfigSave
                 if ('' != $value) {
                     $pcs = explode('_', $key);
 
-                    $id = $pcs[1];
+                    $id    = $pcs[1];
                     $field = $pcs[0];
-                    $set = '`'.$field.'` = "'.$value.'"';
+                    $set   = '`'.$field.'` = "'.$value.'"';
 
                     if ('null' == $value) {
                         $set = '`'.$field.'`= NULL ';

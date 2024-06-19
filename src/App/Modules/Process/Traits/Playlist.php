@@ -21,7 +21,7 @@ trait Playlist
     public function addAllPlaylist()
     {
         $url = $this->createPlaylist();
-        utminfo( $url);
+        utminfo($url);
         echo $this->myHeader($url);
     }
 
@@ -53,7 +53,7 @@ trait Playlist
             return $this->postArray['PlaylistID'];
         }
 
-        utminfo( $this->postArray);
+        utminfo($this->postArray);
 
         if (\array_key_exists('PlayAll', $this->postArray)) {
             if (\array_key_exists('search_id', $this->postArray)) {
@@ -84,14 +84,14 @@ trait Playlist
                 $search_id,
                 $hide);
         }
-        utminfo( $playlist_id);
+        utminfo($playlist_id);
 
         return $playlist_id;
     }
 
     public function deletePlaylist()
     {
-        utminfo( $this->postArray);
+        utminfo($this->postArray);
         $playlist_id = $this->postArray['playlist_id'];
         PlaylistDB::deletePlaylist($playlist_id);
         $this->myHeader(__URL_HOME__.'/playlist.php');
@@ -99,7 +99,7 @@ trait Playlist
 
     public function createPlaylist()
     {
-        utminfo( $this->postArray);
+        utminfo($this->postArray);
         $playlist_id = $this->addPlaylistData();
 
         if (!\array_key_exists('playlist', $this->postArray)) {
@@ -137,7 +137,7 @@ trait Playlist
                 $grid->totalRecords = $this->postArray['total'];
                 $html               = $grid->videoCell($videoInfo[0]);
 
-               // echo $html;
+                // echo $html;
                 exit;
             }
         }
@@ -147,7 +147,7 @@ trait Playlist
 
     public function savePlaylist()
     {
-        utminfo( $this->postArray);
+        utminfo($this->postArray);
         if (isset($this->postArray['playlist_name'])) {
             $playlist_name = $this->postArray['playlist_name'];
             if ('' != $playlist_name) {

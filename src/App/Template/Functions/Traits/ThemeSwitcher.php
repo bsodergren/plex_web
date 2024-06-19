@@ -26,9 +26,9 @@ trait ThemeSwitcher
 
     public function themeSwitcher($matches)
     {
-        $css_dir = Template::$ASSETS_PATH.'/css/themes/';
-        $files   = RoboLoader::get_filelist($css_dir, 'bootstrap.min.css', 0);
-$css_html = '';
+        $css_dir  = Template::$ASSETS_PATH.'/css/themes/';
+        $files    = RoboLoader::get_filelist($css_dir, 'bootstrap.min.css', 0);
+        $css_html = '';
         foreach ($files as $stylesheet) {
             $dirArray = explode('/', $stylesheet);
             array_pop($dirArray);

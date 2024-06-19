@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Process;
 
@@ -20,8 +23,8 @@ class Settings extends Forms
                     break;
 
                 case str_contains($key, 'setting_'):
-                    $pcs = explode('_', $key);
-                    $field = $pcs[1];
+                    $pcs                   = explode('_', $key);
+                    $field                 = $pcs[1];
                     $new_settiings[$field] = $value;
 
                     break;
@@ -41,11 +44,11 @@ class Settings extends Forms
                         if (!\array_key_exists(str_replace('-NAME', '', $key), __SETTINGS__)) {
                             $key_name = str_replace('-ADD', '-NAME', $key);
                             if (\array_key_exists($key_name, $this->postArray)) {
-                                $value = $this->postArray[$key_name];
-                                $field = str_replace('-NAME', '', $key_name);
+                                $value                     = $this->postArray[$key_name];
+                                $field                     = str_replace('-NAME', '', $key_name);
                                 $transfer_settings[$field] = [
                                     'value' => $value,
-                                    'type' => 'text',
+                                    'type'  => 'text',
                                 ];
                             }
                         }

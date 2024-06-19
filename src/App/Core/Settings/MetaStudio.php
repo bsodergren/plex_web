@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Core\Settings;
 

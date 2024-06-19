@@ -45,7 +45,7 @@ class GridDisplay extends VideoDisplay
         }
 
         foreach ($playlists as $p) {
-            if($p['name'] == 'Favorites'){
+            if ('Favorites' == $p['name']) {
                 continue;
             }
             if (\array_key_exists('id', $p)) {
@@ -119,11 +119,11 @@ class GridDisplay extends VideoDisplay
                 'pages/Grid/cell/thumbnail',
                 [
                     'PLAYLIST_LINKS' => $plLinks,
-                    'THUMBNAIL'  => $this->fileThumbnail($videoInfo['id']),
-                    'ROW_ID'     => $videoInfo['id'],
-                    'VIDEO_DATA' => $videoFields,
-                    'ROWNUM'     => $videoInfo['rownum'],
-                    'ROW_TOTAL'  => $this->totalRecords,
+                    'THUMBNAIL'      => $this->fileThumbnail($videoInfo['id']),
+                    'ROW_ID'         => $videoInfo['id'],
+                    'VIDEO_DATA'     => $videoFields,
+                    'ROWNUM'         => $videoInfo['rownum'],
+                    'ROW_TOTAL'      => $this->totalRecords,
                 ]);
         }
         $favRow = $this->favorite($videoInfo['id']);

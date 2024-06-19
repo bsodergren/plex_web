@@ -1,7 +1,12 @@
 <?php
-namespace Plex\Core\Settings;
 /**
- * plex web viewer
+ *  Plexweb
+ */
+
+namespace Plex\Core\Settings;
+
+/**
+ * plex web viewer.
  */
 
 /**
@@ -11,8 +16,8 @@ class Settings
 {
     public static function isTrue($define_name)
     {
-        if (defined($define_name)) {
-            if (true == constant($define_name)) {
+        if (\defined($define_name)) {
+            if (true == \constant($define_name)) {
                 //  mediaUpdate::echo(constant($define_name));
                 return 1;
             }
@@ -23,7 +28,7 @@ class Settings
 
     public static function isSet($define_name)
     {
-        if (defined($define_name)) {
+        if (\defined($define_name)) {
             return 1;
         }
 

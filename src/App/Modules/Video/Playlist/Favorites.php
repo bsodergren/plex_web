@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Video\Playlist;
 
@@ -21,7 +24,7 @@ class Favorites extends Player
     public function __construct()
     {
         $this->videoTemplate = parent::$PlayerTemplate;
-        $this->db = PlexSql::$DB;
+        $this->db            = PlexSql::$DB;
     }
 
     private function getFavoriteItem($row, $class)
@@ -34,15 +37,15 @@ class Favorites extends Player
         return Render::html(
             $this->videoTemplate.'/container/item',
             [
-                'THUMBNAIL' => ( new Functions())->fileThumbnail($row['id'], 'alt="#" class="img-fluid" '),
-                'STUDIO' => $row['studio'],
-                'ARTIST' => $row['artist'],
-                'GENRE' => $row['genre'],
-                'Rating' => $row['rating'],
+                'THUMBNAIL'    => (new Functions())->fileThumbnail($row['id'], 'alt="#" class="img-fluid" '),
+                'STUDIO'       => $row['studio'],
+                'ARTIST'       => $row['artist'],
+                'GENRE'        => $row['genre'],
+                'Rating'       => $row['rating'],
                 'CLASS_ACTIVE' => $class,
-                'Videoid' => $row['id'],
-                'VIDEO_URL' => $this->getVideoURL($row['id']),
-                'TITLE' => $title,
+                'Videoid'      => $row['id'],
+                'VIDEO_URL'    => $this->getVideoURL($row['id']),
+                'TITLE'        => $title,
             ]
         );
     }
@@ -61,8 +64,8 @@ class Favorites extends Player
                 $this->plyr_item .= $this->getFavoriteItem($results[$i], $class);
 
                 $this->params['PLYRLISTHTML'] = $this->plyr_item;
-                $this->params['hasPlaylist'] = 'true';
-                $this->js_params['COMMENT'] = '';
+                $this->params['hasPlaylist']  = 'true';
+                $this->js_params['COMMENT']   = '';
             }
         }
     }

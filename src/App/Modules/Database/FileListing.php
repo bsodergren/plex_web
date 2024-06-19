@@ -8,7 +8,6 @@ namespace Plex\Modules\Database;
 use Plex\Core\Request;
 use Plex\Template\Pageinate\Pageinate;
 use UTMTemplate\HTML\Elements;
-use Plex\Modules\Database\PlexSql;
 
 class FileListing
 {
@@ -77,9 +76,8 @@ class FileListing
             $fieldArray = [$fieldArray];
         }
 
-        foreach($fieldArray as $field){
-            foreach($queryArray as $query)
-            {
+        foreach ($fieldArray as $field) {
+            foreach ($queryArray as $query) {
                 $searchArray[$field][] = $query;
             }
         }
@@ -87,7 +85,7 @@ class FileListing
         // $query_cont = count($query);
 
         foreach ($searchArray as $field => $query) {
-            foreach($query as $search) {
+            foreach ($query as $search) {
                 $search = urldecode($search);
                 // $WhereList[] = "{$field} like '%{$search}%'";
                 $where[] = [
@@ -97,7 +95,6 @@ class FileListing
             }
         }
 
-
         $dbwhere = PlexSql::$search;
 
         $pageObj = new Pageinate($where, $this->currentpage, $this->urlPattern);
@@ -105,11 +102,11 @@ class FileListing
         $this->db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'v.video_key=c.video_key', 'LEFT');
 
         foreach ($searchArray as $field => $query) {
-            foreach($query as $search) {
+            foreach ($query as $search) {
                 $search = urldecode($search);
-            $this->db->$dbwhere('(m.'.$field.' like ? or c.'.$field.' like ?)', ['%'.$search.'%', '%'.$search.'%']);
+                $this->db->$dbwhere('(m.'.$field.' like ? or c.'.$field.' like ?)', ['%'.$search.'%', '%'.$search.'%']);
+            }
         }
-    }
 
         $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
 
@@ -144,7 +141,7 @@ class FileListing
             $this->db->orderBy($this->request['sort'], $this->request['direction']);
         }
 
-        $this->db->where(PlexSQL::getLastest('v.added', $days));
+        $this->db->where(PlexSql::getLastest('v.added', $days));
         $results = $this->buildSQL([$pageObj->offset, $pageObj->itemsPerPage]);
 
         return [$results, $pageObj, $uri];

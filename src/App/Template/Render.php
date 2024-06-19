@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Template;
 
@@ -25,10 +28,10 @@ class Render extends UTMTemplateRender
 
     public function __construct($percentDone = 0)
     {
-        $this->pbid = 'pb';
-        $this->pbarid = 'progress-bar';
-        $this->tbarid = 'transparent-bar';
-        $this->textid = 'pb_text';
+        $this->pbid        = 'pb';
+        $this->pbarid      = 'progress-bar';
+        $this->tbarid      = 'transparent-bar';
+        $this->textid      = 'pb_text';
         $this->percentDone = $percentDone;
     }
 
@@ -44,17 +47,17 @@ class Render extends UTMTemplateRender
     public function getContent()
     {
         $this->percentDone = (float) $this->percentDone;
-        $percentDone = number_format($this->percentDone, $this->decimals, '.', '');
+        $percentDone       = number_format($this->percentDone, $this->decimals, '.', '');
 
         $content .= self::html(
             'elements/ProgressBar/progressbar',
             [
-                'pbid' => $this->pbid,
-                'textid' => $this->textid,
-                'percentDone' => $percentDone.'%',
+                'pbid'            => $this->pbid,
+                'textid'          => $this->textid,
+                'percentDone'     => $percentDone.'%',
                 'BootpercentDone' => $percentDone,
-                'pbarid' => $this->pbarid,
-                'tbarid' => $this->tbarid,
+                'pbarid'          => $this->pbarid,
+                'tbarid'          => $this->tbarid,
             ]
         );
 
@@ -73,19 +76,19 @@ class Render extends UTMTemplateRender
     {
         // utminfo($percentDone);
         $this->percentDone = $percentDone;
-        $text = $text ?: number_format($this->percentDone, $this->decimals, '.', '');
+        $text              = $text ?: number_format($this->percentDone, $this->decimals, '.', '');
 
         echo self::html(
             'elements/ProgressBar/javascript',
             [
-                'pbid' => $this->pbid,
-                'textid' => $this->textid,
-                'text' => $text.'%',
-                'percentNumber' => $text,
-                'percentDone' => $percentDone.'%',
+                'pbid'             => $this->pbid,
+                'textid'           => $this->textid,
+                'text'             => $text.'%',
+                'percentNumber'    => $text,
+                'percentDone'      => $percentDone.'%',
                 'stylepercentDone' => $percentDone.'%',
-                'pbarid' => $this->pbarid,
-                'tbarid' => $this->tbarid,
+                'pbarid'           => $this->pbarid,
+                'tbarid'           => $this->tbarid,
             ]
         );
 

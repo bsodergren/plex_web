@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Template\Functions\Traits;
 
@@ -12,11 +15,11 @@ trait PageSort
     public static function sort_options()
     {
         global $pageObj;
-        $url_array = Request::$url_array;
-        $html = '';
+        $url_array   = Request::$url_array;
+        $html        = '';
         $request_uri = '';
-        $sep = '?';
-        $current = '';
+        $sep         = '?';
+        $current     = '';
         if ('' != $url_array['query_string']) {
             parse_str($url_array['query_string'], $query_parts);
             unset($query_parts['alpha']);
@@ -32,12 +35,12 @@ trait PageSort
             }
 
             $request_uri = '?'.http_build_query($query_parts);
-            $sep = '&';
+            $sep         = '&';
         }
-        $i = 0;
+        $i   = 0;
         $max = \count($url_array['sort_types']);
         foreach ($url_array['sort_types'] as $key => $value) {
-            $bg = '';
+            $bg   = '';
             $pill = '';
             if (0 == $i) {
                 //   $pill = ' rounded-start-pill';
@@ -50,14 +53,14 @@ trait PageSort
             if ($current == $value) {
                 //    $bg = ' active';
             }
-            $class = 'nav-link text-light'.$bg; // .$pill;
+            $class          = 'nav-link text-light'.$bg; // .$pill;
             $request_string = $request_uri.$sep.'sort='.$value;
 
             $html .= Render::return(self::$PageSortDir.'/page_item',
-                ['LI_CLASS' => 'nav-item',
+                ['LI_CLASS'   => 'nav-item',
                     'A_CLASS' => $class,
-                    'A_HREF' => $url_array['url'].$request_string,
-                    'A_TEXT' => $key]);
+                    'A_HREF'  => $url_array['url'].$request_string,
+                    'A_TEXT'  => $key]);
         }
 
         return $html;

@@ -1,10 +1,12 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Template\Functions\Modules;
 
 use Plex\Modules\Database\PlexSql;
 use Plex\Template\Render;
-use UTM\Utilities\Option;
 use UTMTemplate\HTML\Elements;
 
 /**
@@ -12,12 +14,11 @@ use UTMTemplate\HTML\Elements;
  */
 class metaFilters extends Render
 {
-
     private $templateDir = 'elements/metaFilter';
 
     public function __call($name, $arguments)
     {
-        $hidden = '';
+        $hidden      = '';
         $filter_html = $this->filter($name);
         foreach ($_REQUEST as $name => $value) {
             if ('' != $value) {
@@ -30,14 +31,12 @@ class metaFilters extends Render
 
     public function displayFilters()
     {
-
-            if (OptionIsTrue(USE_FILTER)) {
-                return Render::html($this->templateDir.'/block', []);
-
+        if (OptionIsTrue(USE_FILTER)) {
+            return Render::html($this->templateDir.'/block', []);
         }
     }
 
-    public  function filter($tag)
+    public function filter($tag)
     {
         $selected          = '';
         $clear             = $tag;
@@ -58,6 +57,4 @@ class metaFilters extends Render
 
         return Render::html($this->templateDir.'/select_box', $params);
     }
-
-
 }

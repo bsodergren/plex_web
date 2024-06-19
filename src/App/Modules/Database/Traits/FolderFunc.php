@@ -1,13 +1,17 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Database\Traits;
 
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 
 trait FolderFunc
 {
-    public function fm_get_items_in_folder($path) {}
+    public function fm_get_items_in_folder($path)
+    {
+    }
 
     public function fm_is_exclude_items($file)
     {
@@ -59,8 +63,8 @@ trait FolderFunc
 
     public function get_absolute_path($path)
     {
-        $path = str_replace(['/', '\\'], \DIRECTORY_SEPARATOR, $path);
-        $parts = array_filter(explode(\DIRECTORY_SEPARATOR, $path), 'strlen');
+        $path      = str_replace(['/', '\\'], \DIRECTORY_SEPARATOR, $path);
+        $parts     = array_filter(explode(\DIRECTORY_SEPARATOR, $path), 'strlen');
         $absolutes = [];
         foreach ($parts as $part) {
             if ('.' == $part) {
@@ -76,15 +80,15 @@ trait FolderFunc
         return implode(\DIRECTORY_SEPARATOR, $absolutes);
     }
 
-    public function countFiles($path){
-
-
-        $process = new Process(['find', $path, '-type','f']);
+    public function countFiles($path)
+    {
+        $process = new Process(['find', $path, '-type', 'f']);
         $process->run();
         $output = $process->getOutput();
 
-        return count(explode("\n",$output));
+        return \count(explode("\n", $output));
     }
+
     /**
      * This function scans the files and folder recursively, and return matching files.
      *
@@ -101,9 +105,9 @@ trait FolderFunc
             $files = [];
             foreach ($ite as $file) {
                 if (true == $file->isDir()) {
-                    $fi = new \FilesystemIterator($file->getPathname(), \FilesystemIterator::SKIP_DOTS);
+                    $fi          = new \FilesystemIterator($file->getPathname(), \FilesystemIterator::SKIP_DOTS);
                     $folderCount = iterator_count($fi);
-                    $fullpath = $file->getPathname();
+                    $fullpath    = $file->getPathname();
 
                     $root = \dirname($file->getPathname());
                     $path = str_replace($root.'/', '', $fullpath);
@@ -111,7 +115,7 @@ trait FolderFunc
                         continue;
                     }
                     $videoCount = $this->countFiles($fullpath);
-                    $files[] = ['folder' => $path, 'folderCount' => $folderCount, 'videoCount' => $videoCount];
+                    $files[]    = ['folder' => $path, 'folderCount' => $folderCount, 'videoCount' => $videoCount];
                     // if (!$file->isDir()) {
                     //     $fileName = $file->getFilename();
                     //     $location = str_replace($this->currentDir, '', $file->getPath());
@@ -123,6 +127,7 @@ trait FolderFunc
                     // }
                 }
             }
+
             return $files;
         }
     }

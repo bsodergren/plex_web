@@ -1,4 +1,8 @@
 <?php
+/**
+ *  Plexweb
+ */
+
 namespace Plex\Core\Utilities;
 
 class Escape
@@ -7,9 +11,9 @@ class Escape
 
     public function string($string)
     {
-        for ($i = 0; $i < strlen($string); ++$i) {
+        for ($i = 0; $i < \strlen($string); ++$i) {
             $char = $string[$i];
-            $ord  = ord($char);
+            $ord  = \ord($char);
             if ("'" !== $char && '"' !== $char && '\\' !== $char && $ord >= 32 && $ord <= 126) {
                 $return .= $char;
             } else {

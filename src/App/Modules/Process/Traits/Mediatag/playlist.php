@@ -1,8 +1,10 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Process\Traits\Mediatag;
 
-use Plex\Modules\Display\Layout;
 use Plex\Template\Render;
 
 trait playlist
@@ -27,6 +29,6 @@ trait playlist
         echo '</div>';
 
         $this->runCmd($cmd, 'progressBar');
-         $this->p->setProgressBarProgress(100);
+        $this->p->setProgressBarProgress(100);
     }
 }

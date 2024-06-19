@@ -1,17 +1,17 @@
 <?php
-namespace Plex\Modules\Display\Layout;
+/**
+ *  Plexweb
+ */
 
-use Plex\Modules\Display\Layout\ListDisplay;
+namespace Plex\Modules\Display\Layout;
 
 class VideoInfoDisplay extends ListDisplay
 {
     public $showVideoDetails = false;
-    public $template_base   = '';
-
+    public $template_base    = '';
 
     public function __construct($template_base = 'VideoInfo')
     {
-        $this->template_base = 'pages'.DIRECTORY_SEPARATOR. $template_base;
-
+        $this->template_base = 'pages'.\DIRECTORY_SEPARATOR.$template_base;
     }
 }

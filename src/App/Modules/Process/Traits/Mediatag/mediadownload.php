@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Process\Traits\Mediatag;
 
@@ -10,13 +13,11 @@ trait mediadownload
 
     public function mediadownload()
     {
-        $cmd = [$this->mediadownload, '-q', '--path', '/home/bjorn/plex/XXX/Downloads'];
+        $cmd     = [$this->mediadownload, '-q', '--path', '/home/bjorn/plex/XXX/Downloads'];
         $this->p = new Render();
 
         utminfo($cmd);
 
         $this->runCmd($cmd, 'downloadOutput');
     }
-
-
 }

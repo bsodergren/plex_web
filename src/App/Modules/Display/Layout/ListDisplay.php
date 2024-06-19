@@ -1,29 +1,29 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Display\Layout;
 
-use Plex\Template\Render;
-use Plex\Modules\VideoCard\VideoCard;
 use Plex\Modules\Display\VideoDisplay;
 use Plex\Modules\Playlist\Playlist;
+use Plex\Modules\VideoCard\VideoCard;
 
 class ListDisplay extends VideoDisplay
 {
     public $showVideoDetails = false;
-    public $template_base   = '';
-    public $VideoPlaylists = [];
-
+    public $template_base    = '';
+    public $VideoPlaylists   = [];
 
     public function __construct($template_base = 'List')
     {
-        $this->template_base = 'pages'.DIRECTORY_SEPARATOR. $template_base;
+        $this->template_base  = 'pages'.\DIRECTORY_SEPARATOR.$template_base;
         $this->VideoPlaylists = (new Playlist())->showPlaylists(true);
-
     }
 
     public function getDisplay($results, $page_array = [])
     {
-        $videohtml ='';// ['BODY'=>'','HIDDEN_STUDIO'=>''];
+        $videohtml       =''; // ['BODY'=>'','HIDDEN_STUDIO'=>''];
         $total_files     = '';
 
         if (isset($page_array['total_files'])) {
@@ -45,8 +45,9 @@ class ListDisplay extends VideoDisplay
             $table_body[] = $videoinfo->VideoInfo($row, $total_files);
         }
         foreach ($table_body as $key => $value) {
-            $videohtml.= $value['VIDEO'];
+            $videohtml .= $value['VIDEO'];
         }
+
         return $videohtml;
     }
 }

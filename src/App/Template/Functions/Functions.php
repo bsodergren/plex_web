@@ -50,7 +50,7 @@ class Functions extends Render
 
     public function hiddenSearch()
     {
-        utmdump("serach ID => " . FileListing::$searchId);
+        utmdump('serach ID => '.FileListing::$searchId);
         if (null === FileListing::$searchId) {
             return '';
         }

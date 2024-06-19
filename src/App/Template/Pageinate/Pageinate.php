@@ -75,7 +75,7 @@ class Pageinate extends Paginator
         }
 
         $this->results = $db->withTotalCount()->get($table);
-         utminfo($db->getLastQuery());
+        utminfo($db->getLastQuery());
         $this->totalRecords = $db->totalCount;
         $this->limit_array  = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];
         $this->offset       = ($this->currentPage - 1) * $this->itemsPerPage;

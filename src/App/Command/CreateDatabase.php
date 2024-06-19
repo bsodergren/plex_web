@@ -1,4 +1,8 @@
 <?php
+/**
+ *  Plexweb
+ */
+
 namespace Plex\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -19,11 +23,12 @@ class CreateDatabase extends Command
             ->setHelp('This command allows you to create a user...')
         ;
     }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-     
         $files = $this->findSql();
         dd($files);
+
         return Command::SUCCESS;
 
         // or return this if some error happened during the execution
@@ -39,22 +44,19 @@ class CreateDatabase extends Command
     {
         $replacements[] = Db_MEDIATAG_PREFIX;
         $replacements[] = Db_PLEXWEB_PREFIX;
-        $search[] = '%%MEDIATAG_PREFIX%%';
-        $search[] = '%%PLEXWEB_PREFIX%%';
+        $search[]       = '%%MEDIATAG_PREFIX%%';
+        $search[]       = '%%PLEXWEB_PREFIX%%';
 
         $finder = new Finder();
-        $finder->files()->name('*.sql')->in(__PHP_SCHEMA_DIR__.DIRECTORY_SEPARATOR."Tables")->sortByName();
+        $finder->files()->name('*.sql')->in(__PHP_SCHEMA_DIR__.\DIRECTORY_SEPARATOR.'Tables')->sortByName();
         if ($finder->hasResults()) {
             foreach ($finder as $file) {
                 $contents = $file->getContents();
                 $contents = str_replace($search, $replacements, $contents);
                 dd($contents);
-
             }
         }
 
-
         return $file_array;
     }
-
 }

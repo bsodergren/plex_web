@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Database;
 
@@ -15,7 +18,7 @@ class PlaylistDB extends VideoDb
         $sql .= ' INNER JOIN '.Db_TABLE_VIDEO_METADATA.'  m on v.video_key=m.video_key '; // .PlexSql::getLibrary();
         $sql .= ' LEFT JOIN '.Db_TABLE_VIDEO_CUSTOM.'  c on m.video_key=c.video_key ';
         $sql .= ' WHERE  ( p.playlist_id = '.$playlist_id.' and p.playlist_video_id = v.id)';
-        utminfo( $sql);
+        utminfo($sql);
 
         return PlexSql::$DB->query($sql);
     }
@@ -23,11 +26,11 @@ class PlaylistDB extends VideoDb
     public static function createPlaylist($name, $genre = 'mmf,mff', $searchId = null, $hide = 0)
     {
         $data = [
-            'name' => $name,
-            'genre' => $genre,
-            'library' => $_SESSION['library'],
+            'name'      => $name,
+            'genre'     => $genre,
+            'library'   => $_SESSION['library'],
             'search_id' => $searchId,
-            'hide' => $hide,
+            'hide'      => $hide,
         ];
 
         $plid = PlexSql::$DB->insert(Db_TABLE_PLAYLIST_DATA, $data);
@@ -38,7 +41,7 @@ class PlaylistDB extends VideoDb
 
     public static function deletePlaylist($playlist_id)
     {
-        $sql = 'delete from '.Db_TABLE_PLAYLIST_DATA.'  where id = '.$playlist_id.'';
+        $sql     = 'delete from '.Db_TABLE_PLAYLIST_DATA.'  where id = '.$playlist_id.'';
         $results = PlexSql::$DB->query($sql);
 
         // utminfo( $results, $playlist_id);
@@ -49,8 +52,8 @@ class PlaylistDB extends VideoDb
     public static function updatePlaylist($playlist_id, $update)
     {
         $update_str = implode(', ', $update);
-        $sql = 'UPDATE '.Db_TABLE_PLAYLIST_DATA.' SET '.$update_str.' WHERE id = '.$playlist_id.'';
-        $results = PlexSql::$DB->query($sql);
+        $sql        = 'UPDATE '.Db_TABLE_PLAYLIST_DATA.' SET '.$update_str.' WHERE id = '.$playlist_id.'';
+        $results    = PlexSql::$DB->query($sql);
     }
 
     public static function addVideo($playlist_id, $video_id)
@@ -68,9 +71,9 @@ class PlaylistDB extends VideoDb
                 continue;
             }
             $data = [
-                'playlist_id' => $playlist_id,
+                'playlist_id'       => $playlist_id,
                 'playlist_video_id' => $id,
-                'library' =>  $_SESSION['library'],
+                'library'           => $_SESSION['library'],
             ];
             // utminfo( $data);
             $ids[] = PlexSql::$DB->insert(Db_TABLE_PLAYLIST_VIDEOS, $data);
@@ -79,7 +82,7 @@ class PlaylistDB extends VideoDb
 
     public static function removeVideo($playlist_id, $video_id)
     {
-        $sql = 'delete FROM '.Db_TABLE_PLAYLIST_VIDEOS.' WHERE playlist_id = '.$playlist_id.' and playlist_video_id = '.$video_id.'';
+        $sql     = 'delete FROM '.Db_TABLE_PLAYLIST_VIDEOS.' WHERE playlist_id = '.$playlist_id.' and playlist_video_id = '.$video_id.'';
         $results = PlexSql::$DB->query($sql);
     }
 

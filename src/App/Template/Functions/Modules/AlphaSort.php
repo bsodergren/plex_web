@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Template\Functions\Modules;
 
@@ -13,7 +16,7 @@ use Plex\Template\Render;
 class AlphaSort extends Render
 {
     private static $ShowAlpha = false;
-    private $templateDir = 'elements/AlphaSort';
+    private $templateDir      = 'elements/AlphaSort';
 
     private static $alpha_sort_map = [
         'm.studio', 'm.substudio', 'm.artist', 'm.title', 'v.filename', 'm.genre', 'genre',
@@ -21,13 +24,13 @@ class AlphaSort extends Render
 
     public function display_alphaSort($offset = 0, $len = 13)
     {
-        $html = '';
-        $sort = '';
-        $current = '';
+        $html        = '';
+        $sort        = '';
+        $current     = '';
         $request_uri = '';
 
         $url_array = Request::$url_array;
-        $sep = '&';
+        $sep       = '&';
         if ('' != $url_array['query_string']) {
             parse_str($url_array['query_string'], $query_parts);
 
@@ -61,14 +64,14 @@ class AlphaSort extends Render
 
         $i = 0;
 
-        $chars = range('A', 'Z');
+        $chars     = range('A', 'Z');
         $charrange = array_merge(['#'], $chars, ['None', 'All']);
 
         $range = \array_slice($charrange, $offset, $len);
-        $max = \count($range);
+        $max   = \count($range);
 
         foreach ($range as $char) {
-            $bg = 'btn-primary ';
+            $bg   = 'btn-primary ';
             $pill = '';
             if (0 == $i) {
                 $pill = ' rounded-start-pill';
@@ -82,7 +85,7 @@ class AlphaSort extends Render
                 $bg = ' btn-secondary ';
             }
             $class = 'btn btn-sm '.$bg.$pill;
-            $url = $url_array['url'].'?alpha='.urlencode($char).$sep;
+            $url   = $url_array['url'].'?alpha='.urlencode($char).$sep;
             $html .=
             Display::directory_navlinks($url, $char, $request_string, $class, 'role="button" aria-pressed="true"  ');
         }

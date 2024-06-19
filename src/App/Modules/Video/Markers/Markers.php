@@ -40,7 +40,7 @@ class Markers
             $this->displayVideo = $data['video'];
         }
 
-        utminfo( $data);
+        utminfo($data);
     }
 
     public function getMarkerJson()
@@ -61,10 +61,10 @@ class Markers
 
                 $this->markerIndex[] = [
                     'markerTime'          => $row['timeCode'],
-                    'markerText'    => $row['markerText'],
-                    'markerId'      => $row['id'],
-                    'markerThumbnail' => @str_replace(APP_HTML_ROOT,__URL_HOME__,$row['markerThumbnail']),
-                    'videoId'=>$row['video_id'],
+                    'markerText'          => $row['markerText'],
+                    'markerId'            => $row['id'],
+                    'markerThumbnail'     => @str_replace(APP_HTML_ROOT, __URL_HOME__, $row['markerThumbnail']),
+                    'videoId'             => $row['video_id'],
                 ];
             }
         }
@@ -79,21 +79,20 @@ class Markers
             $markerArray['DisplayVideo'] = true;
         }
         if ('card' == $type) {
-            $window                 = 'video_popup';
-            $url                    = __URL_HOME__.'/video.php?id='.$markerArray['videoId'].'&tc='.$markerArray['markerTime'];
+            $window                      = 'video_popup';
+            $url                         = __URL_HOME__.'/video.php?id='.$markerArray['videoId'].'&tc='.$markerArray['markerTime'];
             $markerArray['javascript']   = " onclick=\"popup('".$url."', '".$window."')\"";
             $markerArray['DisplayVideo'] = false;
         }
         if ('Editor' == $type) {
             $markerArray['javascript']   = '';
             $markerArray['DisplayVideo'] = false;
-            $markerArray['btnClass'] = ' btnHover';
+            $markerArray['btnClass']     = ' btnHover';
 
-            $markerArray['thumb'] = Render::html(Functions::$MarkerDir.'/image',['THUMBNAIL' => $markerArray['markerThumbnail']]);
+            $markerArray['thumb']  = Render::html(Functions::$MarkerDir.'/image', ['THUMBNAIL' => $markerArray['markerThumbnail']]);
             $markerArray['prefix'] = "<div class='btnContaner'>";
-            $markerArray['end'] = "</div>";
+            $markerArray['end']    = '</div>';
         }
-
 
         $markerArray['DurationText'] = VideoCard::videoDuration($markerArray['markerTime'], 1);
 
@@ -112,7 +111,7 @@ class Markers
         foreach ($index as $i => $row) {
             $jsEditURL = __URL_HOME__.'/markers.php?edit='.$this->id;
 
-            if($displayType === null){
+            if (null === $displayType) {
                 if ('true' == $this->displayVideo) {
                     $type = 'player';
                 } else {
@@ -126,9 +125,9 @@ class Markers
                 $row,
                 $type);
         }
-    if($type != 'Editor') {
+        if ('Editor' != $type) {
             $editButton = Render::html(Functions::$MarkerDir.'/markerEditBtn', ['javascript'=> " onclick=\"popup('".$jsEditURL."', 'markerPopup')\"", 'markerText'=>'Edit']);
-    }
+        }
 
         $buttonHtml = Render::html(Functions::$MarkerDir.'/markerButtons', [
             'MarkerButtons'     => $html,
@@ -140,7 +139,6 @@ class Markers
 
     public function displayMarkers($type=null)
     {
-
         $html = $this->getMarkerButtons($type);
 
         return Render::html(Functions::$MarkerDir.'/marker', ['MarkerButton' => $html]);

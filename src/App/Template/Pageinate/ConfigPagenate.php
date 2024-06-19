@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Template\Pageinate;
 
@@ -7,7 +10,7 @@ use Plex\Modules\Database\PlexSql;
 
 class ConfigPagenate extends Pageinate
 {
-    public $table = Db_TABLE_STUDIOS;
+    public $table   = Db_TABLE_STUDIOS;
     public $library = false;
     public $itemsPerPage;
     public $urlPattern;
@@ -16,19 +19,19 @@ class ConfigPagenate extends Pageinate
     public $offset;
     public $results;
     public $paginator;
-    public $itemsSelection = [10, 25, 50, 100, 250, 500, 1500];
+    public $itemsSelection    = [10, 25, 50, 100, 250, 500, 1500];
     private $maxRecordsToShow = 6;
 
     public function __construct($query, $currentPage, $urlPattern)
     {
         global $_SESSION;
-        $db = PlexSql::$DB;
+        $db                 = PlexSql::$DB;
         $this->itemsPerPage = $_SESSION['itemsPerPage'];
-        $this->urlPattern = $urlPattern;
+        $this->urlPattern   = $urlPattern;
 
         $this->currentPage = $currentPage;
         if (false != $query) {
-            $table = $this->table.' v ';
+            $table        = $this->table.' v ';
             $libraryField = 'v.Library';
         // $db->join(Db_TABLE_VIDEO_METADATA.' m', 'm.video_key=v.video_key', 'INNER');
         // $db->join(Db_TABLE_VIDEO_CUSTOM.' c', 'c.video_key=v.video_key', 'LEFT');
@@ -50,7 +53,7 @@ class ConfigPagenate extends Pageinate
         }
         if ('v.added' == $_SESSION['sort']) {
             if (__THIS_FILE__ == 'recent.php') {
-                $db->where(PlexSQL::getLastest('added', $_SESSION['days']));
+                $db->where(PlexSql::getLastest('added', $_SESSION['days']));
             }
         }
 
@@ -65,7 +68,7 @@ class ConfigPagenate extends Pageinate
         $this->results = $db->withTotalCount()->get($table);
 
         $this->totalRecords = $db->totalCount;
-        $this->limit_array = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];
+        $this->limit_array  = [($this->currentPage - 1) * $this->itemsPerPage, $this->itemsPerPage];
 
         $this->offset = ($this->currentPage - 1) * $this->itemsPerPage;
 

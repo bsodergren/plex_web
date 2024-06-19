@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Template\Functions\Traits;
 
@@ -74,12 +77,12 @@ trait Video
         if (\is_array($var['query'])) {
             $req = '?'.http_build_query($var['query']);
         }
-        $window = basename($var['href'], '.php').'_popup';
-        $url = __URL_HOME__.'/'.$var['href'].$req.'&sid='.FileListing::$searchId;
-        $class = 'nav-menu nav-tabs nav-link nav-item';// 'btn btn-primary';
-        $extra = ' style="--bs-bg-opacity: .5;"';
+        $window     = basename($var['href'], '.php').'_popup';
+        $url        = __URL_HOME__.'/'.$var['href'].$req.'&sid='.FileListing::$searchId;
+        $class      = 'nav-menu nav-tabs nav-link nav-item'; // 'btn btn-primary';
+        $extra      = ' style="--bs-bg-opacity: .5;"';
         $javascript = " onclick=\"popup('".$url."', '".$window."')\"";
-        $text = str_replace('_', ' ', $var['text']);
+        $text       = str_replace('_', ' ', $var['text']);
 
         if (OptionIsFalse(SHOW_THUMBNAILS)) {
             $class .= ' position-absolute vertical-text text-nowrap';
@@ -92,16 +95,15 @@ trait Video
         }
 
         return Render::html(Functions::$ButtonDir.'/Video/link', ['EXTRA' => $extra,
-        'JAVASCRIPT' => $javascript,
-
-        'TEXT' => $text, ]);
+            'JAVASCRIPT'                                                  => $javascript,
+            'TEXT'                                                        => $text, ]);
 
         // return Elements::addButton($text, 'button', $class, $extra, $javascript);
     }
 
     public function getPlaylistsfromId($id, $playlist_id)
     {
-        $results = Playlist::getVideoPlaylists($id);
+        $results     = Playlist::getVideoPlaylists($id);
         $disabled_id = [];
         if (null === $results) {
             return [$playlist_id, ''];
@@ -124,8 +126,8 @@ trait Video
     public function getVideoPlaylistJson($id, $playlist_id = null)
     {
         list($playlist_id, $disabled_id_list) = $this->getPlaylistsfromId($id, $playlist_id);
-        $playlists = (new Playlist())->getPlaylistJsonOptions($playlist_id, $disabled_id_list);
-        $this->playlist_id = $playlist_id;
+        $playlists                            = (new Playlist())->getPlaylistJsonOptions($playlist_id, $disabled_id_list);
+        $this->playlist_id                    = $playlist_id;
 
         return $playlists;
     }
@@ -133,30 +135,30 @@ trait Video
     public function getVideoPlaylists($id, $playlist_id = null)
     {
         list($playlist_id, $disabled_id_list) = $this->getPlaylistsfromId($id, $playlist_id);
-        $playlists = (new Playlist())->getPlaylistSelectOptions($playlist_id, $disabled_id_list);
-        $this->playlist_id = $playlist_id;
+        $playlists                            = (new Playlist())->getPlaylistSelectOptions($playlist_id, $disabled_id_list);
+        $this->playlist_id                    = $playlist_id;
 
         return $playlists;
     }
 
     public function videoAddToPlaylist($matches)
     {
-        $var = $this->parseVars($matches);
-        $id = $var['id'];
+        $var         = $this->parseVars($matches);
+        $id          = $var['id'];
         $playlist_id = $var['pl_id'];
 
         $playlisthtml = $this->getVideoPlaylists($id, $playlist_id);
 
         return Render::html(Functions::$PlaylistDir.'/VideoPlayer/PlaylistForm', [
-            'playlistId' => $this->playlist_id,
+            'playlistId'      => $this->playlist_id,
             'SelectPlaylists' => $playlisthtml,
-            'Videoid' => $var['id'],
+            'Videoid'         => $var['id'],
         ]);
     }
 
     public function videoPlaylistBtn($matches)
     {
-        $var = $this->parseVars($matches);
+        $var     = $this->parseVars($matches);
         $buttons = '';
         $results = Playlist::getVideoPlaylists($var['query']['id']);
         foreach ($results as $n => $val) {
@@ -164,12 +166,12 @@ trait Video
                 $req = '?'.http_build_query($var['query']);
             }
 
-            $window = basename($var['href'], '.php').'_popup';
-            $url = __URL_HOME__.'/'.$var['href'].$req.$val['playlist_id'];
-            $class = 'btn btn-primary';
-            $extra = '';
+            $window     = basename($var['href'], '.php').'_popup';
+            $url        = __URL_HOME__.'/'.$var['href'].$req.$val['playlist_id'];
+            $class      = 'btn btn-primary';
+            $extra      = '';
             $javascript = " onclick=\"popup('".$url."', '".$window."')\"";
-            $text = Playlist::getPlaylistName($val['playlist_id']);
+            $text       = Playlist::getPlaylistName($val['playlist_id']);
 
             $buttons .= Elements::addButton($text, 'button', $class, $extra, $javascript);
         }
@@ -181,9 +183,9 @@ trait Video
     {
         $hidden = null;
         if (OptionIsTrue(SHOW_RATING)) {
-            $var = $this->parseVars($matches);
+            $var    = $this->parseVars($matches);
             $params = [
-                'ROW_ID' => $var['id'],
+                'ROW_ID'      => $var['id'],
                 'STAR_RATING' => $var['rating'],
             ];
 
@@ -204,27 +206,26 @@ trait Video
 
     public function Thumbnail($matches)
     {
-
-        $var = $this->parseVars($matches);
-        $row_id = $var['id'];
+        $var     = $this->parseVars($matches);
+        $row_id  = $var['id'];
         $next_id = $var['next'];
-        $params = ['FILE_ID' => $row_id,
-            'PlaylistId' => $var['playlist_id'],
-            'NEXT_ID' => $next_id,
-            'width' => 60,
+        $params  = ['FILE_ID' => $row_id,
+            'PlaylistId'      => $var['playlist_id'],
+            'NEXT_ID'         => $next_id,
+            'width'           => 60,
         ];
         if (OptionIsTrue(SHOW_THUMBNAILS)) {
             $thumbnail = $this->fileThumbnail($row_id);
 
-            $row_preview_image = $this->filePreview($row_id);
-            $params['width'] = 325;
+            $row_preview_image        = $this->filePreview($row_id);
+            $params['width']          = 325;
             $params['Thumbnail_html'] = Render::html(
                 VideoCard::$template.'/thumbnail',
                 [
-                    'PREVIEW' => $row_preview_image,
+                    'PREVIEW'   => $row_preview_image,
                     'THUMBNAIL' => $thumbnail,
-                    'FILE_ID' => $row_id,
-                    'NEXT_ID' => $next_id,
+                    'FILE_ID'   => $row_id,
+                    'NEXT_ID'   => $next_id,
                 ]
             );
         }
@@ -240,10 +241,10 @@ trait Video
         if ('' == $row_id) {
             return null;
         }
-        $query = 'SELECT thumbnail FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$row_id;
+        $query  = 'SELECT thumbnail FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$row_id;
         $result = $db->query($query);
 
-        if($result[0]['thumbnail'] === null){
+        if (null === $result[0]['thumbnail']) {
             return __URL_HOME__.'/images/default.jpg';
         }
 
@@ -261,7 +262,7 @@ trait Video
         if ('' == $row_id) {
             return null;
         }
-        $query = 'SELECT preview FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$row_id;
+        $query  = 'SELECT preview FROM '.Db_TABLE_VIDEO_FILE.' WHERE id = '.$row_id;
         $result = $db->query($query);
 
         if (OptionIsFalse(SHOW_THUMBNAILS)) {

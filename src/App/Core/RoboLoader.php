@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Core;
 
@@ -21,7 +24,7 @@ class RoboLoader extends RobotLoader
 
     public static function loadPage()
     {
-        $page_config = Yaml::parseFile(__PAGE_CONFIG__, Yaml::PARSE_CONSTANT);
+        $page_config  = Yaml::parseFile(__PAGE_CONFIG__, Yaml::PARSE_CONSTANT);
         $current_page = [];
         if (\array_key_exists(__THIS_PAGE__, $page_config)) {
             $current_page = $page_config[__THIS_PAGE__];
@@ -29,15 +32,15 @@ class RoboLoader extends RobotLoader
         $default = $page_config['default'];
         foreach ($default as $key => $value) {
             if (\array_key_exists($key, $current_page)) {
-                $page_setting = $current_page[$key];
+                $page_setting                            = $current_page[$key];
                 $defaults[__THIS_PAGE__]['Config'][$key] = $current_page[$key];
             } else {
-                $page_setting = $default[$key];
+                $page_setting                             = $default[$key];
                 $defaults[__THIS_PAGE__]['default'][$key] = $default[$key];
             }
             \define($key, $page_setting);
         }
-         utminfo('Page Config', $defaults);
+        utminfo('Page Config', $defaults);
     }
 
     public static function echo($value, $exit = 0)
@@ -60,7 +63,7 @@ class RoboLoader extends RobotLoader
                 if ('..' == $filename) {
                     continue;
                 }
-                $file = Filesystem::normalizePath($directory.'/'.$filename);
+                $file = FileSystem::normalizePath($directory.'/'.$filename);
                 if (!is_dir($file)) {
                     if (preg_match('/('.$ext.')$/', $filename)) {
                         if (1 == $skip_files) {
@@ -86,7 +89,7 @@ class RoboLoader extends RobotLoader
 
     public static function skipFile($filename)
     {
-        $f = fopen($filename, 'r');
+        $f    = fopen($filename, 'r');
         $line = fgets($f);
         fclose($f);
 
@@ -99,7 +102,7 @@ class RoboLoader extends RobotLoader
             $replacement = '<?php';
             $replacement .= ' #skip';
             $__db_string = FileSystem::read($filename);
-            $__db_write = str_replace('<?php', $replacement, $__db_string);
+            $__db_write  = str_replace('<?php', $replacement, $__db_string);
             FileSystem::write($filename, $__db_write);
         }
     }

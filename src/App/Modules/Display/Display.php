@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Display;
 
@@ -18,9 +21,9 @@ class Display
     public $_SESSION;
     public $_REQUEST;
     public static $CSS_THEMES = [];
-    public static $CrubURL = [];
-    private $model_popup = '';
-    private $model_buttons = [];
+    public static $CrubURL    = [];
+    private $model_popup      = '';
+    private $model_buttons    = [];
     public static $Random;
 
     public function __construct()
@@ -31,7 +34,7 @@ class Display
 
         $this->_SESSION = $_SESSION;
         $this->_REQUEST = $_REQUEST;
-        $this->_SERVER = $_SERVER;
+        $this->_SERVER  = $_SERVER;
     }
 
     public static function directory_navlinks($url, $text, $request_uri = '', $class = '', $additional = '')
@@ -64,8 +67,8 @@ class Display
         }
 
         $array = [
-            'MENULINK_URL' => $url,
-            'MENULINK_JS' => $style,
+            'MENULINK_URL'  => $url,
+            'MENULINK_JS'   => $style,
             'MENULINK_TEXT' => $text,
         ];
 
@@ -74,21 +77,20 @@ class Display
 
     public static function echo($text, $var = '')
     {
-       
         $pre_style = 'style="border: 1px solid #ddd;border-left: 3px solid #f36d33;color: #666;page-break-inside: avoid;font-family: monospace;font-size: 15px;line-height: 1.6;margin-bottom: 1.6em;max-width: 100%;overflow: auto;padding: 1em 1.5em;display: block;word-wrap: break-word;"';
         $div_style = 'style="display: inline-block;width: 100%;border: 1px solid #000;text-align: left;font-size:1.5rem;"';
-        $colors = new Colors();
-        $is_array = false;
+        $colors    = new Colors();
+        $is_array  = false;
 
         if (\is_array($text)) {
-            $var = $text;
+            $var  = $text;
             $text = 'Array';
         }
 
         if (\is_array($var)) {
-            $var = var_export($var, 1);
-            $var = $colors->getColoredHTML($var, 'green');
-            $var = "<pre {$pre_style}>".$var.'</pre>';
+            $var      = var_export($var, 1);
+            $var      = $colors->getColoredHTML($var, 'green');
+            $var      = "<pre {$pre_style}>".$var.'</pre>';
             $is_array = true;
         } else {
             $var = $colors->getColoredHTML($var, 'green');
@@ -106,14 +108,14 @@ class Display
         $is_array = false;
 
         if (\is_array($text)) {
-            $var = $text;
+            $var  = $text;
             $text = 'Array';
         }
 
         if (\is_array($var)) {
             $var = var_export($var, 1);
             // $var=$colors->getColoredHTML($var, "green");
-            $var = "<pre {$pre_style}>".$var.'</pre>';
+            $var      = "<pre {$pre_style}>".$var.'</pre>';
             $is_array = true;
         }
 
@@ -125,7 +127,7 @@ class Display
         $random_id = 'Model_'.substr(md5(rand()), 0, 7);
         $this->model_popup .= Render::html('popup_debug_model', ['MODEL_TITLE' => $text, 'MODEL_BODY' => $var, 'MODEL_ID' => $random_id]);
 
-        $button_html = Render::html('popup_debug_button', ['MODEL_TITLE' => $text, 'MODEL_ID' => $random_id]);
+        $button_html           = Render::html('popup_debug_button', ['MODEL_TITLE' => $text, 'MODEL_ID' => $random_id]);
         $this->model_buttons[] = $button_html;
     }
 
@@ -153,5 +155,7 @@ class Display
         self::$Random = self::RandomId('', $length);
     }
 
-    public static function displayVideoLink($id, $text, $extra = '') {}
+    public static function displayVideoLink($id, $text, $extra = '')
+    {
+    }
 }

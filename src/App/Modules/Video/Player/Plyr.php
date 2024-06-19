@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Video\Player;
 
@@ -13,10 +16,10 @@ class Plyr extends Player
 
     public function __construct($object)
     {
-       // parent::__construct();
-      //  parent::$PlayerTemplate = $this->templatePlayer;
+        // parent::__construct();
+        //  parent::$PlayerTemplate = $this->templatePlayer;
         $this->parent = $object;
-        $this->id = $this->videoId();
+        $this->id     = $this->videoId();
 
         // $object->playlist_id = $this->playlist->playlist_id;
     }

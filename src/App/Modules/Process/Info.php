@@ -1,10 +1,13 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Process;
 
 use Nette\Utils\FileSystem;
-use Plex\Modules\Process\Traits\DbWrapper;
 use Plex\Modules\Database\PlexSql;
+use Plex\Modules\Process\Traits\DbWrapper;
 
 class Info
 {
@@ -14,16 +17,15 @@ class Info
     private $postArray;
     public object $db;
 
-
     public function __construct($req)
     {
-        $this->db = PlexSql::$DB;
+        $this->db        = PlexSql::$DB;
         $this->postArray = $req;
     }
 
     public function __call($method, $args)
     {
-        $this->tagValue = $args[0];
+        $this->tagValue  = $args[0];
         $this->video_key = $args[1];
 
         $this->InfoUpdate($method);
@@ -32,12 +34,12 @@ class Info
     public function InfoUpdate($tag)
     {
         $data['video_key'] = $this->video_key;
-        $data[$tag] = $this->tagValue;
+        $data[$tag]        = $this->tagValue;
         if ('NULL' == $this->tagValue) {
             $data[$tag] = null;
 
             $query = 'UPDATE `'.Db_TABLE_VIDEO_CUSTOM.'` SET ';
-            $query .= " `".$tag."` = NULL WHERE `".Db_TABLE_VIDEO_CUSTOM."`.`video_key` = '".$this->video_key."'";
+            $query .= ' `'.$tag.'` = NULL WHERE `'.Db_TABLE_VIDEO_CUSTOM."`.`video_key` = '".$this->video_key."'";
 
             $this->rawQuery($query);
         } else {
@@ -71,7 +73,7 @@ class Info
     public function deleteFile()
     {
         $this->where('id', $this->postArray['id']);
-        $res = $this->getOne(Db_TABLE_VIDEO_FILE, ['fullpath', 'filename']);
+        $res  = $this->getOne(Db_TABLE_VIDEO_FILE, ['fullpath', 'filename']);
         $file = $res['fullpath'].\DIRECTORY_SEPARATOR.$res['filename'];
         FileSystem::delete($file);
         $this->where('id', $this->postArray['id']);

@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Display\Layout;
 
@@ -12,15 +15,15 @@ class FolderDisplay extends VideoDisplay
 {
     use FolderFunc;
     public $showVideoDetails = false;
-    private $template_base = '';
-    public $parentfolder = '';
+    private $template_base   = '';
+    public $parentfolder     = '';
     public object $ReqObj;
     public $folderCounts;
 
     public function __construct($template_base = 'fileBrowser')
     {
-        $this->template_base = 'pages'.DIRECTORY_SEPARATOR. $template_base;
-        $this->ReqObj = new Request();
+        $this->template_base = 'pages'.\DIRECTORY_SEPARATOR.$template_base;
+        $this->ReqObj        = new Request();
         $this->urlPath();
     }
 
@@ -88,30 +91,30 @@ class FolderDisplay extends VideoDisplay
                 array_walk($this->folderCounts, function ($value, $key, $folder) {
                     if ($value['folder'] == $folder) {
                         $this->FolderCount = $value['folderCount'];
-                        $this->videoCount = $value['videoCount'];
+                        $this->videoCount  = $value['videoCount'];
                     }
                 }, $folder);
                 $folderLink = $this->folderLink($this->currentPath.$folder);
                 $folderText = $folder;
                 $folderLinks .= Render::html($this->template_base.'/FolderLink',
-                    ['FolderLink' => $folderLink,
-                        'FolderText' => $folderText,
-                    'FolderCount' => $this->FolderCount,
-                'videoCount' => $this->videoCount]);
+                    ['FolderLink'     => $folderLink,
+                        'FolderText'  => $folderText,
+                        'FolderCount' => $this->FolderCount,
+                        'videoCount'  => $this->videoCount]);
             }
         }
 
         return Render::html($this->template_base.'/FolderList', ['FolderList' => $folderLinks,
-    'FolderHeader' => $this->CurrentFolderName]);
+            'FolderHeader'                                                    => $this->CurrentFolderName]);
     }
 
     public function fileDisplay($files)
     {
         $total_files = '';
-        $videoinfo = new VideoCard();
+        $videoinfo   = new VideoCard();
 
         foreach ($files as $id => $row) {
-            $row_id = $row['id'];
+            $row_id      = $row['id'];
             $row['next'] = 0;
             if (\array_key_exists($id + 1, $files)) {
                 $row['next'] = $files[$id + 1]['id'];

@@ -1,10 +1,13 @@
 <?php
-namespace Plex\Core\Utilities;
 /**
- * plex web viewer
+ *  Plexweb
  */
 
+namespace Plex\Core\Utilities;
 
+/**
+ * plex web viewer.
+ */
 class Colors
 {
     private $foreground_colors = [];
@@ -100,4 +103,3 @@ class Colors
         return array_keys($this->background_colors);
     } // end getBackgroundColors()
 } // end class
-

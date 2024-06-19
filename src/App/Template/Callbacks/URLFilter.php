@@ -1,14 +1,15 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Template\Callbacks;
 
-use Plex\Template\Functions\Functions;
 use KubAT\PhpSimple\HtmlDomParser;
-
 
 class URLFilter
 {
-    public static function parse_urllink($text,$vars)
+    public static function parse_urllink($text, $vars)
     {
         $dom = HtmlDomParser::str_get_html($text);
 
@@ -16,8 +17,8 @@ class URLFilter
             return $text;
         }
 
-        $lookup = array_key_first($vars);
-        list($element,$attribute) = explode("=",$lookup);
+        $lookup                    = array_key_first($vars);
+        list($element, $attribute) = explode('=', $lookup);
 
         $elems = $dom->find($element);
 
@@ -29,16 +30,16 @@ class URLFilter
 
         foreach ($elems as $a) {
             $url = $a->getAttribute($attribute);
-             if (!str_contains($url, $query)) {
-                 $url = str_replace('?', '?'.$query.'='.$value.'&', $url);
+            if (!str_contains($url, $query)) {
+                $url = str_replace('?', '?'.$query.'='.$value.'&', $url);
             }
-             $a->setAttribute($attribute, $url);
+            $a->setAttribute($attribute, $url);
 
-        //     //     $a->setAttribute('data-bs-placement', 'top');
-        //     //     $a->setAttribute('data-bs-toggle', 'tooltip');
-        //     //     $a->setAttribute('title', $a->href);
-         }
+            //     //     $a->setAttribute('data-bs-placement', 'top');
+            //     //     $a->setAttribute('data-bs-toggle', 'tooltip');
+            //     //     $a->setAttribute('title', $a->href);
+        }
 
-         return $dom;
+        return $dom;
     }
 }

@@ -5,10 +5,10 @@
 
 namespace Plex\Template\Functions\Traits;
 
-use Plex\Template\Render;
 use Plex\Modules\Database\PlexSql;
-use Plex\Modules\VideoCard\VideoCard;
 use Plex\Modules\Video\Markers\Markers as vMarkers;
+use Plex\Modules\VideoCard\VideoCard;
+use Plex\Template\Render;
 
 trait Markers
 {
@@ -26,8 +26,7 @@ trait Markers
 
     public function markerEditor($matches)
     {
-
-        $var = $this->parseVars($matches);
+        $var       = $this->parseVars($matches);
         $var['id'] = $_GET['edit'];
         utminfo($var);
         $this->Markers = new vMarkers($var);
@@ -35,7 +34,6 @@ trait Markers
 
         return $Markers;
     }
-
 
     public function markerCloud($matches)
     {
@@ -71,7 +69,7 @@ trait Markers
                     $buttonHTML .= Render::html('pages/Markers/Box/markerLink', [
                         'VideoID'    => $vrow['video_id'],
                         'javascript' => $this->markerPopup('js', '#', $url_params),
-                        'timeCode'   => VideoCard::videoDuration($vrow['timeCode'],1),
+                        'timeCode'   => VideoCard::videoDuration($vrow['timeCode'], 1),
                         'markerText' => $vrow['markerText'],
                     ]);
                 }
@@ -82,18 +80,17 @@ trait Markers
                     'THUMBNAIL' => $thumbnail,
                 ]);
 
-                $cell_html .=  Render::html('pages/Markers/Box/cell', [
+                $cell_html .= Render::html('pages/Markers/Box/cell', [
                     'thumbnail_html' => $thumbnail_html,
                     // 'javascript' => $this->markerPopup('js',$url,$url_params),
                     'video_markers' => $buttonHTML,
                 ]);
-
             }
-                $html =  Render::html('pages/Markers/Box/grid', [
-                    'FILE_ID' => $vid,
-                    // 'javascript' => $this->markerPopup('js',$url,$url_params),
-                    'Grid_Cells_html' => $cell_html,
-                ]);
+            $html =  Render::html('pages/Markers/Box/grid', [
+                'FILE_ID' => $vid,
+                // 'javascript' => $this->markerPopup('js',$url,$url_params),
+                'Grid_Cells_html' => $cell_html,
+            ]);
 
         //     if(array_key_exists('video_id',$row)){
         //         $url_params['id']= urlencode($row['video_id']);
@@ -117,9 +114,9 @@ trait Markers
         //         $currId = $row['video_id'];
         //     }
         } else {
-            $url = '/plex/markers.php';
-            $sql = 'select count(`markerText`) as cnt,`markerText` from '.Db_TABLE_VIDEO_CHAPTER.' GROUP BY `markerText` ORDER BY cnt ASC';
-            $html = '';
+            $url          = '/plex/markers.php';
+            $sql          = 'select count(`markerText`) as cnt,`markerText` from '.Db_TABLE_VIDEO_CHAPTER.' GROUP BY `markerText` ORDER BY cnt ASC';
+            $html         = '';
             $markerList   = $db->query($sql);
             foreach ($markerList as $row) {
                 $url_params['marker'] = urlencode($row['markerText']);

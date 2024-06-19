@@ -88,7 +88,7 @@ class Playlist
         foreach ($res as $i => $row) {
             $selected       = false;
             $optionDisabled = false;
-            if ( $row['name'] == 'Favorites'){
+            if ('Favorites' == $row['name']) {
                 continue;
             }
             if ($row['Library'] == $this->library) {
@@ -125,7 +125,7 @@ class Playlist
         }
         $res = $this->showPlaylists();
         foreach ($res as $i => $row) {
-            if ( $row['name'] == 'Favorites'){
+            if ('Favorites' == $row['name']) {
                 continue;
             }
             if ($row['Library'] == $this->library) {

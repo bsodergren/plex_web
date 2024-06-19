@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 namespace Plex\Modules\Video\Playlist;
 
@@ -21,8 +24,7 @@ class PlyrList extends Player
     public function __construct()
     {
         $this->videoTemplate = parent::$PlayerTemplate;
-        $this->db = PlexSql::$DB;
-
+        $this->db            = PlexSql::$DB;
     }
 
     public function getplaylistId()
@@ -34,9 +36,9 @@ class PlyrList extends Player
                 $this->db->where('playlist_id', $playlist_id);
 
                 $playlist_result = $this->db->getOne(Db_TABLE_PLAYLIST_VIDEOS, null, $cols);
-                $query = $this->db->getLastQuery();
-                $id = $playlist_result['playlist_video_id'];
-                $this->id = $id;
+                $query           = $this->db->getLastQuery();
+                $id              = $playlist_result['playlist_video_id'];
+                $this->id        = $id;
             }
             $this->playlist_id = $playlist_id;
         } else {
@@ -53,29 +55,29 @@ class PlyrList extends Player
 
     private function getPlaylistItem($row, $class = '')
     {
-
         $title = $row['title'];
         if ('' == $row['title']) {
             $title = $row['filename'];
         }
-        $thumbImg =  ( new Functions())->fileThumbnail($row['playlist_video_id'], 'alt="#" class="img-fluid" ');
+        $thumbImg =  (new Functions())->fileThumbnail($row['playlist_video_id'], 'alt="#" class="img-fluid" ');
+
         // utminfo($thumbImg);
         return Render::html(
             $this->videoTemplate.'/container/item',
             [
-                'THUMBNAIL' =>$thumbImg,
-                'STUDIO' => $row['studio'],
-                'ARTIST' => $row['artist'],
-                'GENRE' => $row['genre'],
-                'width' => $row['width'],
-                'height' => $row['height'],
+                'THUMBNAIL' => $thumbImg,
+                'STUDIO'    => $row['studio'],
+                'ARTIST'    => $row['artist'],
+                'GENRE'     => $row['genre'],
+                'width'     => $row['width'],
+                'height'    => $row['height'],
                 // 'Rating' => $row['rating'],
 
-                'PLAYLIST_ID' => $this->playlist_id,
+                'PLAYLIST_ID'  => $this->playlist_id,
                 'CLASS_ACTIVE' => $class,
-                'Videoid' => $row['playlist_video_id'],
-                'VIDEO_URL' => $this->getVideoURL($row['playlist_video_id']),
-                'TITLE' => $title,
+                'Videoid'      => $row['playlist_video_id'],
+                'VIDEO_URL'    => $this->getVideoURL($row['playlist_video_id']),
+                'TITLE'        => $title,
             ]
         );
     }
@@ -107,12 +109,12 @@ class PlyrList extends Player
         $results = $this->db->query($sql);
 
         $newArray = [];
-        $test = $results;
+        $test     = $results;
         foreach ($test as $index => $row) {
             if ($row['playlist_video_id'] == $this->id) {
                 break;
             }
-            $last = array_shift($test);
+            $last       = array_shift($test);
             $newArray[] = $last;
         }
 
@@ -143,11 +145,11 @@ class PlyrList extends Player
             }
         }
 
-        $this->params['PLYRLISTHTML'] = $this->plyr_item;
-        $this->params['hasPlaylist'] = 'true';
-        $this->js_params['PLAYLIST_ID'] = $this->playlist_id;
+        $this->params['PLYRLISTHTML']     = $this->plyr_item;
+        $this->params['hasPlaylist']      = 'true';
+        $this->js_params['PLAYLIST_ID']   = $this->playlist_id;
         $this->js_params['NEXT_VIDEO_ID'] = $next_video_id;
         $this->js_params['PREV_VIDEO_ID'] = $prev_video_id;
-        $this->js_params['COMMENT'] = '';
+        $this->js_params['COMMENT']       = '';
     }
 }

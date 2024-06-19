@@ -1,8 +1,10 @@
-<?php 
-namespace Plex\Modules\Process\Traits;
+<?php
+/**
+ *  Plexweb
+ */
 
+namespace Plex\Modules\Process\Traits;
 
 trait VideoCell
 {
-
 }

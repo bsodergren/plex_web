@@ -39,16 +39,17 @@ class Marker extends Forms
         utminfo($this->data);
         $type=null;
         if (\array_key_exists('edit', $this->data)) {
-            $type = "Editor";
+            $type = 'Editor';
         }
+
         return $this->Markers->getMarkerButtons($type);
     }
 
     public function addMarkerVideo()
     {
         $data = [
-            'timeCode' => $this->data['timeCode'],
-            'video_id' => $this->data['videoId'],
+            'timeCode'       => $this->data['timeCode'],
+            'video_id'       => $this->data['videoId'],
             'markerText'     => $this->data['markerText'],
         ];
         $res = $this->db->insert(Db_TABLE_VIDEO_CHAPTER, $data);

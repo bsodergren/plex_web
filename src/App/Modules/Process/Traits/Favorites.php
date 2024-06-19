@@ -11,30 +11,29 @@ use Plex\Template\Render;
 
 trait Favorites
 {
-
     public function addFavorite()
     {
         if (!\array_key_exists('videoId', $_REQUEST)) {
             return '';
         }
         FavoriteDB::add($_REQUEST['videoId']);
-        echo Render::html(Functions::$ButtonDir.'/Favorite/remove',['videoId' => ','.$_REQUEST['videoId']]);
+        echo Render::html(Functions::$ButtonDir.'/Favorite/remove', ['videoId' => ','.$_REQUEST['videoId']]);
     }
 
     public function RemoveFavorite()
     {
-      //  utminfo( $_REQUEST);
+        //  utminfo( $_REQUEST);
 
         if (!\array_key_exists('videoId', $_REQUEST)) {
             return '';
         }
         FavoriteDB::delete($_REQUEST['videoId']);
-        echo  Render::html(Functions::$ButtonDir.'/Favorite/add',['videoId' =>  ','.$_REQUEST['videoId']]);
+        echo Render::html(Functions::$ButtonDir.'/Favorite/add', ['videoId' =>  ','.$_REQUEST['videoId']]);
     }
 
     public function isFavorite()
     {
-        utminfo( $_REQUEST);
+        utminfo($_REQUEST);
 
         if (!\array_key_exists('videoId', $_REQUEST)) {
             return '';
