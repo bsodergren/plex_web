@@ -72,16 +72,23 @@ class Functions extends Render
 
     public function playListButton()
     {
-        $playlists               = (new Playlist())->getPlaylistSelectOptions();
-        $params['CANVAS_HEADER'] = Render::html(self::$ButtonDir.'/Playlist/canvas_header', []);
-        $params['CANVAS_BODY']   = Render::html(self::$ButtonDir.'/Playlist/canvas_body', ['SelectPlaylists' => $playlists]);
-        // $params['CANVAS_BODY'] = Render::html('elements/Playlist/canvas_body', []);
 
-        return Render::html(self::$ButtonDir.'/Playlist/canvas', $params);
+     //   return Render::html(self::$ButtonDir.'/Playlist/canvas', $params);
     }
 
     public function AlphaBlock($match)
     {
         return (new AlphaSort())->displayAlphaBlock();
+    }
+
+    public static function playlistCanvas(){
+        if (OptionIsTrue(SHOW_PLAYLIST))
+        {
+
+            $playlists               = (new Playlist())->getPlaylistSelectOptions();
+            // $params['CANVAS_BODY'] = Render::html('elements/Playlist/canvas_body', []);
+
+            return Render::html(self::$ButtonDir.'/Playlist/sidenav',  ['SelectPlaylists' => $playlists]);
+        }
     }
 }

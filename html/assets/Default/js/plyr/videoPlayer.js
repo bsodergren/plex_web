@@ -74,6 +74,10 @@ const PlayerApp = {
           </svg>
           <span class="plyr__tooltip">Prev</span>
         </button>
+            <button type="button" class="plyr__control" data-plyr="rewind">
+        <svg role="presentation"><use xlink:href="#plyr-rewind"></use></svg>
+        <span class="plyr__tooltip" role="tooltip">Backward {seektime} secs</span>
+    </button>
         <button class="plyr__controls__item plyr__control" type="button" data-plyr="play">
           <svg class="icon--pressed" aria-hidden="true" focusable="false">
               <use xlink:href="#plyr-pause"></use>
@@ -353,6 +357,11 @@ const PlayerApp = {
                     overlay.classList.toggle("show");
                 }
                 if (event.key === "m") {
+                    const activeElement = document.activeElement;
+                    if (activeElement && activeElement.classList.contains('form-input') === true)
+                        {
+                        return false;
+                    }
                     event.preventDefault();
 
                     this.getMarkerTimeCode(event);

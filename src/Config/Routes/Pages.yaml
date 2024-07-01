@@ -9,19 +9,25 @@ default:
     SHOW_SORT: false
     SHOW_PAGES: false
     GRID_VIEW: false
+    SHOW_PLAYLIST: true
+
     # LIST_VIEW: false
     # VIDEOINFO: true
 home:
     PAGE_TITLE: "Home Page"
     BOTTOM_NAV: false
+    SHOW_PLAYLIST: false
 favorites:
     PAGE_TITLE: "Favorites Page"
     BOTTOM_NAV: true
+    SHOW_PLAYLIST: false
 album:
 artist:
     PAGE_TITLE: "Artist Selection"
+    SHOW_PLAYLIST: false
 file:
     PAGE_TITLE: "File Listing"
+    SHOW_PLAYLIST: false
 list:
     PAGE_TITLE: "List view"
     SHOW_SORT: true
@@ -38,14 +44,17 @@ grid:
     SHOW_RATING: true
 editor:
     PAGE_TITLE: "Wordmap Editor"
+    SHOW_PLAYLIST: false
 search:
     PAGE_TITLE: "Search"
     BOTTOM_NAV: true
+    SHOW_PLAYLIST: false
     SHOW_SORT: true
     SHOW_PAGES: true
     SHOW_RATING: true
 pledit:
     PAGE_TITLE: "Playlist Editor"
+    SHOW_PLAYLIST: false
     BOTTOM_NAV: false
     SHOW_SORT: false
     NAVBAR: true
@@ -53,34 +62,41 @@ pledit:
     SHOW_RATING: false
 genre:
     PAGE_TITLE: "Genre Selection"
+    SHOW_PLAYLIST: false
     BOTTOM_NAV: false
 
     # SHOW_SORT: true
 playlist:
     PAGE_TITLE: "Playlist Selection"
     BOTTOM_NAV: false
+    SHOW_PLAYLIST: false
 
 recent:
     PAGE_TITLE: "Recent Videos"
     BOTTOM_NAV: true
+    SHOW_PLAYLIST: false
     SHOW_SORT: true
     SHOW_PAGES: true
 settings:
     PAGE_TITLE: "Settings Page"
     BOTTOM_NAV: false
+    SHOW_PLAYLIST: false
 test:
     PAGE_TITLE: "Test Page"
 studio:
     PAGE_TITLE: "Studio Page"
     BOTTOM_NAV: false
+    SHOW_PLAYLIST: false
 tags:
     PAGE_TITLE: "Tags Page"
     BOTTOM_NAV: false
+    SHOW_PLAYLIST: false
 video:
     PAGE_TITLE: "Video Page"
     BOTTOM_NAV: false
     NAVBAR: false
     SHOW_RATING: true
+    SHOW_PLAYLIST: false
 
 videoinfo:
     PAGE_TITLE: "Video Page"
@@ -91,5 +107,6 @@ videoinfo:
 filebrowser:
     PAGE_TITLE: "File Browser"
     BOTTOM_NAV: false
+    SHOW_PLAYLIST: false
 process:
     SHOW_RATING: true

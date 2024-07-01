@@ -1,19 +1,19 @@
-const sideBar = document.querySelector("ul.nav-menu.nav-tabs.nav-sidebar");
-if (sideBar != null) {
-    let SideBarHeight = sideBar.clientHeight + 20;
+// const sideBar = document.querySelector("ul.nav-menu.nav-tabs.nav-sidebar");
+// if (sideBar != null) {
+//     let SideBarHeight = sideBar.clientHeight + 20;
 
-    let sideBarHeader = document.querySelector(".nav-sidebar-header");
-    if (sideBarHeader != null) {
-        sideBarHeader.style.top = SideBarHeight + "px";
-        sideBarHeader.style.position = "absolute";
-        sideBarHeader.style.width = "180px";
-        let sideBarsort = document.querySelector(".nav-sidebar-sort");
+//     let sideBarHeader = document.querySelector(".nav-sidebar-header");
+//     if (sideBarHeader != null) {
+//         sideBarHeader.style.top = SideBarHeight + "px";
+//         sideBarHeader.style.position = "absolute";
+//         sideBarHeader.style.width = "180px";
+//         let sideBarsort = document.querySelector(".nav-sidebar-sort");
 
-        sideBarsort.style.top = SideBarHeight + 30 + "px";
-        sideBarsort.style.position = "absolute";
-        sideBarsort.style.width = "180px";
-    }
-}
+//         sideBarsort.style.top = SideBarHeight + 30 + "px";
+//         sideBarsort.style.position = "absolute";
+//         sideBarsort.style.width = "180px";
+//     }
+// }
 
 let mybutton = document.getElementById("myBtn");
 // When the user scrolls down 20px from the top of the document, show the button

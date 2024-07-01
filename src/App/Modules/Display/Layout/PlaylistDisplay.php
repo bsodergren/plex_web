@@ -75,8 +75,8 @@ class PlaylistDisplay extends VideoDisplay
             if ($playlist_id == $plCanvas_id) {
                 continue;
             }
-            $plCanvas_name                      = $plRow['name'];
-            $playlist_LinkArray[$plCanvas_name] = __URL_HOME__.'/playlist.php?playlist_id='.$plCanvas_id;
+            $plCanvas_name                        = $plRow['name'];
+            $playlist_LinkArray[$plCanvas_name]   = __URL_HOME__.'/playlist.php?playlist_id='.$plCanvas_id;
         }
 
         $total     = \count($results);

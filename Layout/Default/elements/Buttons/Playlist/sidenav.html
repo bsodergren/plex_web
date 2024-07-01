@@ -1,0 +1,45 @@
+<h6 class="text-muted text-uppercase nav-sidebar-header text-align-middle">Playlist</h6>
+<!-- <li class="nav-item "> -->
+
+
+
+
+<!-- <a class="nav-link collapsed ripple-surface-primary" data-mdb-collapse-init="" href="#sidenav-collapse-8-0-0-9999"
+        role="button" aria-expanded="false" data-mdb-ripple-initialized="true"><i class="fas fa-list-alt fa-fw me-3"></i>Playlist
+        <i class="fas fa-angle-down rotate-icon ps-2" style="transform: rotate(0deg);"></i></a>
+    <ul class="nav-collapse collapse playlistData" id="sidenav-collapse-8-0-0-9999" style=""
+        data-mdb-collapse-initialized="true"> -->
+<form method="post" id="ajaxform" class="ajaxform playlistData">
+
+    {{function=hiddenSearch}}
+
+    <input type="hidden" name="submit" value="playlist">
+    <li class="nav-item">
+        <button type="button" class="nav-link PlaylistButton" id="PlayAll"> <i class="fas fa-star fa-fw me-1"></i>
+            {L Canvas_PlayAll_Btn}</button>
+    </li>
+
+    <li class="nav-item">
+        <button type="button" class="nav-link  PlaylistButton" id="AddPlaylist">
+            <i class="fas fa-star fa-fw me-1"></i>
+            {L Canvas_AddToPlaylist_Btn} </button>
+    </li>
+
+    <li class="nav-item  playlistTextBox PlaylistButton" id="playlistListBox">
+        <span class="nav-link" id="playlistTextBox"></span>
+    </li>
+
+    <li class="nav-item">
+        <button type="button" class="nav-link  PlaylistButton" id="AddAll"> <i class="fas fa-star fa-fw me-1"></i>
+            {L Canvas_SelectAll_Btn} </button>
+    </li>
+
+    <li class="nav-item">
+        <button type="button" class="nav-link PlaylistButton" id="AddToPlaylist">{L Canvas_AddtoSelected_Btn}</button>
+        <select class="page-link nav-link" name="PlaylistID" id="PlaylistSelectID">
+            {$SelectPlaylists}
+        </select>
+    </li>
+</form>
+
+{{javascript=playlist.js}}

@@ -6,6 +6,7 @@
 namespace Plex\Template\Functions\Traits;
 
 use Nette\Utils\Random;
+use Plex\Modules\Display\Layout\PlaylistDisplay;
 use Plex\Template\Render;
 use Symfony\Component\Yaml\Yaml;
 use UTMTemplate\Template;
@@ -95,11 +96,19 @@ trait Navbar
         if (\defined('PLAYLIST_DROPDOWN')) {
             $navigation_link_array['playlist']['dropdown'] = PLAYLIST_DROPDOWN;
         }
+        if (OptionIsTrue(SHOW_PLAYLIST))
+        {
+            $navigation_link_array['playlist']['options'] = true;
+        }
 
         foreach ($navigation_link_array as $name => $link_array) {
             $is_active = '';
             if (\array_key_exists('dropdown', $link_array)) {
                 $html .= self::dropdown($link_array);
+                continue;
+            }
+            if (\array_key_exists('options', $link_array)) {
+                // $html .= self::playlistCanvas();
                 continue;
             }
             if (true == $link_array['studio']) {

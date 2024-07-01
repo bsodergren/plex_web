@@ -6,6 +6,27 @@ body {
     text-transform: initial !important;
 }
 
+.pltextBox {
+    width: 140px;
+    /* padding: 6px; */
+    /* margin-bottom: 20px; */
+    /* border: 1px solid #ccc; */
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 900;
+    /* width: 100%; */
+    box-sizing: border-box;
+    /* background: #fff; */
+    /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); */
+    /* width: 320px; */
+    /* text-align: center; */
+    /* opacity: 01; */
+    /* transform: scale(0.8); */
+    /* left: -5px; */
+    /* position: relative; */
+    /* animation: fadeInUp 0.5s ease-out forwards; */
+}
+
 .sidenav-pos {
     position: fixed;
     top: 60px;
@@ -40,15 +61,17 @@ body {
 
 .nav-sidebar-sort {
     width: 180px;
-    position: absolute;
+    /* position: absolute;
     top: 370px;
-    left: 0px;
+    left: 0px; */
 }
 
 .nav-sidebar-header {
     width: 180px;
-    position: absolute;
-    top: 340px;
+    text-align: center;
+    padding: 5px 5px 5px 5px;
+    left: -30px;
+    position: relative;
 }
 
 .vertical-text {
@@ -404,9 +427,9 @@ button.btn.playlist-canvas-button {
 }
 
 .dd-item {
-    background-image: linear-gradient(#313539,#34393d 40%,#373b40);
+    background-image: linear-gradient(#313539, #34393d 40%, #373b40);
     filter: none;
-    border: 1px solid rgba(0,0,0,.6);
+    border: 1px solid rgba(0, 0, 0, 0.6);
     padding: 5px;
 }
 
@@ -415,8 +438,54 @@ button.btn.playlist-canvas-button {
     border: none;
 }
 
-.video-link{
+.video-link {
     list-style-type: none;
-    padding: 5px 10px 5px 15px!important;
+    padding: 5px 10px 5px 15px !important;
     cursor: pointer;
+}
+
+.playlistTextBox{
+    display: none;
+}
+
+.PlaylistButton{
+    /* width: 140px; */
+}
+
+button.nav-link{
+    width: 100%;
+        text-align: start;
+
+}
+.selectLabel{
+
+background-image: linear-gradient(#313539,#34393d 40%,#373b40);
+    color:black  !important;
+    position: absolute !important;
+    top: -10px !important;
+    left: -10px !important;
+    z-index: 2 !important;
+    height: 100% !important;
+    padding: 1rem 1rem !important;
+    overflow: hidden !important;
+    text-align: start !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    pointer-events: none !important;
+    border: 1px solid transparent !important;
+    transform-origin: 0 0 !important;
+    transition: opacity .1s ease-in-out,transform .1s ease-in-out !important;
+
+
+}
+.select-form{
+    height: 16px !important;
+    font-size: small !important;
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+    /* width: 101.333334px; */
+    min-height: 18px !important;
+    width: 100% !important;
 }

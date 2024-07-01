@@ -18,10 +18,10 @@ const Play_Video_Text = 'Play_Video';
 const Video_Info_Text = 'Video_Info';
 
 const Canvas_PlayAll_Btn = 'Play All';
-const Canvas_AddToPlaylist_Btn = 'Add selected to Playlist';
+const Canvas_AddToPlaylist_Btn = 'Add to Playlist';
 const Canvas_SelectAll_Btn = 'Select All';
 const Canvas_Clear_Btn = 'Clear';
-const Canvas_AddtoSelected_Btn = 'Add to Selected List';
+const Canvas_AddtoSelected_Btn = 'Add to';
 const Canvas_Playlist_Btn = 'Playlist';
 
 // Video/Card/deletebuttons.html

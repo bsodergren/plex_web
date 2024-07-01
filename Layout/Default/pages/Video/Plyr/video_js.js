@@ -1,41 +1,39 @@
-
-var curVolume = getCookie("playerVolCookie");
+var curVolume = getCookie('playerVolCookie')
 if (curVolume == null) {
-    curVolume = 0.5;
+    curVolume = 0.5
 } else {
-    curVolume = curVolume / 100;
+    curVolume = curVolume / 100
 }
-console.log("current volume " + curVolume);
+console.log('current volume ' + curVolume)
 
-
-window.addEventListener("resize", resize, false);
+window.addEventListener('resize', resize, false)
 
 // video.height = 100; /* to get an initial width to work with*/
-function togglePopup(x_pos, y_pos, videoId, timeCode) {
-    y_pos = y_pos - 50;
-    const overlay = document.getElementById("popupOverlay");
-    overlay.classList.toggle("show");
-    overlay.style.position = "absolute";
-    overlay.style.left = x_pos + "px";
-    overlay.style.top = y_pos + "px";
-    document.getElementById("markerText").value = '';
-    document.getElementById("markerText").focus();
+function togglePopup (x_pos, y_pos, videoId, timeCode) {
+    y_pos = y_pos - 50
+    const overlay = document.getElementById('popupOverlay')
+    overlay.classList.toggle('show')
+    overlay.style.position = 'absolute'
+    overlay.style.left = x_pos + 'px'
+    overlay.style.top = y_pos + 'px'
+    document.getElementById('markerText').value = ''
+    document.getElementById('markerText').focus()
 
-    videoIdInput = document.getElementById("markerVideoid");
-    videoIdInput.value = videoId;
+    videoIdInput = document.getElementById('markerVideoid')
+    videoIdInput.value = videoId
 
-    IdInput = document.getElementById("markerId");
-    IdInput.value = videoId;
+    IdInput = document.getElementById('markerId')
+    IdInput.value = videoId
 
-    timeCodeInput = document.getElementById("markerTimeCode");
-    timeCodeInput.value = timeCode;
+    timeCodeInput = document.getElementById('markerTimeCode')
+    timeCodeInput.value = timeCode
 
-    console.log(x_pos, y_pos, videoId, timeCode);
+    console.log(x_pos, y_pos, videoId, timeCode)
 }
 
-function resize() {
-    var videoTag = document.getElementsByTagName("video");
-    const video = videoTag[0];
+function resize () {
+    var videoTag = document.getElementsByTagName('video')
+    const video = videoTag[0]
 
     //     videoRatio = video.height / video.width;
     // windowRatio = window.innerHeight / window.innerWidth; /* browser size */
@@ -53,144 +51,146 @@ function resize() {
     //     text= "Resising Window to W:"+video.width + " H:" + video.height;
     //     console.log(text)
 }
-function updateOptions(id) {
+function updateOptions (id) {
     $.ajax({
-        url: "process.php",
-        type: "POST",
+        url: 'process.php',
+        type: 'POST',
         data: {
-            submit: "jquery",
-            id: id,
+            submit: 'jquery',
+            id: id
         },
         success: function (data) {
-            var outletOptions = document.querySelector(".videoPlaylistButton");
-            Array.from(outletOptions).forEach((option) => {
-                outletOptions.removeChild(option);
-            });
+            var outletOptions = document.querySelector('.videoPlaylistButton')
+            Array.from(outletOptions).forEach(option => {
+                outletOptions.removeChild(option)
+            })
 
-            var myArray = JSON.parse(data);
-            var opt = document.createElement("option");
+            var myArray = JSON.parse(data)
+            var opt = document.createElement('option')
 
-            opt.appendChild(document.createTextNode("Select from List"));
-            opt.classList.add("filter-option");
-            opt.disabled = true;
-            outletOptions.appendChild(opt);
+            opt.appendChild(document.createTextNode('Select from List'))
+            opt.classList.add('filter-option')
+            opt.disabled = true
+            outletOptions.appendChild(opt)
 
-            myArray.map((optionData) => {
-                var opt = document.createElement("option");
+            myArray.map(optionData => {
+                var opt = document.createElement('option')
 
-                opt.appendChild(document.createTextNode(optionData[1]));
-                opt.classList.add("filter-option");
-                opt.value = optionData[0];
+                opt.appendChild(document.createTextNode(optionData[1]))
+                opt.classList.add('filter-option')
+                opt.value = optionData[0]
                 if (optionData[2] == true) {
-                    opt.classList.add("selected");
+                    opt.classList.add('selected')
                 }
                 if (optionData[3] == true) {
-                    opt.classList.add("disabled");
+                    opt.classList.add('disabled')
                 }
 
-                opt.selected = optionData[2];
-                opt.disabled = optionData[3];
-                outletOptions.appendChild(opt);
-            });
-            return false;
-        },
-    });
+                opt.selected = optionData[2]
+                opt.disabled = optionData[3]
+                outletOptions.appendChild(opt)
+            })
+            return false
+        }
+    })
 }
 
-function setInfoText(className, item) {
+function setInfoText (className, item) {
     // console.log("setInfoText" , className, item.getAttribute("data-title"))
-    var TitleId = "." + className + "_title";
-    const textTitle = document.querySelector(TitleId);
+    var TitleId = '.' + className + '_title'
+    const textTitle = document.querySelector(TitleId)
     if (textTitle != null) {
-        textTitle.textContent = item.getAttribute("data-title");
+        textTitle.textContent = item.getAttribute('data-title')
     }
 
-    var artistId = "." + className + "_artist";
-    const textartist = document.querySelector(artistId);
+    var artistId = '.' + className + '_artist'
+    const textartist = document.querySelector(artistId)
     if (textartist != null) {
-        if (item.getAttribute("data-artist") == "") {
-            textartist.classList.add("hidden"); // Add 'hidden' class
-            textartist.textContent = "";
+        if (item.getAttribute('data-artist') == '') {
+            textartist.classList.add('hidden') // Add 'hidden' class
+            textartist.textContent = ''
         } else {
-            textartist.textContent = item.getAttribute("data-artist");
+            textartist.textContent = item.getAttribute('data-artist')
         }
     }
 
-    var genreId = "." + className + "_genre";
-    const textgenre = document.querySelector(genreId);
+    var genreId = '.' + className + '_genre'
+    const textgenre = document.querySelector(genreId)
     if (textgenre != null) {
-        textgenre.textContent = item.getAttribute("data-genre");
+        textgenre.textContent = item.getAttribute('data-genre')
     }
 
-    var studioId = "." + className + "_studio";
-    const textstudio = document.querySelector(studioId);
+    var studioId = '.' + className + '_studio'
+    const textstudio = document.querySelector(studioId)
     if (textstudio != null) {
-        textstudio.textContent = item.getAttribute("data-studio");
+        textstudio.textContent = item.getAttribute('data-studio')
     }
 
-    const textvideoid = document.querySelector("#videoPlaylistVideoId");
+    const textvideoid = document.querySelector('#videoPlaylistVideoId')
 
-    const playerTextInfo = document.querySelector(".player_" + className);
+    const playerTextInfo = document.querySelector('.player_' + className)
     if (playerTextInfo != null) {
-        playerTextInfo.setAttribute("href", item.getAttribute("data-pUrl"));
+        playerTextInfo.setAttribute('href', item.getAttribute('data-pUrl'))
 
-        textvideoid.value = item.getAttribute("data-videoid");
+        textvideoid.value = item.getAttribute('data-videoid')
         playerTextInfo.setAttribute(
-            "data-videoid",
-            item.getAttribute("data-videoid")
-        );
+            'data-videoid',
+            item.getAttribute('data-videoid')
+        )
         playerTextInfo.setAttribute(
-            "onclick",
-            "videoCard(" + textvideoid.value + ")"
-        );
+            'onclick',
+            'videoCard(' + textvideoid.value + ')'
+        )
     }
 }
 
-function seektoTime(timeCode) {
-    PlayerApp.player.currentTime = timeCode;
+function seektoTime (timeCode) {
+    PlayerApp.player.currentTime = timeCode
 }
 
-function setCookie(name, value, days) {
-    var expires = "";
+function setCookie (name, value, days) {
+    var expires = ''
     if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-        expires = "; expires=" + date.toUTCString();
+        var date = new Date()
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
+        expires = '; expires=' + date.toUTCString()
     }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    document.cookie = name + '=' + (value || '') + expires + '; path=/'
 }
 
-function getCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(";");
+function getCookie (name) {
+    var nameEQ = name + '='
+    var ca = document.cookie.split(';')
     for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == " ") c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        var c = ca[i]
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length)
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length)
     }
-    return null;
+    return null
 }
 
-function formatTime(timeInSeconds) {
-    const result = new Date(timeInSeconds * 1000).toISOString().substr(11, 8);
+function formatTime (timeInSeconds) {
+    const result = new Date(timeInSeconds * 1000).toISOString().substr(11, 8)
 
     return {
         minutes: result.substr(3, 2),
-        seconds: result.substr(6, 2),
-    };
+        seconds: result.substr(6, 2)
+    }
 }
 
-function addMarker() {
-    var action = document.getElementById("markerAction").value;
+function addMarker () {
+    var action = document.getElementById('markerAction').value
 
-    var timeCode = document.getElementById("markerTimeCode");
-    var videoid = document.getElementById("markerVideoid").value;
-    var playlistid = document.getElementById("markerPlaylistId").value;
-    var markerText = document.getElementById("markerText");
-
+    var timeCode = document.getElementById('markerTimeCode')
+    var videoid = document.getElementById('markerVideoid').value
+    var playlistid = document.getElementById('markerPlaylistId').value
+    var markerText = document.getElementById('markerText')
+    if (timeCode.value == '') {
+        return false
+    }
     $.ajax({
-        url: "process.php",
-        type: "POST",
+        url: 'process.php',
+        type: 'POST',
         data: {
             action: action,
             videoId: videoid,
@@ -198,126 +198,125 @@ function addMarker() {
             timeCode: timeCode.value,
             playlist_id: playlistid,
             markerText: markerText.value,
-            exit: true,
+            exit: true
         },
         cache: false,
         success: function (data) {
-            const videoCell = document.getElementById("videoMarkerList");
-            videoCell.innerHTML = data;
-            markerText.value = "";
-            timeCode.value = "";
+            const videoCell = document.getElementById('videoMarkerList')
+            videoCell.innerHTML = data
+            markerText.value = ''
+            timeCode.value = ''
 
-            const overlay = document.getElementById("popupOverlay");
-            overlay.classList.toggle("show");
+            const overlay = document.getElementById('popupOverlay')
+            overlay.classList.toggle('show')
 
-            return false;
-        },
-    });
+            return false
+        }
+    })
 }
 
-
-function updateFavVideo(videoid) {
+function updateFavVideo (videoid) {
     // const playervideoid = document.querySelector('.player_text')
     // videoid = playervideoid.getAttribute('data-videoid')
 
     $.ajax({
-        url: "process.php",
-        type: "POST",
+        url: 'process.php',
+        type: 'POST',
         data: {
-            action: "isFavorite",
-            videoId: videoid,
+            action: 'isFavorite',
+            videoId: videoid
         },
         cache: false,
         success: function (data) {
-            const videoCell = document.getElementById("FavoriteButton");
+            const videoCell = document.getElementById('FavoriteButton')
             if (videoCell != null) {
-                videoCell.innerHTML = data;
+                videoCell.innerHTML = data
             }
-        },
-    });
+        }
+    })
 }
 
-function updateVideoMarkers(videoid) {
+function updateVideoMarkers (videoid) {
     // const playervideoid = document.querySelector('.player_text')
     // videoid = playervideoid.getAttribute('data-videoid')
 
     $.ajax({
-        url: "process.php",
-        type: "POST",
+        url: 'process.php',
+        type: 'POST',
         data: {
-            action: "getMarker",
-            id: videoid,
+            action: 'getMarker',
+            id: videoid
         },
         cache: false,
         success: function (data) {
-            const videoCell = document.getElementById("videoMarkerList");
-           // if (videoCell != null) {
-                videoCell.innerHTML = data;
-           // }
-        },
-    });
+            const videoCell = document.getElementById('videoMarkerList')
+            // if (videoCell != null) {
+            videoCell.innerHTML = data
+            // }
+        }
+    })
 }
 
-function calculateAspectRatio(width, height) {
-    function gcd(a, b) {
-        return b == 0 ? a : gcd(b, a % b);
+function calculateAspectRatio (width, height) {
+    function gcd (a, b) {
+        return b == 0 ? a : gcd(b, a % b)
     }
 
-    var divisor = gcd(width, height);
+    var divisor = gcd(width, height)
 
-    return width / divisor + ":" + height / divisor;
+    return width / divisor + ':' + height / divisor
 }
 
-function calculateApectHeight(width, ratio) {
-    var t_arr = ratio.split(":");
-    var div = width / t_arr[0];
-    return div * t_arr[1];
+function calculateApectHeight (width, ratio) {
+    var t_arr = ratio.split(':')
+    var div = width / t_arr[0]
+    return div * t_arr[1]
 }
 
-function resizeWindow(large, width = 1280, height = 720) {
+function resizeWindow (large, width = 1280, height = 720) {
     if (large == null) {
-        large = false;
+        large = false
     }
 
-    if (typeof large == "object") {
-        large = true;
+    if (typeof large == 'object') {
+        large = true
     }
 
-    videoWidth = width;
-    videoHeight = height;
+    videoWidth = width
+    videoHeight = height
 
-    text = "Origintal Video W:" + videoWidth + " H:" + videoHeight;
+    text = 'Origintal Video W:' + videoWidth + ' H:' + videoHeight
     // console.log(text)
 
-    ratio = calculateAspectRatio(videoWidth, videoHeight);
+    ratio = calculateAspectRatio(videoWidth, videoHeight)
 
     if (videoWidth > 1921) {
-        videoWidth = 1280;
+        videoWidth = 1280
     }
 
-    windowWidth = videoWidth * 0.75;
-    videoHeight = calculateApectHeight(videoWidth, ratio);
+    windowWidth = videoWidth * 0.75
+    videoHeight = calculateApectHeight(videoWidth, ratio)
 
-    text = "Video to W:" + videoWidth + " H:" + videoHeight + " Ratio:" + ratio;
+    text = 'Video to W:' + videoWidth + ' H:' + videoHeight + ' Ratio:' + ratio
     console.log(text)
-    heightMulti = 0.95;
+    heightMulti = 0.95
     if (large == true) {
         // heightMulti = heightMulti + .13
     }
-    windowHeight = videoHeight * heightMulti;
+    windowHeight = videoHeight * heightMulti
 
     text =
-        "Resising Window to W:" +
+        'Resising Window to W:' +
         windowWidth +
-        " H:" +
+        ' H:' +
         windowHeight +
-        ", x" +
+        ', x' +
         heightMulti +
-        " Playlist:" +
-        large;
-     console.log(text)
+        ' Playlist:' +
+        large
+    console.log(text)
 
-    window.resizeTo(windowWidth, windowHeight);
+    window.resizeTo(windowWidth, windowHeight)
 }
 
-resizeWindow(document.querySelector(".playlist-icon"), { $width }, { $height });
+resizeWindow(document.querySelector('.playlist-icon'), { $width }, { $height })

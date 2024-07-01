@@ -65,6 +65,7 @@ class Playlist
         // p where (p.playlist_id = d.id) and d.hide = 0 '.$where.' group by p.playlist_id ORDER BY Library ASC;';
 
         $sql     = 'select id, name, Library from '.Db_TABLE_PLAYLIST_DATA.'  where hide = 0 '.$where.'  ORDER BY Library ASC;';
+        utmdump($sql);
         $results = $this->db->query($sql);
 
         return $results;
@@ -137,7 +138,7 @@ class Playlist
         }
 
         return Elements::SelectOptions(array: $plArray, selected: $selected,
-            blank: 'Add to Playlist',
+            blank: '',
             disabled: $disabled_id,
             class: 'filter-option text-dark');
     }

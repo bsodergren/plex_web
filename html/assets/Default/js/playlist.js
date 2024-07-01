@@ -36,10 +36,13 @@ function showTextBox() {
                 textBox.id = "playlistInputTextBox";
                 textBox.name = "playlist_name";
                 textBox.type = "text";
+                textBox.setAttribute("class","pltextBox")
 
-                var form = $("#playlistTextBox");
+                var form = $("#playlistListBox");
                 form.append(textBox);
-                form.attr("class", "btn");
+
+                $("#playlistTextBox").attr("class", "hidden");
+                form.attr("style", "display:block;");
 
                 addedTextForm = true;
                 return true;
@@ -51,12 +54,22 @@ function showTextBox() {
 $(document).ready(function () {
     $(".playlistData button").click(function () {
         var text = $(this).attr("id");
-        console.log(text);
+
         if (text == "PlayAll") {
             if( GetFilename(window.location.href) == 'favorites'){
                 return false;
             }
             playlistSubmit(text);
+        }
+
+        if (text == "AddAll") {
+            $(".playlist_selector").attr("checked", "checked");
+            showTextBox();
+        }
+
+        if (text == "Clear") {
+            $(".playlist_selector").attr("checked", false);
+            clearTextBox();
         }
 
         if (text == "AddPlaylist") {
@@ -79,10 +92,7 @@ $(document).ready(function () {
             showTextBox();
         }
 
-        if (text == "Clear") {
-            $(".playlist_selector").attr("checked", false);
-            clearTextBox();
-        }
+
     });
 });
 
@@ -127,6 +137,7 @@ function playlistSubmit(action, playlistid = null) {
     if (playlistid != null) {
         postData["PlaylistID"] = playlistid;
     }
+
     $.ajax({
         url: "process.php",
         type: "POST",
