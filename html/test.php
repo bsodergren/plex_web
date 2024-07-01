@@ -116,7 +116,7 @@ class ProgressBar
     public function flush()
     {
         echo str_pad('', (int) ini_get('output_buffering'))."\n";
-        // ob_end_flush();
+        //  ob_end_flush();
         flush();
     }
 }

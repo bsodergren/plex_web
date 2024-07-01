@@ -1,0 +1,10 @@
+<script type="text/javascript">
+
+if (document.getElementById("{$pbarid}"))
+{
+    //  document.getElementById("{$tbarid}").style.display = "{$pbDone}";
+    document.getElementById("{$pbarid}").style.width = "{$percentDone}%";
+    document.getElementById("{$tbarid}").setAttribute("aria-valuenow",{$percentDone});
+    document.getElementById("{$textid}").innerHTML = "{$pbText}";
+}
+</script>

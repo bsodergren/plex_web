@@ -1,20 +1,29 @@
 <?php
+/**
+ *  Plexweb
+ */
 
 use Plex\Modules\Process\Mediatag;
 use Plex\Template\Render;
+use Plex\Template\Elements;
+use Plex\Modules\Display\Layout;
+
 
 require_once '_config.inc.php';
 
 // configuration
-$url = __URL_HOME__.'/pledit.php';
+$url  = __URL_HOME__.'/pledit.php';
 $file = __PLEX_LIBRARY__.'/Playlists/plexplaylist.txt';
-$pl = new Mediatag('Playlists');
+$pl   = new Mediatag('Playlists');
+$id   = '';
 
 if (!file_exists($file)) {
     touch($file);
 }
 // check if form has been submitted
 if (isset($_POST['text'])) {
+    echo Layout::Header();
+    echo Elements::pagestart();
     $text = $_POST['text'];
 
     // save the text contents
@@ -33,17 +42,22 @@ if (isset($_POST['text'])) {
         //    sleep(2);
     }
     // redirect to form again
-    header(sprintf('Location: %s', $url));
-    printf('<a href="%s">Moved</a>.', htmlspecialchars($url));
+
+    echo Elements::javaRefresh($url, 2);
+
     exit;
 }
 
+$stylesheet = '';
+$javascript = '';
+$textBlocks = '';
+
 $rows = 10;
 // read the textfile
-$text = file_get_contents($file);
+$text  = file_get_contents($file);
 $array = explode("\n", $text);
 $lines = count($array);
-$cols = 60;
+$cols  = 60;
 foreach ($array as $line) {
     $w = strlen($line);
     if ($w > $cols) {
@@ -55,18 +69,18 @@ $stylesheet .= Render::stylesheet('pages/editor/form', ['id' => $id]);
 
 $textBlocks .= Render::html('pages/editor/textblock',
     ['WordWrapPart' => 'text',
-        'id' => 'playlistText',
-        'TextList' => $text,
-        'Rows' => $lines,
-        'Cols' => $cols + 10,
+        'id'        => 'playlistText',
+        'TextList'  => $text,
+        'Rows'      => $lines+ $rows,
+        'Cols'      => $cols + 20,
     ]);
 
 //   break;
 
-$html = Render::html('pages/editor/body', ['TextBlocks' => $textBlocks,
-    'Javascript' => $javascript,
-    'Stylesheet' => $stylesheet,
-    'FormAction' => $url]);
+$html = Render::html('pages/editor/main', ['TextBlocks' => $textBlocks,
+    'Javascript'                                        => $javascript,
+    'Stylesheet'                                        => $stylesheet,
+    'FormAction'                                        => $url]);
 // $html = Render::html('editor/main', [ 'WordMap' => $text]);
 
 Render::Display($html);

@@ -5,15 +5,14 @@
 
 ob_start();
 
+use Camoo\Config\Config;
+use Plex\Core\Request;
+use Plex\Core\RoboLoader;
 use Plex\EnvLoader;
 use Tracy\Debugger;
-use Plex\Core\Request;
-use Camoo\Config\Config;
-use Plex\Core\RoboLoader;
+use UTM\Utm;
 use UTMTemplate\Template;
 use UTMTemplate\UtmDevice;
-use UTM\Utm;
-
 
 // error_reporting(\E_ALL & ~\E_NOTICE & ~\E_WARNING);
 
@@ -24,11 +23,10 @@ if (!array_key_exists('library', $_REQUEST)) {
     }
 }
 
-
 define('__ROOT_DIRECTORY__', dirname(realpath($_SERVER['CONTEXT_DOCUMENT_ROOT']), 1));
 define('__PLEX_APP_DIR__', __ROOT_DIRECTORY__.'/src');
 
-define('__APP_LOG_DIR__',__ROOT_DIRECTORY__ . '/src/var/log');
+define('__APP_LOG_DIR__', __ROOT_DIRECTORY__.'/src/var/log');
 define('__PHP_CONFIG_DIR__', __PLEX_APP_DIR__.'/Config');
 define('__PHP_YAML_DIR__', __PHP_CONFIG_DIR__.'/Routes');
 define('__COMPOSER_LIB__', __ROOT_DIRECTORY__.'/vendor');
@@ -42,7 +40,7 @@ require_once __COMPOSER_LIB__.'/autoload.php';
 // Debugger::enable();
 
 Debugger::enable(Debugger::Development);
-Debugger::$logDirectory =__APP_LOG_DIR__ ;
+Debugger::$logDirectory =__APP_LOG_DIR__;
 
 $config = new Config(__ROOT_DIRECTORY__.\DIRECTORY_SEPARATOR.'config.ini');
 
@@ -56,17 +54,17 @@ require_once __PHP_CONFIG_DIR__.'/database.php';
 require_once __PHP_CONFIG_DIR__.'/Functions.php';
 
 register_shutdown_function('utmddump');
-utminfo("---- START OF PAGE VIEW " . basename($_SERVER['SCRIPT_FILENAME']));
+utminfo('---- START OF PAGE VIEW '.basename($_SERVER['SCRIPT_FILENAME']));
 Request::startPage();
 // foreach ($config['constants'] as $name => $value) {
 //     define($name, $value);
 // }
 
-utm::$LOG_STYLE = 'html';
-utm::$LOG_DIR = __ERROR_LOG_DIRECTORY__.DIRECTORY_SEPARATOR.__THIS_PAGE__;
+Utm::$LOG_STYLE = 'html';
+Utm::$LOG_DIR   = __ERROR_LOG_DIRECTORY__.\DIRECTORY_SEPARATOR.__THIS_PAGE__;
 new Utm();
 
-Utm::$SHOW_HTML_DUMP = true;
+Utm::$SHOW_HTML_DUMP = false;
 
 Template::$registeredCallbacks = [
     '\Plex\Template\Callbacks\FunctionCallback::FUNCTION_CALLBACK'      => 'callback_parse_function',
@@ -94,4 +92,3 @@ $device = new UtmDevice();
 RoboLoader::loadPage();
 $const_keys = get_defined_constants(true)['user'];
 define('__TEMPLATE_CONSTANTS__', $const_keys);
-

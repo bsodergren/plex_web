@@ -44,7 +44,13 @@ search:
     SHOW_SORT: true
     SHOW_PAGES: true
     SHOW_RATING: true
-
+pledit:
+    PAGE_TITLE: "Playlist Editor"
+    BOTTOM_NAV: false
+    SHOW_SORT: false
+    NAVBAR: true
+    SHOW_PAGES: false
+    SHOW_RATING: false
 genre:
     PAGE_TITLE: "Genre Selection"
     BOTTOM_NAV: false
