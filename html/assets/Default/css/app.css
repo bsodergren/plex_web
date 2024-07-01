@@ -10,10 +10,22 @@ body {
     position: fixed;
     top: 60px;
 }
+.nav-btn {
+    list-style-type: none;
+    width: 140px;
+    left: -25px;
+    position: relative;
 
+    text-align: start;
+}
+.nav-divider {
+    list-style-type: none;
+    height: 14px;
+}
 .container-sidenav {
     position: absolute;
     left: 140px;
+    list-style-type: none;
     top: 60px;
     width: 90%;
     z-index: -1;
@@ -73,6 +85,8 @@ body {
 }
 
 .nav-tabs .nav-link {
+    list-style-type: none;
+
     padding: 10px 10px 10px 10px;
 }
 
@@ -80,6 +94,14 @@ body {
     display: block;
     width: 100%;
     padding: 0px 0px 0px 0px;
+}
+
+.nav-dropdown {
+    width: 228px;
+    left: -1px;
+    position: relative;
+    padding: 10px 10px 10px 10px;
+    text-align: start;
 }
 
 .nav-tabs .nav-link:not([disabled]):not(.disabled).active,

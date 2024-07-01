@@ -5,6 +5,7 @@
 
 namespace Plex\Template\Functions\Traits;
 
+use Nette\Utils\Random;
 use Plex\Template\Render;
 use Symfony\Component\Yaml\Yaml;
 use UTMTemplate\Template;
@@ -47,7 +48,7 @@ trait Navbar
                     }
                     $dropdown_link_html[] = self::dropdownLink($dd_url, $dd_name, $is_active, $badge, $icon);
                 }
-                $dropdown_link_html[] = '<li><hr class="dropdown-divider-settings"></li>';
+                $dropdown_link_html[] = '<li class="nav-divider"><hr class=" dropdown-divider-settings"></li>';
                 $pop                  = true;
                 continue;
             }
@@ -79,6 +80,7 @@ trait Navbar
         return Render::html('base/navbar/menu_dropdown', [
             'DROPDOWN_TEXT' => $array['text'],
             'Icon_Class'    => self::navbarIcon($array),
+            'ACCORDIAN_ID' => rand(0,1000),
 
             'DROPDOWN_LINKS' => implode("\n", $dropdown_link_html),
         ]);
