@@ -294,6 +294,9 @@ class FileListing
             null,
             $num_rows
         );
+
+        utmdump($joinQuery);
+
         if (null !== $limit) {
             $limitQuery .= ' LIMIT '.$limit[0].','.$limit[1].'';
         }

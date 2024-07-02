@@ -16,6 +16,10 @@ trait Markers
 
     public function showMarkers($matches)
     {
+        if (!OptionIsTrue(SHOW_MARKERS))
+        {
+            return '';
+        }
         $var = $this->parseVars($matches);
 
         $this->Markers = new vMarkers($var);

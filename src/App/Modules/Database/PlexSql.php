@@ -10,8 +10,9 @@ namespace Plex\Modules\Database;
  */
 
 use Plex\Core\Request;
+use UTM\Bundle\mysql\MysqliDb;
 
-class PlexSql extends \MysqliDb
+class PlexSql extends MysqliDb
 {
     public $limit = false;
     public $db;
@@ -176,6 +177,7 @@ class PlexSql extends \MysqliDb
             null,
             $fieldArray
         );
+utmdump($joinQuery);
 
         // $query      = 'SELECT @rownum := @rownum + 1 AS rownum, T1.* FROM ( '.$joinQuery.' ) AS T1, (SELECT @rownum := '.$limit[0].') AS r';
         $results = $this->db->rawQuery($joinQuery);
@@ -214,31 +216,7 @@ class PlexSql extends \MysqliDb
         return $this->db->query($sql.$where);
     }
 
-    public function getQuery($tableName, $numRows = null, $columns = '*')
-    {
-        if (empty($columns)) {
-            $columns = '*';
-        }
 
-        $column = \is_array($columns) ? implode(', ', $columns) : $columns;
-
-        if (!str_contains($tableName, '.')) {
-            $this->_tableName = self::$prefix.$tableName;
-        } else {
-            $this->_tableName = $tableName;
-        }
-
-        $this->_query = 'SELECT '.implode(' ', $this->_queryOptions).' '.
-            $column.' FROM '.$this->_tableName;
-
-        $stmt = $this->_buildQuery($numRows);
-
-        if ($this->isSubQuery) {
-            return $this;
-        }
-
-        return $this->_lastQuery;
-    }
     // public $fieldList ='id, video_key,thumbnail,title,artist,genre,studio,keyword,substudio,duration,favorite,added,filename ,fullpath,library,filesize';
 
     //  SELECT

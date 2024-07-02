@@ -10,6 +10,7 @@ default:
     SHOW_PAGES: false
     GRID_VIEW: false
     SHOW_PLAYLIST: true
+    SHOW_MARKERS: false
 
     # LIST_VIEW: false
     # VIDEOINFO: true
@@ -97,11 +98,13 @@ video:
     NAVBAR: false
     SHOW_RATING: true
     SHOW_PLAYLIST: false
+    SHOW_MARKERS: true
 
 videoinfo:
     PAGE_TITLE: "Video Page"
     BOTTOM_NAV: false
     NAVBAR: false
+    SHOW_MARKERS: true
     SHOW_RATING: true
 
 filebrowser:
